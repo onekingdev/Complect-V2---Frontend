@@ -1,3 +1,9 @@
+const topbarNavigation = [
+	{title: "Home"},
+	{title: "Documents"},
+	{title: "Reports"}
+];
+
 const sidebarNavigation = [{
 	title: "Overview",
 	icon: "list-outline",
@@ -22,5 +28,5 @@ const sidebarNavigation = [{
 }];
 
 export default function useNavigation() {
-	return { sidebarNavigation }
+	return { topbarNavigation, sidebarNavigation }
 }
