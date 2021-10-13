@@ -2,16 +2,32 @@
 .bar.topbar
 	router-link(:to="{name: 'Dashboard'}")
 		icon(name="logo")
+	.navigation
+		c-button(label="Find an Expert" type="accent")
+		c-button(icon="bell" type="transparent")
+	.user-block
+		Avatar(:user="userInfo")
+		.name {{userInfo.firstName}} {{userInfo.lastName}}
+		icon(name="chevron")
 </template>
 
 <script>
-export default {};
+import useUser from "~/store/User.js";
+import cButton from "~/components/Controls/cButton.vue";
+import Avatar from "~/components/Misc/Avatar.vue";
+export default {
+	components: { cButton, Avatar },
+	setup() {
+		const { userInfo } = useUser();
+		return { userInfo }
+	}
+};
 </script>
 
 <style lang="stylus" scoped>
 .bar.topbar
 	width: 100%
-	padding: 1em
+	padding: 0 1em
 	background: var(--c-bg-z2, #fff)
 	border-bottom: 1px solid var(--c-border, #dcdee4)
 	display: flex
@@ -19,4 +35,21 @@ export default {};
 	svg.icon-logo
 		width: 1.5em
 		height: 1.5em
+	.navigation
+		text-align: right
+		flex: 1 0 auto
+		margin-left: auto
+	.user-block
+		display: flex
+		padding: 1em
+		margin-left: auto
+		align-items: center
+		border-left: 1px solid var(--c-border)
+		.avatar
+			margin-right: 0.7em
+		svg.icon-chevron
+			width: 0.7em
+			height: 0.7em
+			margin-left: 1em
+			transform: rotate(180deg)
 </style>

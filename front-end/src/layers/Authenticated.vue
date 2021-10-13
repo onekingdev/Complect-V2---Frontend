@@ -26,7 +26,7 @@ export default {
 	width: 100%
 	height: 100%
 	display: grid
-	grid-template-columns: max-content auto
+	grid-template-columns: 18em auto
 	grid-template-rows: max-content auto max-content
 	position: relative
 	.bar.topbar

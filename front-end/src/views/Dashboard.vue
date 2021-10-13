@@ -1,6 +1,8 @@
 <template lang="pug">
 .view.dashboard
-	h1 Welcome, {{userInfo.firstName}} {{userInfo.lastName}}
+	h1
+		b Welcome, 
+		| {{userInfo.firstName}} {{userInfo.lastName}}
 	Card
 		template(v-slot:header) October
 		template(v-slot:content)
