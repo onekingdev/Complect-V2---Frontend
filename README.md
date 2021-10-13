@@ -1,2 +1,2 @@
-# complect-2.0
-complect rewrite
+# Complect 2.0
+Rewrite

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 512 512">
+	<style>
+		path.main { fill: #2D3051; }
+		path.additional { fill: #5F62AC; }
+		@media (prefers-color-scheme: dark) {
+			path.main { fill: #525794; }
+			path.additional { fill: #9497DB; }
+		}
+	</style>
+	<path class="main" d="M426.6 0H121.84a85.4 85.4 0 0 0-85.43 85.43v82.18a52.7 52.7 0 0 0 53.02 52.6l170.63-1c14.16 0 32.74 18.58 32.74 32.72l-1.01 170.63a52.71 52.71 0 0 0 52.69 53.02h82.1A85.4 85.4 0 0 0 512 390.15V85.43A85.41 85.41 0 0 0 426.6 0Z"/>
+	<path class="additional" d="M45.35 265.64h175.14a25.87 25.87 0 0 1 25.87 25.87v175.14A45.35 45.35 0 0 1 201.01 512H45.35A45.35 45.35 0 0 1 0 466.65V310.92a45.35 45.35 0 0 1 45.35-45.28Z"/>
+</svg>
