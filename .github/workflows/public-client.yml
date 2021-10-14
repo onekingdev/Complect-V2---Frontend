@@ -1,7 +1,9 @@
-name: Build
+name: Public Client Checks
 on:
   pull_request:
     branches: [ public ]
+    paths:
+      - "client/**"
 jobs:
   build:
     runs-on: ubuntu-latest
