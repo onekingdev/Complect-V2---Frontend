@@ -4,6 +4,10 @@ on:
     branches: [ public ]
     paths:
       - "client/**"
+  push:
+    branches: [ public ]
+    paths:
+      - "client/**"
 jobs:
   build:
     runs-on: ubuntu-latest
