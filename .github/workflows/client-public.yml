@@ -4,10 +4,6 @@ on:
     branches: [ public ]
     paths:
       - "client/**"
-  push:
-    branches: [ public ]
-    paths:
-      - "client/**"
 defaults:
   run:
     working-directory: client
