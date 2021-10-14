@@ -8,6 +8,9 @@ on:
     branches: [ public ]
     paths:
       - "client/**"
+defaults:
+  run:
+    working-directory: client
 jobs:
   build:
     runs-on: ubuntu-latest
