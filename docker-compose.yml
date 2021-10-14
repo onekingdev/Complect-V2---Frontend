@@ -1,20 +1,20 @@
 version: '3.9'
 services:
-    # Front End
-    complect-front-end:
-        container_name: complect-front-end
-        hostname: front
+    # Client
+    complect-client:
+        container_name: complect-client
+        hostname: client
         build:
-            context: ./front-end
+            context: ./client
             dockerfile: Dockerfile
-        image: complect-front-end:1.0
+        image: complect-client:1.0
         ports:
             - 80:5000 # Build
             - 81:5001 #Dev
         environment:
             HOST: 0.0.0.0
         volumes:
-            - ./front-end:/home/app
+            - ./client:/home/app
             - /home/app/node_modules
         working_dir: /home/app
         command: npm run dev

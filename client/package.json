@@ -1,12 +1,12 @@
 {
-	"name": "complect-front",
+	"name": "complect-client",
 	"version": "2.0.0",
 	"private": true,
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",
-		"serve": "vite preview --port 5001",
-		"preview": "vite build && vite preview --port 5001",
+		"serve": "vite preview --port 5000",
+		"preview": "vite build && vite preview --port 5000",
 		"lint": "eslint 'src/**/*.{js,vue}'",
 		"lint:fix": "eslint 'src/**/*.{js,vue}' --fix"
 	},
