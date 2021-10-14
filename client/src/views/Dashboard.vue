@@ -35,4 +35,6 @@ export default {
 	flex-wrap: wrap
 	h1, .card
 		flex: 1 0 auto
+	h1
+		width: 100%
 </style>
