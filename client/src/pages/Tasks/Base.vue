@@ -1,9 +1,10 @@
 <template lang="pug">
 general-layout(title="Tasks")
 	template(v-slot:controls)
-		button Download
-		button New Task
-	template(v-slot:tabs)
+		c-button(label="Download")
+		c-button(label="New Task" type="primary")
+	template(v-slot:content)
+		p Tasks
 </template>
 
 <script>

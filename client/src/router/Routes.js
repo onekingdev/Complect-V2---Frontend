@@ -1,26 +1,28 @@
 import { createWebHistory, createRouter } from "vue-router";
 
-
 // layers
 // const UnauthenticatedLayer = () => import( "~/layers/Unauthenticated.vue" );
 const AuthenticatedLayer = () => import( "~/layers/Authenticated.vue" );
 
-// views
-const Empty = () => import( "~/views/Empty.vue" );
-const Dashboard = () => import( "~/views/Dashboard.vue" );
-const Tasks = () => import( "~/views/Tasks.vue" );
-const Projects = () => import( "~/views/Projects.vue" );
-const Policies = () => import( "~/views/Policies.vue" );
-const Reviews = () => import( "~/views/Reviews.vue" );
-const Risks = () => import( "~/views/Risks.vue" );
+// pages
+const Dashboard = () => import( "~/pages/Dashboard/Base.vue" );
+const Tasks = () => import( "~/pages/Tasks/Base.vue" );
 
+const Projects = () => import( "~/pages/Projects/Base.vue" );
+const MyProjects = () => import( "~/pages/Projects/MyProjects.vue" );
+const Contacts = () => import( "~/pages/Projects/Contacts.vue" );
+const Ratings = () => import( "~/pages/Projects/Ratings.vue" );
+
+const Policies = () => import( "~/pages/Policies/Base.vue" );
+const MyPolicies = () => import( "~/pages/Policies/Policies.vue" );
+const PoliciesArchive = () => import( "~/pages/Policies/Archive.vue" );
+const PoliciesSetup = () => import( "~/pages/Policies/Setup.vue" );
+
+const Reviews = () => import( "~/pages/Reviews/Base.vue" );
+const Risks = () => import( "~/pages/Risks/Base.vue" );
 
 // ––––––––––––––– Routes ––––––––––––––– //
 const routes = [{
-	path: "/empty/",
-	name: "Empty",
-	component: Empty
-}, {
 	path: "/",
 	component: AuthenticatedLayer,
 	beforeEnter: ( to, from, next ) => {
@@ -38,12 +40,36 @@ const routes = [{
 		component: Tasks
 	}, {
 		path: "projects",
-		name: "Projects",
-		component: Projects
+		component: Projects,
+		children: [{
+			path: "",
+			name: "Projects",
+			component: MyProjects
+		}, {
+			path: "contacts",
+			name: "Contacts",
+			component: Contacts
+		}, {
+			path: "ratings",
+			name: "Ratings",
+			component: Ratings
+		}]
 	}, {
 		path: "policies",
-		name: "Policies",
-		component: Policies
+		component: Policies,
+		children: [{
+			path: "",
+			name: "Policies",
+			component: MyPolicies
+		}, {
+			path: "archive",
+			name: "Policies Archive",
+			component: PoliciesArchive
+		}, {
+			path: "setup",
+			name: "Policies Setup",
+			component: PoliciesSetup
+		}]
 	}, {
 		path: "reviews",
 		name: "Reviews",
@@ -58,7 +84,7 @@ const routes = [{
 	}]
 }, {
 	path: "/:pathMatch(.*)*",
-	redirect: { name: "Empty" }
+	redirect: { name: "Dashboard" }
 }];
 
 const router = createRouter({

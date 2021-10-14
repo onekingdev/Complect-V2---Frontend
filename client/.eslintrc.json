@@ -160,7 +160,7 @@
 		"func-style": ["error", "expression"],
 		"function-call-argument-newline": ["error", "never"],
 		"function-paren-newline": ["error", "never"],
-		"id-denylist": ["error", "data", "callback"],
+		"id-denylist": ["error", "callback"],
 		"id-length": ["error", { "min": 3, "properties": "never" , "exceptions": ["a", "b", "c", "x", "y", "i", "l", "key", "id", "to"]}],
 		"id-match":["error", "^[^_]+$", { "ignoreDestructuring": true }],
 		"implicit-arrow-linebreak": ["error", "beside"],

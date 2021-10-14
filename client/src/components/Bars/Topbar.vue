@@ -13,13 +13,9 @@
 
 <script>
 import useUser from "~/store/User.js";
-import cButton from "~/components/Controls/cButton.vue";
 import Avatar from "~/components/Misc/Avatar.vue";
 export default {
-	components: {
-		cButton,
-		Avatar
-	},
+	components: { Avatar },
 	setup () {
 		const { userInfo } = useUser();
 		return { userInfo };
@@ -42,6 +38,8 @@ export default {
 		text-align: right
 		flex: 1 0 auto
 		margin-left: auto
+		button
+			margin-right: 0.5em
 	.user-block
 		display: flex
 		padding: 1em
