@@ -8,7 +8,5 @@ general-layout(title="Tasks")
 
 <script>
 import GeneralLayout from "~/components/Layouts/General.vue";
-export default {
-	components: { GeneralLayout }
-};
+export default { components: { GeneralLayout } };
 </script>

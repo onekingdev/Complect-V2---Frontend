@@ -15,7 +15,6 @@ const Reviews = () => import( "~/views/Reviews.vue" );
 const Risks = () => import( "~/views/Risks.vue" );
 
 
-
 // ––––––––––––––– Routes ––––––––––––––– //
 const routes = [{
 	path: "/empty/",

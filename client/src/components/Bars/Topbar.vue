@@ -16,10 +16,13 @@ import useUser from "~/store/User.js";
 import cButton from "~/components/Controls/cButton.vue";
 import Avatar from "~/components/Misc/Avatar.vue";
 export default {
-	components: { cButton, Avatar },
-	setup() {
+	components: {
+		cButton,
+		Avatar
+	},
+	setup () {
 		const { userInfo } = useUser();
-		return { userInfo }
+		return { userInfo };
 	}
 };
 </script>

@@ -12,10 +12,10 @@
 </template>
 
 <script>
-import useNavigation from "~/store/Navigation"
+import useNavigation from "~/store/Navigation";
 export default {
 	setup () {
-		const { sidebarNavigation } = useNavigation()
+		const { sidebarNavigation } = useNavigation();
 		return { sidebarNavigation };
 	}
 };

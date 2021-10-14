@@ -7,9 +7,21 @@ button.c-button(:class="type")
 <script>
 export default {
 	props: {
-		icon: String,
-		label: String,
-		type: String
+		icon: {
+			type: String,
+			default: "",
+			required: false
+		},
+		label: {
+			type: String,
+			default: "",
+			required: false
+		},
+		type: {
+			type: String,
+			default: "",
+			required: false
+		}
 	}
 };
 </script>

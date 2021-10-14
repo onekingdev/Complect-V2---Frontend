@@ -1,7 +1,7 @@
 <template lang="pug">
 .view.dashboard
 	h1
-		b Welcome, 
+		b Welcome,
 		| {{userInfo.firstName}} {{userInfo.lastName}}
 	Card
 		template(v-slot:header) October
@@ -16,10 +16,13 @@ import Card from "~/components/Misc/Card.vue";
 import Calendar from "~/components/Misc/Calendar.vue";
 import useUser from "~/store/User.js";
 export default {
-	components: { Card, Calendar },
-	setup() {
+	components: {
+		Card,
+		Calendar
+	},
+	setup () {
 		const { userInfo } = useUser();
-		return { userInfo }
+		return { userInfo };
 	}
 };
 </script>
