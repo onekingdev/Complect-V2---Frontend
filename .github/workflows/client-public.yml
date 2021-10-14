@@ -4,9 +4,6 @@ on:
     branches: [ public ]
     paths:
       - "client/**"
-defaults:
-  run:
-    working-directory: client
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,7 +17,7 @@ jobs:
         with:
           node-version: '16.x'
           cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
+          cache-dependency-path: client/package-lock.json
       
       - name: Install dependencies
         run: npm ci
