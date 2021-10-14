@@ -1,4 +1,4 @@
-name: Client Public Checks
+name: Public Client
 on:
   pull_request:
     branches: [ public ]
