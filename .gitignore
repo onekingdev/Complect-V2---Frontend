@@ -1,4 +1,4 @@
 client/dist
 node_modules
-Icon?
+/Icon?
 .DS_Store
