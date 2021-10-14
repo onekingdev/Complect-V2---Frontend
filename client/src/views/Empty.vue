@@ -1,6 +1,6 @@
 <template lang="pug">
 .view.empty
-	h1 Not Found
+	h1 Page Not Found!
 </template>
 
 <script>
