@@ -1,6 +1,6 @@
 <template lang="pug">
 icons-set
-Toast
+Toast(message="Hello World!")
 .app-container
 	router-view
 </template>

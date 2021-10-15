@@ -3,10 +3,23 @@ general-layout(title="Internal Reviews")
 	template(v-slot:controls)
 		c-button(label="New Review" type="primary")
 	template(v-slot:content)
-		p Reviews
+		Table(:data="reviews")
+			template(v-slot:controls)
+				c-button(label="Filter by: All")
 </template>
 
 <script>
 import GeneralLayout from "~/components/Layouts/General.vue";
-export default { components: { GeneralLayout } };
+import useData from "~/store/Data.js";
+import Table from "~/components/Table/Table.vue";
+export default {
+	components: {
+		GeneralLayout,
+		Table
+	},
+	setup () {
+		const { reviews } = useData();
+		return { reviews };
+	}
+};
 </script>

@@ -4,10 +4,23 @@ general-layout(title="Tasks")
 		c-button(label="Download")
 		c-button(label="New Task" type="primary")
 	template(v-slot:content)
-		p Tasks
+		Table(:data="tasks")
+			template(v-slot:controls)
+				c-button(label="Filter by: All")
 </template>
 
 <script>
 import GeneralLayout from "~/components/Layouts/General.vue";
-export default { components: { GeneralLayout } };
+import useData from "~/store/Data.js";
+import Table from "~/components/Table/Table.vue";
+export default {
+	components: {
+		GeneralLayout,
+		Table
+	},
+	setup () {
+		const { tasks } = useData();
+		return { tasks };
+	}
+};
 </script>

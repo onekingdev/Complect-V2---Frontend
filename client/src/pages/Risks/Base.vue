@@ -3,10 +3,21 @@ general-layout(title="Risk Register")
 	template(v-slot:controls)
 		c-button(label="New Risk" type="primary")
 	template(v-slot:content)
-		p Risk
+		Table(:data="risks")
 </template>
 
 <script>
 import GeneralLayout from "~/components/Layouts/General.vue";
-export default { components: { GeneralLayout } };
+import useData from "~/store/Data.js";
+import Table from "~/components/Table/Table.vue";
+export default {
+	components: {
+		GeneralLayout,
+		Table
+	},
+	setup () {
+		const { risks } = useData();
+		return { risks };
+	}
+};
 </script>
