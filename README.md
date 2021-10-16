@@ -8,7 +8,7 @@ Run: `docker-compose up` to start *Client*, *API*, *MongoDB* and *MongoDB Admin*
 * [localhost:81](http://localhost:81/) - Client (*front-end*)
 * `localhost:82` - API
 * `localhost:83` - MongoDB
-* [localhost:84](http://localhost:84/) - MongoDB Admin ([more](##mongodb-admin))
+* [localhost:84](http://localhost:84/) - MongoDB Admin ([more](#mongodb-admin))
 
 
 ## API Endpoints (Development and Tests)
