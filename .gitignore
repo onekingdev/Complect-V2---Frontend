@@ -1,4 +1,5 @@
 client/dist
+mongo/db
 node_modules
 /Icon?
 .DS_Store
