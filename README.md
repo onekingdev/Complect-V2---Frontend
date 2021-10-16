@@ -56,12 +56,13 @@ Send `PUT` request to `localhost:82/v1/db/collection/document_id`, where `db` - 
 Send `DELETE` request to `localhost:82/v1/db/collection/document_id`, where `db` - database name, `collection` - collection name and `document_id` - is `id` from databse.
 
 #### Example:
-`DELETE` to `localhost:82/v1/demo/users/` to delete all records in collection, or `localhost:82/v1/demo/users/616ab334cfa59c15bb12bd65` to delete record by `ID`
+`DELETE` to `localhost:82/v1/demo/users/` to delete all records in collection, or `localhost:82/v1/demo/users/616ab334cfa59c15bb12bd65` to delete record by `ID`.
 
 ---
 
 ## MongoDB Admin
-* Navigate to: `localhost:84`
+* Navigate to: [localhost:84](http://localhost:84/)
 * Connection Name: `Any`
 * Connection String: `mongodb://user:password@mongo:27017`
-* Press Connect, to get controls over MongoDB
+* Press **Add Connection**
+* Click **Connect** in right Action Tab, to enter.
