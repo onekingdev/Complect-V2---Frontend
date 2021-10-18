@@ -4,17 +4,17 @@
 table
 	thead
 		tr
-			th(v-for="(title, key) in data.columns")
+			th(v-for="(title, key) in options.columns")
 				column-title(
 					:title="title"
 					:class="`cell cell-${key}`")
-	tbody(v-if="data.set")
-		tr(v-for="row in data.set")
-			td(v-for="(cell, key) in data.columns")
+	tbody(v-if="records")
+		tr(v-for="row in records")
+			td(v-for="(cell, key) in options.columns")
 				component(
 					:is="component(key)" :data="row[key]"
 					:class="`cell cell-${key}`")
-icon(v-if="!data.set.length" name="empty-state")
+icon(v-if="!records" name="empty-state")
 </template>
 
 <script>
@@ -22,15 +22,25 @@ import ColumnTitle from "./Cells/ColumnTitle.vue";
 import CellDefault from "./Cells/CellDefault.vue";
 import CellStatus from "./Cells/CellStatus.vue";
 import CellDate from "./Cells/CellDate.vue";
+import CellCollaborators from "./Cells/CellCollaborators.vue";
+import CellTasks from "./Cells/CellTasks.vue";
+import CellCost from "./Cells/CellCost.vue";
 export default {
 	components: {
 		ColumnTitle,
 		CellDefault,
 		CellStatus,
-		CellDate
+		CellDate,
+		CellCollaborators,
+		CellTasks,
+		CellCost
 	},
 	props: {
-		data: {
+		options: {
+			type: Object,
+			required: true
+		},
+		records: {
 			type: Object,
 			required: true
 		}
@@ -38,9 +48,12 @@ export default {
 	setup () {
 		const cellsDict = {
 			default: "CellDefault",
+			collaborators: "CellCollaborators",
+			tasks: "CellTasks",
 			status: "CellStatus",
 			starts: "CellDate",
-			ends: "CellDate"
+			ends: "CellDate",
+			fixedBudget: "CellCost"
 		};
 		const component = key => cellsDict[key] ? cellsDict[key] : cellsDict.default;
 		return { component };

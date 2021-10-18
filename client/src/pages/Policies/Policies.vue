@@ -1,17 +1,27 @@
 <template lang="pug">
-Table(:data="policies")
+Table(:options="options" :records="records")
 	template(v-slot:controls)
 		c-button(label="Filter by: All")
 </template>
 
 <script>
-import useData from "~/store/Data.js";
 import Table from "~/components/Table/Table.vue";
 export default {
 	components: { Table },
 	setup () {
-		const { policies } = useData();
-		return { policies };
+		const options = {
+			columns: {
+				name: "Name",
+				status: "Status",
+				modified: "Last Modified",
+				created: "Date Created"
+			}
+		};
+		const records = {};
+		return {
+			options,
+			records
+		};
 	}
 };
 </script>

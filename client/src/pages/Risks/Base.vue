@@ -3,12 +3,13 @@ general-layout(title="Risk Register")
 	template(v-slot:controls)
 		c-button(label="New Risk" type="primary")
 	template(v-slot:content)
-		Table(:data="risks")
+		Table(:options="options" :records="records")
+			template(v-slot:controls)
+				c-button(label="Filter by: All")
 </template>
 
 <script>
 import GeneralLayout from "~/components/Layouts/General.vue";
-import useData from "~/store/Data.js";
 import Table from "~/components/Table/Table.vue";
 export default {
 	components: {
@@ -16,8 +17,20 @@ export default {
 		Table
 	},
 	setup () {
-		const { risks } = useData();
-		return { risks };
+		const options = {
+			columns: {
+				name: "Name",
+				impact: "Impact",
+				likelihood: "Likelihood",
+				level: "Risk Level",
+				created: "Date Created"
+			}
+		};
+		const records = {};
+		return {
+			options,
+			records
+		};
 	}
 };
 </script>

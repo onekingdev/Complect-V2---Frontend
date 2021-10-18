@@ -3,9 +3,8 @@ import useRest from "~/utils/Rest.js";
 
 
 const records = reactive({});
-
-export default function useData ( collection ) {
-	const recordsToStore = async () => {
+export default function useDev ( collection ) {
+	const getRecords = async () => {
 		try {
 			const result = await useRest({
 				method: "get",
@@ -16,18 +15,8 @@ export default function useData ( collection ) {
 			console.error( error );
 		}
 	};
-
-	const cleanStore = () => {
-		try {
-			records.value = {};
-		} catch ( error ) {
-			console.error( error );
-		}
-	};
-
 	return {
 		records,
-		recordsToStore,
-		cleanStore
+		getRecords
 	};
 }
