@@ -1,5 +1,5 @@
 import { reactive } from "vue";
-import useRest from "~/utils/Rest.js";
+import useApi from "~/utils/Api.js";
 
 
 const records = reactive({});
@@ -7,7 +7,7 @@ const records = reactive({});
 export default function useData ( collection ) {
 	const recordsToStore = async () => {
 		try {
-			const result = await useRest({
+			const result = await useApi({
 				method: "get",
 				collection
 			});

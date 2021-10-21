@@ -4,7 +4,7 @@
 	Sidebar
 	main
 		router-view
-	//- Devbar
+	Devbar
 </template>
 
 <script>

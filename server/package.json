@@ -1,0 +1,19 @@
+{
+	"name": "complect-server",
+	"version": "2.0.0",
+	"description": "Server for Complect App",
+	"author": "Constantine Gololobov",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"start": "nodemon ./src/server.js",
+		"lint": "./node_modules/.bin/eslint ./src --ext .js",
+		"lint:fix": "./node_modules/.bin/eslint ./src --ext .js --fix"
+	},
+	"devDependencies": {
+		"body-parser": "^1.19.0",
+		"eslint": "^8.0.1",
+		"express": "^4.17.1",
+		"nodemon": "^2.0.13"
+	}
+}

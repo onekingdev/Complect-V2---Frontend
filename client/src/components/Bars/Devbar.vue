@@ -1,7 +1,13 @@
 <template lang="pug">
 .bar.devbar
-	h1 Devbar
-	pre(v-if="records") {{records}}
+	.databse-controls
+		label Databse
+			select(name="database" id="database")
+				option(value="") 4
+		c-button(label="Create" type="primary" @click="createDatabse()")
+		c-button(label="Update" type="primary" @click="updateDatabse()")
+		c-button(label="Drop" type="primary" @click="dropDatabse()")
+	//- pre(v-if="records") {{records}}
 	//- label
 	//- 	.label Type
 	//- 	input(type="radio" value="Business")
@@ -14,9 +20,14 @@ import useDev from "~/store/Dev.js";
 import { onMounted } from "vue";
 export default {
 	setup () {
-		const { records, getRecords } = useDev( "projects" );
-		onMounted( () => getRecords() );
-		return { records };
+		const { getDatabases, databases, createDatabse, updateDatabse, dropDatabse } = useDev();
+		onMounted( () => getDatabases() );
+		return {
+			databases,
+			createDatabse,
+			updateDatabse,
+			dropDatabse
+		};
 	}
 };
 </script>

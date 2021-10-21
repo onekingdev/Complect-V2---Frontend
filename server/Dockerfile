@@ -5,4 +5,3 @@ LABEL maintainer="hello@gololobov.dev"
 WORKDIR /home/app
 COPY package*.json ./
 RUN npm i
-RUN npm i -g serverless

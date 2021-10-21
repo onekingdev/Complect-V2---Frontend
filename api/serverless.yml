@@ -1,0 +1,55 @@
+service: "complect-api"
+
+provider:
+  name: "aws"
+  runtime: "nodejs14.x"
+  memorySize: 128
+  timeout: 3
+  region: "us-east-1"
+  profile: "complect-api"
+  lambdaHashingVersion: 20201221
+  apiGateway:
+    shouldStartNameWithService: true
+  stage: "v1"
+  environment: 
+    NODE_ENV: "dev"
+
+functions:
+  - ${file(endpoints/crud.yml)}
+
+package:
+  exclude:
+    - node_modules
+    - coverage
+    - tests
+    - .eslintrc.json
+    - package-lock.json
+    - Dockerfile
+    - docker-compose.yml
+    - README.md
+    - Icon
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+  - serverless-domain-manager
+  - serverless-iam-roles-per-function
+  - serverless-prune-plugin
+
+
+custom:
+  config: ${file(config.yml)}
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+  serverless-offline:
+    httpPort: 6099
+    host: 0.0.0.0
+  customDomain:
+    domainName: "api2.complect.com"
+    basePath: ${self:provider.stage}
+    stage: v1
+    createRoute53Record: true
+  prune:
+    automatic: true
+    number: 3

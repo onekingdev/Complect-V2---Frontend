@@ -1,18 +1,18 @@
-import mongodb from "mongodb";
-import { logger } from "../helpers/utils.js";
+import { MongoClient } from "mongodb";
+import { logger } from "./utils.js";
+import { uri } from "../../db.config.js";
 
-const { "MongoClient": mongoClient } = mongodb;
-const mongoUri = "mongodb://user:password@mongo:27017";
+const mongoUri = uri.local;
 const options = {
-	"useNewUrlParser": true,
-	"useUnifiedTopology": true
+	useNewUrlParser: true,
+	useUnifiedTopology: true
 };
-let cachedPromise;
 
+let cachedPromise;
 
 const connectToDatabase = async () => {
 	if ( !cachedPromise ) {
-		cachedPromise = mongoClient.connect( mongoUri, options );
+		cachedPromise = MongoClient.connect( mongoUri, options );
 		logger.info( "Connected to Database" );
 	}
 	const client = await cachedPromise;
@@ -21,12 +21,13 @@ const connectToDatabase = async () => {
 
 const getCollection = async ( databaseName, collectionName ) => {
 	const client = await connectToDatabase();
-	return client.db( databaseName ).collection( collectionName );
+	const collection = await client.db( databaseName ).collection( collectionName );
+	return collection;
 };
 
 const disconnectFromDatabase = async () => {
 	const client = await connectToDatabase();
-	client.close( ( error ) => {
+	client.close( error => {
 		if ( !error ) {
 			cachedPromise = null;
 			logger.info( "Disconected from Database" );

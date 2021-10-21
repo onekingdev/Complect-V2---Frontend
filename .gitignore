@@ -1,5 +1,8 @@
 client/dist
 mongo/db
 node_modules
+.db.config.js
+.webpack
+coverage
 /Icon?
 .DS_Store

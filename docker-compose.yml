@@ -8,8 +8,7 @@ services:
             dockerfile: Dockerfile
         image: complect-client:1.0
         ports:
-            - 80:5000 # Build
-            - 81:5001 #Dev
+            - ${CLIENT_PORT}:5001
         environment:
             HOST: 0.0.0.0
         volumes:
@@ -17,8 +16,8 @@ services:
             - /home/app/node_modules
         working_dir: /home/app
         command: npm run dev
-
-    # API
+    
+     # API
     complect-api:
         container_name: complect-api
         build:
@@ -34,9 +33,29 @@ services:
             - /home/app/node_modules
         working_dir: /home/app
         # command: tail -F anything
-        command: npm run start
+        command: npm run dev
         depends_on:
             - complect-mongo
+
+    # Server
+    # complect-server:
+    #     container_name: complect-server
+    #     build:
+    #         context: ./server
+    #         dockerfile: Dockerfile
+    #     image: complect-server:1.0
+    #     ports:
+    #         - ${SERVER_PORT}:6099
+    #     environment:
+    #         HOST: 0.0.0.0
+    #     volumes:
+    #         - ./server:/home/app
+    #         - /home/app/node_modules
+    #     working_dir: /home/app
+    #     # command: tail -F anything
+    #     command: npm run start
+    #     depends_on:
+    #         - complect-mongo
     
     # Mongo Database
     complect-mongo:
