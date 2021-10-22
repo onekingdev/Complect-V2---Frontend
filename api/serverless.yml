@@ -38,7 +38,6 @@ plugins:
 
 
 custom:
-  config: ${file(config.yml)}
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true

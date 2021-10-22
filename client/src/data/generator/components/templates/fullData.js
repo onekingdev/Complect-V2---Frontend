@@ -12,13 +12,13 @@ import { randomRisks } from "../organisms/randomRisks.js";
 import { shuffleArray, randomNumber, randomElement } from "../atoms/utils.js";
 
 const quantity = {
-	businesses: 1,
-	specialists: 5,
-	projects: 1,
-	tasks: 1,
-	reviews: 1,
-	policies: 1,
-	risks: 1
+	businesses: 10,
+	specialists: 10,
+	projects: 5,
+	tasks: 5,
+	reviews: 5,
+	policies: 5,
+	risks: 5
 };
 
 

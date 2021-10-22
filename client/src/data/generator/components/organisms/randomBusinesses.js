@@ -11,7 +11,7 @@ const randomBusinesses = ({ q, byPlans = false }) => {
 		const businesses = [];
 		let quantity;
 		if ( byPlans ) quantity = plans.length;
-		else quantityRange( q );
+		else quantity = quantityRange( q );
 		for ( let i = 0; i < quantity; i++ ) {
 			const company = randomCompanies({ q: 1 })[0];
 			const plan = byPlans ? plans[i] : randomElement( plans );

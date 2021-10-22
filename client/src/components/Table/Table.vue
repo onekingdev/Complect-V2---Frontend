@@ -1,4 +1,5 @@
 <template lang="pug">
+//- pre {{records}}
 //- .controls
 //- 	slot(name="controls")
 table
@@ -41,7 +42,7 @@ export default {
 			required: true
 		},
 		records: {
-			type: Object,
+			type: Array,
 			required: true
 		}
 	},
@@ -51,9 +52,9 @@ export default {
 			collaborators: "CellCollaborators",
 			tasks: "CellTasks",
 			status: "CellStatus",
-			starts: "CellDate",
-			ends: "CellDate",
-			fixedBudget: "CellCost"
+			starts_at: "CellDate",
+			ends_at: "CellDate",
+			fixed_budget: "CellCost"
 		};
 		const component = key => cellsDict[key] ? cellsDict[key] : cellsDict.default;
 		return { component };

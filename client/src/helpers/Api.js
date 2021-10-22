@@ -1,11 +1,13 @@
 /* eslint max-lines-per-function: ["error", 50] */
 /* eslint max-statements: ["error", 50] */
 
-const endpoint = ( databaseName, collectionName ) => `http://localhost:82/v1/data/${databaseName}/${collectionName}`;
+const databaseName = "dev";
 
-export default async function useRest ({ method, databaseName, collectionName }) {
+const endpoint = collectionName => `http://localhost:82/v1/${databaseName}/${collectionName}`;
+
+export default async function useRest ({ method, collectionName, newDocuments }) {
 	try {
-		const apiUrl = endpoint( databaseName, collectionName );
+		const apiUrl = endpoint( collectionName );
 		const options = {
 			method,
 			mode: "cors",
@@ -13,7 +15,8 @@ export default async function useRest ({ method, databaseName, collectionName })
 			headers: {
 				"Content-Type": "application/json;charset=utf-8",
 				"Access-Control-Max-Age": "86400"
-			}
+			},
+			body: JSON.stringify( newDocuments )
 		};
 		const response = await fetch( apiUrl, options );
 		if ( !response.ok ) throw new Error( response.message );

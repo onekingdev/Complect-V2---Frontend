@@ -8,7 +8,8 @@
 </template>
 
 <script>
-import { defineAsyncComponent } from "vue";
+import { defineAsyncComponent, onMounted } from "vue";
+import useData from "~/store/Data.js";
 import Topbar from "~/components/Bars/Topbar.vue";
 import Sidebar from "~/components/Bars/Sidebar.vue";
 const Devbar = defineAsyncComponent( () => import( "~/components/Bars/Devbar.vue" ) );
@@ -17,6 +18,10 @@ export default {
 		Topbar,
 		Sidebar,
 		Devbar
+	},
+	setup () {
+		const { dataToIndexedDb } = useData();
+		onMounted( () => dataToIndexedDb() );
 	}
 };
 </script>

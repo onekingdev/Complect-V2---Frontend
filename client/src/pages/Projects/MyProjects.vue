@@ -16,10 +16,10 @@ export default {
 				title: "Name",
 				collaborators: "Collaborators",
 				tasks: "Tasks Left",
-				fixedBudget: "Cost",
+				fixed_budget: "Cost",
 				status: "Status",
-				starts: "Start Date",
-				ends: "End Date"
+				starts_at: "Start Date",
+				ends_at: "End Date"
 			}
 		};
 		const { records, recordsToStore, cleanStore } = useData( "projects" );

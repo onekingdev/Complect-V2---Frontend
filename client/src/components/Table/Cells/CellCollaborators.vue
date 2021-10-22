@@ -1,6 +1,6 @@
 <template lang="pug">
 .cell-collaborators(v-if="data.length")
-	.avatar(v-for="user in data") {{ user }}
+	//- .avatar(v-for="user in data") {{ user }}
 </template>
 
 <script>

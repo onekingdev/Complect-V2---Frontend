@@ -1,12 +1,10 @@
 <template lang="pug">
 .bar.devbar
 	.databse-controls
-		label Databse
-			select(name="database" id="database")
-				option(value="") 4
-		c-button(label="Create" type="primary" @click="createDatabse()")
-		c-button(label="Update" type="primary" @click="updateDatabse()")
-		c-button(label="Drop" type="primary" @click="dropDatabse()")
+		//- label Databse
+			//- select(name="database" id="database")
+			//- 	option(value="") 4
+		c-button(label="Generate" type="primary" @click="generateData()")
 	//- pre(v-if="records") {{records}}
 	//- label
 	//- 	.label Type
@@ -17,17 +15,10 @@
 
 <script>
 import useDev from "~/store/Dev.js";
-import { onMounted } from "vue";
 export default {
 	setup () {
-		const { getDatabases, databases, createDatabse, updateDatabse, dropDatabse } = useDev();
-		onMounted( () => getDatabases() );
-		return {
-			databases,
-			createDatabse,
-			updateDatabse,
-			dropDatabse
-		};
+		const { generateData } = useDev();
+		return { generateData };
 	}
 };
 </script>
