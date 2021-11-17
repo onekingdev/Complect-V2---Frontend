@@ -9,22 +9,22 @@
 
 <script>
 export default {
-	props: {
-		type: {
-			type: String,
-			default: "success"
+	"props": {
+		"type": {
+			"type": String,
+			"default": "success"
 		},
-		title: {
-			type: String,
-			default: ""
+		"title": {
+			"type": String,
+			"default": ""
 		},
-		message: {
-			type: String,
-			required: true
+		"message": {
+			"type": String,
+			"required": true
 		}
 	},
 	data () {
-		return { toast: false };
+		return { "toast": true };
 	}
 };
 </script>

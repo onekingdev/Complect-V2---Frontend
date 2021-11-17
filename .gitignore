@@ -1,3 +1,4 @@
+api/.aws
 client/dist
 mongo/db
 node_modules

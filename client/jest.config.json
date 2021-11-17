@@ -1,0 +1,11 @@
+{
+	"collectCoverage": true,
+	"moduleFileExtensions": [
+		"js"
+	],
+	"setupFilesAfterEnv": ["jest-extended/all"],
+	"transform": {
+		"^.+\\.js$": "babel-jest"
+	},
+	"testRegex": "((\\.|/*.)(test))\\.js?$"
+}

@@ -1,21 +1,20 @@
-html
-	-webkit-tap-highlight-color: rgba(0, 0, 0, 0)
-
-body
+#app-container
 	color: var(--c-text, #aaa)
 	background: var(--c-bg-z0, #000)
 
-audio, canvas, iframe, img, svg, video
-	vertical-align: middle
-
-fieldset
-	margin: 0
-	padding: 0
-	border: 0
-
-textarea
-	resize: vertical
-
 a
-	color: var(--c-links, blue)
+	color: var(--c-link, blue)
 	text-decoration: none
+
+.divider
+	width: 100%
+	height: 1px
+	margin: 2em auto
+	background: var(--c-border)
+	grid-column: 1 / -1
+
+.card-style
+	padding: 1em
+	border-radius: 0.5em
+	background: #fff
+	box-shadow: 0 1px 2px rgba(0,0,0,.2)

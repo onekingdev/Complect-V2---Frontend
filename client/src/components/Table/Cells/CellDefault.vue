@@ -4,11 +4,17 @@
 
 <script>
 export default {
-	props: {
-		data: {
-			type: [String, Number, Object, Array, Boolean],
-			required: false,
-			default: null
+	"props": {
+		"data": {
+			"type": [
+				String,
+				Number,
+				Object,
+				Array,
+				Boolean
+			],
+			"required": false,
+			"default": null
 		}
 	}
 };

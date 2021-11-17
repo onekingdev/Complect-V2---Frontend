@@ -4,10 +4,10 @@
 
 <script>
 export default {
-	props: {
-		data: {
-			type: Array,
-			required: true
+	"props": {
+		"data": {
+			"type": Array,
+			"required": true
 		}
 	}
 };

@@ -1,13 +1,13 @@
 <template lang="pug">
-.cell-cost ${{ data }}
+.cell-cost(v-if="data") ${{ data }}
 </template>
 
 <script>
 export default {
-	props: {
-		data: {
-			type: Number,
-			required: true
+	"props": {
+		"data": {
+			"type": Number,
+			"required": true
 		}
 	}
 };

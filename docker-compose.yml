@@ -17,25 +17,28 @@ services:
         working_dir: /home/app
         command: npm run dev
     
-     # API
-    complect-api:
-        container_name: complect-api
-        build:
-            context: ./api
-            dockerfile: Dockerfile
-        image: complect-api:1.0
-        ports:
-            - ${API_PORT}:6099
-        environment:
-            HOST: 0.0.0.0
-        volumes:
-            - ./api:/home/app
-            - /home/app/node_modules
-        working_dir: /home/app
-        # command: tail -F anything
-        command: npm run dev
-        depends_on:
-            - complect-mongo
+    # API
+    # complect-api:
+    #     container_name: complect-api
+    #     build:
+    #         context: ./api
+    #         dockerfile: Dockerfile
+    #     image: complect-api:1.0
+    #     ports:
+    #         - ${API_PORT}:6099
+    #         - ${WS_PORT}:3001
+    #     environment:
+    #         HOST: 0.0.0.0
+    #     volumes:
+    #         - ./api:/home/app
+    #         - ./api/.aws:/root/.aws
+    #         - /home/app/node_modules
+    #     working_dir: /home/app
+    #     command: tail -F anything
+    #     # command: npm run dev
+    #     # command: serverless offline start --allowCache
+    #     depends_on:
+    #         - complect-mongo
 
     # Server
     # complect-server:
@@ -58,33 +61,33 @@ services:
     #         - complect-mongo
     
     # Mongo Database
-    complect-mongo:
-        hostname: ${MONGO_HOST}
-        container_name: complect-mongo
-        image: mongo:4.4.7
-        ports:
-            - ${MONGO_PORT}:27017
-        environment:
-            MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
-            MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
-            MONGO_INITDB_DATABASE: ${MONGO_DBNAME}
-        volumes:
-            - ./mongo/db:/data/db
+    # complect-mongo:
+    #     hostname: ${MONGO_HOST}
+    #     container_name: complect-mongo
+    #     image: mongo:4.4.7
+    #     ports:
+    #         - ${MONGO_PORT}:27017
+    #     environment:
+    #         MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+    #         MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    #         MONGO_INITDB_DATABASE: ${MONGO_DBNAME}
+    #     volumes:
+    #         - ./mongo/db:/data/db
 
     # Mongo Admin
-    mongo-admin:
-        container_name: complect-mongo-admin
-        image: mrvautin/adminmongo
-        ports:
-            - ${MONGO_ADMIN_PORT}:3000
-        environment:
-            CONN_NAME: "Mongo"
-            HOST: "0.0.0.0"
-            PORT: "3000"
-            DB_USERNAME: ${MONGO_USER}
-            DB_PASSWORD: ${MONGO_PASSWORD}
-            DB_HOST: ${MONGO_HOST}
-            DB_PORT: ${MONGO_PORT}
-            DB_NAME: ${MONGO_DBNAME}
-        depends_on:
-            - complect-mongo
+    # mongo-admin:
+    #     container_name: complect-mongo-admin
+    #     image: mrvautin/adminmongo
+    #     ports:
+    #         - ${MONGO_ADMIN_PORT}:3000
+    #     environment:
+    #         CONN_NAME: "Mongo"
+    #         HOST: "0.0.0.0"
+    #         PORT: "3000"
+    #         DB_USERNAME: ${MONGO_USER}
+    #         DB_PASSWORD: ${MONGO_PASSWORD}
+    #         DB_HOST: ${MONGO_HOST}
+    #         DB_PORT: ${MONGO_PORT}
+    #         DB_NAME: ${MONGO_DBNAME}
+    #     depends_on:
+    #         - complect-mongo

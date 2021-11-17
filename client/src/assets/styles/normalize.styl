@@ -9,9 +9,12 @@ html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pr
 article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary
 	display: block
 
+
+
 html
 	font-weight: normal
 	box-sizing: border-box
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0)
 
 *,
 *:after,
@@ -23,6 +26,9 @@ a
 	background-color: transparent
 	&:active, &:hover
 		outline: 0
+
+audio, canvas, iframe, img, svg, video
+	vertical-align: middle
 
 figure
 	margin: 0
@@ -77,7 +83,11 @@ input[type="checkbox"], input[type="radio"]
 	padding: 0
 
 input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button
-	height: auto
+	-webkit-appearance: none
+	margin: 0
+
+input[type="number"]
+	-moz-appearance: textfield
 
 input[type="search"]
 	-webkit-appearance: textfield
@@ -89,8 +99,14 @@ legend
 	padding: 0
 	border: 0
 
+fieldset
+	margin: 0
+	padding: 0
+	border: 0
+
 textarea
 	overflow: auto
+	resize: vertical
 
 table
 	border-spacing: 0

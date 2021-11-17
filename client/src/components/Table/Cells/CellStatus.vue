@@ -4,18 +4,18 @@
 
 <script>
 export default {
-	props: {
-		data: {
-			type: String,
-			required: true
+	"props": {
+		"data": {
+			"type": String,
+			"required": true
 		}
 	},
 	setup () {
 		const dict = {
-			draft: "Draft",
-			inprogress: "In Progress",
-			complete: "Complete",
-			available: "Available"
+			"draft": "Draft",
+			"inprogress": "In Progress",
+			"complete": "Complete",
+			"available": "Available"
 		};
 		const humanize = status => dict[status];
 		return { humanize };

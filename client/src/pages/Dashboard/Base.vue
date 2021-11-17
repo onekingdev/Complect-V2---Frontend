@@ -1,23 +1,21 @@
 <template lang="pug">
 .view.dashboard
 	h1
-		b Welcome,&nbsp;
+		b {{$locale("Welcome")}},&nbsp;
 		| {{userInfo.firstName}} {{userInfo.lastName}}
-	Card
-		template(v-slot:header) October
+	c-card(title="November")
 		template(v-slot:content)
 			Calendar
-	Card
-		template(v-slot:header) Upcoming
+	c-card(title="Upcoming")
 </template>
 
 <script>
-import Card from "~/components/Misc/Card.vue";
+import cCard from "~/components/Misc/Card.vue";
 import Calendar from "~/components/Misc/Calendar.vue";
 import useUser from "~/store/User.js";
 export default {
-	components: {
-		Card,
+	"components": {
+		cCard,
 		Calendar
 	},
 	setup () {

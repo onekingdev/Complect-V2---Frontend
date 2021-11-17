@@ -4,17 +4,19 @@
 
 <script>
 export default {
-	props: {
-		data: {
-			type: Number,
-			required: true
+	"props": {
+		"data": {
+			"type": [
+				Number, String
+			],
+			"required": true
 		}
 	},
 	setup () {
 		const options = {
-			year: "numeric",
-			month: "numeric",
-			day: "numeric"
+			"year": "numeric",
+			"month": "numeric",
+			"day": "numeric"
 		};
 		const humanize = date => new Date( date ).toLocaleString( "en-US", options );
 		return { humanize };

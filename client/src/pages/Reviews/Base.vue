@@ -1,37 +1,37 @@
 <template lang="pug">
 general-layout(title="Internal Reviews")
 	template(v-slot:controls)
-		c-button(label="New Review" type="primary")
+		c-button(title="New Review" type="primary")
 	template(v-slot:content)
-		Table(:options="options" :records="records")
+		//- Table(:options="options" :records="records")
 			template(v-slot:controls)
-				c-button(label="Filter by: All")
+				c-button(title="Filter by: All")
 </template>
 
 <script>
 import GeneralLayout from "~/components/Layouts/General.vue";
-import Table from "~/components/Table/Table.vue";
+// import Table from "~/components/Table/Table.vue";
 export default {
-	components: {
-		GeneralLayout,
-		Table
-	},
-	setup () {
-		const options = {
-			columns: {
-				name: "Name",
-				progress: "Progress",
-				findings: "Findings",
-				modified: "Last Modified",
-				created: "Date Created",
-				review_end: "Review Period End Date"
-			}
-		};
-		const records = {};
-		return {
-			options,
-			records
-		};
+	"components": {
+		GeneralLayout
+		// table
 	}
+	// setup () {
+	// 	const options = {
+	// 		columns: {
+	// 			name: "Name",
+	// 			progress: "Progress",
+	// 			findings: "Findings",
+	// 			modified: "Last Modified",
+	// 			created: "Date Created",
+	// 			review_end: "Review Period End Date"
+	// 		}
+	// 	};
+	// 	const records = {};
+	// 	return {
+	// 		options,
+	// 		records
+	// 	};
+	// }
 };
 </script>

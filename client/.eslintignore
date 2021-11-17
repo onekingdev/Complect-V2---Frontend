@@ -1,3 +1,2 @@
 src/components/Icons/IconsSet.vue
-src/data
-src/helpers/devUtils.js
+src/_devmode

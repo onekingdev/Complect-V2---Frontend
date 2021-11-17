@@ -5,10 +5,10 @@ svg.icon(:class="`icon-${name}`")
 
 <script>
 export default {
-	props: {
-		name: {
-			type: String,
-			default: "blank"
+	"props": {
+		"name": {
+			"type": String,
+			"default": "blank"
 		}
 	}
 };

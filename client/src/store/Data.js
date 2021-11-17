@@ -1,68 +1,107 @@
 import { ref } from "vue";
-import useApi from "~/helpers/Api.js";
+import _clonedeep from "lodash.clonedeep";
+import { randomMongoId } from "~/core/utils.js";
+// import { saveDocumentsToCloudDb, updateDocumentInCloudDb, removeDocumentsFromCloudDb } from "~/core/api.js";
+import { getDocumentFromLocalDb, getDocumentsFromLocalDb, saveDocumentsToLocalDb, updateDocumentInLocalDb, removeDocumentsFromLocalDb } from "~/core/indexedDb.js";
 
-/* ------------------ //
--- Data Architecture --
-- get data:
-	- API -> IndexedDB
-	- IndexedDB -> Store
-	- Store -> View
-- post data:
-	- View -> Store
-	- Store -> IndexedDB
-	- Store -> API
-- get new data:
-	- API -> WS -> IndexedDB
-	- IndexedDB -> Store
-	- Store -> View
-// ------------------*/
-
-
-const records = ref([]);
+const document = ref({});
+const documents = ref([
+]);
 
 export default function useData ( collectionName ) {
-	// get all user data from API, and clone it to IndexedDB
-	const dataToIndexedDb = () => {
-		// console.info( "Save data to IndexedDB" );
-		// const userId = "";
-		// const dataList = ["tasks", "projects"];
+	// cRUD
+	const createDocuments = async ( newDocuments ) => {
+		console.info( "Create Document(s)" );
+		let copy;
 		try {
-			// const data = await useApi({
-			// 	method: "get",
-			// 	collectionName
-			// });
-		} catch ( error ) {
-			// console.error( error );
-		}
-	};
-
-
-	const recordsToStore = async () => {
-		// console.info( "Add Records to Store" );
-		try {
-			const result = await useApi({
-				method: "get",
-				collectionName
+			const ids = [
+			];
+			copy = _clonedeep( newDocuments );
+			copy.forEach( ( newDocument ) => {
+				const _id = randomMongoId(); // generate Document _id in MongoDB format
+				newDocument._id = _id; // set _id to new Document
+				newDocument.created = Date.now(); // set created time
+				documents.value[_id] = newDocument; // clone Document to Documents Array
+				ids.push( _id );
 			});
-			records.value = result.data;
+			// await saveDocumentsToCloudDb(collectionName, copy) // save to MongoDB
+			await saveDocumentsToLocalDb( collectionName, copy ); // save to IndexedDB
+			return ids;
 		} catch ( error ) {
-			// console.error( error );
+			console.error( error );
+		} finally {
+			copy = null;
 		}
 	};
 
-	const cleanStore = () => {
-		// console.info( "Remove Records from Store" );
+	// const readDocuments = async documentsId => {
+	// 	console.info("Read Documents")
+	// 	try {
+
+	// 	} catch(error) {
+	// 		console.error(error)
+	// 	}
+	// }
+
+
+	const updateDocument = async ( documentId, newDocument ) => {
+		console.info( "Update Document" );
+		let copy;
 		try {
-			records.value = [];
+			copy = _clonedeep( newDocument );
+			copy.updated = Date.now(); // set updated time
+			documents.value[documentId] = copy;
+			await updateDocumentInLocalDb( collectionName, copy );
+			// await updateDocumentInCloudDb(collectionName, copy, documentId)
+		} catch ( error ) {
+			console.error( error );
+		} finally {
+			copy = null;
+		}
+	};
+
+	const deleteDocuments = async ( documentId ) => {
+		try {
+			if ( documentId ) delete documents.value[documentId];
+			else documents.value = {};
+			// await removeDocumentsFromCloudDb(collectionName, documentId)
+			await removeDocumentsFromLocalDb( collectionName, documentId );
 		} catch ( error ) {
 			console.error( error );
 		}
 	};
 
+
+	const documentToStore = async ( documentsId ) => {
+		console.info( "Get Document" );
+		try {
+			document.value = await getDocumentFromLocalDb( collectionName, documentsId );
+		} catch ( error ) {
+			console.error( error );
+		}
+	};
+
+	const documentsToStore = async () => {
+		const docs = await getDocumentsFromLocalDb( collectionName );
+		docs.forEach( doc => documents.value.push( doc ) );
+	};
+	const clearStore = () => {
+		documents.value = [
+		];
+		document.value = {};
+	};
+	const readDocuments = () => console.log( "readDocuments" );
+
+
 	return {
-		dataToIndexedDb,
-		records,
-		recordsToStore,
-		cleanStore
+		documents,
+		document,
+		documentToStore,
+		documentsToStore,
+		clearStore,
+		createDocuments,
+		readDocuments,
+		updateDocument,
+		deleteDocuments
 	};
 }
