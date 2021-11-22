@@ -1,9 +1,10 @@
 <template lang="pug">
-.input.c-range
+.c-input.c-range
 	icon(v-if="icons" :name="icons[0]" @click="stepValue(-1)")
 	input(type="range" :min="min" :max="max" step=1 :value="modelValue" @input="updateValue")
 	icon(v-if="icons" :name="icons[1]" @click="stepValue(1)")
 </template>
+
 
 <script>
 export default {
@@ -51,7 +52,7 @@ export default {
 
 
 <style lang="stylus" scoped>
-.input.c-range
+.c-range
 	display: flex
 	align-items: center
 	max-width: 12em

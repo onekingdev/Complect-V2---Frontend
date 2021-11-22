@@ -1,9 +1,18 @@
 import { openDB } from "idb/with-async-ittr.js";
 import { readDocumentsFromCloudDb } from "~/core/api.js";
+import { generatedData } from "~/_devmode/generator/generator.js";
 const databaseName = "complect";
 const databaseVersion = 1;
 const stores = [
-	"_devmode", "projects"
+	"_devmode",
+	"businesses",
+	"employees",
+	"specialists",
+	"projects",
+	"tasks",
+	"reviews",
+	"policies",
+	"risks"
 ];
 
 
@@ -27,6 +36,7 @@ const initLocalDb = async () => {
 	}
 };
 
+
 const syncLocalDb = async () => {
 	console.log( "Sync Local DB" );
 	const localDb = await openDB( databaseName, databaseVersion );
@@ -43,7 +53,6 @@ const syncLocalDb = async () => {
 
 
 // cRUD
-
 const getDocumentFromLocalDb = async ( storeName, documentId ) => {
 	try {
 		const db = await openDB( databaseName, databaseVersion );
@@ -104,6 +113,17 @@ const removeDocumentsFromLocalDb = async ( storeName, documentId ) => {
 	}
 };
 
+const fillLocalDB = async () => {
+	console.log( "Fill Local DB" );
+	try {
+		const collections = await generatedData();
+		const collectionsNames = Object.keys( collections );
+		for ( const collectionName of collectionsNames ) await saveDocumentsToLocalDb( collectionName, collections[collectionName]);
+	} catch ( error ) {
+		console.error( error );
+	}
+};
+
 
 export {
 	initLocalDb,
@@ -112,5 +132,6 @@ export {
 	updateDocumentInLocalDb,
 	getDocumentFromLocalDb,
 	getDocumentsFromLocalDb,
-	removeDocumentsFromLocalDb
+	removeDocumentsFromLocalDb,
+	fillLocalDB
 };

@@ -1,5 +1,5 @@
 <template lang="pug">
-.input.c-upload
+.c-input.c-upload
 	.preview(@click="selectImage()")
 		img(v-if="modelValue" :src="modelValue" )
 	.controls
@@ -58,7 +58,7 @@ export default {
 
 
 <style lang="stylus" scoped>
-.input.c-upload
+.c-upload
 	display: flex
 	gap: 2em
 	.preview

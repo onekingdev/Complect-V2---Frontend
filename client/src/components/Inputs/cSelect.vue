@@ -1,10 +1,10 @@
 <template lang="pug">
-.input.c-select(:class="{expanded: datalist, iconify}")
+.c-input.c-select(:class="{expanded: datalist, iconify}")
 
 	c-field(
-		type="multiselect"
+		:type="multiple ? multiple: single"
 		:label="label"
-		:icons="[false, 'drop-down']"
+		:icons="[modelValue, 'drop-down']"
 		:placeholder="placeholder"
 		:required="required"
 		v-model="modelValue"
@@ -28,6 +28,7 @@
 				icon(v-if="item.icon" :name="item.icon")
 				.title(v-if="item.title && !iconify") {{item.title}}
 </template>
+
 
 <script>
 import { computed, reactive, toRefs } from "vue";
@@ -89,8 +90,11 @@ export default {
 			const update = [
 				...props.modelValue
 			];
-			if ( !selected() ) update.push( item );
+			if ( props.multiple ) if ( !selected() ) update.push( item );
 			else update.splice( update.indexOf( item ), 1 );
+
+			else update[0] = item;
+
 			context.emit( "update:modelValue", update );
 		};
 
@@ -106,7 +110,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.input.c-select
+.c-select
 	position: relative
 	width: 100%
 	:deep(.c-field)

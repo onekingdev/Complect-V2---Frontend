@@ -1,14 +1,15 @@
 <template lang="pug">
-.layout.general-layout
-	.header
-		.title {{ $locale(title) }}
-		.controls
+.documents-container
+	.container-header
+		.container-title {{ $locale(title) }}
+		.container-controls
 			slot(name="controls")
-	.tabs
+	.container-tabs(v-if="$slots.tabs")
 		slot(name="tabs")
-	.content(:class="{grey}")
+	.container-content
 		slot(name="content")
 </template>
+
 
 <script>
 export default {
@@ -16,41 +17,45 @@ export default {
 		"title": {
 			"type": String,
 			"default": "Title"
-		},
-		"grey": Boolean
+		}
 	}
 };
 </script>
 
+
 <style lang="stylus" scoped>
-.layout.general-layout
-	.header
+.documents-container
+	.container-header
 		display: flex
 		align-items: center
-		padding: 2em
+		flex-wrap: wrap
+		justify-content: space-between
+		padding: 3em 2em
 		gap: 2em
-		.title
+		user-select: none
+		.container-title
 			font-size: 1.6em
 			line-height: 1.2
-		.controls
+		.container-controls
 			flex-shrink: 0
-			margin-left: auto
 			display: flex
 			gap: 1em
-	:deep(.tabs)
+	.container-tabs
+		width: 100%
 		display: flex
+		padding: 0 2em
 		gap: 2em
-		padding: 1em 2em 0
-		a
+		align-items: center
+		:deep(a)
 			color: #555
-			padding-bottom: 0.5em
+			padding-bottom: 0.7em
+			&:hover
+				color: #000
 			&.router-link-exact-active
 				color: #000
-				border-bottom: 4px solid #fc0
-	.content
+				box-shadow: inset 0 -4px 0 0 var(--c-gold)
+	.container-content
 		padding: 2em
 		background: var(--c-bg-z2)
 		min-height: 100vh
-		&.grey
-			background: #fcfcfc
 </style>

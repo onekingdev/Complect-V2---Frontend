@@ -13,7 +13,7 @@ const setAppState = ( key, state ) => {
 };
 
 const restoreAppState = () => {
-	console.info( "Restore App State" );
+	// console.info( "Restore App State" );
 	if ( localStorage.getItem( "appState" ) ) appState.value = JSON.parse( localStorage.getItem( "appState" ) );
 };
 

@@ -5,30 +5,31 @@ const ErrorLayer = () => import( "~/layers/ErrorLayer.vue" );
 // const UnauthenticatedLayer = () => import( "~/layers/UnauthenticatedLayer.vue" );
 const AuthenticatedLayer = () => import( "~/layers/AuthenticatedLayer.vue" );
 
-// pages
-const Dashboard = () => import( "~/pages/Dashboard/Base.vue" );
-const Tasks = () => import( "~/pages/Tasks/Base.vue" );
 
-const Projects = () => import( "~/pages/Projects/Base.vue" );
+const Dashboard = () => import( "~/pages/Dashboard/Dashboard.vue" );
 
-const MyProjects = () => import( "~/pages/Projects/MyProjects.vue" );
-const Contacts = () => import( "~/pages/Projects/Contacts.vue" );
-const Ratings = () => import( "~/pages/Projects/Ratings.vue" );
+const _TasksEntry = () => import( "~/pages/Tasks/_TasksEntry.vue" );
+const TasksOverview = () => import( "~/pages/Tasks/TasksOverview.vue" );
 
-const ProjectBase = () => import( "~/pages/Project/ProjectBase.vue" );
+const _ProjectsEntry = () => import( "~/pages/Projects/_ProjectsEntry.vue" );
+const ProjectsOverview = () => import( "~/pages/Projects/ProjectsOverview.vue" );
+const ProjectsContacts = () => import( "~/pages/Projects/ProjectsContacts.vue" );
+const ProjectsRatings = () => import( "~/pages/Projects/ProjectsRatings.vue" );
+
+const _ProjectEntry = () => import( "~/pages/Project/_ProjectEntry.vue" );
 const ProjectDetail = () => import( "~/pages/Project/ProjectDetail.vue" );
 const ProjectTasks = () => import( "~/pages/Project/ProjectTasks.vue" );
 const ProjectDocuments = () => import( "~/pages/Project/ProjectDocuments.vue" );
 const ProjectCollaborators = () => import( "~/pages/Project/ProjectCollaborators.vue" );
 
 
-const Policies = () => import( "~/pages/Policies/Base.vue" );
-const MyPolicies = () => import( "~/pages/Policies/Policies.vue" );
-const PoliciesArchive = () => import( "~/pages/Policies/Archive.vue" );
-const PoliciesSetup = () => import( "~/pages/Policies/Setup.vue" );
+const _PoliciesEntry = () => import( "~/pages/Policies/_PoliciesEntry.vue" );
+const PoliciesOverview = () => import( "~/pages/Policies/PoliciesOverview.vue" );
+const PoliciesArchive = () => import( "~/pages/Policies/PoliciesArchive.vue" );
+const PoliciesSetup = () => import( "~/pages/Policies/PoliciesSetup.vue" );
 
-const Reviews = () => import( "~/pages/Reviews/Base.vue" );
-const Risks = () => import( "~/pages/Risks/Base.vue" );
+const _ReviewsEntry = () => import( "~/pages/Reviews/_ReviewsEntry.vue" );
+const _RisksEntry = () => import( "~/pages/Risks/_RisksEntry.vue" );
 
 const Profile = () => import( "~/pages/Profile/Profile.vue" );
 
@@ -60,33 +61,43 @@ const routes = [
 			},
 			{
 				"path": "tasks",
-				"name": "Tasks",
-				"component": Tasks,
-				"meta": { "title": "Tasks" }
+				"component": _TasksEntry,
+				"meta": { "title": "Tasks" },
+				"children": [
+					{
+						"path": "",
+						"name": "TasksOverview",
+						"component": TasksOverview,
+						"meta": { "title": "Tasks" }
+					}
+				]
 			},
 			{
 				"path": "projects",
-				"component": Projects,
+				"component": _ProjectsEntry,
 				"meta": { "title": "Projects" },
 				"children": [
 					{
 						"path": "",
-						"name": "Projects",
-						"component": MyProjects
+						"name": "ProjectsOverview",
+						"component": ProjectsOverview,
+						"meta": { "title": "My Projects" }
 					}, {
 						"path": "contacts",
-						"name": "Contacts",
-						"component": Contacts
+						"name": "ProjectsContacts",
+						"component": ProjectsContacts,
+						"meta": { "title": "Contacts" }
 					}, {
 						"path": "ratings",
-						"name": "Ratings",
-						"component": Ratings
+						"name": "ProjectsRatings",
+						"component": ProjectsRatings,
+						"meta": { "title": "Ratings and Reviews" }
 					}
 				]
 			},
 			{
 				"path": "project/:id",
-				"component": ProjectBase,
+				"component": _ProjectEntry,
 				"meta": {
 					"title": "Project",
 					"sidebar": false
@@ -115,21 +126,15 @@ const routes = [
 					}
 				]
 			},
-			// {
-			// 	"path": "projects/:id",
-			// 	"name": "Project",
-			// 	"component": Project,
-			// 	"meta": { "title": "Project", "sidebar": false },
-			// },
 			{
 				"path": "policies",
-				"component": Policies,
+				"component": _PoliciesEntry,
 				"meta": { "title": "Policies" },
 				"children": [
 					{
 						"path": "",
 						"name": "Policies",
-						"component": MyPolicies
+						"component": PoliciesOverview
 					}, {
 						"path": "archive",
 						"name": "Policies Archive",
@@ -144,13 +149,13 @@ const routes = [
 			{
 				"path": "reviews",
 				"name": "Reviews",
-				"component": Reviews,
+				"component": _ReviewsEntry,
 				"meta": { "title": "Reviews" }
 			},
 			{
 				"path": "risks",
 				"name": "Risks",
-				"component": Risks,
+				"component": _RisksEntry,
 				"meta": { "title": "Risks" }
 			},
 			{

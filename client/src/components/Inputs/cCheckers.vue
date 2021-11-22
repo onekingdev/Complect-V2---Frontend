@@ -1,5 +1,5 @@
 <template lang="pug">
-.input.c-checkers
+.c-input.c-checkers
 	label.c-checker(v-for="option in options")
 		input(type="checkbox" :checked="isChecked(option)" @change="updateModel(option, $event.target.checked)")
 		.box {{ option }}
@@ -41,7 +41,7 @@ export default {
 
 
 <style lang="stylus" scoped>
-.input.c-checkers
+.c-checkers
 	font-size: 0.9em
 	line-height: 1
 	display: flex

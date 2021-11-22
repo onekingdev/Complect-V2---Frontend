@@ -2,6 +2,7 @@
 .cell-cost(v-if="data") ${{ data }}
 </template>
 
+
 <script>
 export default {
 	"props": {

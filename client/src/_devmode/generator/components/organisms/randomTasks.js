@@ -22,6 +22,14 @@ const randomTasks = ({ q }) => {
 					s: [1, 3],
 					w: [3, 7]
 				})[0],
+				starts_at: randomDatesInRange({
+					q: 1,
+					shift: [-20, 50]
+				})[0],
+				ends_at: randomDatesInRange({
+					q: 1,
+					shift: [50, 150]
+				})[0], // shift date forward for random days number between 50 and 150
 				status: randomElement(["draft", "inprogress", "complete"]),
 				created_at: randomDatesInRange({
 					q: 1,

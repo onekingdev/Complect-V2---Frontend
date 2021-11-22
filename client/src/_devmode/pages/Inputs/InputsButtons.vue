@@ -1,21 +1,26 @@
 <template lang="pug">
-section
-	components-constructor
-		template(v-slot:preview)
-			template(v-for="state in buttonsStates")
-				.state-label {{state.label}}
-				c-button(v-bind="selectedOptions" :class="state.class" devmode)
-		template(v-slot:controls)
-			c-switcher.col-full(id="button-types" label="Type:" :options="buttonOptions.types" v-model="selectedOptions.type")
-			c-select.col-1(label="Left Icon:" :data="icons" v-model="selectedOptions.icons[0]" iconify)
-			c-field.col-4(type="text" label="Title:" v-model="selectedOptions.title")
-			c-select.col-1(label="Right Icon:" :data="icons" v-model="selectedOptions.icons[1]" iconify)
-			c-toggle.col-full(title="Full Width" v-model="buttonOptions.fullwidth")
+c-card(title="Constructor")
+	template(#content)
+		components-constructor
+			template(#preview)
+				template(v-for="state in buttonsStates")
+					.state-label {{state.label}}
+					c-button(v-bind="selectedOptions" :class="state.class" devmode)
+			template(#controls)
+				c-switcher.col-full(id="button-types" label="Type:" :options="buttonOptions.types" v-model="selectedOptions.type")
+				c-switcher.col-full(id="button-sizes" label="Size:" :options="buttonOptions.sizes" v-model="selectedOptions.size")
+				c-select.col-1(label="Left Icon:" :data="icons" v-model="selectedOptions.icons[0]" iconify)
+				c-field.col-4(type="text" label="Title:" v-model="selectedOptions.title")
+				c-select.col-1(label="Right Icon:" :data="icons" v-model="selectedOptions.icons[1]" iconify)
+				c-toggle.col-full(title="Full Width" v-model="buttonOptions.fullwidth")
+			template(#code)
+				code c-button(title="{{selectedOptions.title}}" type="{{selectedOptions.type}}" size="{{selectedOptions.size}}" icons='{{selectedOptions.icons}}')
 
-	.buttons-container
+c-card.buttons-container(title="Collection")
+	template(#content)
 		c-button(v-for="button in buttons" v-bind="button" devmode)
-	
 </template>
+
 
 <script>
 import { reactive } from "vue"
@@ -41,8 +46,9 @@ export default {
 			{ title: "Transparent button", type: "transparent"},
 			{ title: "Link button", type: "link"},
 			{ title: "Button with icon", type: "primary", icon: "components"},
-			{ title: "primary", icons: ["components"]},
-			{ title: "transparent", icons: ["components"]},
+			{ title: "primary", icon: "components"},
+			{ title: "transparent", icon: "components"},
+			{ type: "icon", icon: "components" },
 			{ title: "Full width button", fullwidth: true },
 		]
 		const buttonOptions = {
@@ -51,7 +57,15 @@ export default {
 				{title: "Primary", key: "primary"},
 				{title: "Accent", key: "accent"},
 				{title: "Transparent", key: "transparent"},
-				{title: "Link", key: "link"}
+				{title: "Link", key: "link"},
+				// {title: "Icon", key: "icon"}
+			],
+			sizes: [
+				{title: "Tiny", key: "tiny"},
+				{title: "Small", key: "small"},
+				{title: "Regular", key: "regular"},
+				{title: "Big", key: "big"},
+				{title: "Huge", key: "huge"}
 			],
 			
 			width: [
@@ -62,7 +76,8 @@ export default {
 		const selectedOptions = reactive({
 			title: "Button",
 			type: "default",
-			icons: ["components"],
+			size: "regular",
+			icons: ["", ""],
 			fullwidth: false
 		})
 		return { buttons, icons, buttonOptions, buttonsStates, selectedOptions }
@@ -72,9 +87,9 @@ export default {
 
 <style lang="stylus" scoped>
 .buttons-container
-	margin-top: 4em
-	display: flex
-	flex-wrap: wrap
-	justify-content: center
-	gap: 1.5em
+	:deep(.c-card-content)
+		display: flex
+		flex-wrap: wrap
+		justify-content: center
+		gap: 1.5em
 </style>

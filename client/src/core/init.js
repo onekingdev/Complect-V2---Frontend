@@ -1,6 +1,6 @@
 import { useRouter } from "vue-router";
 import { registerSW } from "virtual:pwa-register";
-import { initLocalDb } from "~/core/indexedDb.js";
+import { initLocalDb, fillLocalDB } from "~/core/indexedDb.js";
 import { appState, restoreAppState, setInstallationState } from "~/store/appState.js";
 
 
@@ -10,7 +10,6 @@ import { appState, restoreAppState, setInstallationState } from "~/store/appStat
 
 
 const localStorageTest = () => {
-	console.info( "Local Storage Check" );
 	const ls = window.localStorage;
 	if ( !ls ) throw "LocalStorage not detected";
 	const x = "localStorageTest";
@@ -21,7 +20,6 @@ const localStorageTest = () => {
 };
 
 const indexedDBTest = () => {
-	console.info( "IndexedDB Check" );
 	if ( !window.indexedDB ) throw "IndexedDB not detected";
 };
 
@@ -29,7 +27,6 @@ const indexedDBTest = () => {
 export default function useInit () {
 	const systemChecks = () => {
 		try {
-			console.group( "System Checks" );
 			restoreAppState();
 			localStorageTest();
 			indexedDBTest();
@@ -42,8 +39,6 @@ export default function useInit () {
 					"message": "Please use another browser"
 				}
 			});
-		} finally {
-			console.groupEnd();
 		}
 	};
 
@@ -52,6 +47,7 @@ export default function useInit () {
 			if ( !appState.value.installed ) {
 				console.group( "Installation" );
 				await initLocalDb();
+				await fillLocalDB();
 				await registerSW();
 				setInstallationState();
 			}

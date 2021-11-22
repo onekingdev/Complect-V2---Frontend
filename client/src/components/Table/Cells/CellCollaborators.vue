@@ -3,6 +3,7 @@
 	//- .avatar(v-for="user in data") {{ user }}
 </template>
 
+
 <script>
 export default {
 	"props": {

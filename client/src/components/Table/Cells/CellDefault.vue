@@ -2,6 +2,7 @@
 .default {{ data }}
 </template>
 
+
 <script>
 export default {
 	"props": {

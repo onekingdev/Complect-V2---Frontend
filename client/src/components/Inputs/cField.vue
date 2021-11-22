@@ -1,15 +1,16 @@
 <template lang="pug">
-label.c-field(:class="{fullwidth}")
+label.c-input.c-field(:class="{fullwidth}")
 	.field-label(v-if="label") {{ label }}
 		span.required(v-if="required") *
 	.field-body
 		icon(v-if="icon || icons[0]" :name="icon ? icon : icons[0]")
 		input.field-input(
-			v-if="type !== 'multiselect'"
+			v-if="type !== 'multiple'"
 			@input="$emit('update:modelValue', $event.target.value)"
 			:value="modelValue"
 			:type="type"
 			:placeholder="placeholder"
+			:required="required"
 			:min="min"
 			:max="max"
 			:step="step"
@@ -75,7 +76,7 @@ export default {
 		},
 		"modelValue": {
 			"type": [
-				String, Array
+				String, Array, Number
 			],
 			"required": true
 		},
@@ -93,7 +94,7 @@ export default {
 
 
 <style lang="stylus" scoped>
-label.c-field
+.c-field
 	min-width: 8em
 	.field-label
 		font-size: 0.8em
@@ -112,7 +113,7 @@ label.c-field
 		display: flex
 		align-items: center
 		gap: 0.3em
-		padding: 0.3em 0.5em
+		padding: 0.35em 0.5em
 		min-height: 1.7em
 		svg.icon
 			width: 1em
@@ -133,7 +134,7 @@ label.c-field
 			background: transparent
 			border: none
 			outline: none
-			line-height: 1
+			line-height: 1.3
 			padding: 0
 			margin: 0
 			&::placeholder

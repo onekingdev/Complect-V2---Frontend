@@ -12,10 +12,10 @@ const sidebarNavigation = [
 				"view": "Dashboard"
 			}, {
 				"title": "Tasks",
-				"view": "Tasks"
+				"view": "TasksOverview"
 			}, {
 				"title": "Projects",
-				"view": "Projects"
+				"view": "ProjectsOverview"
 			}
 		]
 	}, {
@@ -33,20 +33,22 @@ const sidebarNavigation = [
 				"view": "Risks"
 			}
 		]
+	}, {
+		"title": "Components",
+		"icon": "components",
+		"links": [
+			{
+				"title": "Inputs",
+				"view": "devInputsButtons"
+			}, {
+				"title": "Data",
+				"view": "devDataModel"
+			}, {
+				"title": "Additional",
+				"view": "devAdditionalToast"
+			}
+		]
 	}
-	// {
-	// 	"title": "Components",
-	// 	"icon": "components",
-	// 	"links": [
-	// 		{
-	// 			"title": "Inputs",
-	// 			"view": "cButtons"
-	// 		}, {
-	// 			"title": "Data",
-	// 			"view": "cModel"
-	// 		}
-	// 	]
-	// }
 ];
 
 export default function useNavigation () {

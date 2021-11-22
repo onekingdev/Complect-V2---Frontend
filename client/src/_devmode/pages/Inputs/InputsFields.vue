@@ -1,36 +1,43 @@
 <template lang="pug">
-section
-	components-constructor
-		template(v-slot:preview)
-			template(v-for="state in fieldsStates")
-				.state-label {{state.label}}
-				c-field(v-bind="selectedOptions" :class="state.class" fullwidth)
-		template(v-slot:controls)
-			label Type:
-				select(name="type" v-model="selectedOptions.type")
-					option(v-for="option in fieldsOptions.type" :value="option.value") {{option.title}}
+c-card(title="Constructor")
+	template(#content)
+		components-constructor
+			template(#controls)
+				//- c-switcher.col-full(id="fields-types" label="Type:" :options="fieldsOptions.types" v-model="selectedOptions.type")
+				
+				
+				
+				c-field.col-full(type="text" label="Input Label:" v-model="selectedOptions.label")
+				c-select.col-1(label="Left Icon:" :data="icons" v-model="selectedOptions.icons[0]" iconify)
+				c-field.col-4(type="text" label="Placeholder:" v-model="selectedOptions.placeholder")
+				c-select.col-1(label="Left Icon:" :data="icons" v-model="selectedOptions.icons[1]" iconify)
+				c-toggle.col-full(title="Required" v-model="selectedOptions.required")
+
+
+			template(#preview)
+				template(v-for="state in fieldsStates")
+					.state-label {{state.label}}
+					c-field(v-bind="selectedOptions" :class="state.class" fullwidth)
 			
-			c-field(type="text" label="Input Label:" v-model="selectedOptions.label")
-			c-field(type="text" label="Placeholder:" v-model="selectedOptions.placeholder")
-			label Left Icon:
-				select(name="icon" v-model="selectedOptions.icons[0]")
-					option(v-for="option in [...fieldsOptions.icon, ...fieldsOptions.type]" :value="option.value") {{option.title}}
-			label Right Icon:
-				select(name="icon" v-model="selectedOptions.icons[1]")
-					option(v-for="option in [...fieldsOptions.icon, ...fieldsOptions.type]" :value="option.value") {{option.title}}
-			
-			label Required
-				input(type="checkbox" v-model="selectedOptions.required")
-			
+				
 	.fields-container
 		c-field(v-for="field in fields" v-bind="field")
 </template>
 
+
 <script>
 import { reactive } from "vue"
+import cSwitcher from "~/components/Inputs/cSwitcher.vue"
+import cSelect from "~/components/Inputs/cSelect.vue"
+import cToggle from "~/components/Inputs/cToggle.vue"
 import ComponentsConstructor from "~/_devmode/misc/ComponentsConstructor.vue"
+import { icons } from "~/_devmode/misc/iconsList.js"
+
 export default {
 	components: {
+		cSwitcher,
+		cSelect,
+		cToggle,
 		ComponentsConstructor
 	},
 	setup () {
@@ -41,8 +48,9 @@ export default {
 			{ label: "Active", class: "active" },
 			{ label: "Disabled", class: "disabled" },
 		]
+		
 		const fieldsOptions = {
-			type: [
+			types: [
 				{title: "Text", value: "text"},
 				{title: "Email", value: "email"},
 				{title: "Password", value: "password"},
@@ -60,7 +68,7 @@ export default {
 		const selectedOptions = reactive({
 			label: "Input Label:",
 			type: "text",
-			icons: [false, false],
+			icons: ["", ""],
 			placeholder: "Placeholder",
 			required: false,
 			fullwidth: true
@@ -81,7 +89,8 @@ export default {
 			fieldsStates,
 			fieldsOptions,
 			selectedOptions,
-			fields
+			fields,
+			icons
 		};
 	}
 };

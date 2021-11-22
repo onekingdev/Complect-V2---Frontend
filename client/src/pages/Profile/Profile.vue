@@ -1,7 +1,7 @@
 <template lang="pug">
 .page
 	c-card(title="Profile")
-		template(v-slot:content)
+		template(#content)
 			section(v-for="section in sections")
 				h3 {{section.title}}
 				component(
@@ -18,7 +18,6 @@
 
 <script>
 import { reactive } from "vue";
-import cCard from "~/components/Misc/Card.vue";
 import cSelect from "~/components/Inputs/cSelect.vue";
 import cUpload from "~/components/Inputs/cUpload.vue";
 import useProfile from "~/store/Profile.js";
@@ -194,7 +193,6 @@ const sections = [
 
 export default {
 	"components": {
-		cCard,
 		cSelect,
 		cUpload
 	},

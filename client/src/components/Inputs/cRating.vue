@@ -1,5 +1,5 @@
 <template lang="pug">
-.input.c-rating(:class="{hovered: hoveredStar, readonly}")
+.c-input.c-rating(:class="{hovered: hoveredStar, readonly}")
 	icon(
 		v-for="(star, index) in max" name="star"
 		:class="{hovered: hoveredStar > index, active: modelValue > index}"
@@ -51,7 +51,7 @@ export default {
 
 
 <style lang="stylus" scoped>
-.input.c-rating
+.c-rating
 	display: flex
 	align-items: center
 	svg.icon

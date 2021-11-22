@@ -4,20 +4,17 @@
 		b {{$locale("Welcome")}},&nbsp;
 		| {{userInfo.firstName}} {{userInfo.lastName}}
 	c-card(title="November")
-		template(v-slot:content)
+		template(#content)
 			Calendar
 	c-card(title="Upcoming")
 </template>
 
+
 <script>
-import cCard from "~/components/Misc/Card.vue";
 import Calendar from "~/components/Misc/Calendar.vue";
 import useUser from "~/store/User.js";
 export default {
-	"components": {
-		cCard,
-		Calendar
-	},
+	"components": { Calendar },
 	setup () {
 		const { userInfo } = useUser();
 		return { userInfo };
@@ -31,7 +28,7 @@ export default {
 	display: flex
 	gap: 2em
 	flex-wrap: wrap
-	h1, .card
+	h1, .c-card
 		flex: 1 0 auto
 	h1
 		width: 100%

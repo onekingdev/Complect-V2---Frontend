@@ -6,6 +6,7 @@
 	c-button(v-if="action" icon="chevron-left" label="Go Back" type="primary")
 </template>
 
+
 <script>
 export default {
 	"props": {

@@ -1,9 +1,13 @@
 <template lang="pug">
-button.c-button(:class="[type, {fullwidth, disabled}]" :tabindex="disabled ? -1 : 0")
+button.c-input.c-button(:class="[type, size, {fullwidth, disabled, danger}]" :tabindex="disabled ? -1 : 0")
 	icon(v-if="icons[0] || icon" :name="icons[0] || icon")
 	.title(v-if="title") {{ $locale(title, devmode) }}
+	.title(v-if="secondTitle") {{ $locale(secondTitle, devmode) }}
 	icon(v-if="icons[1]" :name="icons[1]")
+	template(v-if="modal")
+		slot(name="default")
 </template>
+
 
 <script>
 export default {
@@ -24,20 +28,34 @@ export default {
 			"default": "",
 			"required": false
 		},
+		"secondTitle": {
+			"type": String,
+			"default": "",
+			"required": false
+		},
 		"type": {
 			"type": String,
 			"default": "default",
 			"required": false
 		},
+		"size": {
+			"type": String,
+			"default": "regular",
+			"required": false
+		},
 		"disabled": Boolean,
+		"modal": Boolean,
 		"fullwidth": Boolean,
+		"danger": Boolean,
 		"devmode": Boolean
 	}
 };
 </script>
 
+
 <style lang="stylus" scoped>
-button.c-button
+.c-button
+	user-select: none
 	font-size: 0.9em
 	border-radius: var(--v-inputs-border-radius)
 	transition: color 0.2s ease-in, background 0.2s ease-in, opacity 0.2s ease-in
@@ -45,6 +63,7 @@ button.c-button
 	display: flex
 	align-items: center
 	justify-content: center
+	position: relative
 	svg.icon
 		width: 1.5em
 		height: 1.5em
@@ -52,10 +71,12 @@ button.c-button
 		+ .title
 			margin-left: 0.7em
 	.title
-		line-height: 1.5
+		line-height: 1.3
 		font-weight: bold
 		+ svg.icon
 			margin-left: 0.7em
+		+ .title
+			margin-left: 0.4em
 
 	&.default
 		color: #303132
@@ -117,9 +138,11 @@ button.c-button
 
 	&.link
 		color: var(--c-link)
+		background: transparent
 		svg.icon
 			fill: var(--c-link)
-		background: transparent
+		.title
+			font-weight: 400
 		&:hover, &.hovered
 			background: #f3f6f9
 		&.focused
@@ -132,12 +155,12 @@ button.c-button
 
 	&.icon
 		background: transparent
-		padding: 0.4em
+		padding: 0.3em
 		svg.icon
 			fill: #555
 			transition: fill 0.2s ease-in
-			width: 0.8em
-			height: 0.8em
+			width: 1em
+			height: 1em
 		&:hover, &.hovered
 			svg.icon
 				fill: #111
@@ -145,14 +168,30 @@ button.c-button
 			opacity: 0.4
 
 	&.danger
-		color: #fff
-		background: var(--c-red)
+		color: var(--c-red)
 		svg.icon
-			fill: #fff
+			fill: var(--c-red)
+		&:hover
+			background: #fddee3
 
 
 	&.fullwidth
 		width: 100%
+		justify-content: flex-start
+
+	// Sizes
+	&.tiny
+		font-size: 0.6em
+	&.small
+		font-size: 0.75em
+	&.regular
+		font-size: 0.9em
+	&.big
+		font-size: 1em
+	&.huge
+		font-size: 1.2em
+
 	&.disabled
 		pointer-events: none
+
 </style>

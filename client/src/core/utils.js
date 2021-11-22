@@ -1,4 +1,3 @@
-
 // return random number
 const randomNumber = ( minimum = 0, maximum = 100 ) => Math.round( Math.random() * ( maximum - minimum ) + minimum );
 
@@ -15,4 +14,29 @@ const saveForm = ( original, update ) => {
 };
 
 
-export { randomNumber, randomMongoId, saveForm };
+// sort Array by Key
+const sortArrayByKey = ( array, key, asc ) => {
+	if ( !array.length ) return;
+	const type = typeof array[0][key];
+	if ( type === "string" ) array.sort( ( a, b ) => {
+		const valueA = a[key].toString().toUpperCase();
+		const valueB = b[key].toString().toUpperCase();
+		if ( valueA < valueB ) return asc ? -1 : 1;
+		if ( valueA > valueB ) return asc ? 1 : -1;
+		return 0;
+	});
+	if ( type === "number" ) array.sort( ( a, b ) => ( asc ? a[key] : b[key]) - ( asc ? b[key] : a[key]) ); // sort numbers asc/desc
+};
+
+
+const formatDate = ( date ) => {
+	const options = {
+		"year": "numeric",
+		"month": "numeric",
+		"day": "numeric"
+	};
+	return new Date( date ).toLocaleString( "en-US", options );
+};
+
+
+export { randomNumber, randomMongoId, saveForm, sortArrayByKey, formatDate };

@@ -10,28 +10,29 @@
 		.buttons
 			c-button(title="Find an Expert" type="accent")
 			c-button(:icons=["bell"] type="transparent")
-	.user-block(@click="toggleUserDropDown()" :class="{expanded: userDropDownExpanded}")
-		Avatar(:avatar="profile.avatar" :firstName="profile.first_name" :lastName="profile.last_name")
+	.user-block(@click="toggleUserDropDown()" ref="userDropDown" :class="{expanded: userDropDownExpanded}")
+		c-avatar(:avatar="profile.avatar" :firstName="profile.first_name" :lastName="profile.last_name" size="small")
 		.name {{profile.first_name}} {{profile.last_name}}
 		icon(name="chevron-down")
-		.dropdown-menu(v-if="userDropDownExpanded" ref="userDropDown")
+		.dropdown-menu(v-if="userDropDownExpanded")
 			router-link(:to="{name: 'Profile'}") {{$locale("Profile")}}
 			a {{$locale("Sign Out")}}
 </template>
+
 
 <script>
 import { ref } from "vue";
 import { onClickOutside } from "@vueuse/core";
 import useProfile from "~/store/Profile.js";
-import Avatar from "~/components/Misc/Avatar.vue";
+import cAvatar from "~/components/Misc/cAvatar.vue";
 export default {
-	"components": { Avatar },
+	"components": { cAvatar },
 	setup () {
 		const { profile } = useProfile();
 		const userDropDown = ref( null );
 		const userDropDownExpanded = ref( false );
 		const toggleUserDropDown = () => userDropDownExpanded.value = !userDropDownExpanded.value;
-		onClickOutside( userDropDown, () => toggleUserDropDown() );
+		onClickOutside( userDropDown, () => userDropDownExpanded.value = false );
 		return {
 			profile,
 			userDropDown,
@@ -91,7 +92,7 @@ export default {
 		&.expanded
 			svg.icon-chevron-down
 				transform: rotate(180deg)
-		.avatar
+		.c-avatar
 			margin-right: 0.7em
 			flex-shrink: 0
 		.name

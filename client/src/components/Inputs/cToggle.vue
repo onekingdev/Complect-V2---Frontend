@@ -6,6 +6,7 @@ label.c-input.c-toggle(:title="tooltip")
 
 </template>
 
+
 <script>
 export default {
 	"props": {
@@ -30,10 +31,10 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-$toggle_size = 2em
-$toggle_dot_margin = $toggle_size * 0.025
+$toggle_size = 2.1em
+$toggle_dot_margin = $toggle_size * 0.03
 
-label.c-input.c-toggle
+.c-toggle
 	font-size: 1em
 	line-height: 1
 	display: flex

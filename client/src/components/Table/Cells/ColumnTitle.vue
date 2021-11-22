@@ -4,6 +4,7 @@
 	icon(name="sort")
 </template>
 
+
 <script>
 export default {
 	"props": {
@@ -19,9 +20,12 @@ export default {
 .column-title
 	display: flex
 	align-items: center
+	justify-content: flex-end
 	gap: 0.5em
 	color: var(--c-dimmed)
 	font-weight: 400
+	.title
+		text-align: right
 	svg.icon
 		width: 0.9em
 		height: 0.9em

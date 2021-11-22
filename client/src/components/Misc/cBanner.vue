@@ -1,18 +1,19 @@
 <template lang="pug">
-.toast(v-if="toast" :class="type")
-	icon.status(:name="type")
-	.content
-		.title {{ title || type }}
+.c-banner(:class="type")
+	.c-banner-content
+		.title {{ title }}
 		.message {{ message }}
-	icon.close(name="close")
+	.c-banner-controls
+		slot(name="controls")
 </template>
+
 
 <script>
 export default {
 	"props": {
 		"type": {
 			"type": String,
-			"default": "success"
+			"default": "info"
 		},
 		"title": {
 			"type": String,
@@ -22,50 +23,44 @@ export default {
 			"type": String,
 			"required": true
 		}
-	},
-	data () {
-		return { "toast": true };
 	}
 };
 </script>
 
 <style lang="stylus" scoped>
-.toast
-	position: absolute
-	z-index: 10
-	top: 0.4em
-	right: 0.4em
+.c-banner
 	padding: 0.7em 1em
-	background: #303132
+	background: #eee
 	border-left: 0.4em solid transparent
-	color: #fff
+	color: #303132
 	display: flex
 	align-items: center
 	gap: 1em
-	svg.icon
-		flex: 1 0 auto
-		&.status
-			width: 1.5em
-			height: 1.5em
-		&.close
-			width: 0.8em
-			height: 0.8em
-			align-self: flex-start
-			fill: #fff
-	.content
-		min-width: 10em
-		max-width: 20em
+	width: 100%
+	.c-banner-content
+		line-height: 1.2
 		.title
 			font-weight: bold
-			text-transform: capitalize
+			margin-bottom: 0.5em
 		.message
 			font-size: 0.9em
+
+	.c-banner-controls
+		margin-left: auto
+		display: flex
+		gap: 1em
+		align-items: center
+
 	&.info
 		border-color: var(--c-info)
+		background: #ecf4ff
 	&.success
 		border-color: var(--c-success)
+		background: #d5fbef
 	&.warning
 		border-color: var(--c-warning)
+		background: #fff7e4
 	&.error
 		border-color: var(--c-error)
+		background: #fddee3
 </style>

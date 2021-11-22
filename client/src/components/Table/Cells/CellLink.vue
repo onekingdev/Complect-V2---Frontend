@@ -24,8 +24,3 @@ export default {
 	}
 };
 </script>
-
-<style lang="stylus" scoped>
-// .default
-// 	text-align: right
-</style>

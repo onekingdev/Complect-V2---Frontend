@@ -2,6 +2,7 @@
 .status-badge(:class="data") {{ humanize(data) }}
 </template>
 
+
 <script>
 export default {
 	"props": {

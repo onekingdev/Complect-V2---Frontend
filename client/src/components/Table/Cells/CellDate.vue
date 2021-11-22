@@ -1,8 +1,13 @@
 <template lang="pug">
-.cell-date {{ humanize(data) }}
+.cell-date
+	//- icon(v-if="isOverdue" name="warning")
+	| {{ formatDate(data) }}
 </template>
 
+
 <script>
+import { computed } from "vue";
+import { formatDate } from "~/core/utils.js";
 export default {
 	"props": {
 		"data": {
@@ -12,19 +17,21 @@ export default {
 			"required": true
 		}
 	},
-	setup () {
-		const options = {
-			"year": "numeric",
-			"month": "numeric",
-			"day": "numeric"
+	setup ( props ) {
+		const isOverdue = computed( () => Date.now() > props.data );
+		return {
+			formatDate,
+			isOverdue
 		};
-		const humanize = date => new Date( date ).toLocaleString( "en-US", options );
-		return { humanize };
 	}
 };
 </script>
 
 <style lang="stylus" scoped>
 .cell-date
-	text-align: right
+	display: flex
+	align-items: center
+	justify-content: flex-end
+	svg.icon
+		margin-right: 0.5em
 </style>

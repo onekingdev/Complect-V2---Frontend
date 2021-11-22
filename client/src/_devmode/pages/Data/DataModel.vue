@@ -83,6 +83,7 @@ section + section
 .data-constructor
 	padding: 0
 	overflow: hidden
+	background: var(--c-bg-z2)
 	border: 1px solid var(--c-border)
 	border-radius: 0.5em
 	&-form

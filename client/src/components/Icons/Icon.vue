@@ -1,7 +1,8 @@
 <template lang="pug">
-svg.icon(:class="`icon-${name}`")
+svg.icon(:class="[`icon-${name}`, size]")
 	use(:xlink:href="`#icon_${name}`")
 </template>
+
 
 <script>
 export default {
@@ -9,6 +10,10 @@ export default {
 		"name": {
 			"type": String,
 			"default": "blank"
+		},
+		"size": {
+			"type": String,
+			"default": ""
 		}
 	}
 };
@@ -16,7 +21,13 @@ export default {
 
 <style lang="stylus" scoped>
 svg.icon
-	height: 1em
 	width: 1em
+	height: 1em
 	fill: #777
+	&.big
+		width: 1.5em
+		height: 1.5em
+	&.huge
+		width: 2em
+		height: 2em
 </style>

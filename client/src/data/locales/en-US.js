@@ -22,6 +22,9 @@ export default {
 		"Update": "Update",
 		"Upload": "Upload",
 		"Download": "Download",
+		"Actions": "Actions",
+		"Filter by:": "Filter by:",
+		"Show:": "Show:",
 
 		// topbar
 		"Find an Expert": "Find an Expert",
@@ -41,9 +44,13 @@ export default {
 		// tasks
 		"Tasks": "Tasks",
 		"New Task": "New Task",
+		"All Tasks": "All Tasks",
+		"Completed": "Completed",
+		"All Links": "All Links",
 
 		// projects
 		"Projects": "Projects",
+		"Post Project": "Post Project",
 		"Post Job": "Post Job",
 		"New Project": "New Project",
 		"My Projects": "My Projects",
@@ -57,6 +64,13 @@ export default {
 		"Collaborators": "Collaborators",
 		"Discussion": "Discussion",
 		"New Collaborator": "New Collaborator",
+		"All": "All",
+		"Not Started": "Not Started",
+		"Draft": "Draft",
+		"In Progress": "In Progress",
+		"Pending": "Pending",
+		"Complete": "Complete",
+		"Overdue": "Overdue",
 
 
 		// policies
@@ -69,6 +83,7 @@ export default {
 		// reviews
 		"Internal Reviews": "Internal Reviews",
 		"New Review": "New Review",
+		"Reviews": "Reviews",
 
 		// risks
 		"Risk Register": "Risk Register",
@@ -87,6 +102,11 @@ export default {
 		"Data": "Data",
 		"Test": "Test",
 		"Generate": "Generate",
-		"November": "November"
+		"November": "November",
+		"Constructor": "Constructor",
+		"Examples": "Examples",
+		"Collection": "Collection",
+		"Misc": "Misc",
+		"Additional": "Additional"
 	}
 };

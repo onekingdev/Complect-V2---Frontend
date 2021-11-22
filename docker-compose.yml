@@ -15,7 +15,8 @@ services:
             - ./client:/home/app
             - /home/app/node_modules
         working_dir: /home/app
-        command: npm run dev
+        # command: npm run dev
+        command: tail -F anything
     
     # API
     # complect-api:

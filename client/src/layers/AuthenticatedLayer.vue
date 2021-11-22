@@ -7,6 +7,7 @@
 	//- Devbar
 </template>
 
+
 <script>
 import { defineAsyncComponent, onMounted } from "vue";
 import useInit from "~/core/init.js";

@@ -1,5 +1,5 @@
 <template lang="pug">
-.input.c-switcher
+.c-input.c-switcher
 	.switcher-label(v-if="label") {{ label }}
 	.switchers
 		label.switch(v-for="option in options" :title="option.tooltip")
@@ -48,8 +48,7 @@ export default {
 
 
 <style lang="stylus" scoped>
-
-.input.c-switcher
+.c-switcher
 	.switcher-label
 		font-size: 0.8em
 		margin-bottom: 0.2em
