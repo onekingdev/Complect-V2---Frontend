@@ -3,6 +3,7 @@ import { registerSW } from "virtual:pwa-register";
 import { initLocalDb, fillLocalDB } from "~/core/indexedDb.js";
 import { appState, restoreAppState, setInstallationState } from "~/store/appState.js";
 
+const appVersion = 1;
 
 // socket.onmessage = function (event) {
 //     console.log('Message from server ', event.data);
@@ -13,7 +14,7 @@ const localStorageTest = () => {
 	const ls = window.localStorage;
 	if ( !ls ) throw "LocalStorage not detected";
 	const x = "localStorageTest";
-	localStorage.setItem( x, x );
+	ls.setItem( x, x );
 	const y = ls.getItem( x );
 	if ( x !== y ) throw "LocalStorage not detected";
 	ls.removeItem( x );
@@ -44,12 +45,16 @@ export default function useInit () {
 
 	const installApp = async () => {
 		try {
-			if ( !appState.value.installed ) {
+			const installedVersion = localStorage.getItem( "version" ) || 0;
+			if ( !appState.value.installed || appVersion > installedVersion ) {
 				console.group( "Installation" );
+				localStorage.clear();
+				indexedDB.deleteDatabase( "complect" );
 				await initLocalDb();
 				await fillLocalDB();
 				await registerSW();
 				setInstallationState();
+				localStorage.setItem( "version", appVersion );
 			}
 			// await syncLocalDb()
 		} catch ( error ) {
