@@ -2,6 +2,7 @@ import { ref } from "vue";
 
 const appState = ref({
 	"installed": false,
+	"authenticated": false,
 	"collapsedSidebar": false,
 	"collapsedSections": {},
 	"locale": "en-US"
@@ -13,16 +14,12 @@ const setAppState = ( key, state ) => {
 };
 
 const restoreAppState = () => {
-	// console.info( "Restore App State" );
 	if ( localStorage.getItem( "appState" ) ) appState.value = JSON.parse( localStorage.getItem( "appState" ) );
 };
 
-
-const setInstallationState = () => setAppState( "installed", true );
-
-const switchLocale = locale => setAppState( "locale", locale );
-
-// expand/collapse sidebar
+const setInstallationState = value => setAppState( "installed", value );
+const setAuthenticationState = value => setAppState( "authenticated", value );
+const setLocaleState = value => setAppState( "locale", value );
 const collapseSidebar = value => setAppState( "collapsedSidebar", value ); // change appState and Local Storage
 
 
@@ -45,8 +42,9 @@ const collapseSidebarSections = ( index ) => {
 export {
 	appState,
 	restoreAppState,
+	setAuthenticationState,
 	setInstallationState,
 	collapseSidebar,
 	collapseSidebarSections,
-	switchLocale
+	setLocaleState
 };

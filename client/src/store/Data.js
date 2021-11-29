@@ -8,8 +8,9 @@ const document = ref({});
 const documents = ref([
 ]);
 
+
 export default function useData ( collectionName ) {
-	// cRUD
+	// crud
 	const createDocuments = async ( newDocuments ) => {
 		console.info( "Create Document(s)" );
 		let copy;

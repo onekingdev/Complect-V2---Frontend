@@ -8,7 +8,7 @@
 					v-for="(input, key) in section.inputs"
 					:is="input.component"
 					v-bind="input.props"
-					:modelValue="profile[key]"
+					:modelValue="userProfile[key]"
 					@update:modelValue="update[key] = $event")
 				.controls
 					c-button(type="link" title="Cancel" @click="restoreInformation()")
@@ -197,13 +197,13 @@ export default {
 		cUpload
 	},
 	setup () {
-		const { profile, updateProfile } = useProfile();
+		const { userProfile, updateProfile } = useProfile();
 		const update = reactive({});
-		const restoreInformation = () => updateProfile( profile );
+		const restoreInformation = () => updateProfile( userProfile );
 		const saveInformation = () => updateProfile( update );
 		return {
 			sections,
-			profile,
+			userProfile,
 			update,
 			restoreInformation,
 			saveInformation

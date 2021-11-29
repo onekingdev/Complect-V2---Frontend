@@ -13,18 +13,18 @@ c-card
 
 
 <script>
-import { ref, reactive, computed, onMounted, onUnmounted, onBeforeUpdate } from "vue"
+import { ref, computed, onMounted, onUnmounted, onBeforeUpdate } from "vue";
+import useAuth from "~/core/auth";
 export default {
 	setup() {
-		const email = ref("hello@gololobov.me");
-		const inputs = ref([])
-		const numbers = reactive([])
-		const code = computed(() => numbers.join(''))
-
-		const submitCode = () => console.log(`Submit code: ${code.value}`);
-		const sendNewCode = () => console.log(`Send new code to: ${email.value}`);
-
-
+		const { signIn } = useAuth();
+		const email = ref("example@email.com");
+		const inputs = ref([]);
+		const numbers = ref([]);
+		const code = computed(() => numbers.value.join(''));
+		
+		const submitCode = () => signIn();
+		const sendNewCode = () => numbers.value = [];
 
 		const keydownHandler = (e, index) => {
 			if(e.keyCode === 8 && e.target.value === '') {
@@ -33,7 +33,7 @@ export default {
 		}
 
 		const inputHandler = (e, index) => {
-			const [first,...rest] = e.target.value
+			const [first] = e.target.value
 			e.target.value = first ?? ''
 			if (code.value.length >= 6) inputs.value[index].blur()
 			if (index !== inputs.value.length-1 && first !== undefined) {
@@ -54,6 +54,7 @@ export default {
 
 		// Remove Event Listners to all six number's inputs
 		onUnmounted(() => {
+			numbers.value = []
 			inputs.value.forEach(input => {
 				input.removeEventListener('keydown', keydownHandler)
 				input.removeEventListener('input', inputHandler)

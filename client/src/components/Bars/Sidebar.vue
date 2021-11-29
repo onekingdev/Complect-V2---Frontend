@@ -105,6 +105,7 @@ export default {
 		padding-right: 0.4em
 		cursor: pointer
 		line-height: 1
+		box-shadow: none
 
 	.section-header
 		font-size: 0.8em

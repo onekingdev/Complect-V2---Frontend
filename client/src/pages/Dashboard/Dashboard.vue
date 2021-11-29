@@ -2,7 +2,7 @@
 .view.dashboard
 	h1
 		b {{$locale("Welcome")}},&nbsp;
-		| {{userInfo.firstName}} {{userInfo.lastName}}
+		| {{userProfile.first_name}} {{userProfile.last_name}}
 	c-card(title="November")
 		template(#content)
 			Calendar
@@ -12,12 +12,12 @@
 
 <script>
 import Calendar from "~/components/Misc/Calendar.vue";
-import useUser from "~/store/User.js";
+import useProfile from "~/store/Profile.js";
 export default {
 	"components": { Calendar },
 	setup () {
-		const { userInfo } = useUser();
-		return { userInfo };
+		const { userProfile } = useProfile();
+		return { userProfile };
 	}
 };
 </script>

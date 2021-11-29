@@ -11,30 +11,33 @@
 			c-button(title="Find an Expert" type="accent")
 			c-button(:icons=["bell"] type="transparent")
 	.user-block(@click="toggleUserDropDown()" ref="userDropDown" :class="{expanded: userDropDownExpanded}")
-		c-avatar(:avatar="profile.avatar" :firstName="profile.first_name" :lastName="profile.last_name" size="small")
-		.name {{profile.first_name}} {{profile.last_name}}
+		c-avatar(:avatar="userProfile.avatar" :firstName="userProfile.first_name" :lastName="userProfile.last_name" size="small")
+		.name {{userProfile.first_name}} {{userProfile.last_name}}
 		icon(name="chevron-down")
 		.dropdown-menu(v-if="userDropDownExpanded")
 			router-link(:to="{name: 'Profile'}") {{$locale("Profile")}}
-			a {{$locale("Sign Out")}}
+			a(@click="signOut()") {{$locale("Sign Out")}}
 </template>
 
 
 <script>
 import { ref } from "vue";
 import { onClickOutside } from "@vueuse/core";
+import useAuth from "~/core/auth";
 import useProfile from "~/store/Profile.js";
 import cAvatar from "~/components/Misc/cAvatar.vue";
 export default {
 	"components": { cAvatar },
 	setup () {
-		const { profile } = useProfile();
+		const { signOut } = useAuth();
+		const { userProfile } = useProfile();
 		const userDropDown = ref( null );
 		const userDropDownExpanded = ref( false );
 		const toggleUserDropDown = () => userDropDownExpanded.value = !userDropDownExpanded.value;
 		onClickOutside( userDropDown, () => userDropDownExpanded.value = false );
 		return {
-			profile,
+			signOut,
+			userProfile,
 			userDropDown,
 			userDropDownExpanded,
 			toggleUserDropDown
@@ -119,6 +122,7 @@ export default {
 				display: block
 				color: var(--c-text)
 				padding: 0.5em 1em
+				box-shadow: none
 				transition: background var(--fx-duration-regular, .25s)
 				&:hover
 					background: var(--c-bg-light-hover, #f3f6f9)

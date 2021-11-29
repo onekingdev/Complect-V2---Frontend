@@ -10,7 +10,6 @@
 
 <script>
 import { defineAsyncComponent, onMounted } from "vue";
-import useInit from "~/core/init.js";
 import Topbar from "~/components/Bars/Topbar.vue";
 import Sidebar from "~/components/Bars/Sidebar.vue";
 const Devbar = defineAsyncComponent( () => import( "~/_devmode/Devbar.vue" ) );
@@ -19,13 +18,10 @@ export default {
 		Topbar,
 		Sidebar,
 		Devbar
-	},
-	setup () {
-		const { installApp } = useInit();
-		onMounted( () => installApp() );
 	}
 };
 </script>
+
 
 <style lang="stylus" scoped>
 .layout.layout-authenticated
