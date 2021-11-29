@@ -8,7 +8,6 @@ c-card
 			input(v-for="i in 6" type="number" :ref="el => { if (el) inputs[i-1] = el }" v-model="numbers[i-1]" required)
 		c-button(title="Submit" type="primary" @click="submitCode()" fullwidth)
 	template(#footer)
-		pre {{code}}
 		c-button(title="Send new code" type="link" @click="sendNewCode()")
 </template>
 
@@ -22,8 +21,9 @@ export default {
 		const numbers = reactive([])
 		const code = computed(() => numbers.join(''))
 
-		const submitCode = () => console.log(`Submit code: ${code}`);
+		const submitCode = () => console.log(`Submit code: ${code.value}`);
 		const sendNewCode = () => console.log(`Send new code to: ${email.value}`);
+
 
 
 		const keydownHandler = (e, index) => {
@@ -33,18 +33,18 @@ export default {
 		}
 
 		const inputHandler = (e, index) => {
-			console.log(index)
 			const [first,...rest] = e.target.value
 			e.target.value = first ?? ''
-			if(index !== inputs.value.length-1 && first !== undefined) {
+			if (code.value.length >= 6) inputs.value[index].blur()
+			if (index !== inputs.value.length-1 && first !== undefined) {
 				inputs.value[index+1].focus()
-				inputs.value[index+1].value = rest.join('')
 				inputs.value[index+1].dispatchEvent(new Event('input'))
 			}
 		}
 
 		
 		
+		// Add Event Listners to all six number's inputs, for input & remove events
 		onMounted(() => {
 			inputs.value.forEach((input, index) => {
 				input.addEventListener('keydown', (e) => {keydownHandler(e, index)})
@@ -52,6 +52,7 @@ export default {
 			})
 		})
 
+		// Remove Event Listners to all six number's inputs
 		onUnmounted(() => {
 			inputs.value.forEach(input => {
 				input.removeEventListener('keydown', keydownHandler)
