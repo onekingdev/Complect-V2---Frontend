@@ -5,21 +5,22 @@
 		c-button(v-for="key in filter.keys" @click="activateFilter(filter.title, filter.field, key)" :title="key.title" type="transparent" fullwidth)
 
 	slot(name="controls")
-table
-	thead
-		tr
-			th(v-for="(title, key) in options.columns")
-				.column-title
-					.title {{ title }}
-					c-button(type="icon" icon="sort" @click="sortRows(key)")
 
-	tbody(v-if="filteredRecords.length")
-		tr(v-for="row in filteredRecords")
-			td(v-for="(cell, key) in options.columns")
-				component(
-					:is="component(key)"
-					:data="row[key]"
-					:link="row._id")
+.flex-table
+	.table-head
+		.table-row
+			.cell(v-for="(title, key) in options.columns" :class="`cell-${key}`")
+				.title {{ title }}
+				c-button(type="icon" icon="sort" @click="sortRows(key)")
+	.table-body
+		.table-row(v-if="filteredRecords.length" v-for="record in filteredRecords")
+			component(
+				v-for="(cell, key) in options.columns"
+				:is="component(key)"
+				:class="`cell-${key}`"
+				:data="record[key]"
+				:link="record._id")
+
 icon(v-if="!filteredRecords.length" name="empty-state")
 </template>
 
@@ -27,25 +28,30 @@ icon(v-if="!filteredRecords.length" name="empty-state")
 <script>
 import { ref, computed } from "vue";
 import { sortArrayByKey } from "~/core/utils.js";
-import ColumnTitle from "./Cells/ColumnTitle.vue";
+
 import CellDefault from "./Cells/CellDefault.vue";
 import CellLink from "./Cells/CellLink.vue";
-import CellStatus from "./Cells/CellStatus.vue";
 import CellDate from "./Cells/CellDate.vue";
 import CellCollaborators from "./Cells/CellCollaborators.vue";
 import CellTasks from "./Cells/CellTasks.vue";
-import CellCost from "./Cells/CellCost.vue";
+
+import CellTitle from "./Cells/CellTitle.vue";
+import CellPrice from "./Cells/CellPrice.vue";
+import CellStatus from "./Cells/CellStatus.vue";
+
 import cDropdown from "~/components/Inputs/cDropdown.vue";
 export default {
 	"components": {
-		ColumnTitle,
 		CellDefault,
-		CellLink,
+		
+		CellTitle,
+		CellPrice,
 		CellStatus,
+
+		CellLink,
 		CellDate,
 		CellCollaborators,
 		CellTasks,
-		CellCost,
 		cDropdown
 	},
 	"props": {
@@ -74,7 +80,7 @@ export default {
 			"status": "CellStatus",
 			"starts_at": "CellDate",
 			"ends_at": "CellDate",
-			"fixed_budget": "CellCost"
+			"fixed_budget": "CellPrice"
 		};
 
 
@@ -136,6 +142,57 @@ export default {
 
 
 <style lang="stylus" scoped>
+.flex-table
+	.table-row
+		display: flex
+		gap: 1em
+		border-bottom: 1px solid var(--c-border)
+		// overflow: hidden
+		.cell
+			display: flex
+			justify-content: flex-end
+			align-items: center
+			padding: 0.5em
+			line-height: 1.2
+			width: 13em
+			// overflow: hidden
+			// min-width: 0
+			// text-overflow: ellipsis
+			// white-space: nowrap
+			&-title
+				justify-content: flex-start
+				flex: 0 0 20em
+			&-price
+				flex: 0 0 10em
+			&-status
+				flex: 0 0 8em
+				// max-width: 15em
+				
+
+
+
+.grid-table
+	font-size: 0.85em
+	display: grid
+	grid-template-columns: repeat(5, auto)
+	.cell
+		padding: 0.5em
+		line-height: 1.2
+		display: flex
+		align-items: center
+		justify-content: flex-end
+		overflow: hidden
+		// display: inline-block
+		min-width: 0
+		text-overflow: ellipsis
+		white-space: nowrap
+		border-bottom: 1px solid var(--c-border)
+		&.title
+			justify-content: flex-start
+			display: inline-block
+
+		
+
 .controls
 	margin-bottom: 2em
 	display: flex

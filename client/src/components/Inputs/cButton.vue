@@ -177,7 +177,7 @@ export default {
 
 	&.fullwidth
 		width: 100%
-		justify-content: flex-start
+		justify-content: center
 
 	// Sizes
 	&.tiny

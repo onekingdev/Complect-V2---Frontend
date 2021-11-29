@@ -1,6 +1,6 @@
 <template lang="pug">
 .c-card
-	.c-card-header
+	.c-card-header(v-if="title")
 		.card-title {{ $locale(title, devmode) }}
 		slot(name="header-controls")
 	.c-card-content(v-if="$slots.content" :class="[type]")
@@ -15,7 +15,8 @@ export default {
 	"props": {
 		"title": {
 			"type": String,
-			"required": true
+			"default": "",
+			"required": false
 		},
 		"type": {
 			"type": String,
@@ -32,7 +33,7 @@ export default {
 .c-card
 	background: var(--c-bg-z2, #fff)
 	border: 1px solid var(--c-border)
-	border-radius: 0.3em
+	border-radius: var(--v-border-radius)
 
 	.c-card-header
 		line-height: 1

@@ -46,17 +46,14 @@ export default {
 		},
 		"min": {
 			"type": Number,
-			"default": 0,
 			"required": false
 		},
 		"max": {
 			"type": Number,
-			"default": 100,
 			"required": false
 		},
 		"step": {
 			"type": Number,
-			"default": 1,
 			"required": false
 		},
 		"icons": {
@@ -69,6 +66,11 @@ export default {
 		"type": {
 			"type": String,
 			"default": () => "text"
+		},
+		"autocomplete": {
+			"type": String,
+			"default": "on",
+			"required": false
 		},
 		"tabIndex": {
 			"type": Number,
@@ -83,7 +85,6 @@ export default {
 		"multiselect": Boolean,
 		"required": Boolean,
 		"fullwidth": Boolean,
-		"autocomplete": Boolean,
 		"disabled": Boolean
 	},
 	"emits": [

@@ -19,12 +19,16 @@ export default {
 		"View All": "View All",
 		"Create": "Create",
 		"Save": "Save",
+		"Submit": "Submit",
 		"Update": "Update",
 		"Upload": "Upload",
 		"Download": "Download",
 		"Actions": "Actions",
 		"Filter by:": "Filter by:",
 		"Show:": "Show:",
+		"Sign In": "Sign In",
+		"Forgot Password": "Forgot Password",
+		"Send new code": "Send new code",
 
 		// topbar
 		"Find an Expert": "Find an Expert",

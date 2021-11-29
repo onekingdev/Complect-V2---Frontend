@@ -2,9 +2,14 @@ import { createWebHistory, createRouter } from "vue-router";
 
 // layers
 const ErrorLayer = () => import( "~/layers/ErrorLayer.vue" );
-// const UnauthenticatedLayer = () => import( "~/layers/UnauthenticatedLayer.vue" );
+const UnauthenticatedLayer = () => import( "~/layers/UnauthenticatedLayer.vue" );
 const AuthenticatedLayer = () => import( "~/layers/AuthenticatedLayer.vue" );
 
+const _AuthEntry = () => import( "~/pages/Auth/_AuthEntry.vue" );
+const AuthSignUp = () => import( "~/pages/Auth/AuthSignUp.vue" );
+const AuthSignIn = () => import( "~/pages/Auth/AuthSignIn.vue" );
+const AuthVerification = () => import( "~/pages/Auth/AuthVerification.vue" );
+const AuthResetPassword = () => import( "~/pages/Auth/AuthResetPassword.vue" );
 
 const Dashboard = () => import( "~/pages/Dashboard/Dashboard.vue" );
 
@@ -47,9 +52,9 @@ const routes = [
 		"path": "/",
 		"component": AuthenticatedLayer,
 		"beforeEnter": ( to, from, next ) => {
-			const auth = true;
+			const auth = false;
 			if ( auth ) next();
-			else next({ "name": "Login" });
+			else next({ "name": "AuthSignIn" });
 		},
 		"children": [
 			...devRoutes,
@@ -170,6 +175,38 @@ const routes = [
 			{
 				"path": "",
 				"redirect": { "name": "Dashboard" }
+			}
+		]
+	}, {
+		"path": "/",
+		"component": UnauthenticatedLayer,
+		"children": [
+			{
+				"path": "",
+				"component": _AuthEntry,
+				"children": [
+					{
+						"path": "sign-up",
+						"name": "AuthSignUp",
+						"component": AuthSignUp,
+						"meta": { "title": "Sign Up" }
+					}, {
+						"path": "sign-in",
+						"name": "AuthSignIn",
+						"component": AuthSignIn,
+						"meta": { "title": "Sign In" }
+					}, {
+						"path": "verification",
+						"name": "AuthVerification",
+						"component": AuthVerification,
+						"meta": { "title": "Verification" }
+					}, {
+						"path": "reset-password",
+						"name": "AuthResetPassword",
+						"component": AuthResetPassword,
+						"meta": { "title": "Reset Password" }
+					}
+				]
 			}
 		]
 	}, {
