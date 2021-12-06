@@ -1,12 +1,12 @@
 <template lang="pug">
-c-card(title="Table" type="flex-column" devmode)
+c-card(title="Table" type="flex-column")
 	template(#header-controls)
-		c-button(iconL="refresh" @click="generateDocuments()" type="transparent" devmode)
+		c-button(iconL="refresh" @click="generateDocuments()" type="transparent")
 		//- c-dropdown(title="Columns")
 			c-toggle(v-for="column in options.columns" :title="column.title" :value="column.key" v-model="visibleColumns")
 		
 	template(#content)
-		c-table(v-bind="{options, filters, documents}")
+		c-table(v-bind="{columns, documents, filters}" searchable)
 </template>
 
 
@@ -56,52 +56,49 @@ export default {
 
 		
 
-		const options = {
-			"searchable": true,
-			"columns": [
-				{
-					"title": "Name",
-					"key": "title",
-					"type": "title",
-					"meta": {
-						"link": "ProjectDetail",
-						"checkbox": "completed" 
-					}
-				}, {
-					"title": "Collaborators",
-					"key": "collaborators",
-					"type": "collaborators",
-				}, {
-					"title": "Tasks Left",
-					"key": "tasks",
-					"type": "tasks",
-					"align": "right"
-				}, {
-					"title": "Cost",
-					"key": "fixed_budget",
-					"type": "price",
-					"align": "right"
-				}, {
-					"title": "Status",
-					"key": "status",
-					"type": "status",
-					"align": "right"
-				}, {
-					"title": "Start Date",
-					"key": "starts_at",
-					"type": "date",
-					"align": "right"
-				}, {
-					"title": "End Date",
-					"key": "ends_at",
-					"type": "date",
-					"align": "right",
-					"meta": {
-						"overdueWarning": true
-					}
+		const columns = [
+			{
+				"title": "Name",
+				"key": "title",
+				"type": "title",
+				"meta": {
+					"link": "ProjectDetail",
+					"checkbox": "completed" 
 				}
-			]
-		};
+			}, {
+				"title": "Collaborators",
+				"key": "collaborators",
+				"type": "collaborators",
+			}, {
+				"title": "Tasks Left",
+				"key": "tasks",
+				"type": "tasks",
+				"align": "right"
+			}, {
+				"title": "Cost",
+				"key": "fixed_budget",
+				"type": "price",
+				"align": "right"
+			}, {
+				"title": "Status",
+				"key": "status",
+				"type": "status",
+				"align": "right"
+			}, {
+				"title": "Start Date",
+				"key": "starts_at",
+				"type": "date",
+				"align": "right"
+			}, {
+				"title": "End Date",
+				"key": "ends_at",
+				"type": "date",
+				"align": "right",
+				"meta": {
+					"overdueWarning": true
+				}
+			}
+		];
 
 		const filters = [
 			{
@@ -113,34 +110,18 @@ export default {
 						"key": ""
 					},
 					{
-						"title": "Not Started",
-						"key": "not_started"
-					},
-					{
 						"title": "Draft",
 						"key": "draft"
 					},
 					{
 						"title": "In Progress",
 						"key": "inprogress"
-					},
-					{
-						"title": "Pending",
-						"key": "pending"
-					},
-					{
-						"title": "Complete",
-						"key": "complete"
-					},
-					{
-						"title": "Overdue",
-						"key": "overdue",
 					}
 				]
 			}
 		];
 
-		return { visibleColumns, toggleColumnVisibility, options, filters, documents, generateDocuments }
+		return { visibleColumns, toggleColumnVisibility, columns, filters, documents, generateDocuments }
 	}
 };
 </script>

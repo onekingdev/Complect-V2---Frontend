@@ -1,23 +1,23 @@
 <template lang="pug">
 .c-table
 	.filters
-		c-field.search-input(v-if="options.searchable" type="search" iconL="search" placeholder="Search..." v-model="searchQuery")
+		c-field.search-input(v-if="searchable" type="search" iconL="search" placeholder="Search..." v-model="searchQuery")
 		c-dropdown(v-for="filter in filters" :title="filter.title" :selected="selectedFilterTitle(activeFilters[filter.title])")
 			c-button(v-for="key in filter.keys" @click="activateFilter(filter.title, filter.field, key)" :title="key.title" type="transparent" fullwidth)
 		slot(name="controls")
 
 	table
 		colgroup
-			col(v-for="column in options.columns" :class="[column.type]")
+			col(v-for="column in columns" :class="[column.type]")
 		thead
 			tr
-				th(v-for="column in options.columns")
+				th(v-for="column in columns")
 					.cell.column-title(:class="[column.align]")
 						.title {{ column.title }}
 						c-button(type="icon" iconR="sort" @click="sortDocuments(column.key)")
 		tbody(v-if="filteredDocuments.length")
 			tr(v-for="document in filteredDocuments")
-				td(v-for="column in options.columns")
+				td(v-for="column in columns")
 					component.cell(
 						:is="column.type"
 						:class="[column.align]"
@@ -46,19 +46,17 @@ export default {
 		"Tasks": defineAsyncComponent( () => import( "./Types/Tasks.vue" ) )
 	},
 	"props": {
-		"options": {
-			"type": Object,
-			"required": true
-		},
-		"filters": {
+		"columns": {
 			"type": Array,
-			"required": false,
-			"default": [
-			]
+			"required": true
 		},
 		"documents": {
 			"type": Array,
 			"required": true
+		},
+		"filters": {
+			"type": Array,
+			"default": () => []
 		},
 		"searchable": Boolean
 	},

@@ -6,7 +6,7 @@ c-banner(
 	message="Finish the posting to submit it to our job board.")
 	template(#controls)
 		c-button(title="View")
-		c-button(type="icon" icon="close" size="small")
+		c-button(type="icon" iconL="close" size="small")
 
 c-card(title="Project Details")
 	template(#controls)

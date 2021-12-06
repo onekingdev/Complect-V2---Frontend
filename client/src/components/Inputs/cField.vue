@@ -18,46 +18,29 @@ label.c-input.c-field(:class="{fullwidth}")
 import { computed, defineAsyncComponent } from "vue";
 export default {
 	"props": {
-		"label": {
-			"type": String,
-			"default": "",
-			"required": false
-		},
-		"placeholder": {
-			"type": String,
-			"default": "",
-			"required": false
-		},
-		"iconL": {
-			"type": String,
-			"default": "",
-			"required": false
-		},
-		"iconR": {
-			"type": String,
-			"default": "",
-			"required": false
-		},
-		"min": {
-			"type": Number,
-			"required": false
-		},
-		"max": {
-			"type": Number,
-			"required": false
-		},
-		"step": {
-			"type": Number,
-			"required": false
-		},
 		"type": {
 			"type": String,
 			"default": "text"
 		},
+		"label": {
+			"type": String,
+			"default": ""
+		},
+		"placeholder": {
+			"type": String,
+			"default": ""
+		},
+		"iconL": {
+			"type": String,
+			"default": ""
+		},
+		"iconR": {
+			"type": String,
+			"default": ""
+		},
 		"autocomplete": {
 			"type": String,
-			"default": "on",
-			"required": false
+			"default": "off"
 		},
 		"tabIndex": {
 			"type": Number,

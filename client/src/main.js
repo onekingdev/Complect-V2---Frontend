@@ -11,7 +11,7 @@ import cButton from "~/components/Inputs/cButton.vue";
 import cButtonModal from "~/components/Inputs/cButtonModal.vue";
 import cCard from "~/components/Misc/cCard.vue";
 import cToast from "~/components/Misc/cToast.vue";
-import Table from "~/components/Table/Table.vue";
+import cTable from "~/components/Table/Table.vue";
 import documentsContainer from "~/components/Containers/DocumentsContainer.vue";
 import documentContainer from "~/components/Containers/DocumentContainer.vue";
 import "./assets/styles/index.styl";
@@ -28,7 +28,7 @@ createApp( App )
 	.component( "cCheckbox", cCheckbox )
 	.component( "cCard", cCard )
 	.component( "cToast", cToast )
-	.component( "cTable", Table )
+	.component( "cTable", cTable )
 	.component( "documentsContainer", documentsContainer )
 	.component( "documentContainer", documentContainer )
 	.mount( "#app" );

@@ -14,6 +14,8 @@ const devAdditionalEntry = () => import( "~/_devmode/pages/Additional/Additional
 const devAdditionalToast = () => import( "~/_devmode/pages/Additional/AdditionalToasts.vue" );
 const devAdditionalBanners = () => import( "~/_devmode/pages/Additional/AdditionalBanners.vue" );
 const devAdditionalAvatars = () => import( "~/_devmode/pages/Additional/AdditionalAvatars.vue" );
+const devAdditionalIcons = () => import( "~/_devmode/pages/Additional/AdditionalIcons.vue" );
+
 const devAdditionalModals = () => import( "~/_devmode/pages/Additional/AdditionalModals.vue" );
 
 const devTableEntry = () => import( "~/_devmode/pages/Table/TableEntry.vue" );
@@ -25,12 +27,12 @@ const devRoutes = [{
 	component: devInputsEntry,
 	meta: { title: "Inputs Components" },
 	children: [{
-		path: "buttons",
+		path: "button",
 		meta: { title: "Button Component" },
 		name: "devInputsButtons",
 		component: devInputsButtons
 	}, {
-		path: "fields",
+		path: "field",
 		meta: { title: "Field Component" },
 		name: "devInputsFields",
 		component: devInputsFields
@@ -46,7 +48,7 @@ const devRoutes = [{
 		component: devInputsCheckbox
 	}, {
 		path: "extra",
-		meta: { title: "Extra" },
+		meta: { title: "Extra Components" },
 		name: "devInputsExtra",
 		component: devInputsExtra
 	}, {
@@ -71,7 +73,7 @@ const devRoutes = [{
 		meta: { title: "Data" },
 		children: [{
 			path: "model",
-			meta: { title: "Model" },
+			meta: { title: "Model Component" },
 			name: "devDataModel",
 			component: devDataModel
 		}, {
@@ -83,28 +85,33 @@ const devRoutes = [{
 		component: devAdditionalEntry,
 		meta: { title: "Additional" },
 		children: [{
-			path: "toasts",
-			meta: { title: "Toasts" },
+			path: "icon",
+			meta: { title: "Icon Component" },
+			name: "devAdditionalIcons",
+			component: devAdditionalIcons
+		}, {
+			path: "toast",
+			meta: { title: "Toast Component" },
 			name: "devAdditionalToast",
 			component: devAdditionalToast
 		}, {
-			path: "banners",
-			meta: { title: "Banners" },
+			path: "banner",
+			meta: { title: "Banner Component" },
 			name: "devAdditionalBanners",
 			component: devAdditionalBanners
 		}, {
-			path: "avatars",
-			meta: { title: "Avatars" },
+			path: "avatar",
+			meta: { title: "Avatar Component" },
 			name: "devAdditionalAvatars",
 			component: devAdditionalAvatars
 		}, {
-			path: "modals",
-			meta: { title: "Modals" },
+			path: "modal",
+			meta: { title: "Modal Component" },
 			name: "devAdditionalModals",
 			component: devAdditionalModals
 		}, {
 			path: "",
-			redirect: { name: "devAdditionalToast" },
+			redirect: { name: "devAdditionalIcons" },
 		}]
 	}
 ];

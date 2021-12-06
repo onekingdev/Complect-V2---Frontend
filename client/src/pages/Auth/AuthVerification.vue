@@ -86,6 +86,7 @@ export default {
 
 <style lang="stylus" scoped>
 svg.icon
+	flex: 1
 	display: block
 	width: 12em
 	height: 8em

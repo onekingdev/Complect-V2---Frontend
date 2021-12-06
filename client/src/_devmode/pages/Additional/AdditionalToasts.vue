@@ -1,12 +1,12 @@
 <template lang="pug">
-c-card(title="Toast" type="flex-column" devmode)
+c-card(title="Toast" type="flex-column")
 	template(#header-controls)
-		c-button(iconL="refresh" type="transparent" @click="refreshToasts()" devmode)
+		c-button(iconL="refresh" type="transparent" @click="refreshToasts()")
 	template(#content)
 		c-toast(v-for="(toast, index) in toasts" v-bind="toast" id="index")
 	template(#footer)
-		c-button(title="Remove all Notifications" type="link" @click="deleteAllNotifications()" devmode)
-		c-button(title="Show Notification" type="primary" @click="showRandomToast()" devmode)
+		c-button(title="Remove all Notifications" type="link" @click="deleteAllNotifications()")
+		c-button(title="Show Notification" type="primary" @click="showRandomToast()")
 </template>
 
 

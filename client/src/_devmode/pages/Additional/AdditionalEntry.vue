@@ -12,6 +12,9 @@ export default {
 	data () {
 		return {
 			tabs: [{
+				name: "devAdditionalIcons",
+				title: "Icons"
+			}, {
 				name: "devAdditionalToast",
 				title: "Toast"
 			}, {

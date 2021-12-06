@@ -1,12 +1,12 @@
 <template lang="pug">
-c-card(title="Banner" type="flex-column" devmode)
+c-card(title="Banner" type="flex-column")
 	template(#header-controls)
-		c-button(iconL="refresh" type="transparent" @click="refreshBanners()" devmode)
+		c-button(iconL="refresh" type="transparent" @click="refreshBanners()")
 	template(#content)
 		c-banner(v-for="banner in banners" v-bind="banner.content")
 			template(#controls)
-				c-button(v-for="button in banner.buttons" :title="button" devmode)
-				c-button(type="icon" icon="close" size="small")
+				c-button(v-for="button in banner.buttons" :title="button")
+				c-button(type="icon" iconL="close" size="small")
 </template>
 
 

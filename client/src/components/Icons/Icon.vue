@@ -24,6 +24,12 @@ svg.icon
 	width: 1em
 	height: 1em
 	fill: #777
+	&.tiny
+		width: 0.6em
+		height: 0.6em
+	&.small
+		width: 0.8em
+		height: 0.8em
 	&.big
 		width: 1.5em
 		height: 1.5em

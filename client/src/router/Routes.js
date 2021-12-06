@@ -40,6 +40,7 @@ const PoliciesSetup = () => import( "~/pages/Policies/PoliciesSetup.vue" );
 const _ReviewsEntry = () => import( "~/pages/Reviews/_ReviewsEntry.vue" );
 const _RisksEntry = () => import( "~/pages/Risks/_RisksEntry.vue" );
 
+const _SettingsEntry = () => import( "~/pages/Settings/_SettingsEntry.vue" );
 const _ProfileEntry = () => import( "~/pages/Profile/_ProfileEntry.vue" );
 
 
@@ -181,6 +182,15 @@ const routes = [
 				"component": _ProfileEntry,
 				"meta": {
 					"title": "Profile",
+					"sidebar": false
+				}
+			},
+			{
+				"path": "settings",
+				"name": "Settings",
+				"component": _SettingsEntry,
+				"meta": {
+					"title": "Settings",
 					"sidebar": false
 				}
 			},

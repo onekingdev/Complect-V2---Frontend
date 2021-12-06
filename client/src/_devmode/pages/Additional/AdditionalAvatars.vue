@@ -6,14 +6,14 @@ c-card(title="Constructor")
 				c-switcher.col-full(id="avatar-sizes" label="Size" :options="options.sizes" v-model="selectedOptions.size" fullwidth)
 				c-switcher.col-full(id="avatar-shapes" label="Shape" :options="options.shapes" v-model="selectedOptions.shape" fullwidth)
 			template(#code)
-				code c-avatar(avatar="url" firstName="{{userProfile.first_name}}" lastName="{{userProfile.last_name}}" size="{{selectedOptions.size}}" shape="{{selectedOptions.shape}}")
+				code {{code}}
 			template(#preview)
 				c-avatar(:size="selectedOptions.size" :shape="selectedOptions.shape" :avatar="userProfile.avatar" :firstName="userProfile.first_name" :lastName="userProfile.last_name")
 				c-avatar(:size="selectedOptions.size" :shape="selectedOptions.shape" :firstName="userProfile.first_name" :lastName="userProfile.last_name")
 			
 c-card(title="Collection" type="grid-6")
 	template(#header-controls)
-		c-button(iconL="refresh" type="transparent" @click="refreshUser()" devmode)
+		c-button(iconL="refresh" type="transparent" @click="refreshUser()")
 	template(v-if="userProfile" #content)
 		.preview-column.col-2(v-for="shape in options.shapes")
 			c-avatar(v-for="size in options.sizes" :avatar="userProfile.avatar" :firstName="userProfile.first_name" :lastName="userProfile.last_name" :size="size.value" :shape="shape.value")
@@ -23,7 +23,7 @@ c-card(title="Collection" type="grid-6")
 
 
 <script>
-import { ref, reactive, onMounted } from "vue"
+import { ref, reactive, computed, onMounted } from "vue"
 import ComponentConstructor from "~/_devmode/misc/ComponentConstructor.vue"
 import cSwitcher from "~/components/Inputs/cSwitcher.vue"
 import cAvatar from "~/components/Misc/cAvatar.vue";
@@ -55,10 +55,19 @@ export default {
 			shape: "circle",
 		})
 
+		const code = computed(() => {
+			let avatar = `avatar="avatar.jpg"`
+			let firstName = `firstName="${userProfile.value.first_name}"`
+			let lastName = `lastName="${userProfile.value.last_name}"`
+			let size = selectedOptions.size !== 'regular' ? `size="${selectedOptions.size}"` : ""
+			let shape = selectedOptions.shape !== 'circle' ? `shape="${selectedOptions.shape}"` : ""
+			return `c-avatar(${avatar} ${firstName} ${lastName} ${size} ${shape})`
+		})
+
 		onMounted(() => refreshUser())
 		
 
-		return { options, selectedOptions, userProfile, refreshUser }
+		return { options, selectedOptions, userProfile, refreshUser, code }
 	}
 };
 </script>

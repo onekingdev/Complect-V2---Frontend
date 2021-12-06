@@ -15,7 +15,7 @@ c-card(title="Constructor" :maxWidth="700")
 			template(#preview)
 				.preview-item(v-for="state in buttonsStates")
 					.state-label {{state.label}}:
-					c-button(v-bind="selectedOptions" :class="state.class" devmode)
+					c-button(v-bind="selectedOptions" :class="state.class")
 			
 
 c-card.buttons-container(title="Collection" :maxWidth="700")
