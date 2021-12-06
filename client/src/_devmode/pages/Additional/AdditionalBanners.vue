@@ -1,7 +1,7 @@
 <template lang="pug">
 c-card(title="Banner" type="flex-column" devmode)
 	template(#header-controls)
-		c-button(icon="refresh" type="transparent" @click="refreshBanners()" devmode)
+		c-button(iconL="refresh" type="transparent" @click="refreshBanners()" devmode)
 	template(#content)
 		c-banner(v-for="banner in banners" v-bind="banner.content")
 			template(#controls)

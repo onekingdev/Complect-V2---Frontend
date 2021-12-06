@@ -1,4 +1,4 @@
-import { openDB } from "idb/with-async-ittr.js";
+import { openDB } from "idb/with-async-ittr";
 import { readDocumentsFromCloudDb } from "~/core/api.js";
 
 const databaseName = "complect";

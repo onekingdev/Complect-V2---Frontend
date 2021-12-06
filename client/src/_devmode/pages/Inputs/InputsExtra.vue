@@ -1,57 +1,49 @@
 <template lang="pug">
+c-card(title="Rating")
+	template(#content)
+		section
+			code.result {{values.rating}}
+			c-rating(:max="5" v-model="values.rating")
+			c-rating(:max="5" v-model="values.rating" readonly)
+
 c-card(title="Switcher")
 	template(#content)
-		c-switcher(id="layout" :options="options.switcher" v-model="values.switcher")
+		section
+			code.result {{values.switcher}}
+			c-switcher(id="layout" :options="options.checkboxes" v-model="values.switcher")
 
 c-card(title="Checkers")
 	template(#content)
-		c-checkers(:options="options.checkers" v-model="values.checkers")
+		section
+			code.result {{values.checkers}}
+			c-checkers(:options="options.checkboxes" v-model="values.checkers")
 
-c-card(title="Select")
-	template(#content)
-		c-select(id="select" v-model="values.select" label="Jurisdictions:" placeholder="Ok" :data="options.select")
-
-
-c-card(title="Rating")
-	template(#content)
-		c-rating(:max="5" v-model="values.rating")
-		c-rating(:max="5" v-model="values.rating" readonly)
-
-c-card(title="Range")
-	template(#content)
-		c-range(:min="1" :max="20" v-model.number="values.range")
-
-c-card(title="Toggle")
-	template(#content)
-		c-toggle(title="Toggle" v-model="values.toggle")
 </template>
 
 
 <script>
 import { reactive } from "vue";
+import cCheckers from "~/components/Inputs/cCheckers.vue";
 import cSwitcher from "~/components/Inputs/cSwitcher.vue";
 import cRating from "~/components/Inputs/cRating.vue";
-import cRange from "~/components/Inputs/cRange.vue";
-import cCheckers from "~/components/Inputs/cCheckers.vue";
-import cSelect from "~/components/Inputs/cSelect.vue";
-import cToggle from "~/components/Inputs/cToggle.vue";
+import { jurisdictions } from "~/data/static.js";
+
 export default {
 	components: {
-		cSwitcher,
-		cRating,
-		cRange,
 		cCheckers,
-		cSelect,
-		cToggle
+		cSwitcher,
+		cRating
 	},
 	setup () {
 		const values = reactive({
-			switcher: "option1",
+			switcher: "vue.js",
 			rating: 4,
 			range: 4,
-			checkers: ['aerial'],
+			checkers: ['css', 'aws'],
 			select: [],
-			toggle: false
+			toggle: false,
+			checkbox: false,
+			checkboxes: []
 		});
 		const options = {
 			switcher: [{
@@ -71,12 +63,15 @@ export default {
 				tooltip: "Switch to Option 3"
 			}],
 			checkers: ['html', 'css', 'vue.js', 'react.js', 'aws', 'node.js'],
-			select: [
-				{ title: "USA", value: "USA" },
-				{ title: "England", value: "England" },
-				{ title: "Germany", value: "Germany"},
-				{ title: "Spain", value: "Spain" }
-			]
+			checkboxes: [
+				{ title: "HTML", value: "html"},
+				{ title: "CSS", value: "css"},
+				{ title: "Vue.js", value: "vue.js"},
+				{ title: "React.js", value: "react.js"},
+				{ title: "AWS", value: "aws"},
+				{ title: "Node.js", value: "node.js"}
+			],
+			select: {jurisdictions}
 		};
 		return {
 			values,
@@ -91,4 +86,15 @@ section + section
 	margin-top: 3em
 h3
 	margin-bottom: 1em
+code.result
+	padding: 1em
+	line-height: 1
+	background: #f1f1f1
+	border-radius: 0.5em
+section
+	h3
+		margin: 0
+	display: flex
+	flex-direction: column
+	gap: 1em
 </style>

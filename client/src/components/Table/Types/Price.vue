@@ -1,6 +1,5 @@
 <template lang="pug">
-.cell-collaborators(v-if="data.length")
-	//- .avatar(v-for="user in data") {{ user }}
+.cell-price(v-if="data") ${{ data }}
 </template>
 
 
@@ -8,7 +7,7 @@
 export default {
 	"props": {
 		"data": {
-			"type": Array,
+			"type": Number,
 			"required": true
 		}
 	}
@@ -16,4 +15,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.cell-price
+	text-align: right
 </style>

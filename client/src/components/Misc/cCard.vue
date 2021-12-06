@@ -1,5 +1,5 @@
 <template lang="pug">
-.c-card
+.c-card(:style="{maxWidth: maxWidth+'px'}")
 	.c-card-header(v-if="title")
 		.card-title {{ $locale(title, devmode) }}
 		slot(name="header-controls")
@@ -23,6 +23,11 @@ export default {
 			"default": "",
 			"required": false
 		},
+		"maxWidth": {
+			"type": Number,
+			"default": null,
+			"required": false
+		},
 		"devmode": Boolean
 	}
 };
@@ -34,7 +39,9 @@ export default {
 	background: var(--c-bg-z2, #fff)
 	border: 1px solid var(--c-border)
 	border-radius: var(--v-border-radius)
-
+	width: 100%
+	margin: auto
+	overflow: hidden
 	.c-card-header
 		line-height: 1
 		padding: 1em

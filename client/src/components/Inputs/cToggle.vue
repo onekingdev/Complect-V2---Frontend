@@ -3,7 +3,6 @@ label.c-input.c-toggle(:title="tooltip")
 	.title(v-if="title") {{title}}
 	input(type="checkbox" :checked="modelValue" @change="update")
 	.toggle-body
-
 </template>
 
 
@@ -71,5 +70,4 @@ $toggle_dot_margin = $toggle_size * 0.03
 	input:checked + .toggle-body:after
 		left: 'calc(100% - %s)' % $toggle_dot_margin
 		transform: translateX(-100%)
-
 </style>

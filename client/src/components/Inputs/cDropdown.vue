@@ -3,7 +3,7 @@
 	c-button(
 		:title="title"
 		:secondTitle="selected"
-		:icons="['','chevron-down']")
+		iconR="chevron-down")
 	.dropdown(v-if="listVisible")
 		slot(name="default")
 </template>

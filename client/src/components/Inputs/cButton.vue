@@ -1,9 +1,9 @@
 <template lang="pug">
-button.c-input.c-button(:class="[type, size, {fullwidth, disabled, danger}]" :tabindex="disabled ? -1 : 0")
-	icon(v-if="icons[0] || icon" :name="icons[0] || icon")
-	.title(v-if="title") {{ $locale(title, devmode) }}
-	.title(v-if="secondTitle") {{ $locale(secondTitle, devmode) }}
-	icon(v-if="icons[1]" :name="icons[1]")
+button.c-input.c-button(:class="[type, size, {fullwidth, disabled}]" :tabindex="disabled ? -1 : 0")
+	icon(v-if="iconL" :name="iconL")
+	.title(v-if="title") {{ $locale(title) }}
+	.title(v-if="secondTitle") {{ $locale(secondTitle) }}
+	icon(v-if="iconR" :name="iconR")
 	template(v-if="modal")
 		slot(name="default")
 </template>
@@ -12,15 +12,14 @@ button.c-input.c-button(:class="[type, size, {fullwidth, disabled, danger}]" :ta
 <script>
 export default {
 	"props": {
-		"icon": {
+		"iconL": {
 			"type": String,
 			"default": "",
 			"required": false
 		},
-		"icons": {
-			"type": Array,
-			"default": () => [
-			],
+		"iconR": {
+			"type": String,
+			"default": "",
 			"required": false
 		},
 		"title": {
@@ -45,9 +44,7 @@ export default {
 		},
 		"disabled": Boolean,
 		"modal": Boolean,
-		"fullwidth": Boolean,
-		"danger": Boolean,
-		"devmode": Boolean
+		"fullwidth": Boolean
 	}
 };
 </script>
@@ -65,8 +62,8 @@ export default {
 	justify-content: center
 	position: relative
 	svg.icon
-		width: 1.5em
-		height: 1.5em
+		width: 1em
+		height: 1em
 		fill: #222
 		+ .title
 			margin-left: 0.7em
@@ -167,17 +164,6 @@ export default {
 		&.disabled
 			opacity: 0.4
 
-	&.danger
-		color: var(--c-red)
-		svg.icon
-			fill: var(--c-red)
-		&:hover
-			background: #fddee3
-
-
-	&.fullwidth
-		width: 100%
-		justify-content: center
 
 	// Sizes
 	&.tiny
@@ -190,6 +176,11 @@ export default {
 		font-size: 1em
 	&.huge
 		font-size: 1.2em
+
+
+	&.fullwidth
+		width: 100%
+		justify-content: center
 
 	&.disabled
 		pointer-events: none

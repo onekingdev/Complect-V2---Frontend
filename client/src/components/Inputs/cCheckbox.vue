@@ -1,28 +1,65 @@
 <template lang="pug">
-label.c-input.c-checkbox
-	input(type="checkbox" :checked="modelValue" @change="update")
-	.title(v-if="title") {{title}}
+label.c-input.c-checkbox(:class="[type, {checked: checked(value)}]")
+	input(type="checkbox" :checked="checked(value)" @change="update(value, $event.target.checked)")
+	//- input(type="checkbox" :checked="modelValue" @change="update")
+	.checkbox-body
+	.title(v-if="label") {{label}}
 </template>
 
 
 <script>
 export default {
 	"props": {
-		"title": {
+		"label": {
 			"type": String,
 			"default": ""
 		},
-		"modelValue": Boolean
+		"type": {
+			"type": String,
+			"default": "default",
+			"required": false
+		},
+		"value": {
+			"type": [
+				String, Number
+			],
+			"default": "",
+			"required": false
+		},
+		"modelValue": {
+			"type": [
+				Array, Boolean
+			],
+			"default": [
+			]
+		},
+		"multiple": Boolean,
+		"fulldata": Boolean
 	},
 	"emits": [
 		"update:modelValue"
 	],
 	setup ( props, context ) {
-		const update = event => context.emit( "update:modelValue", event.target.checked );
-		return { update };
+		const checked = value => props.multiple ? props.modelValue.includes( value ) : props.modelValue;
+		const update = ( value, checked ) => {
+			if ( props.multiple ) {
+				const update = [
+					...props.modelValue
+				];
+				if ( checked ) update.push( value );
+				else update.splice( update.indexOf( value ), 1 );
+				context.emit( "update:modelValue", update );
+			} else
+				context.emit( "update:modelValue", !props.modelValue );
+		};
+		return {
+			checked,
+			update
+		};
 	}
 };
 </script>
+
 
 <style lang="stylus" scoped>
 .c-checkbox
@@ -31,6 +68,74 @@ export default {
 	line-height: 1
 	display: flex
 	align-items: center
+	cursor: pointer
 	.title
 		margin-left: 0.5em
+	input[type="checkbox"]
+		height: 0
+		width: 0
+		visibility: hidden
+		display: none
+	.checkbox-body
+		font-size: 1.2em
+		cursor: pointer
+		width: 1em
+		height: 1em
+		border: 0.1em solid var(--c-border)
+		position: relative
+		transition: background var(--fx-duration-short), border-color var(--fx-duration-short)
+		&:after
+			content: ''
+			display: block
+			position: absolute
+			top: 0.09em
+			right: 0.25em
+			width: 0.3em
+			height: 0.55em
+			transform: rotate(45deg)
+			border: solid var(--c-border)
+			border-width: 0 0.15em 0.15em 0
+			transition: border-color var(--fx-duration-short)
+
+	// Types
+	&.default
+		.checkbox-body
+			border-radius: var(--v-inputs-border-radius)
+			&:after
+				border-color: transparent
+		input:checked + .checkbox-body
+			background: #1F80C1
+			border-color: #1F80C1
+			&:after
+				border-color: #fff
+	&.round
+		.checkbox-body
+			border-radius: 50%
+		input:checked + .checkbox-body
+			background: var(--c-success)
+			border-color: var(--c-success)
+			&:after
+				border-color: #fff
+	&.toggle
+		// $toggle_size = 2em
+		// $toggle_dot_margin = $toggle_size * 0.03
+		.checkbox-body
+			width: 2em
+			background: var(--c-border)
+			border-radius: 0.5em
+			&:after
+				top: 0
+				left: 0
+				width: 0.8em
+				height: 0.8em
+				background: #fff
+				border-radius: 50%
+				border: none
+				transition: var(--fx-duration-short)
+		input:checked + .checkbox-body
+			background: #1F80C1
+			border-color: #1F80C1
+			transition: background var(--fx-duration-short)
+		input:checked + .checkbox-body:after
+			transform: translateX(120%)
 </style>

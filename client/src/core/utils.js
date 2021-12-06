@@ -26,6 +26,7 @@ const sortArrayByKey = ( array, key, asc ) => {
 		return 0;
 	});
 	if ( type === "number" ) array.sort( ( a, b ) => ( asc ? a[key] : b[key]) - ( asc ? b[key] : a[key]) ); // sort numbers asc/desc
+	if ( type === "object" ) array.sort( ( a, b ) => ( asc ? b[key].length : a[key].length ) - ( asc ? a[key].length : b[key].length ) ); // sort arays by length (asc - from biggest to smallest)
 };
 
 

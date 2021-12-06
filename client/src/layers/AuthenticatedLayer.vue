@@ -9,7 +9,7 @@
 
 
 <script>
-import { defineAsyncComponent, onMounted } from "vue";
+import { defineAsyncComponent } from "vue";
 import Topbar from "~/components/Bars/Topbar.vue";
 import Sidebar from "~/components/Bars/Sidebar.vue";
 const Devbar = defineAsyncComponent( () => import( "~/_devmode/Devbar.vue" ) );

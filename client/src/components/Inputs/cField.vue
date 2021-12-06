@@ -1,32 +1,21 @@
 <template lang="pug">
 label.c-input.c-field(:class="{fullwidth}")
-	.field-label(v-if="label") {{ label }}
+	.field-label(v-if="label") {{ label }}:
 		span.required(v-if="required") *
+
 	.field-body
-		icon(v-if="icon || icons[0]" :name="icon ? icon : icons[0]")
-		input.field-input(
-			v-if="type !== 'multiple'"
-			@input="$emit('update:modelValue', $event.target.value)"
-			:value="modelValue"
-			:type="type"
+		icon(v-if="iconL || icon" :name="iconL || type")
+		component.field-input(
+			:is="fieldType"
 			:placeholder="placeholder"
 			:required="required"
-			:min="min"
-			:max="max"
-			:step="step"
-			:autocomplete="autocomplete"
-			:disabled="disabled"
-			:tabIndex="tabIndex")
-		.field-multisect(v-else)
-			.item(v-for="item in modelValue")
-				.title {{item}}
-				icon(name="close")
-		icon(v-if="icons[1]" :name="icons[1]")
-		//- icon(v-if="required" name="required")
+			v-model="modelValue")
+		icon(v-if="iconR" :name="iconR")
 </template>
 
 
 <script>
+import { computed, defineAsyncComponent } from "vue";
 export default {
 	"props": {
 		"label": {
@@ -39,7 +28,12 @@ export default {
 			"default": "",
 			"required": false
 		},
-		"icon": {
+		"iconL": {
+			"type": String,
+			"default": "",
+			"required": false
+		},
+		"iconR": {
 			"type": String,
 			"default": "",
 			"required": false
@@ -56,16 +50,9 @@ export default {
 			"type": Number,
 			"required": false
 		},
-		"icons": {
-			"type": Array,
-			"default": () => [
-				false, false
-			],
-			"required": false
-		},
 		"type": {
 			"type": String,
-			"default": () => "text"
+			"default": "text"
 		},
 		"autocomplete": {
 			"type": String,
@@ -82,6 +69,7 @@ export default {
 			],
 			"required": true
 		},
+		"icon": Boolean,
 		"multiselect": Boolean,
 		"required": Boolean,
 		"fullwidth": Boolean,
@@ -89,7 +77,11 @@ export default {
 	},
 	"emits": [
 		"update:modelValue"
-	]
+	],
+	setup ( props ) {
+		const fieldType = computed( () => defineAsyncComponent( () => import( `./types/${props.type}.vue` ) ) );
+		return { fieldType };
+	}
 };
 </script>
 
@@ -115,7 +107,7 @@ export default {
 		align-items: center
 		gap: 0.3em
 		padding: 0.35em 0.5em
-		min-height: 1.7em
+		min-height: 2em
 		svg.icon
 			width: 1em
 			height: 1em
@@ -126,10 +118,10 @@ export default {
 				height: 0.4em
 				fill: #777
 				margin-left: 0.4em
-		.field-input, .field-multisect
+		.field-input
 			font-size: 0.9em
 			flex: 1 0 auto
-			display: block
+			// display: block
 			width: 1em
 			color: #000
 			background: transparent
@@ -141,23 +133,6 @@ export default {
 			&::placeholder
 				color: #999
 				font-size: 0.9em
-		.field-multisect
-			display: flex
-			gap: 0.4em
-			.item
-				display: flex
-				align-items: center
-				font-size: 0.9em
-				padding: 0.4em 0.4em
-				line-height: 1
-				background: var(--c-bg-light-active)
-				color: var(--c-link)
-				border-radius: var(--v-border-radius)
-				svg.icon
-					width: 0.6em
-					height: 0.6em
-					margin-left: 0.8em
-					fill: var(--c-link)
 	// &:focus-within
 	// 	.field-body
 	// 		box-shadow: 0 0 0 0.15rem #4499f0

@@ -20,12 +20,6 @@ export default {
 			"default": "",
 			"required": false
 		},
-		"icons": {
-			"type": Array,
-			"default": () => [
-			],
-			"required": false
-		},
 		"title": {
 			"type": String,
 			"default": "",

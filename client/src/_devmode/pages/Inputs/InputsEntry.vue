@@ -12,10 +12,16 @@ export default {
 	setup() {
 		const tabs = [{
 			name: "devInputsButtons",
-			title: "Buttons"
+			title: "Button"
 		}, {
 			name: "devInputsFields",
-			title: "Fields"
+			title: "Field"
+		}, {
+			name: "devInputsSelect",
+			title: "Select"
+		}, {
+			name: "devInputsCheckbox",
+			title: "Checkbox"
 		}, {
 			name: "devInputsExtra",
 			title: "Extra"

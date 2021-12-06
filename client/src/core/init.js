@@ -49,7 +49,7 @@ export default function useInit () {
 				localStorage.clear();
 				indexedDB.deleteDatabase( "complect" );
 				await registerSW();
-				setInstallationState(true);
+				setInstallationState( true );
 				localStorage.setItem( "version", appVersion );
 			}
 		} catch ( error ) {

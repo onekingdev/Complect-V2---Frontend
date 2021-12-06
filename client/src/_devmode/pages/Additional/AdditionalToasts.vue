@@ -1,7 +1,7 @@
 <template lang="pug">
 c-card(title="Toast" type="flex-column" devmode)
 	template(#header-controls)
-		c-button(icon="refresh" type="transparent" @click="refreshToasts()" devmode)
+		c-button(iconL="refresh" type="transparent" @click="refreshToasts()" devmode)
 	template(#content)
 		c-toast(v-for="(toast, index) in toasts" v-bind="toast" id="index")
 	template(#footer)

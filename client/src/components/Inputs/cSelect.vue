@@ -1,41 +1,33 @@
 <template lang="pug">
-.c-input.c-select(:class="{expanded: datalist, iconify}")
-
+.c-input.c-select(:class="[{expanded: datalistVisible}, dropdownListDirection]" ref="selectComponent")
 	c-field(
-		:type="multiple ? multiple: single"
+		type="multiselect"
+		iconR="chevron-down"
 		:label="label"
-		:icons="[modelValue, 'drop-down']"
 		:placeholder="placeholder"
 		:required="required"
-		v-model="modelValue"
-		@click="datalistVisibility()"
-		@blur="datalistHide()")
+		disabled
+		v-model="selectedItems"
+		@click="showDropdownList()"
+		@blur="hideDropdownList()")
 
-
-	.datalist(v-show="datalist" tabindex="-1")
-		c-field(
-			type="search"
-			:icons="['search']"
-			placeholder="Search..."
-			v-model="query")
-
-		.item(
-			v-for="item in filteredData"
-			@click="selectItem(item.value)"
-			@keydown.enter="selectItem(item)"
-			:class="{active: item == modelValue}"
-			tabindex="0")
-				icon(v-if="item.icon" :name="item.icon")
-				.title(v-if="item.title && !iconify") {{item.title}}
+	.dropdown-list(v-show="datalistVisible" tabindex="-1" ref="dropdownList")
+		.search-section(v-if="searchable" :class="{offset}")
+			c-field(type="search" iconL="search" placeholder="Search..." v-model="query")
+		.items-section(ref="dropdownListItems" @scroll.native="dropdownListScrollEvent()")
+			c-checkbox.item(v-for="item in filteredData" :label="item.title" :value="item" v-model="selectedItems" multiple)
 </template>
 
 
 <script>
-import { computed, reactive, toRefs } from "vue";
+import { computed, ref, reactive, toRefs } from "vue";
+import { onClickOutside } from "@vueuse/core";
 export default {
 	"props": {
 		"modelValue": {
-			"type": Array,
+			"type": [
+				String, Array
+			],
 			"required": true
 		},
 		"label": {
@@ -54,17 +46,25 @@ export default {
 		},
 		"multiple": Boolean,
 		"required": Boolean,
-		"iconify": Boolean
+		"searchable": Boolean
 	},
 	"emits": [
 		"update:modelValue"
 	],
 	setup ( props, context ) {
+		const selectComponent = ref( null );
+		const dropdownList = ref( null );
+		const dropdownListItems = ref( null );
+		const dropdownListDirection = ref( "drop-down" );
+		const selectedItems = ref([
+		]);
 		const params = reactive({
 			"query": "",
-			"datalist": false,
-			"selected": false
+			"datalistVisible": false,
+			"selected": false,
+			"offset": false
 		});
+
 
 		const filteredData = computed( () => {
 			try {
@@ -77,106 +77,161 @@ export default {
 			}
 		});
 
-		const datalistVisibility = () => params.datalist = !params.datalist;
-		const datalistHide = () => {
-			params.datalist = false;
+
+		const showDropdownList = () => {
+			params.datalistVisible = true;
+			if ( window.innerHeight - selectComponent.value.getBoundingClientRect().bottom < 300 )
+				dropdownListDirection.value = "drop-up";
+			 else dropdownListDirection.value = "drop-down";
+		};
+		const hideDropdownList = () => {
+			params.datalistVisible = false;
 			params.query = "";
 		};
+
+		onClickOutside( selectComponent, () => hideDropdownList() );
+
+
+		const isSelected = value => props.modelValue.includes( value );
 
 		const selectItem = ( item ) => {
 			params.datalist = false;
 			params.query = "";
-			const selected = () => props.modelValue.includes( item );
-			const update = [
-				...props.modelValue
-			];
-			if ( props.multiple ) if ( !selected() ) update.push( item );
-			else update.splice( update.indexOf( item ), 1 );
-
-			else update[0] = item;
-
-			context.emit( "update:modelValue", update );
+			if ( props.multiple ) {
+				const selected = () => props.modelValue.includes( item.value );
+				const update = [
+					...props.modelValue
+				];
+				if ( !selected() ) update.push( item.value );
+				else update.splice( update.indexOf( item.value ), 1 );
+				selectedItems.value = [
+				];
+				props.data.forEach( ( item ) => {
+					update.forEach( ( value ) => {
+						if ( item.value === value ) selectedItems.value.push( item.title );
+					});
+				});
+				context.emit( "update:modelValue", update );
+			} else {
+				selectedItems.value = item.title;
+				context.emit( "update:modelValue", item.value );
+			}
 		};
+
+
+		const slectedModel = computed( () => {
+
+		});
+
+		const removeSelected = ( value ) => {
+			console.log( value );
+		};
+
+		const dropdownListScrollEvent = () => {
+			if ( dropdownListItems.value.scrollTop > 5 ) params.offset = true;
+			else params.offset = false;
+		};
+
+
+		const demo = ref([
+		]);
 
 		return {
 			...toRefs( params ),
+			demo,
+			selectComponent,
 			filteredData,
-			datalistVisibility,
-			datalistHide,
-			selectItem
+			showDropdownList,
+			hideDropdownList,
+			dropdownList,
+			dropdownListItems,
+			dropdownListDirection,
+			dropdownListScrollEvent,
+			selectItem,
+			selectedItems,
+			isSelected,
+			removeSelected
 		};
 	}
 };
 </script>
+
 
 <style lang="stylus" scoped>
 .c-select
 	position: relative
 	width: 100%
 	:deep(.c-field)
-		// svg.icon-drop-up, svg.icon-drop-down
-		svg.icon-drop-down
+		svg.icon-chevron-down
 			width: 0.7em
 			height: 0.7em
 			fill: #999
 			transition: transform 0.15s
+
 	&.expanded
-		:deep(.c-field)
-			.field-body
+		&.drop-down
+			:deep(.c-field)
+				.field-body
+					border-radius: var(--v-inputs-border-radius) var(--v-inputs-border-radius) 0 0
+			.dropdown-list
+				border-radius: 0 0 var(--v-inputs-border-radius) var(--v-inputs-border-radius)
+				top: calc(100% + 0.05em)
+				.search-section
+					&.offset
+						border-bottom: 1px solid var(--c-border)
+		&.drop-up
+			:deep(.c-field)
+				.field-body
+					border-radius: 0 0 var(--v-inputs-border-radius) var(--v-inputs-border-radius)
+			.dropdown-list
 				border-radius: var(--v-inputs-border-radius) var(--v-inputs-border-radius) 0 0
-			svg.icon-drop-down
+				bottom: calc(60% - 0.05em)
+				.search-section
+					order: 2
+					&.offset
+						border-top: 1px solid var(--c-border)
+		:deep(.c-field)
+			svg.icon-chevron-down
 				transform: rotate(180deg)
-	.datalist
+
+
+	.dropdown-list
 		position: absolute
 		z-index: 1
-		top: calc(100% + 0.05em)
 		left: 0
 		width: 100%
-		color: #ccc
 		max-height: 20em
+		min-height: 0
+		display: flex
+		flex-direction: column
+		color: #ccc
 		overflow: scroll
 		background: #fff
-		font-size: 0.9em
-		border-radius: 0 0 var(--v-inputs-border-radius) var(--v-inputs-border-radius)
 		box-shadow: 0 0 0 1px var(--c-border)
 		transition: max-height .25s ease-in-out, box-shadow .25s
-		:deep(.c-field)
-			.field-body
-				position: sticky
-				top: 0
-				border-radius: 0
-		.item
-			display: flex
-			align-items: center
-			padding: 0.5em 0.8em
-			line-height: 1.3
-			cursor: pointer
-			transition: background .25s
+		.search-section
+			flex: 1
+			padding: 0.5em
+			background: var(--c-bg-z2)
+			:deep(.c-field)
+				.field-body
+					border-radius: var(--v-inputs-border-radius)
+		.items-section
+			flex: 1
+			overflow-y: auto
 			font-size: 0.9em
-			color: #222
-			&:hover, &:focus
-				background: var(--c-light-active)
-				color: var(--c-link)
-				outline: none
-			svg.icon
-				width: 1.2em
-				height: 1.2em
-				margin: 0.3em 0
-				+ .title
-					margin-left: 0.8em
-		.no-resuls
-			margin: 1em 0
-			padding: 0.2em 1em
-			color: #fff
-	&.iconify
-		.datalist .item
-			padding: 0.9em
-			svg.icon
-				width: 1.3em
-				height: 1.3em
-				margin: auto
-	&.focused
-		z-index: 11
-		.content
-			border-radius: var(--v-inputs-border-radius) var(--v-inputs-border-radius) 0 0
+			.item
+				display: flex
+				align-items: center
+				padding: 0.8em 0.8em
+				line-height: 1.3
+				transition: background .25s
+				font-size: 0.9em
+				color: var(--c-text)
+				&:hover
+					background: #F0F6FE
+				&.active
+					background: #F0F6FE
+				&.checked
+					background: #F0F6FE
 </style>

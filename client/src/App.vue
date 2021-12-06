@@ -21,9 +21,9 @@ export default {
 		const { systemChecks, installApp } = useInit();
 		const { restoreSession } = useAuth();
 		onMounted( () => {
-			systemChecks()
-			installApp()
-			restoreSession()
+			systemChecks();
+			installApp();
+			restoreSession();
 		});
 	}
 };

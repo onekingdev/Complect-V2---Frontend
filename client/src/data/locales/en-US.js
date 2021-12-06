@@ -29,6 +29,9 @@ export default {
 		"Sign In": "Sign In",
 		"Forgot Password": "Forgot Password",
 		"Send new code": "Send new code",
+		"Exit": "Exit",
+		"Next": "Next",
+		"Save as Draft": "Save as Draft",
 
 		// topbar
 		"Find an Expert": "Find an Expert",

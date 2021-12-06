@@ -17,12 +17,16 @@ c-card
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 export default {
-	setup() {
+	setup () {
 		const router = useRouter();
-		const email = ref("");
-		const goToSignIn = () => router.push({"name": "AuthSignIn"});
-		const resetPassword = () => console.log(`Reset password for: ${email.value}`);
-		return { email, resetPassword, goToSignIn }
+		const email = ref( "" );
+		const goToSignIn = () => router.push({ "name": "AuthSignIn" });
+		const resetPassword = () => console.log( `Reset password for: ${email.value}` );
+		return {
+			email,
+			resetPassword,
+			goToSignIn
+		};
 	}
 };
 </script>

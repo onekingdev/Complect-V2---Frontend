@@ -14,7 +14,7 @@ const AuthSignIn = () => import( "~/pages/Auth/AuthSignIn.vue" );
 const AuthVerification = () => import( "~/pages/Auth/AuthVerification.vue" );
 const AuthResetPassword = () => import( "~/pages/Auth/AuthResetPassword.vue" );
 
-const Dashboard = () => import( "~/pages/Dashboard/Dashboard.vue" );
+const _DashboardEntry = () => import( "~/pages/Dashboard/_DashboardEntry.vue" );
 
 const _TasksEntry = () => import( "~/pages/Tasks/_TasksEntry.vue" );
 const TasksOverview = () => import( "~/pages/Tasks/TasksOverview.vue" );
@@ -29,6 +29,7 @@ const ProjectDetail = () => import( "~/pages/Project/ProjectDetail.vue" );
 const ProjectTasks = () => import( "~/pages/Project/ProjectTasks.vue" );
 const ProjectDocuments = () => import( "~/pages/Project/ProjectDocuments.vue" );
 const ProjectCollaborators = () => import( "~/pages/Project/ProjectCollaborators.vue" );
+const ProjectPost = () => import( "~/pages/Project/ProjectPost.vue" );
 
 
 const _PoliciesEntry = () => import( "~/pages/Policies/_PoliciesEntry.vue" );
@@ -39,7 +40,7 @@ const PoliciesSetup = () => import( "~/pages/Policies/PoliciesSetup.vue" );
 const _ReviewsEntry = () => import( "~/pages/Reviews/_ReviewsEntry.vue" );
 const _RisksEntry = () => import( "~/pages/Risks/_RisksEntry.vue" );
 
-const Profile = () => import( "~/pages/Profile/Profile.vue" );
+const _ProfileEntry = () => import( "~/pages/Profile/_ProfileEntry.vue" );
 
 
 import { devRoutes } from "~/_devmode/Routes.js";
@@ -63,7 +64,7 @@ const routes = [
 			{
 				"path": "dashboard",
 				"name": "Dashboard",
-				"component": Dashboard,
+				"component": _DashboardEntry,
 				"meta": { "title": "Dashboard" }
 			},
 			{
@@ -101,6 +102,15 @@ const routes = [
 						"meta": { "title": "Ratings and Reviews" }
 					}
 				]
+			},
+			{
+				"path": "project/new",
+				"name": "ProjectPost",
+				"component": ProjectPost,
+				"meta": {
+					"title": "Post Project",
+					"sidebar": false
+				}
 			},
 			{
 				"path": "project/:id",
@@ -168,7 +178,7 @@ const routes = [
 			{
 				"path": "profile",
 				"name": "Profile",
-				"component": Profile,
+				"component": _ProfileEntry,
 				"meta": {
 					"title": "Profile",
 					"sidebar": false

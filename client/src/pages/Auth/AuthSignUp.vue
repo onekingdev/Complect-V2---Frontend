@@ -1,82 +1,75 @@
 <template lang="pug">
 c-card
-	template(#content)
-		c-form-wizard
-			//- template
-			h1 Let's get you started!
-			h2 Select your account type
-			.types-container
-				.type-card.selected
-					.type-title I am a business
-					icon.type-icon(name="business")
-					.type-description Looking to effectively manage my compliance program and find expertise
-				.type-card
-					.type-title I am a specialist
-					icon.type-icon(name="briefcase")
-					.type-description Looking to work with potential clients on compliance projects
-			c-button(title="Next" type="primary" fullwidth)
+	//- template(#content)
+		c-form-wizard(title="Let's get you started!" :step="currentStep")
+			template(#step1)
+				c-radio-cards(id="user-type" :options="accountTypes" v-model="user.type")
+				c-button(title="Next" type="primary" fullwidth :disabled="user.type ? false:true" @click="nextStep()")
+
+			template(#step2)
+				form.form-container
+					c-field(label="First Name:" v-model="user.first_name" required)
+					c-field(label="Last Name:" v-model="user.last_name" required)
+					c-field(label="Email:" v-model="user.email" required)
+					c-field(label="Password:" v-model="user.password" required)
+					c-field(label="Repeat Password:" v-model="password2" required)
+				p By signing up, I accept the Complect Terms of Use and acknowledge the Privacy Policy
+				c-button(title="Sign Up" type="primary" fullwidth)
+
 	template(#footer)
-		p Already have a Complect account? 
+		p Already have a Complect account?
 			router-link(:to="{name: 'AuthSignIn'}")  Sign In
 </template>
 
 
 <script>
-import { reactive } from "vue"
-import cFormWizard from "~/components/Misc/cFormWizard.vue"
+import { ref, reactive } from "vue";
+import cFormWizard from "~/components/FormWizard/cFormWizard.vue";
+import cRadioCards from "~/components/Inputs/cRadioCards.vue";
 export default {
-	components: { cFormWizard },
-	setup() {
-		const data = reactive({
-			type: "",
-			first_name: "",
-			last_name: "",
-			email: "",
-			password: ""
-		})
+	"components": {
+		cFormWizard,
+		cRadioCards
+	},
+	setup () {
+		const user = reactive({
+			"type": "",
+			"first_name": "",
+			"last_name": "",
+			"email": "",
+			"password": ""
+		});
+		const accountTypes = [
+			{
+				"key": "business",
+				"title": "I am a business",
+				"icon": "business",
+				"description": "Looking to effectively manage my compliance program and find expertise"
+			}, {
+				"key": "specialist",
+				"title": "I am a specialist",
+				"icon": "briefcase",
+				"description": "Looking to work with potential clients on compliance projects"
+			}
+		];
+		const password2 = ref( null );
 
-		return { data }
+		const currentStep = ref( 1 );
+		const prevStep = () => currentStep.value--;
+		const nextStep = () => currentStep.value++;
+
+		return {
+			user,
+			accountTypes,
+			password2,
+			currentStep,
+			prevStep,
+			nextStep
+		};
 	}
 };
 </script>
 
 
 <style lang="stylus" scoped>
-.types-container
-	display: flex
-	margin: 2em 0
-	gap: 1em
-	.type-card
-		padding: 2em 1em
-		display: flex
-		flex: 1 0 0
-		flex-direction: column
-		justify-content: flex-start
-		border: 1px solid var(--c-border)
-		border-radius: var(--v-border-radius)
-		transition: background var(--fx-duration-short), border-color var(--fx-duration-short)
-		cursor: pointer
-		.type-title
-			font-weight: bold
-			text-align: center
-			color: var(--c-text)
-		.type-icon
-			margin: 1em auto
-			width: 3em
-			height: 3em
-			fill: var(--c-text)
-		.type-description
-			text-align: center
-			color: var(--c-dimmed)
-			font-size: 0.9em
-			line-height: 1.4
-		&:hover
-			background: #fafafa
-		&.selected
-			border-color: var(--c-headers)
-			background: #fafafa
-			.type-title
-				color: var(--c-headers)
-			.type-icon
-				fill: var(--c-headers)
 </style>

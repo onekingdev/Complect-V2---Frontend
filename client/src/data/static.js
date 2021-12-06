@@ -1,247 +1,247 @@
 const jurisdictions = [
 	{
-		"code": 1,
+		"value": 1,
 		"title": "USA"
 	},
 	{
-		"code": 2,
+		"value": 2,
 		"title": "Canada"
 	},
 	{
-		"code": 3,
+		"value": 3,
 		"title": "Europe"
 	},
 	{
-		"code": 4,
+		"value": 4,
 		"title": "Central America"
 	},
 	{
-		"code": 5,
+		"value": 5,
 		"title": "South America"
 	},
 	{
-		"code": 6,
+		"value": 6,
 		"title": "Australasia"
 	},
 	{
-		"code": 7,
+		"value": 7,
 		"title": "Asia"
 	},
 	{
-		"code": 8,
+		"value": 8,
 		"title": "Africa"
 	},
 	{
-		"code": 9,
+		"value": 9,
 		"title": "Caribbean"
 	},
 	{
-		"code": 10,
+		"value": 10,
 		"title": "Middle East"
 	}
 ];
 
 const industries = [
 	{
-		"code": 1,
+		"value": 1,
 		"title": "Broker-Dealer"
 	},
 	{
-		"code": 2,
+		"value": 2,
 		"title": "Banking"
 	},
 	{
-		"code": 4,
+		"value": 4,
 		"title": "Investment Adviser"
 	},
 	{
-		"code": 9,
+		"value": 9,
 		"title": "Insurance Provider"
 	},
 	{
-		"code": 10,
+		"value": 10,
 		"title": "Fintech"
 	},
 	{
-		"code": 14,
+		"value": 14,
 		"title": "Commodities Trader"
 	},
 	{
-		"code": 16,
+		"value": 16,
 		"title": "Other"
 	}
 ];
 
 const subindustries_business = [
 	{
-		"code": 1.0,
+		"value": 1.0,
 		"title": "Broker Rep"
 	},
 	{
-		"code": 1.1,
+		"value": 1.1,
 		"title": "Funding Portal"
 	},
 	{
-		"code": 1.2,
+		"value": 1.2,
 		"title": "Capital Acquisition Broker"
 	},
 	{
-		"code": 1.3,
+		"value": 1.3,
 		"title": "Limited Purpose Broker Dealer"
 	},
 	{
-		"code": 1.4,
+		"value": 1.4,
 		"title": "Broker Dealer"
 	},
 	{
-		"code": 1.5,
+		"value": 1.5,
 		"title": "Alternative Trading System/Exchange"
 	},
 	{
-		"code": 2.0,
+		"value": 2.0,
 		"title": "Investment Banking"
 	},
 	{
-		"code": 2.1,
+		"value": 2.1,
 		"title": "Retail/Commercial Banking"
 	},
 	{
-		"code": 4.0,
+		"value": 4.0,
 		"title": "Provide advice to separately managed accounts (e.g. individuals)"
 	},
 	{
-		"code": 4.1,
+		"value": 4.1,
 		"title": "Provide advice to mutual funds"
 	},
 	{
-		"code": 4.2,
+		"value": 4.2,
 		"title": "Provide advice to hedge funds"
 	},
 	{
-		"code": 4.3,
+		"value": 4.3,
 		"title": "Provide advice to private equity funds"
 	},
 	{
-		"code": 4.4,
+		"value": 4.4,
 		"title": "Provide advice to venture capital funds"
 	},
 	{
-		"code": 4.5,
+		"value": 4.5,
 		"title": "Provide advice to ERISA accounts"
 	},
 	{
-		"code": 4.6,
+		"value": 4.6,
 		"title": "Provide advice to Taft-Hartley accounts"
 	},
 	{
-		"code": 4.7,
+		"value": 4.7,
 		"title": "Provide advice to municipalities or on municipal securities"
 	},
 	{
-		"code": 14.0,
+		"value": 14.0,
 		"title": "Commodities Pool Operator/Commodities Trading Adviser (exempt and non-exempt)"
 	},
 	{
-		"code": 14.1,
+		"value": 14.1,
 		"title": "Futures Commission Merchant"
 	},
 	{
-		"code": 14.2,
+		"value": 14.2,
 		"title": "Retail Foreign Exchange Dealer"
 	},
 	{
-		"code": 14.3,
+		"value": 14.3,
 		"title": "Introducing Broker"
 	},
 	{
-		"code": 14.4,
+		"value": 14.4,
 		"title": "Swap Dealer"
 	}
 ];
 
 const subindustries_specialist = [
 	{
-		"code": 2.0,
+		"value": 2.0,
 		"title": "AML/KYC (Banking)"
 	},
 	{
-		"code": 1.0,
+		"value": 1.0,
 		"title": "Funding portals"
 	},
 	{
-		"code": 1.1,
+		"value": 1.1,
 		"title": "ATS/Exchanges"
 	},
 	{
-		"code": 1.2,
+		"value": 1.2,
 		"title": "Limited purpose broker dealers"
 	},
 	{
-		"code": 1.3,
+		"value": 1.3,
 		"title": "Capital acquisition brokers"
 	},
 	{
-		"code": 1.4,
+		"value": 1.4,
 		"title": "Broker dealers"
 	},
 	{
-		"code": 1.5,
+		"value": 1.5,
 		"title": "AML/KYC (Broker Dealer)"
 	},
 	{
-		"code": 4.0,
+		"value": 4.0,
 		"title": "ERISA"
 	},
 	{
-		"code": 4.1,
+		"value": 4.1,
 		"title": "GIPS"
 	},
 	{
-		"code": 4.2,
+		"value": 4.2,
 		"title": "Mutual funds"
 	},
 	{
-		"code": 4.3,
+		"value": 4.3,
 		"title": "Business development corporations"
 	},
 	{
-		"code": 4.4,
+		"value": 4.4,
 		"title": "Private equity funds"
 	},
 	{
-		"code": 4.5,
+		"value": 4.5,
 		"title": "Hedge funds"
 	},
 	{
-		"code": 4.6,
+		"value": 4.6,
 		"title": "Venture capital funds"
 	},
 	{
-		"code": 4.7,
+		"value": 4.7,
 		"title": "Municipal advisors"
 	},
 	{
-		"code": 4.8,
+		"value": 4.8,
 		"title": "Financial Planners"
 	},
 	{
-		"code": 14.0,
+		"value": 14.0,
 		"title": "CPO/CTAs (exempt and non-exempt)"
 	},
 	{
-		"code": 14.1,
+		"value": 14.1,
 		"title": "Futures Commission Merchant"
 	},
 	{
-		"code": 14.2,
+		"value": 14.2,
 		"title": "Retail Foreign Exchange Dealer"
 	},
 	{
-		"code": 14.3,
+		"value": 14.3,
 		"title": "Introducing Broker"
 	},
 	{
-		"code": 14.4,
+		"value": 14.4,
 		"title": "Swap Dealer"
 	}
 ];

@@ -1,17 +1,34 @@
 <template lang="pug">
-c-card(title="Constructor")
+c-card(title="Constructor" :maxWidth="700")
 	template(#content)
-		components-constructor
+		component-constructor
 			template(#controls)
-				//- c-switcher.col-full(id="fields-types" label="Type:" :options="fieldsOptions.types" v-model="selectedOptions.type")
-				
-				
-				
+				c-switcher.col-full(id="field-types" label="Type" :options="options.types" v-model="selectedOptions.type" fullwidth)
+				c-switcher.col-full(id="field-sizes" label="Size" :options="options.sizes" v-model="selectedOptions.size" fullwidth)
+				c-field.col-full(type="text" label="Label" v-model="selectedOptions.label")
+				//- c-select.col-1(label="Icon" :data="icons" v-model="selectedOptions.iconL")
+				c-field.col-6(type="text" label="Placeholder" v-model="selectedOptions.placeholder")
+				//- c-select.col-1(label="Icon" :data="icons" v-model="selectedOptions.iconR")
+				c-checkers(label="Options" :options="options.boolean" v-model="selectedBoolean")
+			template(#code)
+				code {{code}}
+			template(#preview)
+				.preview-item(v-for="state in fieldsStates")
+					.state-label {{state.label}}:
+					c-field(v-bind="selectedOptions" :class="state.class")
+			//- template(#code)
+			//- 	code {{code}}
+
+//- c-card(title="Constructor")
+	template(#content)
+		component-constructor
+			template(#controls)
+				c-switcher.col-full(id="fields-types" label="Type:" :options="fieldsOptions.types" v-model="selectedOptions.type")
 				c-field.col-full(type="text" label="Input Label:" v-model="selectedOptions.label")
-				c-select.col-1(label="Left Icon:" :data="icons" v-model="selectedOptions.icons[0]" iconify)
+				//- c-select.col-1(label="Left Icon:" :data="icons" v-model="selectedOptions.icons[0]" iconify)
 				c-field.col-4(type="text" label="Placeholder:" v-model="selectedOptions.placeholder")
-				c-select.col-1(label="Left Icon:" :data="icons" v-model="selectedOptions.icons[1]" iconify)
-				c-toggle.col-full(title="Required" v-model="selectedOptions.required")
+				//- c-select.col-1(label="Left Icon:" :data="icons" v-model="selectedOptions.icons[1]" iconify)
+				//- c-checkbox.col-full(label="Required" v-model="selectedOptions.required")
 
 
 			template(#preview)
@@ -26,19 +43,19 @@ c-card(title="Constructor")
 
 
 <script>
-import { reactive } from "vue"
+import { ref, reactive, computed } from "vue"
 import cSwitcher from "~/components/Inputs/cSwitcher.vue"
+import cCheckers from "~/components/Inputs/cCheckers.vue"
 import cSelect from "~/components/Inputs/cSelect.vue"
-import cToggle from "~/components/Inputs/cToggle.vue"
-import ComponentsConstructor from "~/_devmode/misc/ComponentsConstructor.vue"
+import ComponentConstructor from "~/_devmode/misc/ComponentConstructor.vue"
 import { icons } from "~/_devmode/misc/iconsList.js"
 
 export default {
 	components: {
 		cSwitcher,
+		cCheckers,
 		cSelect,
-		cToggle,
-		ComponentsConstructor
+		ComponentConstructor
 	},
 	setup () {
 		const fieldsStates = [
@@ -49,7 +66,7 @@ export default {
 			{ label: "Disabled", class: "disabled" },
 		]
 		
-		const fieldsOptions = {
+		const options = {
 			types: [
 				{title: "Text", value: "text"},
 				{title: "Email", value: "email"},
@@ -61,18 +78,32 @@ export default {
 				{title: "Date", value: "date"},
 				{title: "Time", value: "time"}
 			],
+			sizes: [
+				{title: "Tiny", value: "tiny"},
+				{title: "Small", value: "small"},
+				{title: "Regular", value: "regular"},
+				{title: "Big", value: "big"},
+				{title: "Huge", value: "huge"}
+			],
 			icon: [
 				{title: "No icon", value: false},
 			],
+			boolean: [
+				{title: "Icon", value: "icon"},
+				{title: "Required", value: "required"},
+				{title: "Fullwidth", value: "fullwidth"}
+			]
 		}
 		const selectedOptions = reactive({
-			label: "Input Label:",
 			type: "text",
-			icons: ["", ""],
+			label: "Label",
 			placeholder: "Placeholder",
-			required: false,
-			fullwidth: true
+			iconL: "",
+			iconR: "",
+			size: "regular"
 		})
+		const selectedBoolean = ref(['required'])
+
 		const fields = [
 			{type: "text", placeholder: "John Smith", label: "Text:", required: true},
 			{type: "email", placeholder: "john.smith@email.com", label: "Email:", required: true},
@@ -85,12 +116,26 @@ export default {
 			{type: "time", placeholder: "", label: "Time:"},
 			{type: "textarea", placeholder: "", label: "Textarea:"}
 		]
+
+		const code = computed(() => {
+			let type = selectedOptions.type !== 'text' ? `type="${selectedOptions.type}"` : ""
+			let label = selectedOptions.label ? `label="${selectedOptions.label}"` : ""
+			let placeholder = selectedOptions.placeholder ? `placeholder="${selectedOptions.placeholder}"` : ""
+			let size = selectedOptions.size !== 'regular' ? `size="${selectedOptions.size}"` : ""
+			let iconL = selectedOptions.iconL ? `iconL="${selectedOptions.iconL}"` : ""
+			let iconR = selectedOptions.iconL ? `iconR="${selectedOptions.iconR}"` : ""
+			let options = selectedBoolean.value.join(" ")
+			return `c-field(${type} ${label} ${placeholder} ${size} ${iconL} ${iconR} ${options})`
+		})
+
 		return {
 			fieldsStates,
-			fieldsOptions,
+			options,
 			selectedOptions,
+			selectedBoolean,
 			fields,
-			icons
+			icons,
+			code
 		};
 	}
 };
@@ -98,6 +143,8 @@ export default {
 
 
 <style lang="stylus" scoped>
+.preview-item
+	flex: 1 0 100%
 .fields-container
 	display: flex
 	flex-direction: column

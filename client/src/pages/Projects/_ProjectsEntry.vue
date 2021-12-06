@@ -2,7 +2,7 @@
 documents-container(title="Projects")
 
 	template(#controls)
-		c-button(title="Post Job")
+		c-button(title="Post Job" @click="postJob()")
 		c-button-modal(title="New Project" modalTitle="New Project" type="primary")
 			template(#content)
 				c-field.col-full(label="Project Name" v-model="newProject.title" required)
@@ -41,6 +41,8 @@ export default {
 			}
 		];
 
+
+		const postJob = () => router.push({ "name": "ProjectPost" });
 
 		const newProject = ref({
 			"title": "",
@@ -93,6 +95,7 @@ export default {
 
 		return {
 			tabs,
+			postJob,
 			newProject,
 			createProject
 		};

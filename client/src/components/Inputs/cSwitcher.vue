@@ -1,13 +1,13 @@
 <template lang="pug">
-.c-input.c-switcher
-	.switcher-label(v-if="label") {{ label }}
-	.switchers
+.c-input.c-switcher(:class="{fullwidth}")
+	.c-switcher-label(v-if="label") {{ label }}:
+	.c-switcher-items
 		label.switch(v-for="option in options" :title="option.tooltip")
 			input(type="radio" :name="`radio_group_${id}`" :checked="checked(option)" @click="update(option)")
 			.option
-				icon(v-if="option.icons && option.icons[0]" :name="option.icons[0]")
+				icon(v-if="option.iconL" :name="option.iconL")
 				.title(v-if="option.title") {{option.title}}
-				icon(v-if="option.icons && option.icons[1]" :name="option.icons[1]")
+				icon(v-if="option.iconR" :name="option.iconR")
 </template>
 
 
@@ -24,20 +24,21 @@ export default {
 		},
 		"options": {
 			"type": Array,
-			"default": [
+			"default": () => [
 			]
 		},
 		"modelValue": {
 			"type": String,
 			"default": ""
-		}
+		},
+		"fullwidth": Boolean
 	},
 	"emits": [
 		"update:modelValue"
 	],
 	setup ( props, context ) {
-		const checked = option => props.modelValue === option.key;
-		const update = option => context.emit( "update:modelValue", option.key );
+		const checked = option => props.modelValue === option.value;
+		const update = option => context.emit( "update:modelValue", option.value );
 		return {
 			checked,
 			update
@@ -49,11 +50,11 @@ export default {
 
 <style lang="stylus" scoped>
 .c-switcher
-	.switcher-label
+	.c-switcher-label
 		font-size: 0.8em
 		margin-bottom: 0.2em
 		color: #666
-	.switchers
+	.c-switcher-items
 		font-size: 0.9em
 		line-height: 1
 		display: flex
@@ -90,10 +91,14 @@ export default {
 				+ svg.icon
 					margin-left: 0.7em
 		input:checked + .option
-			background: #444
+			background: #1F80C1
 			color: #fff
 			svg.icon
 				fill: #fff
 		+ .switch
 			border-left: 1px solid var(--c-border)
+	&.fullwidth
+		width: 100%
+		.c-switcher-items
+			width: 100%
 </style>

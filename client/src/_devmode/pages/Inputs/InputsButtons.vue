@@ -1,37 +1,41 @@
 <template lang="pug">
-c-card(title="Constructor")
+c-card(title="Constructor" :maxWidth="700")
 	template(#content)
-		components-constructor
-			template(#preview)
-				template(v-for="state in buttonsStates")
-					.state-label {{state.label}}
-					c-button(v-bind="selectedOptions" :class="state.class" devmode)
+		component-constructor
 			template(#controls)
-				c-switcher.col-full(id="button-types" label="Type:" :options="buttonOptions.types" v-model="selectedOptions.type")
-				c-switcher.col-full(id="button-sizes" label="Size:" :options="buttonOptions.sizes" v-model="selectedOptions.size")
-				c-select.col-1(label="Left Icon:" :data="icons" v-model="selectedOptions.icons[0]" iconify)
-				c-field.col-4(type="text" label="Title:" v-model="selectedOptions.title")
-				c-select.col-1(label="Right Icon:" :data="icons" v-model="selectedOptions.icons[1]" iconify)
-				c-toggle.col-full(title="Full Width" v-model="buttonOptions.fullwidth")
+				c-switcher.col-full(id="button-types" label="Type" :options="options.types" v-model="selectedOptions.type" fullwidth)
+				c-switcher.col-full(id="button-sizes" label="Size" :options="options.sizes" v-model="selectedOptions.size" fullwidth)
+				//- c-select.col-1(label="Icon" :data="icons" v-model="selectedOptions.iconL")
+				c-field.col-3(type="text" label="Title" v-model="selectedOptions.title")
+				c-field.col-3(type="text" label="Second Title" v-model="selectedOptions.secondTitle")
+				//- c-select.col-1(label="Icon" :data="icons" v-model="selectedOptions.iconR")
+				c-checkers(label="Options" :options="options.boolean" v-model="selectedBoolean")
 			template(#code)
-				code c-button(title="{{selectedOptions.title}}" type="{{selectedOptions.type}}" size="{{selectedOptions.size}}" icons='{{selectedOptions.icons}}')
+				code {{code}}
+			template(#preview)
+				.preview-item(v-for="state in buttonsStates")
+					.state-label {{state.label}}:
+					c-button(v-bind="selectedOptions" :class="state.class" devmode)
+			
 
-c-card.buttons-container(title="Collection")
+c-card.buttons-container(title="Collection" :maxWidth="700")
 	template(#content)
-		c-button(v-for="button in buttons" v-bind="button" devmode)
+		c-button(v-for="button in buttons" v-bind="button")
 </template>
 
 
 <script>
-import { reactive } from "vue"
-import ComponentsConstructor from "~/_devmode/misc/ComponentsConstructor.vue"
-import cSwitcher from "~/components/Inputs/cSwitcher.vue"
-import cToggle from "~/components/Inputs/cToggle.vue"
-import cSelect from "~/components/Inputs/cSelect.vue"
-import { icons } from "~/_devmode/misc/iconsList.js"
+import { ref, reactive, computed } from "vue";
+import ComponentConstructor from "~/_devmode/misc/ComponentConstructor.vue";
+import cSwitcher from "~/components/Inputs/cSwitcher.vue";
+import cCheckers from "~/components/Inputs/cCheckers.vue";
+import cSelect from "~/components/Inputs/cSelect.vue";
+import { icons } from "~/_devmode/misc/iconsList.js";
+
 export default {
-	components: { ComponentsConstructor, cSwitcher, cToggle, cSelect },
+	components: { ComponentConstructor, cSwitcher, cCheckers, cSelect },
 	setup() {
+		
 		const buttonsStates = [
 			{ label: "Default", class: "" },
 			{ label: "Hovered", class: "hovered" },
@@ -39,51 +43,64 @@ export default {
 			{ label: "Active", class: "active" },
 			{ label: "Disabled", class: "disabled" },
 		]
+		
 		const buttons = [
-			{ title: "Default button"},
-			{ title: "Primary button", type: "primary"},
-			{ title: "Accent button", type: "accent"},
-			{ title: "Transparent button", type: "transparent"},
-			{ title: "Link button", type: "link"},
-			{ title: "Button with icon", type: "primary", icon: "components"},
-			{ title: "primary", icon: "components"},
-			{ title: "transparent", icon: "components"},
-			{ type: "icon", icon: "components" },
+			{ title: "Default"},
+			{ title: "Primary", type: "primary"},
+			{ title: "Accent", type: "accent"},
+			{ title: "Transparent", type: "transparent"},
+			{ title: "Link", type: "link"},
+			{ title: "Icon", type: "primary", iconL: "components"},
 			{ title: "Full width button", fullwidth: true },
 		]
-		const buttonOptions = {
+		
+		const options = {
 			types: [
-				{title: "Default", key: "default"},
-				{title: "Primary", key: "primary"},
-				{title: "Accent", key: "accent"},
-				{title: "Transparent", key: "transparent"},
-				{title: "Link", key: "link"},
-				// {title: "Icon", key: "icon"}
+				{title: "Default", value: "default"},
+				{title: "Primary", value: "primary"},
+				{title: "Accent", value: "accent"},
+				{title: "Transparent", value: "transparent"},
+				{title: "Link", value: "link"}
 			],
 			sizes: [
-				{title: "Tiny", key: "tiny"},
-				{title: "Small", key: "small"},
-				{title: "Regular", key: "regular"},
-				{title: "Big", key: "big"},
-				{title: "Huge", key: "huge"}
+				{title: "Tiny", value: "tiny"},
+				{title: "Small", value: "small"},
+				{title: "Regular", value: "regular"},
+				{title: "Big", value: "big"},
+				{title: "Huge", value: "huge"}
 			],
-			
-			width: [
-				{title: "Content", value: ""},
-				{title: "Full width", value: "full"}
+			boolean: [
+				{title: "Fullwidth", value: "fullwidth"}
 			]
 		}
+		
 		const selectedOptions = reactive({
 			title: "Button",
+			secondTitle: "",
 			type: "default",
 			size: "regular",
-			icons: ["", ""],
-			fullwidth: false
+			iconL: "",
+			iconR: ""
 		})
-		return { buttons, icons, buttonOptions, buttonsStates, selectedOptions }
+
+		const selectedBoolean = ref([])
+
+		const code = computed(() => {
+			let title = selectedOptions.title ? `title="${selectedOptions.title}"` : ""
+			let secondTitle = selectedOptions.secondTitle ? `title="${selectedOptions.secondTitle}"` : ""
+			let type = selectedOptions.type !== 'default' ? `type="${selectedOptions.type}"` : ""
+			let size = selectedOptions.size !== 'regular' ? `size="${selectedOptions.size}"` : ""
+			let iconL = selectedOptions.iconL ? `iconL="${selectedOptions.iconL}"` : ""
+			let iconR = selectedOptions.iconL ? `iconR="${selectedOptions.iconR}"` : ""
+			let options = selectedBoolean.value.join(" ")
+			return `c-button(${title} ${secondTitle} ${type} ${size} ${iconL} ${iconR} ${options})`
+		})
+
+		return { buttons, icons, options, buttonsStates, selectedOptions, selectedBoolean, code }
 	}
 };
 </script>
+
 
 <style lang="stylus" scoped>
 .buttons-container

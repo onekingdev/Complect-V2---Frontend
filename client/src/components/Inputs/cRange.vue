@@ -1,19 +1,22 @@
 <template lang="pug">
 .c-input.c-range
-	icon(v-if="icons" :name="icons[0]" @click="stepValue(-1)")
+	icon(v-if="iconL" :name="iconL" @click="stepValue(-1)")
 	input(type="range" :min="min" :max="max" step=1 :value="modelValue" @input="updateValue")
-	icon(v-if="icons" :name="icons[1]" @click="stepValue(1)")
+	icon(v-if="iconR" :name="iconR" @click="stepValue(1)")
 </template>
 
 
 <script>
 export default {
 	"props": {
-		"icons": {
-			"type": Array,
-			"default": () => [
-				false, false
-			],
+		"iconL": {
+			"type": String,
+			"default": "",
+			"required": false
+		},
+		"iconR": {
+			"type": String,
+			"default": "",
 			"required": false
 		},
 		"min": {

@@ -67,6 +67,7 @@ export default {
 	user-select: none
 	display: flex
 	flex-direction: column
+
 	.collapse-sidebar svg.icon
 		transform: rotate(180deg)
 
@@ -78,7 +79,7 @@ export default {
 	.section
 		.links
 			padding-bottom: 2em
-			max-height: 10em
+			max-height: 15em
 			overflow: hidden
 			transition: max-height var(--fx-duration-short, .15s) ease-in-out, padding var(--fx-duration-short, .15s) ease-in-out
 		&.section-collapsed

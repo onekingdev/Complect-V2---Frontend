@@ -3,7 +3,7 @@
 	h1
 		b {{$locale("Welcome")}},&nbsp;
 		| {{userProfile.first_name}} {{userProfile.last_name}}
-	c-card(title="November")
+	c-card(title="December")
 		template(#content)
 			Calendar
 	c-card(title="Upcoming")

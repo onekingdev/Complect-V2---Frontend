@@ -11,16 +11,58 @@ export default {
 		const { documents, documentsToStore, clearStore } = useData( "projects" );
 
 		const options = {
-			"searchable": true,
-			"columns": {
-				"title": "Name",
+			// "searchable": true,
+			"columns": [
+				{
+					"title": "Name",
+					"key": "title",
+					"type": "title",
+					"meta": { "link": "ProjectDetail" }
+				},
+				{
+					"title": "Collaborators",
+					"key": "collaborators",
+					"type": "collaborators"
+				},
+				{
+					"title": "Tasks Left",
+					"key": "tasks",
+					"type": "tasks",
+					"align": "right"
+				},
+				{
+					"title": "Cost",
+					"key": "fixed_budget",
+					"type": "price",
+					"align": "right"
+				},
+				{
+					"title": "Status",
+					"key": "status",
+					"type": "status",
+					"align": "right"
+				},
+				{
+					"title": "Start Date",
+					"key": "starts_at",
+					"type": "date",
+					"align": "right"
+				},
+				{
+					"title": "End Date",
+					"key": "ends_at",
+					"type": "date",
+					"align": "right",
+					"meta": { "overdueWarning": true }
+				}
+				// "title": "Name",
 				// "collaborators": "Collaborators",
 				// "tasks": "Tasks Left",
-				"fixed_budget": "Cost",
-				"status": "Status",
-				"starts_at": "Start Date",
-				"ends_at": "End Date"
-			}
+				// "fixed_budget": "Cost",
+				// "status": "Status",
+				// "starts_at": "Start Date",
+				// "ends_at": "End Date"
+			]
 		};
 
 		const filters = [

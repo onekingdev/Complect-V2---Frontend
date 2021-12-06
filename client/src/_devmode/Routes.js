@@ -2,6 +2,9 @@
 const devInputsEntry = () => import( "~/_devmode/pages/Inputs/InputsEntry.vue" );
 const devInputsButtons = () => import( "~/_devmode/pages/Inputs/InputsButtons.vue" );
 const devInputsFields = () => import( "~/_devmode/pages/Inputs/InputsFields.vue" );
+const devInputsSelect = () => import( "~/_devmode/pages/Inputs/InputsSelect.vue" );
+const devInputsCheckbox = () => import( "~/_devmode/pages/Inputs/InputsCheckbox.vue" );
+
 const devInputsExtra = () => import( "~/_devmode/pages/Inputs/InputsExtra.vue" );
 
 const devDataEntry = () => import( "~/_devmode/pages/Data/DataEntry.vue" );
@@ -13,21 +16,34 @@ const devAdditionalBanners = () => import( "~/_devmode/pages/Additional/Addition
 const devAdditionalAvatars = () => import( "~/_devmode/pages/Additional/AdditionalAvatars.vue" );
 const devAdditionalModals = () => import( "~/_devmode/pages/Additional/AdditionalModals.vue" );
 
+const devTableEntry = () => import( "~/_devmode/pages/Table/TableEntry.vue" );
+const devTableGeneral = () => import( "~/_devmode/pages/Table/TableGeneral.vue" );
+
 
 const devRoutes = [{
 	path: "/components/inputs",
 	component: devInputsEntry,
-	meta: { title: "Inputs" },
+	meta: { title: "Inputs Components" },
 	children: [{
 		path: "buttons",
-		meta: { title: "Buttons" },
+		meta: { title: "Button Component" },
 		name: "devInputsButtons",
 		component: devInputsButtons
 	}, {
 		path: "fields",
-		meta: { title: "Fields" },
+		meta: { title: "Field Component" },
 		name: "devInputsFields",
 		component: devInputsFields
+	}, {
+		path: "select",
+		meta: { title: "Select Component" },
+		name: "devInputsSelect",
+		component: devInputsSelect
+	}, {
+		path: "checkbox",
+		meta: { title: "Checkbox Component" },
+		name: "devInputsCheckbox",
+		component: devInputsCheckbox
 	}, {
 		path: "extra",
 		meta: { title: "Extra" },
@@ -38,6 +54,18 @@ const devRoutes = [{
 		redirect: { name: "devInputsButtons" },
 	}]
 }, {
+	path: "/components/table",
+	component: devTableEntry,
+	meta: { title: "Table Component" },
+	children: [{
+		path: "general",
+		name: "devTableGeneral",
+		component: devTableGeneral
+	}, {
+		path: "",
+		redirect: { name: "devTableGeneral" },
+	}]
+},{
 		path: "/components/data",
 		component: devDataEntry,
 		meta: { title: "Data" },

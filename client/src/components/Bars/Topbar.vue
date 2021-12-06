@@ -9,7 +9,7 @@
 			a Reports
 		.buttons
 			c-button(title="Find an Expert" type="accent")
-			c-button(:icons=["bell"] type="transparent")
+			c-button(iconL="bell" type="transparent")
 	.user-block(@click="toggleUserDropDown()" ref="userDropDown" :class="{expanded: userDropDownExpanded}")
 		c-avatar(:avatar="userProfile.avatar" :firstName="userProfile.first_name" :lastName="userProfile.last_name" size="small")
 		.name {{userProfile.first_name}} {{userProfile.last_name}}
@@ -45,6 +45,7 @@ export default {
 	}
 };
 </script>
+
 
 <style lang="stylus" scoped>
 .bar.topbar

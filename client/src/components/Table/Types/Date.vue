@@ -1,6 +1,6 @@
 <template lang="pug">
-.cell-date
-	//- icon(v-if="isOverdue" name="warning")
+.cell-date(:class="{overdue: isOverdue}")
+	icon(v-if="isOverdue" name="warning")
 	| {{ formatDate(data) }}
 </template>
 
@@ -15,10 +15,17 @@ export default {
 				Number, String
 			],
 			"required": true
+		},
+		"meta": {
+			"type": Object,
+			"default": () => {}
 		}
 	},
 	setup ( props ) {
-		const isOverdue = computed( () => Date.now() > props.data );
+		const isOverdue = computed( () => {
+			if ( !props.meta || !props.meta.overdueWarning ) return false;
+			return Date.now() > props.data;
+		});
 		return {
 			formatDate,
 			isOverdue
@@ -31,7 +38,8 @@ export default {
 .cell-date
 	display: flex
 	align-items: center
-	justify-content: flex-end
 	svg.icon
 		margin-right: 0.5em
+	&.overdue
+		color: #ad841d
 </style>

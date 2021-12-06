@@ -7,6 +7,33 @@
 	height: 100%
 
 
+// Form
+form.form-container
+	display: flex
+	flex-wrap: wrap
+	gap: 1em
+	> *
+		flex: 1 0 100%
+	.fl-full
+		flex: 1 0 100%
+
+.grid-6
+	display: grid
+	grid-template-columns: repeat(6, auto)
+	// align-items: flex-end
+	gap: 1em
+	> *
+		grid-column: 1 / -1
+	.col-5
+		grid-column: span 5 !important
+	.col-4
+		grid-column: span 4 !important
+	.col-3
+		grid-column: span 3 !important
+	.col-2
+		grid-column: span 2 !important
+	.col-1
+		grid-column: span 1 !important
 
 // Grid
 .col-full

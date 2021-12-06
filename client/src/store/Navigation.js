@@ -40,9 +40,12 @@ const sidebarNavigation = [
 			{
 				"title": "Inputs",
 				"view": "devInputsButtons"
+			// }, {
+			// 	"title": "Data",
+			// 	"view": "devDataModel"
 			}, {
-				"title": "Data",
-				"view": "devDataModel"
+				"title": "Table",
+				"view": "devTableGeneral"
 			}, {
 				"title": "Additional",
 				"view": "devAdditionalToast"

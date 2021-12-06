@@ -13,10 +13,10 @@
 <script>
 import { useRouter } from "vue-router";
 export default {
-	setup() {
+	setup () {
 		const router = useRouter();
-		const goToSignIn = () => router.push({"name": "AuthSignIn"});
-		return { goToSignIn }
+		const goToSignIn = () => router.push({ "name": "AuthSignIn" });
+		return { goToSignIn };
 	}
 };
 </script>

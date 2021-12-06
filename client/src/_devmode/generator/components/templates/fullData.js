@@ -13,7 +13,7 @@ import { shuffleArray, randomNumber, randomElement } from "../atoms/utils.js";
 
 const quantity = {
 	businesses: 10,
-	specialists: 10,
+	specialists: 30,
 	projects: 50,
 	tasks: 50,
 	reviews: 5,
@@ -62,12 +62,16 @@ export default function full () {
 				last_name: collaborators[0].last_name,
 				avatar: collaborators[0].avatar,
 			}
-			for ( let i = 1; i < randomNumber(0,5); i++ ) project.collaborators.push({
+			for ( let i = 1; i < randomNumber(0,10); i++ ) project.collaborators.push({
 				_id: collaborators[i]._id,
 				first_name: collaborators[i].first_name,
 				last_name: collaborators[i].last_name,
 				avatar: collaborators[i].avatar,
 				user_role: randomElement(["basic", "trusted", "admin"])
+			});
+
+			for ( let i = 1; i < randomNumber(0,5); i++ ) project.tasks.push({
+				_id: "123"
 			});
 		});
 

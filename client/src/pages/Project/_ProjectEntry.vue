@@ -1,7 +1,7 @@
 <template lang="pug">
 document-container(section="Projects" :title="document.title" owner="Company Name")
 	template(#add-controls)
-		c-checkbox(title="Show on Calendar")
+		c-checkbox(label="Show on Calendar")
 
 	template(#controls)
 		c-button(title="Post Project")
