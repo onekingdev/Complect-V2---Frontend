@@ -1,7 +1,7 @@
 <template lang="pug">
 .cell-title
 	template(v-if="meta && meta.checkbox")
-		c-checkbox(type="done")
+		c-checkbox(type="round")
 	template(v-if="meta && meta.link")
 		router-link(:to="{name: meta.link, params: {id: id}}") {{data}}
 	template(v-else) {{data}}

@@ -5,7 +5,7 @@ teleport(to="#app-container")
 			.c-modal-window(ref="modalWindow")
 				.c-modal-header
 					.title {{title}}
-					c-button(type="icon" icon="close" size="small" @click="closeModal()")
+					c-button(type="icon" iconL="close" size="small" @click="closeModal()")
 				.c-modal-content(v-if="$slots.content")
 					slot(name="content")
 				.c-modal-footer(v-if="$slots.footer")

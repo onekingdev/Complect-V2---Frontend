@@ -3,7 +3,7 @@
 	.code(v-if="code") {{code}}
 	h1(v-if="title") {{title}}
 	p(v-if="message") {{message}}
-	c-button(v-if="action" icon="chevron-left" label="Go Back" type="primary")
+	c-button(v-if="action" iconL="chevron-left" label="Go Back" type="primary")
 </template>
 
 

@@ -41,6 +41,14 @@ const _ReviewsEntry = () => import( "~/pages/Reviews/_ReviewsEntry.vue" );
 const _RisksEntry = () => import( "~/pages/Risks/_RisksEntry.vue" );
 
 const _SettingsEntry = () => import( "~/pages/Settings/_SettingsEntry.vue" );
+const SettingsGeneral = () => import( "~/pages/Settings/SettingsGeneral.vue" );
+const SettingsUsers = () => import( "~/pages/Settings/SettingsUsers.vue" );
+const SettingsRoles = () => import( "~/pages/Settings/SettingsRoles.vue" );
+const SettingsSecurity = () => import( "~/pages/Settings/SettingsSecurity.vue" );
+const SettingsSubscriptions = () => import( "~/pages/Settings/SettingsSubscriptions.vue" );
+const SettingsBilling = () => import( "~/pages/Settings/SettingsBilling.vue" );
+
+
 const _ProfileEntry = () => import( "~/pages/Profile/_ProfileEntry.vue" );
 
 
@@ -155,11 +163,11 @@ const routes = [
 						"component": PoliciesOverview
 					}, {
 						"path": "archive",
-						"name": "Policies Archive",
+						"name": "PoliciesArchive",
 						"component": PoliciesArchive
 					}, {
 						"path": "setup",
-						"name": "Policies Setup",
+						"name": "PoliciesSetup",
 						"component": PoliciesSetup
 					}
 				]
@@ -187,12 +195,53 @@ const routes = [
 			},
 			{
 				"path": "settings",
-				"name": "Settings",
 				"component": _SettingsEntry,
 				"meta": {
 					"title": "Settings",
 					"sidebar": false
-				}
+				},
+				"children": [
+					{
+						"path": "general",
+						"meta": { "title": "Settings - General" },
+						"name": "SettingsGeneral",
+						"component": SettingsGeneral
+					},
+					{
+						"path": "users",
+						"meta": { "title": "Settings - Users" },
+						"name": "SettingsUsers",
+						"component": SettingsUsers
+					},
+					{
+						"path": "roles",
+						"meta": { "title": "Settings - Roles" },
+						"name": "SettingsRoles",
+						"component": SettingsRoles
+					},
+					{
+						"path": "security",
+						"meta": { "title": "Settings - Security" },
+						"name": "SettingsSecurity",
+						"component": SettingsSecurity
+					},
+					{
+						"path": "subscriptions",
+						"meta": { "title": "Settings - Subscriptions" },
+						"name": "SettingsSubscriptions",
+						"component": SettingsSubscriptions
+					},
+					{
+						"path": "billing",
+						"meta": { "title": "Settings - Billing" },
+						"name": "SettingsBilling",
+						"component": SettingsBilling
+					},
+					{
+						"path": "",
+						"redirect": { "name": "SettingsGeneral" }
+					}
+				]
 			},
 			{
 				"path": "",

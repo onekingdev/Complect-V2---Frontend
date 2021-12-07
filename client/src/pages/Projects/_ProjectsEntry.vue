@@ -13,7 +13,7 @@ documents-container(title="Projects")
 				c-button(title="Create" type="primary" @click="createProject()")
 
 	template(#tabs)
-		router-link(v-for="(tab, index) in tabs" :key="index" :to="{name: tab.name}") {{ $locale(tab.title)}}
+		router-link(v-for="(tab, index) in tabs" :key="index" :to="{name: tab.routeName}") {{ $locale(tab.title)}}
 	template(#content)
 		router-view
 </template>
@@ -30,14 +30,14 @@ export default {
 		const { createDocuments } = useData( "projects" );
 		const tabs = [
 			{
-				"name": "ProjectsOverview",
-				"title": "My Projects"
+				"title": "My Projects",
+				"routeName": "ProjectsOverview"
 			}, {
-				"name": "ProjectsContacts",
-				"title": "Contacts"
+				"title": "Contacts",
+				"routeName": "ProjectsContacts"
 			}, {
-				"name": "ProjectsRatings",
-				"title": "Ratings and Reviews"
+				"title": "Ratings and Reviews",
+				"routeName": "ProjectsRatings"
 			}
 		];
 

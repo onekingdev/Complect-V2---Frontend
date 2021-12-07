@@ -78,11 +78,14 @@ export default {
 				gap: 2em
 				padding: 1em 2em 0
 				:deep(a)
-					color: #555
+					color: #343741
 					padding-bottom: 0.7em
-					&.router-link-exact-active
+					line-height: 1.2
+					&:hover
 						color: #000
-						box-shadow: inset 0 -4px 0 0 #fc0
+					&.router-link-exact-active
+						font-weight: bold
+						box-shadow: inset 0 -4px 0 0 var(--c-gold)
 			.controls
 				padding: 0 2em
 				display: flex

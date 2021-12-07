@@ -13,10 +13,10 @@ document-container(section="Projects" :title="document.title" owner="Company Nam
 					b Do you want to continue?
 			template(#footer)
 				c-button(title="Confirm" type="primary" @click="markAsComplete()")
-		c-button(type="icon" icon="close" size="small" @click="closeProject()")
+		c-button(type="icon" iconL="close" size="small" @click="closeProject()")
 
 	template(#tabs)
-		router-link(v-for="(tab, index) in tabs" :key="index" :to="{name: tab.name}") {{ $locale(tab.title)}}
+		router-link(v-for="(tab, index) in tabs" :key="index" :to="{name: tab.routeName}") {{ $locale(tab.title)}}
 	template(#navigation-controls)
 		c-dropdown(title="Actions")
 			c-button-modal(title="Edit" modalTitle="Edit Project" type="transparent")
@@ -53,17 +53,17 @@ export default {
 
 		const tabs = [
 			{
-				"name": "ProjectDetail",
-				"title": "Detail"
+				"title": "Detail",
+				"routeName": "ProjectDetail"
 			}, {
-				"name": "ProjectTasks",
-				"title": "Tasks"
+				"title": "Tasks",
+				"routeName": "ProjectTasks"
 			}, {
-				"name": "ProjectDocuments",
-				"title": "Documents"
+				"title": "Documents",
+				"routeName": "ProjectDocuments"
 			}, {
-				"name": "ProjectCollaborators",
-				"title": "Collaborators"
+				"title": "Collaborators",
+				"routeName": "ProjectCollaborators"
 			}
 		];
 

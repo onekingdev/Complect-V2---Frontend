@@ -3,7 +3,7 @@ documents-container(title="Policies and Procedures")
 	template(#controls)
 		c-button(title="New Policy" type="primary")
 	template(#tabs)
-		router-link(v-for="(tab, index) in tabs" :key="index" :to="{name: tab.name}") {{tab.title}}
+		router-link(v-for="(tab, index) in tabs" :key="index" :to="{name: tab.routeName}") {{tab.title}}
 	template(#content)
 		router-view
 </template>
@@ -14,14 +14,14 @@ export default {
 	setup () {
 		const tabs = [
 			{
-				"name": "Policies",
-				"title": "Policies"
+				"title": "Policies",
+				"routeName": "Policies"
 			}, {
-				"name": "Policies Archive",
-				"title": "Archive"
+				"title": "Archive",
+				"routeName": "PoliciesArchive"
 			}, {
-				"name": "Policies Setup",
-				"title": "Setup"
+				"title": "Setup",
+				"routeName": "PoliciesSetup"
 			}
 		];
 		return { tabs };

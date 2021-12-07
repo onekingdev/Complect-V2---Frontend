@@ -4,7 +4,7 @@
 	.content
 		.title {{ title || type }}
 		.message(v-if="message") {{ message }}
-	c-button(type="icon" icon="close" @click="deleteNotification(id)")
+	c-button(type="icon" iconL="close" @click="deleteNotification(id)")
 </template>
 
 

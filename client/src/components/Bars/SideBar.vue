@@ -12,7 +12,7 @@
 						.title {{$locale(link.title)}}
 
 			.menu-section.bordered
-				router-link.link-item(:to="{name: 'Settings'}")
+				router-link.link-item(:to="{name: 'SettingsGeneral'}")
 					icon(name="settings")
 					.title {{$locale('Settings')}}
 
@@ -106,9 +106,13 @@ $link-hover-color = #2F304F
 		transition: background var(--fx-input-transition-duration) ease-in-out
 		+ .link-item
 			margin-top: 0.5rem
+		.title
+			letter-spacing: 0.03em
 		&:hover, &.router-link-active
-			color: #fff
 			background: $link-hover-color
+		&.router-link-active
+			color: #fff
+			font-weight: bold
 	svg.icon
 		width: $icons-size
 		height: $icons-size

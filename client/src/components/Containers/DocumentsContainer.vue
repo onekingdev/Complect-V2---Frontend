@@ -47,13 +47,14 @@ export default {
 		gap: 2em
 		align-items: center
 		:deep(a)
-			color: #555
+			color: #343741
 			padding-bottom: 0.7em
+			line-height: 1.2
 			&:hover
 				color: #000
 			&.router-link-exact-active
-				color: #000
 				box-shadow: inset 0 -4px 0 0 var(--c-gold)
+				font-weight: bold
 	.container-content
 		padding: 2em
 		background: var(--c-bg-z2)
