@@ -2,7 +2,7 @@
 .c-input.c-switcher(:class="{fullwidth}")
 	.c-switcher-label(v-if="label") {{ label }}:
 	.c-switcher-items
-		label.switch(v-for="option in options" :title="option.tooltip")
+		label.switch(v-for="(option, index) in options" :key="index" :title="option.tooltip")
 			input(type="radio" :name="`radio_group_${id}`" :checked="checked(option)" @click="update(option)")
 			.option
 				icon(v-if="option.iconL" :name="option.iconL")

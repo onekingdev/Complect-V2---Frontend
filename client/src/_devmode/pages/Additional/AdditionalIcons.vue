@@ -10,7 +10,7 @@ c-card(title="Icons")
 				code {{code}}
 			template(#preview)
 				.icons-grid
-					.icon-cell(v-for="icon in filteredIcons" @click="selectIcon(icon.icon)")
+					.icon-cell(v-for="(icon, index) in filteredIcons" @click="selectIcon(icon.icon)" :key="index")
 						icon(:name="icon.icon" :size="selectedSize")
 						.title {{icon.icon}}
 </template>

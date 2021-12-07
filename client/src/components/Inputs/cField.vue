@@ -6,9 +6,11 @@ label.c-input.c-field(:class="{fullwidth}")
 		icon(v-if="iconL || icon" :name="iconL || type")
 		component.field-input(
 			:is="type"
+			:class="`field-input-${type}`"
 			:placeholder="placeholder"
 			:required="required"
-			v-model="modelValue")
+			:value="modelValue"
+			@input="$emit('update:modelValue', $event.target.value)")
 		icon(v-if="iconR" :name="iconR")
 </template>
 
@@ -59,7 +61,7 @@ export default {
 		},
 		"modelValue": {
 			"type": [
-				String, Array, Number
+				String, Number, Array, Object
 			],
 			"required": true
 		},

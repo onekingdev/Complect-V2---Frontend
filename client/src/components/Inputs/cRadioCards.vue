@@ -1,6 +1,6 @@
 <template lang="pug">
 .c-input.c-radio-card
-	label.radio-card(v-for="option in data" :title="option.tooltip")
+	label.radio-card(v-for="(option, index) in data" :title="option.tooltip" :key="index")
 		input(type="radio" :name="`radio_group_${id}`" :checked="checked(option)" @click="update(option)")
 		.option
 			icon.title-icon(v-if="option.icon" :name="option.icon")

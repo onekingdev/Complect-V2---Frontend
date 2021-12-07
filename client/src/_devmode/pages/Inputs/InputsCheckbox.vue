@@ -16,7 +16,7 @@ c-card(title="Constructor" :maxWidth="700")
 						h4 Mutliple values (array)
 						code.value
 							pre {{ codeArray }}
-						c-checkbox(v-for="checkbox in arrayCheckboxes" :label="checkbox.label" :type="selectedOptions.type" :value="checkbox.value" v-model="checkedValues" multiple)
+						c-checkbox(v-for="(checkbox, index) in arrayCheckboxes" :key="index" :label="checkbox.label" :type="selectedOptions.type" :value="checkbox.value" v-model="checkedValues" multiple)
 						code.value checkedValues: {{checkedValues}}
 
 c-card.buttons-container(title="Collection" :maxWidth="700")

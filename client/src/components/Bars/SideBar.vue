@@ -2,13 +2,13 @@
 .bar.sidebar.flex-column-container(v-if="renderSidebar" :class="{'sidebar-collapsed': appState.collapsedSidebar}")
 	.section-scrolled
 		nav.menu
-			.menu-section(v-for="(section, index) in sidebarNavigation" :class="{'section-collapsed': appState.collapsedSections[index]}")
+			.menu-section(v-for="(section, index) in sidebarNavigation" :key="index" :class="{'section-collapsed': appState.collapsedSections[index]}")
 				.header-item(@click="collapseSidebarSections(index)")
 					icon(v-if="section.icon" :name="section.icon")
 					.title {{$locale(section.title)}}
 					icon(name="chevron-up")
 				.section-links
-					router-link.link-item(v-for="link in section.links" :to="{name: link.view}")
+					router-link.link-item(v-for="(link, index) in section.links" :key="index" :to="{name: link.view}")
 						.title {{$locale(link.title)}}
 
 			.menu-section.bordered

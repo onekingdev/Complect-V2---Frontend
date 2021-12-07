@@ -1,7 +1,7 @@
 <template lang="pug">
 document-container(section="Components" title="Additional")
 	template(#tabs)
-		router-link(v-for="tab in tabs" :to="{name: tab.name}") {{tab.title}}
+		router-link(v-for="(tab, index) in tabs" :to="{name: tab.name}" :key="index") {{tab.title}}
 	template(#content)
 		router-view
 </template>

@@ -2,7 +2,7 @@
 .c-input.c-checkers(:class="{fullwidth}")
 	.c-checkers-label(v-if="label") {{ label }}:
 	.c-checkers-items
-		label.c-checker(v-for="option in options")
+		label.c-checker(v-for="(option, index) in options" :key="index")
 			input(type="checkbox" :checked="isChecked(option)" @change="updateModel(option, $event.target.checked)")
 			.box {{ option.title }}
 </template>

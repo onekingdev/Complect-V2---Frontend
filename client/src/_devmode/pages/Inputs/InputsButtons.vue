@@ -13,7 +13,7 @@ c-card(title="Constructor" :maxWidth="700")
 			template(#code)
 				code {{code}}
 			template(#preview)
-				.preview-item(v-for="state in buttonsStates")
+				.preview-item(v-for="(state, index) in buttonsStates" :key="index")
 					.state-label {{state.label}}:
 					c-button(v-bind="selectedOptions" :class="state.class")
 			
@@ -87,7 +87,7 @@ export default {
 
 		const code = computed(() => {
 			let title = selectedOptions.title ? `title="${selectedOptions.title}"` : ""
-			let secondTitle = selectedOptions.secondTitle ? `title="${selectedOptions.secondTitle}"` : ""
+			let secondTitle = selectedOptions.secondTitle ? `secondTitle="${selectedOptions.secondTitle}"` : ""
 			let type = selectedOptions.type !== 'default' ? `type="${selectedOptions.type}"` : ""
 			let size = selectedOptions.size !== 'regular' ? `size="${selectedOptions.size}"` : ""
 			let iconL = selectedOptions.iconL ? `iconL="${selectedOptions.iconL}"` : ""

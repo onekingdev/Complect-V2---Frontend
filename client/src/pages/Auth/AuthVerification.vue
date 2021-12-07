@@ -5,7 +5,7 @@ c-card
 		h3 We sent a 6 digit code to {{email}}. Please enter it below.
 		icon(name="mail")
 		.confirmation-code
-			input(v-for="i in 6" type="number" :ref="el => { if (el) inputs[i-1] = el }" v-model="numbers[i-1]" required)
+			input(v-for="i in 6" :key="i" type="number" :ref="el => { if (el) inputs[i-1] = el }" v-model="numbers[i-1]" required)
 		c-button(title="Submit" type="primary" @click="submitCode()" fullwidth)
 	template(#footer)
 		c-button(title="Send new code" type="link" @click="sendNewCode()")

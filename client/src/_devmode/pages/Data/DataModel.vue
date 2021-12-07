@@ -6,7 +6,7 @@ section.data-constructor
 		c-button(v-if="!form._id" title="Create" type="primary" @click="create()" :disabled="!form.title")
 		c-button(v-else title="Update" type="primary" @click="update()")
 	.data-constructor-documents(v-if="Object.keys(documents).length")
-		.document(v-for="document in documents" :title="document._id")
+		.document(v-for="document in documents" :title="document._id" :key="document._id")
 			.document-title(@click="select(document._id)") {{document.title}}
 			icon(name="close" @click="remove(document._id)")
 	.data-constructor-footer

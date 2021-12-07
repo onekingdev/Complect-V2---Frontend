@@ -13,32 +13,9 @@ c-card(title="Constructor" :maxWidth="700")
 			template(#code)
 				code {{code}}
 			template(#preview)
-				.preview-item(v-for="state in fieldsStates")
+				.preview-item(v-for="(state, index) in fieldsStates" :key="index")
 					.state-label {{state.label}}:
-					c-field(v-bind="selectedOptions" :class="state.class")
-			//- template(#code)
-			//- 	code {{code}}
-
-//- c-card(title="Constructor")
-	template(#content)
-		component-constructor
-			template(#controls)
-				c-switcher.col-full(id="fields-types" label="Type:" :options="fieldsOptions.types" v-model="selectedOptions.type")
-				c-field.col-full(type="text" label="Input Label:" v-model="selectedOptions.label")
-				//- c-select.col-1(label="Left Icon:" :data="icons" v-model="selectedOptions.icons[0]" iconify)
-				c-field.col-4(type="text" label="Placeholder:" v-model="selectedOptions.placeholder")
-				//- c-select.col-1(label="Left Icon:" :data="icons" v-model="selectedOptions.icons[1]" iconify)
-				//- c-checkbox.col-full(label="Required" v-model="selectedOptions.required")
-
-
-			template(#preview)
-				template(v-for="state in fieldsStates")
-					.state-label {{state.label}}
-					c-field(v-bind="selectedOptions" :class="state.class" fullwidth)
-			
-				
-	.fields-container
-		c-field(v-for="field in fields" v-bind="field")
+					c-field(v-bind="selectedOptions" v-model="inputValues[selectedOptions.type]" :class="state.class")
 </template>
 
 
@@ -58,6 +35,18 @@ export default {
 		ComponentConstructor
 	},
 	setup () {
+		const inputValues = reactive({
+			text: "",
+			email: "",
+			password: "",
+			search: "",
+			url: "",
+			number: "",
+			tel: "",
+			date: "",
+			time: ""
+
+		})
 		const fieldsStates = [
 			{ label: "Default", class: "" },
 			{ label: "Hovered", class: "hovered" },
@@ -135,7 +124,8 @@ export default {
 			selectedBoolean,
 			fields,
 			icons,
-			code
+			code,
+			inputValues
 		};
 	}
 };

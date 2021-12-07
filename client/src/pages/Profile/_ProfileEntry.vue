@@ -5,7 +5,8 @@
 			section(v-for="section in sections")
 				h3 {{section.title}}
 				component(
-					v-for="(input, key) in section.inputs"
+					v-for="(input, key, index) in section.inputs"
+					:key="index"
 					:is="input.component"
 					v-bind="input.props"
 					:modelValue="userProfile[key]"
@@ -35,7 +36,7 @@ const sections = [
 				"component": "c-field",
 				"props": {
 					"type": "text",
-					"label": "First Name:",
+					"label": "First Name",
 					"placeholder": "John",
 					"required": true
 				}
@@ -44,7 +45,7 @@ const sections = [
 				"component": "c-field",
 				"props": {
 					"type": "text",
-					"label": "Last Name:",
+					"label": "Last Name",
 					"placeholder": "Smith",
 					"required": true
 				}
@@ -58,7 +59,7 @@ const sections = [
 				"component": "c-field",
 				"props": {
 					"type": "text",
-					"label": "Company Name:",
+					"label": "Company Name",
 					"placeholder": "Company",
 					"required": true
 				}
@@ -67,7 +68,7 @@ const sections = [
 				"component": "c-field",
 				"props": {
 					"type": "number",
-					"label": "CRD number:",
+					"label": "CRD number",
 					"placeholder": "1234567890"
 				}
 			},
@@ -75,7 +76,7 @@ const sections = [
 				"component": "c-field",
 				"props": {
 					"type": "number",
-					"label": "AUM:",
+					"label": "AUM",
 					"placeholder": "1234567890"
 				}
 			},
@@ -83,14 +84,14 @@ const sections = [
 				"component": "c-field",
 				"props": {
 					"type": "number",
-					"label": "Number of Accounts:",
+					"label": "Number of Accounts",
 					"placeholder": "150"
 				}
 			},
 			"industries": {
 				"component": "c-select",
 				"props": {
-					"label": "Industry:",
+					"label": "Industry",
 					"placeholder": "Investment Adviser",
 					"data": industries,
 					"required": true
@@ -99,7 +100,7 @@ const sections = [
 			"sub_industries": {
 				"component": "c-select",
 				"props": {
-					"label": "Sub-Industry:",
+					"label": "Sub-Industry",
 					"placeholder": "Provide advice to mutual funds",
 					"data": subindustries_business,
 					"required": true
@@ -108,7 +109,7 @@ const sections = [
 			"jurisdictions": {
 				"component": "c-select",
 				"props": {
-					"label": "Jurisdiction:",
+					"label": "Jurisdiction",
 					"placeholder": "USA",
 					"data": jurisdictions,
 					"required": true
@@ -117,7 +118,7 @@ const sections = [
 			"time_zone": {
 				"component": "c-select",
 				"props": {
-					"label": "Time Zone:",
+					"label": "Time Zone",
 					"placeholder": "America - Los Angeles",
 					"data": timezones,
 					"required": true
@@ -127,7 +128,7 @@ const sections = [
 				"component": "c-field",
 				"props": {
 					"type": "tel",
-					"label": "Phone Number:",
+					"label": "Phone Number",
 					"placeholder": "+1 234 567 890"
 				}
 			},
@@ -135,7 +136,7 @@ const sections = [
 				"component": "c-field",
 				"props": {
 					"type": "url",
-					"label": "Company Website:",
+					"label": "Company Website",
 					"placeholder": "www.example.com"
 				}
 			},
@@ -143,7 +144,7 @@ const sections = [
 				"component": "c-field",
 				"props": {
 					"type": "text",
-					"label": "Business Address:",
+					"label": "Business Address",
 					"placeholder": "1 Wilshire Blvd",
 					"required": true,
 					"class": "col-5"
@@ -153,7 +154,7 @@ const sections = [
 				"component": "c-field",
 				"props": {
 					"type": "text",
-					"label": "Apt/Unit:",
+					"label": "Apt/Unit",
 					"placeholder": "7b",
 					"class": "col-1"
 				}
@@ -162,7 +163,7 @@ const sections = [
 				"component": "c-field",
 				"props": {
 					"type": "text",
-					"label": "City:",
+					"label": "City",
 					"placeholder": "Los Angeles",
 					"class": "col-2"
 				}
@@ -171,7 +172,7 @@ const sections = [
 				"component": "c-field",
 				"props": {
 					"type": "text",
-					"label": "State:",
+					"label": "State",
 					"placeholder": "California",
 					"required": true,
 					"class": "col-2"
@@ -181,7 +182,7 @@ const sections = [
 				"component": "c-field",
 				"props": {
 					"type": "number",
-					"label": "Zip:",
+					"label": "Zip",
 					"placeholder": "90017",
 					"required": true,
 					"class": "col-2"

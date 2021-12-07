@@ -1,5 +1,5 @@
 <template lang="pug">
-c-card(title="Switcher")
+c-card(title="Switcher" :maxWidth="700")
 	template(#content)
 		section
 			code.result {{values.switcher}}

@@ -6,7 +6,7 @@
 			h1.wizard-title(v-if="title") {{title}}
 			h2.wizard-title(v-if="subtitle") {{subtitle}}
 		.wizard-progress
-			.progress-step(v-for="(step, i) in steps" :class="[currentStep >= i+1 ? 'passed':'']") {{i+1}}. {{step.title}}
+			.progress-step(v-for="(step, index) in steps" :key="index" :class="[currentStep >= index+1 ? 'passed':'']") {{index+1}}. {{step.title}}
 	.c-form-wizard-step.grid-6
 		slot(name="step1")
 		slot(name="step2")

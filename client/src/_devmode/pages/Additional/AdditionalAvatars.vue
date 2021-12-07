@@ -15,10 +15,10 @@ c-card(title="Collection" type="grid-6")
 	template(#header-controls)
 		c-button(iconL="refresh" type="transparent" @click="refreshUser()")
 	template(v-if="userProfile" #content)
-		.preview-column.col-2(v-for="shape in options.shapes")
-			c-avatar(v-for="size in options.sizes" :avatar="userProfile.avatar" :firstName="userProfile.first_name" :lastName="userProfile.last_name" :size="size.value" :shape="shape.value")
-		.preview-column.col-2(v-for="shape in options.shapes")
-			c-avatar(v-for="size in options.sizes" :firstName="userProfile.first_name" :lastName="userProfile.last_name" :size="size.value" :shape="shape.value")
+		.preview-column.col-2(v-for="(shape, index) in options.shapes" :key="index")
+			c-avatar(v-for="(size, index) in options.sizes" :avatar="userProfile.avatar" :firstName="userProfile.first_name" :lastName="userProfile.last_name" :size="size.value" :shape="shape.value" :key="index")
+		.preview-column.col-2(v-for="(shape, index) in options.shapes" :key="index")
+			c-avatar(v-for="(size, index) in options.sizes" :firstName="userProfile.first_name" :lastName="userProfile.last_name" :size="size.value" :shape="shape.value" :key="index")
 </template>
 
 

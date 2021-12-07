@@ -2,6 +2,7 @@
 .c-input.c-rating(:class="{hovered: hoveredStar, readonly}")
 	icon(
 		v-for="(star, index) in max" name="star"
+		:key="index"
 		:class="{hovered: hoveredStar > index, active: modelValue > index}"
 		@click="setRating(index+1)"
 		@mouseover="previewRating(index+1)"

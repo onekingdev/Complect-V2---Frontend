@@ -3,9 +3,9 @@ c-card(title="Banner" type="flex-column")
 	template(#header-controls)
 		c-button(iconL="refresh" type="transparent" @click="refreshBanners()")
 	template(#content)
-		c-banner(v-for="banner in banners" v-bind="banner.content")
+		c-banner(v-for="(banner, index) in banners" v-bind="banner.content" :key="index")
 			template(#controls)
-				c-button(v-for="button in banner.buttons" :title="button")
+				c-button(v-for="(button, index) in banner.buttons" :title="button" :key="index")
 				c-button(type="icon" iconL="close" size="small")
 </template>
 

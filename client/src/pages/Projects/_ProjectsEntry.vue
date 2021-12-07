@@ -13,7 +13,7 @@ documents-container(title="Projects")
 				c-button(title="Create" type="primary" @click="createProject()")
 
 	template(#tabs)
-		router-link(v-for="tab in tabs" :to="{name: tab.name}") {{ $locale(tab.title)}}
+		router-link(v-for="(tab, index) in tabs" :key="index" :to="{name: tab.name}") {{ $locale(tab.title)}}
 	template(#content)
 		router-view
 </template>

@@ -15,7 +15,7 @@
 		.search-section(v-if="searchable" :class="{offset}")
 			c-field(type="search" iconL="search" placeholder="Search..." v-model="query")
 		.items-section(ref="dropdownListItems" @scroll.native="dropdownListScrollEvent()")
-			c-checkbox.item(v-for="item in filteredData" :label="item.title" :value="item" v-model="selectedItems" multiple)
+			c-checkbox.item(v-for="(item, index) in filteredData" :key="index" :label="item.title" :value="item" v-model="selectedItems" multiple)
 </template>
 
 

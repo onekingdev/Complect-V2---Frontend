@@ -5,7 +5,7 @@
 		| {{userProfile.first_name}} {{userProfile.last_name}}
 	c-card(title="December")
 		template(#content)
-			Calendar
+			c-calendar
 	c-card(title="Upcoming")
 </template>
 

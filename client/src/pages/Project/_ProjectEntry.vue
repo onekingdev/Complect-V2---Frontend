@@ -16,7 +16,7 @@ document-container(section="Projects" :title="document.title" owner="Company Nam
 		c-button(type="icon" icon="close" size="small" @click="closeProject()")
 
 	template(#tabs)
-		router-link(v-for="tab in tabs" :to="{name: tab.name}") {{ $locale(tab.title)}}
+		router-link(v-for="(tab, index) in tabs" :key="index" :to="{name: tab.name}") {{ $locale(tab.title)}}
 	template(#navigation-controls)
 		c-dropdown(title="Actions")
 			c-button-modal(title="Edit" modalTitle="Edit Project" type="transparent")

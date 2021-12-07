@@ -3,7 +3,7 @@ documents-container(title="Policies and Procedures")
 	template(#controls)
 		c-button(title="New Policy" type="primary")
 	template(#tabs)
-		router-link(v-for="tab in tabs" :to="{name: tab.name}") {{tab.title}}
+		router-link(v-for="(tab, index) in tabs" :key="index" :to="{name: tab.name}") {{tab.title}}
 	template(#content)
 		router-view
 </template>

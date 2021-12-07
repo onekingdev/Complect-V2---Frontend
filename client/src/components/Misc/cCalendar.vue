@@ -1,7 +1,7 @@
 <template lang="pug">
 .calendar
 	.grid
-		.cell(v-for="i in 42")
+		.cell(v-for="i in 42" :key="i")
 </template>
 
 <style lang="stylus" scoped>

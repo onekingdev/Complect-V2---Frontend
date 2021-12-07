@@ -2,22 +2,22 @@
 .c-table
 	.filters
 		c-field.search-input(v-if="searchable" type="search" iconL="search" placeholder="Search..." v-model="searchQuery")
-		c-dropdown(v-for="filter in filters" :title="filter.title" :selected="selectedFilterTitle(activeFilters[filter.title])")
+		c-dropdown(v-for="(filter, index) in filters" :key="index" :title="filter.title" :selected="selectedFilterTitle(activeFilters[filter.title])")
 			c-button(v-for="key in filter.keys" @click="activateFilter(filter.title, filter.field, key)" :title="key.title" type="transparent" fullwidth)
 		slot(name="controls")
 
 	table
 		colgroup
-			col(v-for="column in columns" :class="[column.type]")
+			col(v-for="(column, index) in columns" :class="[column.type]" :key="index")
 		thead
 			tr
-				th(v-for="column in columns")
+				th(v-for="(column, index) in columns" :key="index")
 					.cell.column-title(:class="[column.align]")
 						.title {{ column.title }}
 						c-button(type="icon" iconR="sort" @click="sortDocuments(column.key)")
 		tbody(v-if="filteredDocuments.length")
-			tr(v-for="document in filteredDocuments")
-				td(v-for="column in columns")
+			tr(v-for="document in filteredDocuments" :key="document._id")
+				td(v-for="(column, index) in columns" :key="index")
 					component.cell(
 						:is="column.type"
 						:class="[column.align]"
@@ -33,7 +33,6 @@
 import { ref, computed, defineAsyncComponent } from "vue";
 import { sortArrayByKey } from "~/core/utils.js";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
-
 export default {
 	"components": {
 		cDropdown,

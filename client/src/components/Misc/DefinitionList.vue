@@ -1,6 +1,6 @@
 <template lang="pug">
 dl.definition-list
-	template(v-for="(value, key)  in data")
+	template(v-for="(value, key, index)  in data" :key="index")
 		dt.key {{ $locale(key) }}
 		dd.value {{value}}
 </template>
