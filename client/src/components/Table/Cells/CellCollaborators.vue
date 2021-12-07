@@ -5,7 +5,6 @@
 
 
 <script>
-import { computed } from "vue";
 import cAvatar from "~/components/Misc/cAvatar.vue";
 export default {
 	"components": { cAvatar },
@@ -14,11 +13,6 @@ export default {
 			"type": Array,
 			"required": true
 		}
-	},
-	setup ( props ) {
-		const collaborators = computed( () => {
-			if ( props.data.length > 3 ) {}
-		});
 	}
 };
 </script>

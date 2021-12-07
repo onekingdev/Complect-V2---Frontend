@@ -2,11 +2,10 @@
 label.c-input.c-field(:class="{fullwidth}")
 	.field-label(v-if="label") {{ label }}:
 		span.required(v-if="required") *
-
 	.field-body
 		icon(v-if="iconL || icon" :name="iconL || type")
 		component.field-input(
-			:is="fieldType"
+			:is="type"
 			:placeholder="placeholder"
 			:required="required"
 			v-model="modelValue")
@@ -15,8 +14,20 @@ label.c-input.c-field(:class="{fullwidth}")
 
 
 <script>
-import { computed, defineAsyncComponent } from "vue";
+import { defineAsyncComponent } from "vue";
 export default {
+	"components": {
+		"Date": defineAsyncComponent( () => import( "./Types/TypeDate.vue" ) ),
+		"Email": defineAsyncComponent( () => import( "./Types/TypeEmail.vue" ) ),
+		"Multiselect": defineAsyncComponent( () => import( "./Types/TypeMultiselect.vue" ) ),
+		"Number": defineAsyncComponent( () => import( "./Types/TypeNumber.vue" ) ),
+		"Password": defineAsyncComponent( () => import( "./Types/TypePassword.vue" ) ),
+		"Search": defineAsyncComponent( () => import( "./Types/TypeSearch.vue" ) ),
+		"Tel": defineAsyncComponent( () => import( "./Types/TypeTel.vue" ) ),
+		"Text": defineAsyncComponent( () => import( "./Types/TypeText.vue" ) ),
+		"Time": defineAsyncComponent( () => import( "./Types/TypeTime.vue" ) ),
+		"Url": defineAsyncComponent( () => import( "./Types/TypeUrl.vue" ) )
+	},
 	"props": {
 		"type": {
 			"type": String,
@@ -60,11 +71,7 @@ export default {
 	},
 	"emits": [
 		"update:modelValue"
-	],
-	setup ( props ) {
-		const fieldType = computed( () => defineAsyncComponent( () => import( `./types/${props.type}.vue` ) ) );
-		return { fieldType };
-	}
+	]
 };
 </script>
 
@@ -104,7 +111,6 @@ export default {
 		.field-input
 			font-size: 0.9em
 			flex: 1 0 auto
-			// display: block
 			width: 1em
 			color: #000
 			background: transparent

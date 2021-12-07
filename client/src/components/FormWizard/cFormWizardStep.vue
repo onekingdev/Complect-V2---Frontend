@@ -7,5 +7,13 @@
 
 
 <script>
-export default { "props": { "title": String } };
+export default {
+	"props": {
+		"title": {
+			"type": String,
+			"default": "",
+			"required": false
+		}
+	}
+};
 </script>

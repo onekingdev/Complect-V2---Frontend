@@ -51,7 +51,7 @@ export default {
 	"emits": [
 		"update:modelValue"
 	],
-	setup ( props, context ) {
+	setup ( props ) {
 		const selectComponent = ref( null );
 		const dropdownList = ref( null );
 		const dropdownListItems = ref( null );
@@ -82,7 +82,7 @@ export default {
 			params.datalistVisible = true;
 			if ( window.innerHeight - selectComponent.value.getBoundingClientRect().bottom < 300 )
 				dropdownListDirection.value = "drop-up";
-			 else dropdownListDirection.value = "drop-down";
+			else dropdownListDirection.value = "drop-down";
 		};
 		const hideDropdownList = () => {
 			params.datalistVisible = false;
@@ -94,34 +94,29 @@ export default {
 
 		const isSelected = value => props.modelValue.includes( value );
 
-		const selectItem = ( item ) => {
-			params.datalist = false;
-			params.query = "";
-			if ( props.multiple ) {
-				const selected = () => props.modelValue.includes( item.value );
-				const update = [
-					...props.modelValue
-				];
-				if ( !selected() ) update.push( item.value );
-				else update.splice( update.indexOf( item.value ), 1 );
-				selectedItems.value = [
-				];
-				props.data.forEach( ( item ) => {
-					update.forEach( ( value ) => {
-						if ( item.value === value ) selectedItems.value.push( item.title );
-					});
-				});
-				context.emit( "update:modelValue", update );
-			} else {
-				selectedItems.value = item.title;
-				context.emit( "update:modelValue", item.value );
-			}
-		};
-
-
-		const slectedModel = computed( () => {
-
-		});
+		// const selectItem = ( item ) => {
+		// 	params.datalist = false;
+		// 	params.query = "";
+		// 	if ( props.multiple ) {
+		// 		const selected = () => props.modelValue.includes( item.value );
+		// 		const update = [
+		// 			...props.modelValue
+		// 		];
+		// 		if ( !selected() ) update.push( item.value );
+		// 		else update.splice( update.indexOf( item.value ), 1 );
+		// 		selectedItems.value = [
+		// 		];
+		// 		props.data.forEach( ( item ) => {
+		// 			update.forEach( ( value ) => {
+		// 				if ( item.value === value ) selectedItems.value.push( item.title );
+		// 			});
+		// 		});
+		// 		context.emit( "update:modelValue", update );
+		// 	} else {
+		// 		selectedItems.value = item.title;
+		// 		context.emit( "update:modelValue", item.value );
+		// 	}
+		// };
 
 		const removeSelected = ( value ) => {
 			console.log( value );
@@ -147,7 +142,6 @@ export default {
 			dropdownListItems,
 			dropdownListDirection,
 			dropdownListScrollEvent,
-			selectItem,
 			selectedItems,
 			isSelected,
 			removeSelected

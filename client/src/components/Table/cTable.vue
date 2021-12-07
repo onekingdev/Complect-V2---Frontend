@@ -37,13 +37,13 @@ import cDropdown from "~/components/Inputs/cDropdown.vue";
 export default {
 	"components": {
 		cDropdown,
-		"Checkbox": defineAsyncComponent( () => import( "./Types/Checkbox.vue" ) ),
-		"Title": defineAsyncComponent( () => import( "./Types/Title.vue" ) ),
-		"Date": defineAsyncComponent( () => import( "./Types/Date.vue" ) ),
-		"Collaborators": defineAsyncComponent( () => import( "./Types/Collaborators.vue" ) ),
-		"Price": defineAsyncComponent( () => import( "./Types/Price.vue" ) ),
-		"Status": defineAsyncComponent( () => import( "./Types/Status.vue" ) ),
-		"Tasks": defineAsyncComponent( () => import( "./Types/Tasks.vue" ) )
+		"Checkbox": defineAsyncComponent( () => import( "./Cells/CellCheckbox.vue" ) ),
+		"Title": defineAsyncComponent( () => import( "./Cells/CellTitle.vue" ) ),
+		"Date": defineAsyncComponent( () => import( "./Cells/CellDate.vue" ) ),
+		"Collaborators": defineAsyncComponent( () => import( "./Cells/CellCollaborators.vue" ) ),
+		"Price": defineAsyncComponent( () => import( "./Cells/CellPrice.vue" ) ),
+		"Status": defineAsyncComponent( () => import( "./Cells/CellStatus.vue" ) ),
+		"Tasks": defineAsyncComponent( () => import( "./Cells/CellTasks.vue" ) )
 	},
 	"props": {
 		"columns": {
@@ -56,7 +56,8 @@ export default {
 		},
 		"filters": {
 			"type": Array,
-			"default": () => []
+			"default": () => [
+			]
 		},
 		"searchable": Boolean
 	},

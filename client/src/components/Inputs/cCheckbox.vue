@@ -1,7 +1,6 @@
 <template lang="pug">
-label.c-input.c-checkbox(:class="[type, {checked: checked(value)}]")
-	input(type="checkbox" :checked="checked(value)" @change="update(value, $event.target.checked)")
-	//- input(type="checkbox" :checked="modelValue" @change="update")
+label.c-input.c-checkbox(:class="[type, {checked: isChecked(value)}]")
+	input(type="checkbox" :checked="isChecked(value)" @change="updateModelValue(value, $event.target.checked)")
 	.checkbox-body
 	.title(v-if="label") {{label}}
 </template>
@@ -40,21 +39,21 @@ export default {
 		"update:modelValue"
 	],
 	setup ( props, context ) {
-		const checked = value => props.multiple ? props.modelValue.includes( value ) : props.modelValue;
-		const update = ( value, checked ) => {
+		const isChecked = value => props.multiple ? props.modelValue.includes( value ) : props.modelValue;
+		const updateModelValue = ( value, checked ) => {
 			if ( props.multiple ) {
-				const update = [
+				const modelValue = [
 					...props.modelValue
 				];
-				if ( checked ) update.push( value );
-				else update.splice( update.indexOf( value ), 1 );
-				context.emit( "update:modelValue", update );
+				if ( checked ) modelValue.push( value );
+				else modelValue.splice( modelValue.indexOf( value ), 1 );
+				context.emit( "update:modelValue", modelValue );
 			} else
 				context.emit( "update:modelValue", !props.modelValue );
 		};
 		return {
-			checked,
-			update
+			isChecked,
+			updateModelValue
 		};
 	}
 };

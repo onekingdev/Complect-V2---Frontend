@@ -23,6 +23,9 @@ export default {
 			name: "devInputsCheckbox",
 			title: "Checkbox"
 		}, {
+			name: "devInputsRating",
+			title: "Rating"
+		}, {
 			name: "devInputsExtra",
 			title: "Extra"
 		}]

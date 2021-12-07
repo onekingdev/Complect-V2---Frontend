@@ -1,23 +1,22 @@
 <template lang="pug">
 .layout.layout-authenticated
-	Topbar
-	Sidebar
+	TopBar
+	SideBar
 	main
 		router-view
-	//- Devbar
+	//- DevBar
 </template>
 
 
 <script>
 import { defineAsyncComponent } from "vue";
-import Topbar from "~/components/Bars/Topbar.vue";
-import Sidebar from "~/components/Bars/Sidebar.vue";
-const Devbar = defineAsyncComponent( () => import( "~/_devmode/Devbar.vue" ) );
+import TopBar from "~/components/Bars/TopBar.vue";
+import SideBar from "~/components/Bars/SideBar.vue";
 export default {
 	"components": {
-		Topbar,
-		Sidebar,
-		Devbar
+		TopBar,
+		SideBar,
+		"DevBar": defineAsyncComponent( () => import( "~/_devmode/DevBar.vue" ) )
 	}
 };
 </script>

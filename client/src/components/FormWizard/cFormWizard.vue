@@ -47,7 +47,10 @@ export default {
 			"default": "",
 			"required": false
 		},
-		"steps": Array
+		"steps": {
+			"type": Array,
+			"required": true
+		}
 	},
 	setup ( props ) {
 		const currentStep = ref( 1 );

@@ -11,10 +11,10 @@
 
 
 <script>
-import Calendar from "~/components/Misc/Calendar.vue";
+import cCalendar from "~/components/Misc/cCalendar.vue";
 import useProfile from "~/store/Profile.js";
 export default {
-	"components": { Calendar },
+	"components": { cCalendar },
 	setup () {
 		const { userProfile } = useProfile();
 		return { userProfile };

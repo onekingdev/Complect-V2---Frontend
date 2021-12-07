@@ -4,11 +4,6 @@
 		.cell(v-for="i in 42")
 </template>
 
-
-<script>
-export default {};
-</script>
-
 <style lang="stylus" scoped>
 .calendar
 	.grid

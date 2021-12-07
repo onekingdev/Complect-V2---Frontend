@@ -17,7 +17,6 @@ export default {
 			"type": String,
 			"required": true
 		},
-		"completed": { "type": Boolean },
 		"data": {
 			"type": String,
 			"required": true
@@ -25,7 +24,8 @@ export default {
 		"meta": {
 			"type": Object,
 			"default": () => {}
-		}
+		},
+		"completed": Boolean
 	}
 };
 </script>
