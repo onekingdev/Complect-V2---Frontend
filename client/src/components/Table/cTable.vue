@@ -1,6 +1,6 @@
 <template lang="pug">
 .c-table
-	.filters
+	.filters(v-if="filters.length > 0")
 		c-field.search-input(v-if="searchable" type="search" iconL="search" placeholder="Search..." v-model="searchQuery")
 		c-dropdown(v-for="(filter, index) in filters" :key="index" :title="filter.title" :selected="selectedFilterTitle(activeFilters[filter.title])")
 			c-button(v-for="key in filter.keys" @click="activateFilter(filter.title, filter.field, key)" :title="key.title" type="transparent" fullwidth)
@@ -14,7 +14,7 @@
 				th(v-for="(column, index) in columns" :key="index")
 					.cell.column-title(:class="[column.align]")
 						.title {{ column.title }}
-						c-button(type="icon" iconR="sort" @click="sortDocuments(column.key)")
+						c-button(v-if="showSortIcon" type="icon" iconR="sort" @click="sortDocuments(column.key)")
 		tbody(v-if="filteredDocuments.length")
 			tr(v-for="document in filteredDocuments" :key="document._id")
 				td(v-for="(column, index) in columns" :key="index")
@@ -42,7 +42,8 @@ export default {
 		"Collaborators": defineAsyncComponent( () => import( "./Cells/CellCollaborators.vue" ) ),
 		"Price": defineAsyncComponent( () => import( "./Cells/CellPrice.vue" ) ),
 		"Status": defineAsyncComponent( () => import( "./Cells/CellStatus.vue" ) ),
-		"Tasks": defineAsyncComponent( () => import( "./Cells/CellTasks.vue" ) )
+		"Tasks": defineAsyncComponent( () => import( "./Cells/CellTasks.vue" ) ),
+		"Progress": defineAsyncComponent( () => import( "./Cells/CellProgress.vue" ) )
 	},
 	"props": {
 		"columns": {
@@ -57,6 +58,10 @@ export default {
 			"type": Array,
 			"default": () => [
 			]
+		},
+		"showSortIcon": {
+			"type": Boolean,
+			"default": true
 		},
 		"searchable": Boolean
 	},

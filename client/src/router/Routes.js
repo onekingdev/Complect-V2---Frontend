@@ -37,7 +37,11 @@ const PoliciesOverview = () => import( "~/pages/Policies/PoliciesOverview.vue" )
 const PoliciesArchive = () => import( "~/pages/Policies/PoliciesArchive.vue" );
 const PoliciesSetup = () => import( "~/pages/Policies/PoliciesSetup.vue" );
 
+const ReviewList = () => import( "~/pages/Reviews/ReviewList.vue" );
 const _ReviewsEntry = () => import( "~/pages/Reviews/_ReviewsEntry.vue" );
+const ReviewDetail = () => import( "~/pages/Reviews/ReviewDetail.vue" );
+const ReviewTasks = () => import( "~/pages/Reviews/ReviewTasks.vue" );
+const ReviewDocuments = () => import( "~/pages/Reviews/ReviewDocuments.vue" );
 const _RisksEntry = () => import( "~/pages/Risks/_RisksEntry.vue" );
 
 const _SettingsEntry = () => import( "~/pages/Settings/_SettingsEntry.vue" );
@@ -175,8 +179,35 @@ const routes = [
 			{
 				"path": "reviews",
 				"name": "Reviews",
-				"component": _ReviewsEntry,
+				"component": ReviewList,
 				"meta": { "title": "Reviews" }
+			},
+			{
+				"path": "reviews/:id",
+				"name": "Review",
+				"component": _ReviewsEntry,
+				"meta": {
+					"title": "Review Detail",
+					"sidebar": false
+				},
+				"children": [
+					{
+						"path": "",
+						"name": "ReviewDetail",
+						"component": ReviewDetail,
+						"meta": { "title": "Review Detail" }
+					}, {
+						"path": "tasks",
+						"name": "ReviewTasks",
+						"component": ReviewTasks,
+						"meta": { "title": "Review Task" }
+					}, {
+						"path": "documents",
+						"name": "ReviewDocuments",
+						"component": ReviewDocuments,
+						"meta": { "title": "Review Document" }
+					}
+				]
 			},
 			{
 				"path": "risks",

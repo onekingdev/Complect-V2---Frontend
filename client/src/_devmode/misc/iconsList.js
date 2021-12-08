@@ -40,7 +40,9 @@ const icons = [
 	{ title: "File", value: "file", icon: "file" },
 	{ title: "Range", value: "range", icon: "range" },
 	{ title: "Search", value: "search", icon: "search" },
-	{ title: "Edit", value: "edit", icon: "edit" }	
+	{ title: "Edit", value: "edit", icon: "edit" },
+	{ title: "Check", value: "check", icon: "check" },
+	{ title: "Circle Plus", value: "circle_plus", icon: "circle_plus" },
 ]
 
 export { icons }
