@@ -12,6 +12,7 @@ c-card(title="Constructor" :maxWidth="700")
 				c-checkers(label="Options" :options="options.boolean" v-model="selectedBoolean")
 			template(#code)
 				code {{code}}
+				code {{inputValues[selectedOptions.type]}}
 			template(#preview)
 				.preview-item(v-for="(state, index) in fieldsStates" :key="index")
 					.state-label {{state.label}}:
@@ -43,7 +44,7 @@ export default {
 			url: "",
 			number: "",
 			tel: "",
-			date: "",
+			date: Date.now(),
 			time: ""
 
 		})

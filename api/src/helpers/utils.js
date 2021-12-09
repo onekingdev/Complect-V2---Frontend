@@ -23,9 +23,9 @@ const logger = {
 // request guard
 const requestGuard = async event => {
 	try {
-		const { databaseName, collectionName, documentId } = event.pathParameters;
+		const { collectionName, documentId } = event.pathParameters;
 		const newDocuments = await JSON.parse( event.body );
-		return [databaseName, collectionName, documentId, newDocuments].filter( Boolean );
+		return [collectionName, documentId, newDocuments].filter( Boolean );
 	} catch ( error ) {
 		logger.error( `requestGuard ${error}` );
 		return false;

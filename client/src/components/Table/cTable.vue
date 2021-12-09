@@ -19,6 +19,7 @@
 			tr(v-for="document in filteredDocuments" :key="document._id")
 				td(v-for="(column, index) in columns" :key="index")
 					component.cell(
+						v-if="document[column.key]"
 						:is="column.type"
 						:class="[column.align]"
 						:meta="column.meta"

@@ -1,7 +1,7 @@
-name: Public Client
+name: Client Test
 on:
   pull_request:
-    branches: [ public ]
+    branches: [ dev, public ]
     paths:
       - "client/**"
 defaults:
@@ -25,8 +25,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
+      - name: Build
+        run: npm run build
+      
       - name: Lint code
         run: npm run lint
       
-      - name: Build
-        run: npm run build
+      - name: Test code
+        run: npm run test

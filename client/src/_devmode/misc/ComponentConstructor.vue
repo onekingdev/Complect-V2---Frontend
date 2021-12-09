@@ -23,6 +23,8 @@
 			line-height: 1.5
 			background: #f1f1f1
 			border-radius: 0.5em
+			+ code
+				margin-top: 2rem
 	.component-preview
 		display: flex
 		flex-wrap: wrap

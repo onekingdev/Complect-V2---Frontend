@@ -1,13 +1,7 @@
 import { useRouter } from "vue-router";
-import { registerSW } from "virtual:pwa-register";
-import { appState, restoreAppState, setInstallationState } from "~/store/appState.js";
-
-const appVersion = 1;
-
-// socket.onmessage = function (event) {
-//     console.log('Message from server ', event.data);
-// };
-
+import { restoreAppState } from "~/store/appState.js";
+// import { registerSW } from "virtual:pwa-register";
+// const appVersion = 1;
 
 const localStorageTest = () => {
 	const ls = window.localStorage;
@@ -22,7 +16,6 @@ const localStorageTest = () => {
 const indexedDBTest = () => {
 	if ( !window.indexedDB ) throw "IndexedDB not detected";
 };
-
 
 export default function useInit () {
 	const systemChecks = () => {
@@ -42,24 +35,5 @@ export default function useInit () {
 		}
 	};
 
-	const installApp = async () => {
-		try {
-			const installedVersion = localStorage.getItem( "version" ) || 0;
-			if ( !appState.value.installed || appVersion > installedVersion ) {
-				localStorage.clear();
-				indexedDB.deleteDatabase( "complect" );
-				await registerSW();
-				setInstallationState( true );
-				localStorage.setItem( "version", appVersion );
-			}
-		} catch ( error ) {
-			console.error( error );
-		}
-	};
-
-
-	return {
-		systemChecks,
-		installApp
-	};
+	return { systemChecks };
 }

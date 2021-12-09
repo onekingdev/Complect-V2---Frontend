@@ -11,8 +11,8 @@ provider:
   lambdaHashingVersion: 20201221
   apiGateway:
     shouldStartNameWithService: true
-  websocketsApiName: complect-api-ws
-  websocketsApiRouteSelectionExpression: $request.body.action
+  # websocketsApiName: complect-api-ws
+  # websocketsApiRouteSelectionExpression: $request.body.action
 
   stage: "v1"
   environment: 
@@ -20,7 +20,7 @@ provider:
 
 functions:
   - ${file(endpoints/data.yml)}
-  - ${file(endpoints/socket.yml)}
+  # - ${file(endpoints/socket.yml)}
 
 package:
   exclude:
@@ -49,7 +49,7 @@ custom:
   serverless-offline:
     httpPort: 6099
     host: 0.0.0.0
-    websocketPort: 3001
+    # websocketPort: 3001
   customDomain:
     domainName: "api2.complect.com"
     basePath: ${self:provider.stage}
