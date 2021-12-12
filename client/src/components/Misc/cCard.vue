@@ -1,8 +1,8 @@
 <template lang="pug">
 .c-card(:style="{maxWidth: maxWidth+'px'}")
-	.c-card-header(v-if="title")
-		.card-title {{ $locale(title) }}
-		slot(name="header-controls")
+	.c-card-header(v-if="title || $slots['header-controls']")
+		.card-title(v-if="title") {{ $locale(title) }}
+		slot(v-if="$slots['header-controls']" name="header-controls")
 	.c-card-content(v-if="$slots.content" :class="[type]")
 		slot(name="content")
 	.c-card-footer(v-if="$slots.footer")

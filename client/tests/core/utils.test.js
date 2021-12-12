@@ -1,5 +1,5 @@
 /* global describe, test, expect */
-import { randomNumber, ranrandomMongoIddomId } from "../../src/core/utils.js";
+import { randomNumber, randomMongoId } from "../../src/core/utils.js";
 
 
 describe( "randomNumber():", () => {

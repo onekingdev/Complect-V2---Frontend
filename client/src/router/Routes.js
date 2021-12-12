@@ -1,7 +1,5 @@
 import { createWebHistory, createRouter } from "vue-router";
 import { appState } from "~/store/appState.js";
-// import useProfile from "~/store/Profile.js"
-// const { userProfile } = useProfile();
 
 // layers
 const ErrorLayer = () => import( "~/layers/ErrorLayer.vue" );
@@ -70,7 +68,7 @@ const routes = [
 		"path": "/",
 		"component": AuthenticatedLayer,
 		"beforeEnter": ( to, from, next ) => {
-			if ( appState.value.authenticated ) next();
+			if ( appState.value.userId ) next();
 			else next({ "name": "AuthSignIn" });
 		},
 		"children": [

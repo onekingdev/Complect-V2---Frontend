@@ -17,6 +17,8 @@ services:
         working_dir: /home/app
         command: npm run dev
         # command: tail -F anything
+        depends_on:
+            - complect-mongo
     
     # API
     # complect-api:
@@ -27,7 +29,6 @@ services:
     #     image: complect-api:1.0
     #     ports:
     #         - ${API_PORT}:6099
-    #         - ${WS_PORT}:3001
     #     environment:
     #         HOST: 0.0.0.0
     #     volumes:
@@ -41,25 +42,7 @@ services:
     #     depends_on:
     #         - complect-mongo
 
-    # Server
-    # complect-server:
-    #     container_name: complect-server
-    #     build:
-    #         context: ./server
-    #         dockerfile: Dockerfile
-    #     image: complect-server:1.0
-    #     ports:
-    #         - ${SERVER_PORT}:6099
-    #     environment:
-    #         HOST: 0.0.0.0
-    #     volumes:
-    #         - ./server:/home/app
-    #         - /home/app/node_modules
-    #     working_dir: /home/app
-    #     # command: tail -F anything
-    #     command: npm run start
-    #     depends_on:
-    #         - complect-mongo
+    
     
     # Mongo Database
     # complect-mongo:
@@ -90,5 +73,25 @@ services:
     #         DB_HOST: ${MONGO_HOST}
     #         DB_PORT: ${MONGO_PORT}
     #         DB_NAME: ${MONGO_DBNAME}
+    #     depends_on:
+    #         - complect-mongo
+    
+    # Server
+    # complect-server:
+    #     container_name: complect-server
+    #     build:
+    #         context: ./server
+    #         dockerfile: Dockerfile
+    #     image: complect-server:1.0
+    #     ports:
+    #         - ${SERVER_PORT}:6099
+    #     environment:
+    #         HOST: 0.0.0.0
+    #     volumes:
+    #         - ./server:/home/app
+    #         - /home/app/node_modules
+    #     working_dir: /home/app
+    #     # command: tail -F anything
+    #     command: npm run start
     #     depends_on:
     #         - complect-mongo

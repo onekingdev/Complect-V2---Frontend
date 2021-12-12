@@ -1,11 +1,10 @@
 /* eslint max-lines-per-function: ["error", 50] */
 /* eslint max-statements: ["error", 50] */
 
-const databaseName = "dev";
-
 const endpoint = ( collectionName, documentId ) => {
 	let base;
-	base = `http://localhost:82/v1/data/${databaseName}/${collectionName}`;
+	// base = `http://localhost:82/v1/data/${collectionName}`;
+	base = `https://5can282p12.execute-api.us-east-1.amazonaws.com/dev/data/${collectionName}`;
 	if ( documentId ) base += `/${documentId}`;
 	return base;
 };
@@ -18,8 +17,8 @@ const api = async ({ method, collectionName, newDocuments, documentId }) => {
 			"mode": "cors",
 			"cache": "no-cache",
 			"headers": {
-				"Content-Type": "application/json;charset=utf-8",
-				"Access-Control-Max-Age": "86400"
+				"Content-Type": "application/json;charset=utf-8"
+				// "Access-Control-Allow-Origin": "*"
 			},
 			"body": JSON.stringify( newDocuments )
 		};
@@ -34,30 +33,11 @@ const api = async ({ method, collectionName, newDocuments, documentId }) => {
 };
 
 
-// const socketAPI = async ({ method, collectionName, newDocuments, documentId }) => {
-// 	try {
-// 		const message = {
-// 			"userId": "6188ea900a0fe7797ff81e69",
-// 			"action": "rest",
-// 			method,
-// 			collectionName,
-// 			newDocuments,
-// 			documentId
-// 		};
-// 		// socket.send( JSON.stringify( message ) );
-// 	} catch ( error ) {
-// 		console.error( error );
-// 		return { "error": error.message };
-// 	}
-// };
-
-
-const readDocumentsFromCloudDb = async collectionName => await api({
+const readDocumentsFromCloudDb = async ( collectionName, documentId ) => await api({
 	"method": "GET",
-	collectionName
+	collectionName,
+	documentId
 });
-	// return await socketAPI({ method: "GET", collectionName })
-
 
 const saveDocumentsToCloudDb = async ( collectionName, newDocuments ) => {
 	await api({
@@ -65,11 +45,6 @@ const saveDocumentsToCloudDb = async ( collectionName, newDocuments ) => {
 		collectionName,
 		newDocuments
 	});
-	// await socketAPI({
-	// 	"method": "POST",
-	// 	collectionName,
-	// 	newDocuments
-	// });
 };
 
 const updateDocumentInCloudDb = async ( collectionName, newDocuments, documentId ) => {
@@ -79,12 +54,6 @@ const updateDocumentInCloudDb = async ( collectionName, newDocuments, documentId
 		newDocuments,
 		documentId
 	});
-	// await socketAPI({
-	// 	"method": "PUT",
-	// 	collectionName,
-	// 	newDocuments,
-	// 	documentId
-	// });
 };
 
 const removeDocumentsFromCloudDb = async ( collectionName, documentId ) => {
@@ -93,11 +62,6 @@ const removeDocumentsFromCloudDb = async ( collectionName, documentId ) => {
 		collectionName,
 		documentId
 	});
-	// await socketAPI({
-	// 	"method": "DELETE",
-	// 	collectionName,
-	// 	documentId
-	// });
 };
 
 

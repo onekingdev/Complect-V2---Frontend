@@ -8,7 +8,7 @@ import { onMounted, onUnmounted } from "vue";
 import useData from "~/store/Data.js";
 export default {
 	setup () {
-		const { documents, documentsToStore, clearStore } = useData( "projects" );
+		const { documents, readDocuments, clearStore } = useData( "projects" );
 
 		const columns = [
 			{
@@ -92,7 +92,7 @@ export default {
 			}
 		];
 
-		onMounted( async () => await documentsToStore() );
+		onMounted( async () => await readDocuments() );
 		onUnmounted( () => clearStore() );
 
 		return {

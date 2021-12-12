@@ -1,8 +1,10 @@
-import { createDocuments, readDocuments, updateDocument, deleteDocuments } from "./crud.js"
-import { requestGuard, response, logger } from "../helpers/utils.js";
+"use strict";
 
-const dataHandler = async event => {
-	logger.info( "Data Handler " );
+const { createDocuments, readDocuments, updateDocument, deleteDocuments } = require("./crud");
+const { requestGuard, response } = require("../helpers/utils");
+
+
+exports.router = async event => {
 	try {
 		const requestParams = await requestGuard( event );
 		const methods = {
@@ -11,12 +13,10 @@ const dataHandler = async event => {
 			PUT: () => updateDocument( ...requestParams ),
 			DELETE: () => deleteDocuments( ...requestParams )
 		};
-		logger.log( requestParams );
+
 		return await methods[event.httpMethod]();
 	} catch ( error ) {
-		logger.error( error );
+		console.error( error )
 		return response( 400, error );
 	}
 };
-
-export { dataHandler };

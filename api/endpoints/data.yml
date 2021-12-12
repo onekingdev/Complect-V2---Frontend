@@ -1,6 +1,6 @@
 data:
   name: complect-api-data
-  handler: src/functions/rest.dataHandler
+  handler: src/functions/data.router
   description: Basic Data API endpoints
   tags:
     website: Complect App
@@ -8,18 +8,18 @@ data:
     subtype: Data
   events:
     - http:
-        path: data/{databaseName}/{collectionName}
+        path: data/{collectionName}
         method: post
         cors: true
     - http:
-        path: data/{databaseName}/{collectionName}/{documentId+}
+        path: data/{collectionName}/{documentId+}
         method: get
         cors: true
     - http:
-        path: data/{databaseName}/{collectionName}/{documentId}
+        path: data/{collectionName}/{documentId}
         method: put
         cors: true
     - http:
-        path: data/{databaseName}/{collectionName}/{documentId+}
+        path: data/{collectionName}/{documentId+}
         method: delete
         cors: true
