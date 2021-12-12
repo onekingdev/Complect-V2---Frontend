@@ -1,6 +1,6 @@
 data:
   name: complect-api-data
-  handler: src/functions/data.router
+  handler: src/functions/rest.router
   description: Basic Data API endpoints
   tags:
     website: Complect App

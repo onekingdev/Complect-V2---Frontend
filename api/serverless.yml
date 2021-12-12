@@ -6,50 +6,55 @@ provider:
   memorySize: 128
   timeout: 3
   region: "us-east-1"
-  profile: "serverless-framework"
+  # profile: "complect-api"
+  profile: "gololobov-serverless"
   lambdaHashingVersion: 20201221
   apiGateway:
     shouldStartNameWithService: true
+  # websocketsApiName: complect-api-ws
+  # websocketsApiRouteSelectionExpression: $request.body.action
 
-  stage: "dev"
+  stage: "v1"
   environment: 
     NODE_ENV: "dev"
 
 functions:
-  - "${file(endpoints/data.yml)}"
+  - ${file(endpoints/data.yml)}
+  # - ${file(endpoints/socket.yml)}
 
 package:
-  patterns:
-    - "!.aws/**"
-    - "!coverage/**"
-    - "!endpoints/**"
-    - "!tests/**"
-    - "!Dockerfile"
-    - "!jest.config.json"
-    - "!.eslintrc.json"
-    - "!package.json"
-    - "!README.md"
-    - "!.DS_Store"
-
+  exclude:
+    - node_modules
+    - coverage
+    - tests
+    - .eslintrc.json
+    - package-lock.json
+    - Dockerfile
+    - docker-compose.yml
+    - README.md
+    - Icon
 
 plugins:
-  - "serverless-offline"
-  - "serverless-iam-roles-per-function"
-  - "serverless-prune-plugin"
-  # - "serverless-domain-manager"
+  - serverless-webpack
+  - serverless-offline
+  - serverless-domain-manager
+  - serverless-iam-roles-per-function
+  - serverless-prune-plugin
 
 
 custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
   serverless-offline:
     httpPort: 6099
     host: 0.0.0.0
-  # customDomain:
-  #   domainName: "api2.complect.com"
-  #   basePath: ""
-  #   stage:  ${self:provider.stage}
-  #   certificateName: "*.complect.com"
-  #   endpointType: "edge"
-  #   createRoute53Record: true
+    # websocketPort: 3001
+  customDomain:
+    domainName: "api2.complect.com"
+    basePath: ${self:provider.stage}
+    stage: v1
+    createRoute53Record: true
   prune:
     automatic: true
     number: 3

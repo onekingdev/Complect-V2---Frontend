@@ -44,9 +44,7 @@ export default {
 		"Price": defineAsyncComponent( () => import( "./Cells/CellPrice.vue" ) ),
 		"Status": defineAsyncComponent( () => import( "./Cells/CellStatus.vue" ) ),
 		"Tasks": defineAsyncComponent( () => import( "./Cells/CellTasks.vue" ) ),
-		"Progress": defineAsyncComponent( () => import( "./Cells/CellProgress.vue" ) ),
-		"Label": defineAsyncComponent( () => import( "./Cells/CellLabel.vue" ) ),
-		"Policy": defineAsyncComponent( () => import( "./Cells/CellPolicy.vue" ) )
+		"Progress": defineAsyncComponent( () => import( "./Cells/CellProgress.vue" ) )
 	},
 	"props": {
 		"columns": {

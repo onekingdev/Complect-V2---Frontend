@@ -2,14 +2,13 @@
 teleport(to="#app-container")
 	transition(name="modal-fade")
 		.c-modal-container(v-if="modelValue")
-			.c-modal-window(ref="modalWindow" :class="{ large: largeWidth }")
+			.c-modal-window(ref="modalWindow")
 				.c-modal-header
 					.title {{title}}
 					c-button(type="icon" iconL="close" size="small" @click="closeModal()")
-				.c-modal-content(v-if="$slots.content" :class="{ block: displayBlock }")
+				.c-modal-content(v-if="$slots.content")
 					slot(name="content")
 				.c-modal-footer(v-if="$slots.footer")
-					slot(name="left-footer")
 					c-button(title="Cancel" type="link" @click="closeModal()")
 					slot(name="footer")
 </template>
@@ -25,15 +24,7 @@ export default {
 			"required": true
 		},
 		"modelValue": Boolean,
-		"visible": Boolean,
-		"displayBlock": {
-			"type": Boolean,
-			"default": false
-		},
-		"largeWidth": {
-			"type": Boolean,
-			"default": false
-		}
+		"visible": Boolean
 	},
 	"emits": [
 		"update:modelValue"
@@ -84,8 +75,6 @@ export default {
 	min-width: 30em
 	background: var(--c-bg-z2, #fff)
 	border-radius: 0.3em
-	&.large
-		width: 80%
 
 .c-modal-header
 	border-bottom: 1px solid var(--c-border)
@@ -104,8 +93,6 @@ export default {
 	grid-template-columns: repeat(6, auto)
 	align-items: flex-end
 	gap: 1em
-	&.block
-		display: block
 
 .c-modal-footer
 	display: flex
@@ -113,6 +100,5 @@ export default {
 	justify-content: flex-end
 	border-top: 1px solid var(--c-border)
 	padding: 1em
-	position: relative;
 
 </style>

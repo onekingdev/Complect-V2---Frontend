@@ -1,10 +1,7 @@
-"use strict";
+import { createDocuments, readDocuments, updateDocument, deleteDocuments } from "./crud.js";
+import { requestGuard, response, logger } from "../helpers/utils.js";
 
-const { createDocuments, readDocuments, updateDocument, deleteDocuments } = require("./crud");
-const { requestGuard, response } = require("../helpers/utils");
-
-
-exports.router = async event => {
+const router = async event => {
 	try {
 		const requestParams = await requestGuard( event );
 		const methods = {
@@ -13,10 +10,11 @@ exports.router = async event => {
 			PUT: () => updateDocument( ...requestParams ),
 			DELETE: () => deleteDocuments( ...requestParams )
 		};
-
 		return await methods[event.httpMethod]();
 	} catch ( error ) {
-		console.error( error )
+		logger.error( error );
 		return response( 400, error );
 	}
 };
+
+export { router };

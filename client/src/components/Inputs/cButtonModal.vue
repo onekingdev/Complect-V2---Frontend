@@ -1,11 +1,9 @@
 <template lang="pug">
 .c-button-modal
 	c-button(:title="title" :type="type" @click="toggleModal()")
-	c-modal(:title="modalTitle" v-model="isModalVisible" :displayBlock="displayBlock" :largeWidth="largeWidth")
+	c-modal(:title="modalTitle" v-model="isModalVisible")
 		template(#content)
 			slot(name="content")
-		template(#left-footer)
-			slot(name="left-footer")
 		template(#footer)
 			slot(name="footer")
 </template>
@@ -41,14 +39,6 @@ export default {
 			"type": String,
 			"default": "regular",
 			"required": false
-		},
-		"displayBlock": {
-			"type": Boolean,
-			"default": false
-		},
-		"largeWidth": {
-			"type": Boolean,
-			"default": false
 		},
 		"disabled": Boolean,
 		"modal": Boolean,
