@@ -18,10 +18,11 @@ export default {
 		ToastsContainer
 	},
 	setup () {
-		const { systemChecks } = useInit();
+		const { systemChecks, installApp } = useInit();
 		const { restoreSession } = useAuth();
 		onMounted( () => {
 			systemChecks();
+			installApp();
 			restoreSession();
 		});
 	}

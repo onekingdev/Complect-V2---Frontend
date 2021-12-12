@@ -1,0 +1,21 @@
+connect:
+  handler: src/functions/socket.connect
+  events:
+    - websocket: $connect
+
+disconnect:
+  handler: src/functions/socket.disconnect
+  events:
+    - websocket:
+        route: $disconnect
+
+defaultHandler:
+  handler: src/functions/socket.defaultHandler
+  events:
+    - websocket: $default
+
+rest:
+  handler: src/functions/socket.restHandler
+  events:
+    - websocket:
+        route: rest

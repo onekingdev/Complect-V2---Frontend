@@ -1,43 +1,56 @@
 import { useRouter } from "vue-router";
-import { appState, setUserIdState } from "~/store/appState";
+import { appState, setAuthenticationState } from "~/store/appState";
 import useProfile from "~/store/Profile";
 import { randomUsers } from "~/_devmode/generator/components/organisms/randomUsers";
-import { saveDocumentsToCloudDb, readDocumentsFromCloudDb } from "~/core/api.js";
+import { generatedData } from "~/_devmode/generator/generator.js";
+import { initLocalDb, getDocumentsFromLocalDb, saveDocumentsToLocalDb } from "~/core/indexedDb";
+
 
 export default function useAuth () {
 	const router = useRouter();
 	const { userProfile } = useProfile();
 
+	// fake API
+	const syncLocalDB = async () => {
+		try {
+			const collections = generatedData();
+			const collectionsNames = Object.keys( collections );
+			for ( const collectionName of collectionsNames )
+				await saveDocumentsToLocalDb( collectionName, collections[collectionName]);
+		} catch ( error ) {
+			console.error( error );
+		}
+	};
 
-	// temp unsecure _devmode solution !!!
+
 	const signIn = async () => {
 		try {
 			const randomUserProfile = await randomUsers({ "q": 1 })[0];
 			userProfile.value = randomUserProfile;
-			saveDocumentsToCloudDb( "users", [
+			await initLocalDb();
+			await saveDocumentsToLocalDb( "profile", [
 				randomUserProfile
 			]);
-			setUserIdState( randomUserProfile._id );
+			await syncLocalDB();
+			setAuthenticationState( true );
 			router.push({ "name": "Dashboard" });
 		} catch ( error ) {
 			console.error( error );
 		}
 	};
 
-	// temp unsecure _devmode solution !!!
 	const restoreSession = async () => {
-		const userId = appState.value.userId;
-		if ( userId ) {
-			const profile = await readDocumentsFromCloudDb( "users", userId );
-			userProfile.value = profile.data;
+		if ( appState.value.authenticated ) {
+			const profile = await getDocumentsFromLocalDb( "profile" );
+			userProfile.value = profile[0];
 		} else router.push({ "name": "AuthSignIn" });
 	};
 
-	// temp unsecure _devmode solution !!!
 	const signOut = async () => {
-		setUserIdState( "" );
+		setAuthenticationState( false );
 		await router.push({ "name": "AuthSignIn" });
-		userProfile.value = {};
+		userProfile.value = null;
+		indexedDB.deleteDatabase( "complect" );
 	};
 
 	return {

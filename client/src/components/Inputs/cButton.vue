@@ -168,7 +168,7 @@ export default {
 	// Sizes
 	&.tiny
 		font-size: 0.6em
-	&.small
+&.small
 		font-size: 0.75em
 	&.regular
 		font-size: 0.9em

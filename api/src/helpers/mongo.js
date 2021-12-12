@@ -2,7 +2,6 @@ import { MongoClient } from "mongodb";
 import { logger } from "./utils.js";
 import { uri } from "../../db.config.js";
 
-const databaseName = "complect";
 const mongoUri = uri.local;
 const options = {
 	useNewUrlParser: true,
@@ -20,7 +19,7 @@ const connectToDatabase = async () => {
 	return client;
 };
 
-const getCollection = async collectionName => {
+const getCollection = async ( databaseName, collectionName ) => {
 	const client = await connectToDatabase();
 	const collection = await client.db( databaseName ).collection( collectionName );
 	return collection;

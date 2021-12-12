@@ -4,7 +4,7 @@
 		:title="title"
 		:secondTitle="selected"
 		iconR="chevron-down")
-	.dropdown(v-if="listVisible")
+	.dropdown(v-show="listVisible")
 		slot(name="default")
 </template>
 

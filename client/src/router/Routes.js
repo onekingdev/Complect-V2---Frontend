@@ -1,5 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 import { appState } from "~/store/appState.js";
+// import useProfile from "~/store/Profile.js"
+// const { userProfile } = useProfile();
 
 // layers
 const ErrorLayer = () => import( "~/layers/ErrorLayer.vue" );
@@ -40,6 +42,7 @@ const _ReviewsEntry = () => import( "~/pages/Reviews/_ReviewsEntry.vue" );
 const ReviewDetail = () => import( "~/pages/Reviews/ReviewDetail.vue" );
 const ReviewTasks = () => import( "~/pages/Reviews/ReviewTasks.vue" );
 const ReviewDocuments = () => import( "~/pages/Reviews/ReviewDocuments.vue" );
+const RiskList = () => import( "~/pages/Risks/RiskList.vue" );
 const _RisksEntry = () => import( "~/pages/Risks/_RisksEntry.vue" );
 
 const _SettingsEntry = () => import( "~/pages/Settings/_SettingsEntry.vue" );
@@ -67,7 +70,7 @@ const routes = [
 		"path": "/",
 		"component": AuthenticatedLayer,
 		"beforeEnter": ( to, from, next ) => {
-			if ( appState.value.userId ) next();
+			if ( appState.value.authenticated ) next();
 			else next({ "name": "AuthSignIn" });
 		},
 		"children": [
@@ -210,8 +213,17 @@ const routes = [
 			{
 				"path": "risks",
 				"name": "Risks",
-				"component": _RisksEntry,
+				"component": RiskList,
 				"meta": { "title": "Risks" }
+			},
+			{
+				"path": "risks/:id",
+				"name": "Risk",
+				"component": _RisksEntry,
+				"meta": {
+					"title": "Risk",
+					"sidebar": false
+				}
 			},
 			{
 				"path": "profile",

@@ -5,7 +5,7 @@ document-container(section="Projects" :title="document.title" owner="Company Nam
 
 	template(#controls)
 		c-button(title="Post Project")
-		c-button-modal(v-if="!document.completed" title="Mark as Complete" modalTitle="Complete Project" type="primary")
+		c-button-modal(title="Mark as Complete" modalTitle="Complete Project" type="primary")
 			template(#content)
 				icon.col-1(name="success" size="big")
 				.text.col-5
@@ -27,7 +27,8 @@ document-container(section="Projects" :title="document.title" owner="Company Nam
 					c-field.col-full(label="Description" v-model="document.description")
 				template(#footer)
 					c-button(title="Save" type="primary" @click="updateProject()")
-			c-button(title="Delete" type="transparent" @click="deleteProject()")
+			c-button-modal(title="Delete" modalTitle="Delete Project" type="transparent")
+				template(#content)
 	template(#content)
 		router-view
 </template>
@@ -45,7 +46,7 @@ export default {
 		cCheckbox
 	},
 	setup () {
-		const { document, readDocument, clearStore, updateDocument, deleteDocuments } = useData( "projects" );
+		const { documentToStore, clearStore, document, updateDocument, deleteDocuments } = useData( "projects" );
 		const route = useRoute();
 		const router = useRouter();
 
@@ -66,23 +67,16 @@ export default {
 			}
 		];
 
-
+		const markAsComplete = () => updateDocument( document._id, { "completed": true });
 		const closeProject = () => router.push({ "name": "ProjectsOverview" });
 		const updateProject = () => console.log( "Update Project" );
 
-		const markAsComplete = () => {
-			updateDocument( document.value._id, {
-				"status": "complete",
-				"completed": true
-			});
-			closeProject();
-		};
-		const deleteProject = () => {
-			deleteDocuments( document.value._id );
+		const deleteProject = ( _id ) => {
+			deleteDocuments( _id );
 			closeProject();
 		};
 
-		onMounted( () => readDocument( route.params.id ) );
+		onMounted( () => documentToStore( route.params.id ) );
 		onUnmounted( () => clearStore() );
 
 		return {
@@ -96,3 +90,9 @@ export default {
 	}
 };
 </script>
+
+
+<style lang="stylus" scoped>
+// .flex-100-right
+// 	flex: 1 1 100%
+</style>

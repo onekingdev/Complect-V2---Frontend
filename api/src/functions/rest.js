@@ -1,7 +1,8 @@
-import { createDocuments, readDocuments, updateDocument, deleteDocuments } from "./crud.js";
+import { createDocuments, readDocuments, updateDocument, deleteDocuments } from "./crud.js"
 import { requestGuard, response, logger } from "../helpers/utils.js";
 
-const router = async event => {
+const dataHandler = async event => {
+	logger.info( "Data Handler " );
 	try {
 		const requestParams = await requestGuard( event );
 		const methods = {
@@ -10,6 +11,7 @@ const router = async event => {
 			PUT: () => updateDocument( ...requestParams ),
 			DELETE: () => deleteDocuments( ...requestParams )
 		};
+		logger.log( requestParams );
 		return await methods[event.httpMethod]();
 	} catch ( error ) {
 		logger.error( error );
@@ -17,4 +19,4 @@ const router = async event => {
 	}
 };
 
-export { router };
+export { dataHandler };

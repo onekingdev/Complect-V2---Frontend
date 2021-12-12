@@ -19,7 +19,6 @@
 			tr(v-for="document in filteredDocuments" :key="document._id")
 				td(v-for="(column, index) in columns" :key="index")
 					component.cell(
-						v-if="document[column.key]"
 						:is="column.type"
 						:class="[column.align]"
 						:meta="column.meta"
@@ -44,7 +43,9 @@ export default {
 		"Price": defineAsyncComponent( () => import( "./Cells/CellPrice.vue" ) ),
 		"Status": defineAsyncComponent( () => import( "./Cells/CellStatus.vue" ) ),
 		"Tasks": defineAsyncComponent( () => import( "./Cells/CellTasks.vue" ) ),
-		"Progress": defineAsyncComponent( () => import( "./Cells/CellProgress.vue" ) )
+		"Progress": defineAsyncComponent( () => import( "./Cells/CellProgress.vue" ) ),
+		"Label": defineAsyncComponent( () => import( "./Cells/CellLabel.vue" ) ),
+		"Policy": defineAsyncComponent( () => import( "./Cells/CellPolicy.vue" ) )
 	},
 	"props": {
 		"columns": {

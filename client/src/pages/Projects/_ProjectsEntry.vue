@@ -1,5 +1,6 @@
 <template lang="pug">
 documents-container(title="Projects")
+
 	template(#controls)
 		c-button(title="Post Job" @click="postJob()")
 		c-button-modal(title="New Project" modalTitle="New Project" type="primary")
@@ -45,8 +46,15 @@ export default {
 
 		const newProject = ref({
 			"title": "",
-			"starts_at": Date.now(),
-			"ends_at": Date.now() + 1e8,
+			"starts_at": "",
+			"ends_at": "",
+			"description": ""
+		});
+
+		const inititalForm = {
+			"title": "",
+			"starts_at": "",
+			"ends_at": "",
 			"description": "",
 			"collaborators": [
 			],
@@ -54,11 +62,22 @@ export default {
 			],
 			"fixed_budget": 0,
 			"status": "draft"
-		});
+		};
 
 
-		const clearForm = () => newProject.value = {};
+		const resetForm = () => newProject.value = { ...inititalForm };
+
+
+		// const validForm = () => {
+		// 	const fields = newProject.value;
+		// 	if ( !fields.title ) return;
+		// 	if ( !fields.starts_at ) return;
+		// 	if ( !fields.ends_at ) return;
+		// 	return true;
+		// };
+
 		const createProject = async () => {
+			// if(!validForm()) return
 			const projectId = await createDocuments([
 				newProject.value
 			]);
@@ -66,7 +85,7 @@ export default {
 				"type": "success",
 				"title": "Project Cteated"
 			});
-			clearForm();
+			resetForm();
 			router.push({
 				"name": "ProjectDetail",
 				"params": { "id": projectId[0] }

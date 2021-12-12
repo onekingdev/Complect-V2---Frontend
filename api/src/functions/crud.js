@@ -1,10 +1,11 @@
+import { ObjectId as objectId } from "mongodb";
 import { getCollection } from "../helpers/mongo.js";
 import { response, logger } from "../helpers/utils.js";
 
 
-const createDocuments = async ( collectionName, newDocuments ) => {
+const createDocuments = async ( databaseName, collectionName, newDocuments ) => {
 	try {
-		const collection = await getCollection( collectionName );
+		const collection = await getCollection( databaseName, collectionName );
 		const result = await collection.insertMany( newDocuments );
 		if ( !result.insertedCount ) throw Error( "Error during Document Creation" );
 		return response( 200, `Created ${result.insertedCount} Document(s)`, result.insertedIds );
@@ -14,11 +15,11 @@ const createDocuments = async ( collectionName, newDocuments ) => {
 	}
 };
 
-const readDocuments = async ( collectionName, documentId ) => {
+const readDocuments = async ( databaseName, collectionName, documentId ) => {
 	let result;
 	try {
-		const collection = await getCollection( collectionName );
-		if ( documentId ) result = await collection.findOne({ _id: documentId });
+		const collection = await getCollection( databaseName, collectionName );
+		if ( documentId ) result = await collection.findOne({ _id: objectId( documentId ) });
 		else result = await collection.find({}).toArray();
 		return response( 200, "Found Document(s)", result );
 	} catch ( error ) {
@@ -29,9 +30,9 @@ const readDocuments = async ( collectionName, documentId ) => {
 	}
 };
 
-const updateDocument = async ( collectionName, documentId, newDocuments ) => {
+const updateDocument = async ( databaseName, collectionName, documentId, newDocuments ) => {
 	try {
-		const collection = await getCollection( collectionName );
+		const collection = await getCollection( databaseName, collectionName );
 		await collection.findOneAndUpdate({ _id: documentId }, { $set: newDocuments });
 		return response( 200, "Document Updated" );
 	} catch ( error ) {
@@ -40,10 +41,10 @@ const updateDocument = async ( collectionName, documentId, newDocuments ) => {
 	}
 };
 
-const deleteDocuments = async ( collectionName, documentId ) => {
+const deleteDocuments = async ( databaseName, collectionName, documentId ) => {
 	let result;
 	try {
-		const collection = await getCollection( collectionName );
+		const collection = await getCollection( databaseName, collectionName );
 		if ( documentId ) result = await collection.deleteOne({ _id: documentId });
 		else result = await collection.deleteMany({});
 		if ( !result.deletedCount ) throw Error( "Error during Document Removing" ); // catch error
