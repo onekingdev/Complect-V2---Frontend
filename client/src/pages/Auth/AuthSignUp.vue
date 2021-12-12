@@ -1,21 +1,30 @@
 <template lang="pug">
 c-card
-	//- template(#content)
-		c-form-wizard(title="Let's get you started!" :step="currentStep")
-			template(#step1)
-				c-radio-cards(id="user-type" :options="accountTypes" v-model="user.type")
-				c-button(title="Next" type="primary" fullwidth :disabled="user.type ? false:true" @click="nextStep()")
-
-			template(#step2)
-				form.form-container
-					c-field(label="First Name:" v-model="user.first_name" required)
-					c-field(label="Last Name:" v-model="user.last_name" required)
+	template(#content)
+		div.step-one(v-if="currentStep === 1")
+			h2.heading.large Let's get you started!
+			h4.heading.medium Select your account type
+			c-radio-cards.account-types(id="user-type" :data="accountTypes" :alignCenter="true" v-model="user.type")
+			c-button(title="Next" type="primary" @click="nextStep" fullwidth)
+		div.step-two(v-if="currentStep === 2")
+			h2.heading.large Let's get you started!
+			h4.heading.medium Create your FREE account
+			div.signup-form
+				div.field.grid-6
+					c-field.col-3(label="First Name:" v-model="user.first_name" required)
+					c-field.col-3(label="Last Name:" v-model="user.last_name" required)
+				div.field
 					c-field(label="Email:" v-model="user.email" required)
+				div.field
 					c-field(label="Password:" v-model="user.password" required)
+				div.field
 					c-field(label="Repeat Password:" v-model="password2" required)
-				p By signing up, I accept the Complect Terms of Use and acknowledge the Privacy Policy
-				c-button(title="Sign Up" type="primary" fullwidth)
-
+			div.terms
+				| By signing up, I accept the
+				a(href="/terms-of-use") Complect Terms of Use
+				| and acknowledge the
+				a(href="/privacy-policy") Privacy Policy
+			c-button(title="Sign Up" type="primary" fullwidth)
 	template(#footer)
 		p Already have a Complect account?
 			router-link(:to="{name: 'AuthSignIn'}")  Sign In
@@ -43,19 +52,19 @@ export default {
 			{
 				"key": "business",
 				"title": "I am a business",
-				"icon": "business",
+				"image": "business",
 				"description": "Looking to effectively manage my compliance program and find expertise"
 			}, {
 				"key": "specialist",
 				"title": "I am a specialist",
-				"icon": "briefcase",
+				"image": "briefcase",
 				"description": "Looking to work with potential clients on compliance projects"
 			}
 		];
 		const password2 = ref( null );
 
 		const currentStep = ref( 1 );
-		const prevStep = () => currentStep.value--;
+		// const prevStep = () => currentStep.value--;
 		const nextStep = () => currentStep.value++;
 
 		return {
@@ -63,7 +72,7 @@ export default {
 			accountTypes,
 			password2,
 			currentStep,
-			prevStep,
+			// prevStep,
 			nextStep
 		};
 	}
@@ -72,4 +81,20 @@ export default {
 
 
 <style lang="stylus" scoped>
+.heading
+	text-align: center
+	&.large
+		font-size: 2em
+		font-weight: bold
+	&.medium
+		font-size: 1.2em
+.account-types
+	margin: 2em 0
+.signup-form
+	margin: 1.8em 0 0.8em 0
+	.field
+		margin: 0.6em 0
+.terms
+	font-size: 0.9em
+	margin-bottom: 1em
 </style>
