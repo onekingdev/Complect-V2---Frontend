@@ -1,7 +1,7 @@
 "use strict";
 
-const { getCollection } = require("../helpers/mongo");
-const { response } = require("../helpers/utils");
+const { getCollection } = require( "../helpers/mongo" );
+const { response } = require( "../helpers/utils" );
 
 const createDocuments = async ( collectionName, newDocuments ) => {
 	try {
@@ -19,7 +19,7 @@ const readDocuments = async ( collectionName, documentId ) => {
 	let result;
 	try {
 		const collection = await getCollection( collectionName );
-		if ( documentId ) result = await collection.findOne({ _id: documentId });		
+		if ( documentId ) result = await collection.findOne({ _id: documentId });
 		else result = await collection.find({}).toArray();
 		return response( 200, "Found Document(s)", result );
 	} catch ( error ) {
@@ -47,7 +47,7 @@ const deleteDocuments = async ( collectionName, documentId ) => {
 		const collection = await getCollection( collectionName );
 		if ( documentId ) result = await collection.deleteOne({ _id: documentId });
 		else result = await collection.deleteMany({});
-		if ( !result.deletedCount ) throw Error( "Error during Document Removing" ); // catch error
+		if ( !result.deletedCount ) throw Error( "Error during Document Removing" );
 		return response( 200, `Deleted ${result.deletedCount} Document(s)` );
 	} catch ( error ) {
 		console.error( error );
@@ -58,4 +58,9 @@ const deleteDocuments = async ( collectionName, documentId ) => {
 };
 
 
-module.exports = { createDocuments, readDocuments, updateDocument, deleteDocuments };
+module.exports = {
+	createDocuments,
+	readDocuments,
+	updateDocument,
+	deleteDocuments
+};

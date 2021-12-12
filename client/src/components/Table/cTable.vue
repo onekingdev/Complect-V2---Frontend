@@ -59,8 +59,7 @@ export default {
 		},
 		"filters": {
 			"type": Array,
-			"default": () => [
-			]
+			"default": () => []
 		},
 		"showSortIcon": {
 			"type": Boolean,

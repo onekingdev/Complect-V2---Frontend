@@ -4,16 +4,14 @@ import { randomMongoId } from "~/core/utils.js";
 import { saveDocumentsToCloudDb, readDocumentsFromCloudDb, updateDocumentInCloudDb, removeDocumentsFromCloudDb } from "~/core/api.js";
 
 const document = ref({});
-const documents = ref([
-]);
+const documents = ref([]);
 
 
 export default function useData ( collectionName ) {
 	const createDocuments = async ( newDocuments ) => {
 		let copy;
 		try {
-			const ids = [
-			];
+			const ids = [];
 			copy = _clonedeep( newDocuments );
 			copy.forEach( ( newDocument ) => {
 				const _id = randomMongoId(); // generate Document _id in MongoDB format
@@ -57,7 +55,8 @@ export default function useData ( collectionName ) {
 		try {
 			copy = _clonedeep( newDocument );
 			copy.updated = Date.now(); // set updated time
-			documents.value[documentId] = copy;
+			const index = documents.value.findIndex( doc => doc._id === documentId );
+			documents.value[index] = copy;
 			await updateDocumentInCloudDb( collectionName, copy, documentId );
 		} catch ( error ) {
 			console.error( error );
@@ -72,8 +71,7 @@ export default function useData ( collectionName ) {
 			if ( documentId ) {
 				const index = documents.value.findIndex( doc => doc._id === documentId );
 				documents.value.splice( index, 1 );
-			} else documents.value = [
-			];
+			} else documents.value = [];
 			await removeDocumentsFromCloudDb( collectionName, documentId );
 		} catch ( error ) {
 			console.error( error );
@@ -82,8 +80,7 @@ export default function useData ( collectionName ) {
 
 
 	const clearStore = () => {
-		documents.value = [
-		];
+		documents.value = [];
 		document.value = {};
 	};
 

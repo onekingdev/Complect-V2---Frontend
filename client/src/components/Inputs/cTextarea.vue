@@ -40,9 +40,7 @@ export default {
 		},
 		"required": Boolean
 	},
-	"emits": [
-		"update:modelValue"
-	]
+	"emits": ["update:modelValue"]
 };
 </script>
 

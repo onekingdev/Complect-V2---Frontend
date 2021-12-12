@@ -58,18 +58,13 @@ export default {
 			"ends_at": "",
 			"description": "",
 			"role_details": "",
-			"location_type": [
-			],
+			"location_type": [],
 			"location": "",
-			"industries": [
-			],
-			"jurisdictions": [
-			],
+			"industries": [],
+			"jurisdictions": [],
 			"min_experience": "",
 			"former_regulators": false,
-			"skills": [
-				"html"
-			],
+			"skills": ["html"],
 
 			"price_type": "fixed",
 			"budget": "",
@@ -92,12 +87,10 @@ export default {
 					"value": "onsite"
 				}
 			],
-			"location": [
-				{
-					"title": "USA",
-					"value": "usa"
-				}
-			],
+			"location": [{
+				"title": "USA",
+				"value": "usa"
+			}],
 			industries,
 			jurisdictions,
 			"min_experience": [

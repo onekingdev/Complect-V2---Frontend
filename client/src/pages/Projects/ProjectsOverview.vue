@@ -55,42 +55,40 @@ export default {
 			}
 		];
 
-		const filters = [
-			{
-				"title": "Filter by:",
-				"field": "status",
-				"keys": [
-					{
-						"title": "All",
-						"key": ""
-					},
-					{
-						"title": "Not Started",
-						"key": "not_started"
-					},
-					{
-						"title": "Draft",
-						"key": "draft"
-					},
-					{
-						"title": "In Progress",
-						"key": "inprogress"
-					},
-					{
-						"title": "Pending",
-						"key": "pending"
-					},
-					{
-						"title": "Complete",
-						"key": "complete"
-					},
-					{
-						"title": "Overdue",
-						"key": "overdue"
-					}
-				]
-			}
-		];
+		const filters = [{
+			"title": "Filter by:",
+			"field": "status",
+			"keys": [
+				{
+					"title": "All",
+					"key": ""
+				},
+				{
+					"title": "Not Started",
+					"key": "not_started"
+				},
+				{
+					"title": "Draft",
+					"key": "draft"
+				},
+				{
+					"title": "In Progress",
+					"key": "inprogress"
+				},
+				{
+					"title": "Pending",
+					"key": "pending"
+				},
+				{
+					"title": "Complete",
+					"key": "complete"
+				},
+				{
+					"title": "Overdue",
+					"key": "overdue"
+				}
+			]
+		}];
 
 		onMounted( async () => await readDocuments() );
 		onUnmounted( () => clearStore() );

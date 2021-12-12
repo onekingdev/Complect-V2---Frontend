@@ -39,9 +39,7 @@ export default {
 			"required": true
 		}
 	},
-	"emits": [
-		"update:modelValue"
-	],
+	"emits": ["update:modelValue"],
 	setup ( props, context ) {
 		const stepValue = value => context.emit( "update:modelValue", props.modelValue + value );
 		const updateValue = event => context.emit( "update:modelValue", event.target.value );

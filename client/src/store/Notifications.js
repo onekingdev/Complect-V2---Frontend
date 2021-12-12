@@ -1,8 +1,7 @@
 import { reactive } from "vue";
 import { randomMongoId } from "~/core/utils.js";
 
-const notifications = reactive([
-]);
+const notifications = reactive([]);
 
 export default function useUser () {
 	const createNotification = ( options ) => {

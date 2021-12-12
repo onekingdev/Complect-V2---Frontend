@@ -1,5 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 import { appState } from "~/store/appState.js";
+import { restoreSession } from "~/core/restore.js"; // temp
+
 
 // layers
 const ErrorLayer = () => import( "~/layers/ErrorLayer.vue" );
@@ -67,9 +69,11 @@ const routes = [
 	}, {
 		"path": "/",
 		"component": AuthenticatedLayer,
-		"beforeEnter": ( to, from, next ) => {
-			if ( appState.value.userId ) next();
-			else next({ "name": "AuthSignIn" });
+		"beforeEnter": async ( to, from, next ) => {
+			if ( appState.value.userId ) {
+				await restoreSession();
+				next();
+			} else next({ "name": "AuthSignIn" });
 		},
 		"children": [
 			...devRoutes,
@@ -83,14 +87,12 @@ const routes = [
 				"path": "tasks",
 				"component": _TasksEntry,
 				"meta": { "title": "Tasks" },
-				"children": [
-					{
-						"path": "",
-						"name": "TasksOverview",
-						"component": TasksOverview,
-						"meta": { "title": "Tasks" }
-					}
-				]
+				"children": [{
+					"path": "",
+					"name": "TasksOverview",
+					"component": TasksOverview,
+					"meta": { "title": "Tasks" }
+				}]
 			},
 			{
 				"path": "projects",
@@ -290,35 +292,33 @@ const routes = [
 	}, {
 		"path": "/",
 		"component": UnauthenticatedLayer,
-		"children": [
-			{
-				"path": "",
-				"component": _AuthEntry,
-				"children": [
-					{
-						"path": "sign-up",
-						"name": "AuthSignUp",
-						"component": AuthSignUp,
-						"meta": { "title": "Sign Up" }
-					}, {
-						"path": "sign-in",
-						"name": "AuthSignIn",
-						"component": AuthSignIn,
-						"meta": { "title": "Sign In" }
-					}, {
-						"path": "verification",
-						"name": "AuthVerification",
-						"component": AuthVerification,
-						"meta": { "title": "Verification" }
-					}, {
-						"path": "reset-password",
-						"name": "AuthResetPassword",
-						"component": AuthResetPassword,
-						"meta": { "title": "Reset Password" }
-					}
-				]
-			}
-		]
+		"children": [{
+			"path": "",
+			"component": _AuthEntry,
+			"children": [
+				{
+					"path": "sign-up",
+					"name": "AuthSignUp",
+					"component": AuthSignUp,
+					"meta": { "title": "Sign Up" }
+				}, {
+					"path": "sign-in",
+					"name": "AuthSignIn",
+					"component": AuthSignIn,
+					"meta": { "title": "Sign In" }
+				}, {
+					"path": "verification",
+					"name": "AuthVerification",
+					"component": AuthVerification,
+					"meta": { "title": "Verification" }
+				}, {
+					"path": "reset-password",
+					"name": "AuthResetPassword",
+					"component": AuthResetPassword,
+					"meta": { "title": "Reset Password" }
+				}
+			]
+		}]
 	}, {
 		"path": "/:pathMatch(.*)*",
 		"redirect": {

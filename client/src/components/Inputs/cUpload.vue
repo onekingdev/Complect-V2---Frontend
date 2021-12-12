@@ -18,9 +18,7 @@ export default {
 			"default": ""
 		}
 	},
-	"emits": [
-		"update:modelValue"
-	],
+	"emits": ["update:modelValue"],
 	setup ( props, context ) {
 		const fileInput = ref( null );
 

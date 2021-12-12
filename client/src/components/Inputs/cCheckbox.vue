@@ -29,22 +29,17 @@ export default {
 			"type": [
 				Array, Boolean
 			],
-			"default": [
-			]
+			"default": []
 		},
 		"multiple": Boolean,
 		"fulldata": Boolean
 	},
-	"emits": [
-		"update:modelValue"
-	],
+	"emits": ["update:modelValue"],
 	setup ( props, context ) {
 		const isChecked = value => props.multiple ? props.modelValue.includes( value ) : props.modelValue;
 		const updateModelValue = ( value, checked ) => {
 			if ( props.multiple ) {
-				const modelValue = [
-					...props.modelValue
-				];
+				const modelValue = [...props.modelValue];
 				if ( checked ) modelValue.push( value );
 				else modelValue.splice( modelValue.indexOf( value ), 1 );
 				context.emit( "update:modelValue", modelValue );

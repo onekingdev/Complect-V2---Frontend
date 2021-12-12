@@ -1,10 +1,8 @@
 "use strict";
 
-const MongoClient = require("mongodb").MongoClient;
-const { uri } = require("../../db.config.js");
-
+const MongoClient = require( "mongodb" ).MongoClient;
+const mongoUri = "mongodb://user:password@mongo:27017";
 const databaseName = "complect";
-const mongoUri = uri.atlas;
 const options = {
 	useNewUrlParser: true,
 	useUnifiedTopology: true
@@ -13,10 +11,7 @@ const options = {
 let cachedPromise;
 
 const connectToDatabase = async () => {
-	if ( !cachedPromise ) {
-		cachedPromise = MongoClient.connect( mongoUri, options );
-		console.info( "Connected to Database" );
-	}
+	if ( !cachedPromise ) cachedPromise = MongoClient.connect( mongoUri, options );
 	const client = await cachedPromise;
 	return client;
 };
@@ -30,11 +25,12 @@ const getCollection = async collectionName => {
 const disconnectFromDatabase = async () => {
 	const client = await connectToDatabase();
 	client.close( error => {
-		if ( !error ) {
-			cachedPromise = null;
-			console.info( "Disconected from Database" );
-		}
+		if ( !error ) cachedPromise = null;
 	});
 };
 
-module.exports = { connectToDatabase, getCollection, disconnectFromDatabase };
+module.exports = {
+	connectToDatabase,
+	getCollection,
+	disconnectFromDatabase
+};

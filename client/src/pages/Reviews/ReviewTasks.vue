@@ -30,8 +30,7 @@ export default {
 			}
 		];
 
-		const documents = [
-		];
+		const documents = [];
 
 
 		return {

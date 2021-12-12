@@ -19,9 +19,7 @@ export default {
 		},
 		"modelValue": Boolean
 	},
-	"emits": [
-		"update:modelValue"
-	],
+	"emits": ["update:modelValue"],
 	setup ( props, context ) {
 		const update = event => context.emit( "update:modelValue", event.target.checked );
 		return { update };

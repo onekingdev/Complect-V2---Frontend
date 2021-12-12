@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "serverless offline start",
     "deploy": "serverless deploy",
-    "test": "node --experimental-vm-modules node_modules/.bin/jest",
+    "test": "jest",
     "lint": "eslint 'src/**/*.js'",
     "lint:fix": "eslint 'src/**/*.js' --fix"
   },

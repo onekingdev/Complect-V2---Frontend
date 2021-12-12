@@ -71,9 +71,7 @@ export default {
 		"fullwidth": Boolean,
 		"disabled": Boolean
 	},
-	"emits": [
-		"update:modelValue"
-	]
+	"emits": ["update:modelValue"]
 };
 </script>
 

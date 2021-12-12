@@ -4,19 +4,16 @@
 	SideBar
 	main
 		router-view
-	//- DevBar
 </template>
 
 
 <script>
-import { defineAsyncComponent } from "vue";
 import TopBar from "~/components/Bars/TopBar.vue";
 import SideBar from "~/components/Bars/SideBar.vue";
 export default {
 	"components": {
 		TopBar,
-		SideBar,
-		"DevBar": defineAsyncComponent( () => import( "~/_devmode/DevBar.vue" ) )
+		SideBar
 	}
 };
 </script>

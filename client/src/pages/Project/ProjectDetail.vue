@@ -45,9 +45,7 @@ export default {
 
 		const options = { "columns": { "title": "Name" } };
 
-		const documents = [
-			{ "title": "1" }
-		];
+		const documents = [{ "title": "1" }];
 
 
 		return {

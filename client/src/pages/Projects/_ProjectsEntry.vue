@@ -45,13 +45,11 @@ export default {
 
 		const newProject = ref({
 			"title": "",
-			"starts_at": Date.now(),
-			"ends_at": Date.now() + 1e8,
+			"starts_at": "",
+			"ends_at": "",
 			"description": "",
-			"collaborators": [
-			],
-			"tasks": [
-			],
+			"collaborators": [],
+			"tasks": [],
 			"fixed_budget": 0,
 			"status": "draft"
 		});
@@ -59,9 +57,7 @@ export default {
 
 		const clearForm = () => newProject.value = {};
 		const createProject = async () => {
-			const projectId = await createDocuments([
-				newProject.value
-			]);
+			const projectId = await createDocuments([newProject.value]);
 			toast({
 				"type": "success",
 				"title": "Project Cteated"

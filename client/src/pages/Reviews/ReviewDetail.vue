@@ -51,20 +51,17 @@ import cDropdown from "~/components/Inputs/cDropdown.vue";
 export default {
 	"components": { cDropdown },
 	setup () {
-		const categories = reactive([
-			{
-				"id": "_axxxx",
-				"name": "Category One"
-			}
-		]);
+		const categories = reactive([{
+			"id": "_axxxx",
+			"name": "Category One"
+		}]);
 
 		const newRegulatory = {
 			"change": "",
 			"response": ""
 		};
 
-		const regulatories = reactive([
-		]);
+		const regulatories = reactive([]);
 
 		const addRegulatoryChange = () => {
 			regulatories.push( newRegulatory );
@@ -76,8 +73,7 @@ export default {
 			"department": ""
 		};
 
-		const employees = reactive([
-		]);
+		const employees = reactive([]);
 		const addNewEmployee = () => {
 			employees.push( newEmployee );
 		};

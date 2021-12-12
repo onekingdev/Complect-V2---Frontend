@@ -35,9 +35,7 @@ export default {
 			"default": false
 		}
 	},
-	"emits": [
-		"update:modelValue"
-	],
+	"emits": ["update:modelValue"],
 	setup ( props, context ) {
 		const isModalVisible = ref( true );
 		const modalWindow = ref( null );

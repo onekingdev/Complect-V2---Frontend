@@ -20,8 +20,7 @@ export default {
 		},
 		"data": {
 			"type": Array,
-			"default": [
-			]
+			"default": []
 		},
 		"modelValue": {
 			"type": String,
@@ -32,9 +31,7 @@ export default {
 			"default": false
 		}
 	},
-	"emits": [
-		"update:modelValue"
-	],
+	"emits": ["update:modelValue"],
 	setup ( props, context ) {
 		const checked = option => props.modelValue === option.value;
 		const update = option => context.emit( "update:modelValue", option.value );

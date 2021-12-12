@@ -14,14 +14,10 @@ export default {
 			"required": true
 		}
 	},
-	"emits": [
-		"update:modelValue"
-	],
+	"emits": ["update:modelValue"],
 	setup ( props, context ) {
 		const removeSelected = ( value ) => {
-			const model = [
-				...props.modelValue
-			];
+			const model = [...props.modelValue];
 			const index = model.findIndex( item => item.value === value );
 			model.splice( index, 1 );
 			context.emit( "update:modelValue", model );

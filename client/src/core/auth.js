@@ -14,9 +14,7 @@ export default function useAuth () {
 		try {
 			const randomUserProfile = await randomUsers({ "q": 1 })[0];
 			userProfile.value = randomUserProfile;
-			saveDocumentsToCloudDb( "users", [
-				randomUserProfile
-			]);
+			saveDocumentsToCloudDb( "users", [randomUserProfile]);
 			setUserIdState( randomUserProfile._id );
 			router.push({ "name": "Dashboard" });
 		} catch ( error ) {
@@ -25,12 +23,20 @@ export default function useAuth () {
 	};
 
 	// temp unsecure _devmode solution !!!
+	// const restoreSession = async () => {
+	// 	const userId = appState.value.userId;
+	// 	if ( userId ) {
+	// 		const profile = await readDocumentsFromCloudDb( "users", userId );
+	// 		userProfile.value = profile.data;
+	// 	} else router.push({ "name": "AuthSignIn" });
+	// };
+
 	const restoreSession = async () => {
 		const userId = appState.value.userId;
 		if ( userId ) {
 			const profile = await readDocumentsFromCloudDb( "users", userId );
 			userProfile.value = profile.data;
-		} else router.push({ "name": "AuthSignIn" });
+		}
 	};
 
 	// temp unsecure _devmode solution !!!
@@ -46,3 +52,4 @@ export default function useAuth () {
 		signOut
 	};
 }
+

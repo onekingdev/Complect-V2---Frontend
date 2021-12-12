@@ -44,7 +44,7 @@ export default {
 			url: "",
 			number: "",
 			tel: "",
-			date: Date.now(),
+			date: "",
 			time: ""
 
 		})

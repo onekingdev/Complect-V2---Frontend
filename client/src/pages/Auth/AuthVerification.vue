@@ -19,15 +19,12 @@ export default {
 	setup () {
 		const { signIn } = useAuth();
 		const email = ref( "example@email.com" );
-		const inputs = ref([
-		]);
-		const numbers = ref([
-		]);
+		const inputs = ref([]);
+		const numbers = ref([]);
 		const code = computed( () => numbers.value.join( "" ) );
 
 		const submitCode = () => signIn();
-		const sendNewCode = () => numbers.value = [
-		];
+		const sendNewCode = () => numbers.value = [];
 
 		const keydownHandler = ( e, index ) => {
 			if ( e.keyCode === 8 && e.target.value === "" )
@@ -35,9 +32,7 @@ export default {
 		};
 
 		const inputHandler = ( e, index ) => {
-			const [
-				first
-			] = e.target.value;
+			const [first] = e.target.value;
 			e.target.value = first ?? "";
 			if ( code.value.length >= 6 ) inputs.value[index].blur();
 			if ( index !== inputs.value.length - 1 && first !== undefined )
@@ -60,16 +55,14 @@ export default {
 
 		// remove Event Listners to all six number's inputs
 		onUnmounted( () => {
-			numbers.value = [
-			];
+			numbers.value = [];
 			inputs.value.forEach( ( input ) => {
 				input.removeEventListener( "keydown", keydownHandler );
 				input.removeEventListener( "input", inputHandler );
 			});
 		});
 
-		onBeforeUpdate( () => inputs.value = [
-		]);
+		onBeforeUpdate( () => inputs.value = []);
 
 		return {
 			email,

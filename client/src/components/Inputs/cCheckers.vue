@@ -26,15 +26,11 @@ export default {
 		},
 		"fullwidth": Boolean
 	},
-	"emits": [
-		"update:modelValue"
-	],
+	"emits": ["update:modelValue"],
 	setup ( props, context ) {
 		const isChecked = option => props.modelValue.includes( option.value );
 		const updateModel = ( option, checked ) => {
-			const update = [
-				...props.modelValue
-			];
+			const update = [...props.modelValue];
 			if ( checked ) update.push( option.value );
 			else update.splice( update.indexOf( option.value ), 1 );
 			context.emit( "update:modelValue", update );

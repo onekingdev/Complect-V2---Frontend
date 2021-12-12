@@ -26,9 +26,7 @@ export default {
 			"required": true
 		}
 	},
-	"emits": [
-		"updateVisibleModal"
-	],
+	"emits": ["updateVisibleModal"],
 	setup ( props, context ) {
 		const newRisk = reactive({ "name": "" });
 

@@ -48,16 +48,13 @@ export default {
 		"required": Boolean,
 		"searchable": Boolean
 	},
-	"emits": [
-		"update:modelValue"
-	],
+	"emits": ["update:modelValue"],
 	setup ( props ) {
 		const selectComponent = ref( null );
 		const dropdownList = ref( null );
 		const dropdownListItems = ref( null );
 		const dropdownListDirection = ref( "drop-down" );
-		const selectedItems = ref([
-		]);
+		const selectedItems = ref([]);
 		const params = reactive({
 			"query": "",
 			"datalistVisible": false,
@@ -128,8 +125,7 @@ export default {
 		};
 
 
-		const demo = ref([
-		]);
+		const demo = ref([]);
 
 		return {
 			...toRefs( params ),

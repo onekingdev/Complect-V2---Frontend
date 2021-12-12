@@ -3,8 +3,7 @@
 
 const endpoint = ( collectionName, documentId ) => {
 	let base;
-	base = `http://localhost:82/v1/data/${collectionName}`;
-	// base = `https://5can282p12.execute-api.us-east-1.amazonaws.com/dev/data/${collectionName}`;
+	base = `http://localhost:82/dev/data/${collectionName}`;
 	if ( documentId ) base += `/${documentId}`;
 	return base;
 };

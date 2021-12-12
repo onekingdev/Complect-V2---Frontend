@@ -1,5 +1,5 @@
 /* global describe, test, expect */
-import { response, requestGuard } from "../../../src/helpers/utils.js";
+const { response, requestGuard } = require("../../../src/helpers/utils.js");
 
 
 describe( "response:", () => {

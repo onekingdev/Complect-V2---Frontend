@@ -69,24 +69,21 @@ export default {
 			}
 		];
 
-		const documents = [
-			{
-				"_id": "1",
-				"name": "Review",
-				"progress": {
-					"current": 1,
-					"max": 2
-				},
-				"finding": "1",
-				"last_modified": new Date().toString(),
-				"date_created": new Date().toString(),
-				"review_period": new Date().toString(),
-				"end_date": new Date().toString()
-			}
-		];
+		const documents = [{
+			"_id": "1",
+			"name": "Review",
+			"progress": {
+				"current": 1,
+				"max": 2
+			},
+			"finding": "1",
+			"last_modified": new Date().toString(),
+			"date_created": new Date().toString(),
+			"review_period": new Date().toString(),
+			"end_date": new Date().toString()
+		}];
 
-		const filters = [
-		];
+		const filters = [];
 		const viewPolicy = () => {
 			window.open( "https://www.sec.gov/exams" );
 		};

@@ -106,30 +106,26 @@ export default {
 			}
 		];
 
-		const policies = [
-			{
-				"completed": true,
-				"name": {
-					"id": "1",
-					"title": "Policy"
-				},
-				"status": "draft",
-				"updated_at": new Date().toString(),
-				"created_at": new Date().toString()
-			}
-		];
+		const policies = [{
+			"completed": true,
+			"name": {
+				"id": "1",
+				"title": "Policy"
+			},
+			"status": "draft",
+			"updated_at": new Date().toString(),
+			"created_at": new Date().toString()
+		}];
 
-		const documents = [
-			{
-				"name": {
-					"id": "1",
-					"title": "Policy"
-				},
-				"status": "draft",
-				"updated_at": new Date().toString(),
-				"created_at": new Date().toString()
-			}
-		];
+		const documents = [{
+			"name": {
+				"id": "1",
+				"title": "Policy"
+			},
+			"status": "draft",
+			"updated_at": new Date().toString(),
+			"created_at": new Date().toString()
+		}];
 
 		const showEditRiskModal = () => {
 			isShowEditRiskModal.value = true;

@@ -24,12 +24,14 @@ const response = ( code = 200, message = "", data = "" ) => {
 		headers: {
 			"Content-Type": "application/json",
 			"Access-Control-Allow-Origin": "*",
-			'Access-Control-Allow-Credentials': true
-
+			"Access-Control-Allow-Credentials": true
 		},
 		body: JSON.stringify( body )
 	};
 };
 
 
-module.exports = { requestGuard, response };
+module.exports = {
+	requestGuard,
+	response
+};
