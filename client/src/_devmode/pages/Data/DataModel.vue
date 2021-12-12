@@ -1,6 +1,7 @@
 <template lang="pug">
 c-card(:maxWidth="700")
 	template(#header-controls)
+	//- template(#header-controls)
 		c-field(v-model="form.title" fullwidth required)
 		c-button(title="Reset" type="link" @click="reset()" :disabled="!form.title")
 		c-button(v-if="!form._id" title="Create" type="primary" @click="create()" :disabled="!form.title")
@@ -8,11 +9,14 @@ c-card(:maxWidth="700")
 			
 	template(#content)
 		.data-constructor-documents(v-if="Object.keys(documents).length")
+		pre {{ documents }}
+		//- .data-constructor-documents(v-if="Object.keys(documents).length")
 			.document(v-for="document in documents" :title="document._id" :key="document._id")
 				.document-title(@click="select(document._id)") {{document.title}}
 				icon(name="close" @click="remove(document._id)")
 			
 	template(#footer)
+	//- template(#footer)
 		.total Total: {{Object.keys(documents).length}}
 		c-button(title="CRUD Test" @click="crudTest(100)")
 		c-button(title="Generate" @click="generate(10)")

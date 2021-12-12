@@ -1,7 +1,7 @@
-# name: API Test
+# name: API Deploy (Dev)
 # on:
-#   pull_request:
-#     branches: [ dev, public ]
+#   push:
+#     branches: [ dev ]
 #     paths:
 #       - "api/**"
 # defaults:
@@ -21,19 +21,14 @@
 #           node-version: '14.x'
 #           cache: 'npm'
 #           cache-dependency-path: client/package-lock.json
-      
-#       - name: Install dependencies
-#         run: npm ci
-      
-#       - name: Lint code
-#         run: npm run lint
-
-#       - name: Test code
-#         run: npm run test
 
 #       # - name: Deploy
 #       #   run: sls deploy
 #       #   env:
+#       #     API_STAGE: dev
+#       #     DB_HOST: ${{ secrets.DB_HOST_DEV }}
 #       #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
 #       #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+     
+
 

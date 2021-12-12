@@ -4,6 +4,7 @@
 const endpoint = ( collectionName, documentId ) => {
 	let base;
 	base = `http://localhost:82/v1/data/${collectionName}`;
+	// base = `https://5can282p12.execute-api.us-east-1.amazonaws.com/dev/data/${collectionName}`;
 	if ( documentId ) base += `/${documentId}`;
 	return base;
 };
@@ -16,8 +17,8 @@ const api = async ({ method, collectionName, newDocuments, documentId }) => {
 			"mode": "cors",
 			"cache": "no-cache",
 			"headers": {
-				"Content-Type": "application/json;charset=utf-8",
-				"Access-Control-Max-Age": "86400"
+				"Content-Type": "application/json;charset=utf-8"
+				// "Access-Control-Allow-Origin": "*"
 			},
 			"body": JSON.stringify( newDocuments )
 		};

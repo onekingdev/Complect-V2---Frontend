@@ -1,5 +1,5 @@
 <template lang="pug">
-.bar.topbar
+.bar.topbar(v-if="userProfile")
 	router-link(:to="{name: 'Dashboard'}")
 		icon(name="logo")
 	.navigation

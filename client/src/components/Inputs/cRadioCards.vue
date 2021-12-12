@@ -2,11 +2,11 @@
 .c-input.c-radio-card
 	label.radio-card(v-for="(option, index) in data" :title="option.tooltip" :key="index")
 		input(type="radio" :name="`radio_group_${id}`" :checked="checked(option)" @click="update(option)")
-		.option
+		.option(:class="{ center: alignCenter }")
 			icon.title-icon(v-if="option.icon" :name="option.icon")
 			.content
 				.title(v-if="option.title") {{option.title}}
-				//- icon.image(v-if="option.image" :name="option.image")
+				icon.image(v-if="option.image" :name="option.image")
 				.description(v-if="option.description") {{option.description}}
 </template>
 
@@ -26,6 +26,10 @@ export default {
 		"modelValue": {
 			"type": String,
 			"default": ""
+		},
+		"alignCenter": {
+			"type": Boolean,
+			"default": false
 		}
 	},
 	"emits": [
@@ -64,6 +68,16 @@ export default {
 			border-radius: var(--v-border-radius)
 			transition: background var(--fx-duration-short), border-color var(--fx-duration-short)
 			cursor: pointer
+			&.center
+				text-align: center
+				padding: 1.5em
+				.title
+					font-weight: bold
+					margin: 1em 0
+				svg.icon
+					width: 3em
+					height: 3em
+					margin: 1.2em 0
 			svg.title-icon
 				flex-shrink: 0
 				width: 1.1em
