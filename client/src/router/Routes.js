@@ -14,6 +14,8 @@ const AuthSignIn = () => import( "~/pages/Auth/AuthSignIn.vue" );
 const AuthVerification = () => import( "~/pages/Auth/AuthVerification.vue" );
 const AuthResetPassword = () => import( "~/pages/Auth/AuthResetPassword.vue" );
 
+const BusinessOnBoarding = () => import( "~/pages/Onboarding/BusinessOnboarding.vue" );
+
 const _DashboardEntry = () => import( "~/pages/Dashboard/_DashboardEntry.vue" );
 
 const _TasksEntry = () => import( "~/pages/Tasks/_TasksEntry.vue" );
@@ -93,6 +95,14 @@ const routes = [
 					"component": TasksOverview,
 					"meta": { "title": "Tasks" }
 				}]
+			},
+			{
+				"path": "/business/onboarding",
+				"component": BusinessOnBoarding,
+				"meta": {
+					"title": "BusinessOnBoarding",
+					"sidebar": false
+				}
 			},
 			{
 				"path": "projects",

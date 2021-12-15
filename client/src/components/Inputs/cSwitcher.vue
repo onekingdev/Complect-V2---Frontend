@@ -4,7 +4,7 @@
 	.c-switcher-items
 		label.switch(v-for="(option, index) in options" :key="index" :title="option.tooltip")
 			input(type="radio" :name="`radio_group_${id}`" :checked="checked(option)" @click="update(option)")
-			.option
+			.option(:class="[type]")
 				icon(v-if="option.iconL" :name="option.iconL")
 				.title(v-if="option.title") {{option.title}}
 				icon(v-if="option.iconR" :name="option.iconR")
@@ -25,6 +25,10 @@ export default {
 		"options": {
 			"type": Array,
 			"default": () => []
+		},
+		"type": {
+			"type": String,
+			"default": ""
 		},
 		"modelValue": {
 			"type": String,
@@ -90,6 +94,8 @@ export default {
 		input:checked + .option
 			background: #1F80C1
 			color: #fff
+			&.primary
+				background: var(--c-text)
 			svg.icon
 				fill: #fff
 		+ .switch

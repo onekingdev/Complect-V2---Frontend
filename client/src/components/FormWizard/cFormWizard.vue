@@ -1,5 +1,5 @@
 <template lang="pug">
-.c-form-wizard
+.c-form-wizard(:class="{ fullWidth }")
 	.c-form-wizard-header
 		.wizard-meta(v-if="section || title || subtitle")
 			.wizard-section(v-if="section") {{section}}
@@ -8,9 +8,10 @@
 		.wizard-progress
 			.progress-step(v-for="(step, index) in steps" :key="index" :class="[currentStep >= index+1 ? 'passed':'']") {{index+1}}. {{step.title}}
 	.c-form-wizard-step.grid-6
-		slot(name="step1")
-		slot(name="step2")
-		slot(name="step3")
+		div(v-for="(step, index) in steps" :key="`step-${index}`" v-show="currentStep === index + 1")
+			slot(:name="`step${index + 1}`" )
+		//- slot(name="step2")
+		//- slot(name="step3")
 		//- component(v-for="field in steps[currentStep-1].fields" :is="field.component" v-model="field.model" v-bind="field")
 	.c-form-wizard-controls
 		c-button(v-if="!firstStep" title="Previous" iconL="chevron-left" @click="nextStep(-1)")
@@ -50,6 +51,11 @@ export default {
 		"steps": {
 			"type": Array,
 			"required": true
+		},
+		"fullWidth": {
+			"type": Boolean,
+			"required": false,
+			"default": false
 		}
 	},
 	setup ( props ) {
@@ -79,6 +85,8 @@ export default {
 	min-height: 100%
 	margin: auto
 	padding: 3em 2em
+	&.fullWidth
+		max-width: 100%
 	.c-form-wizard-header
 		.wizard-meta
 			margin-bottom: 2em
