@@ -45,8 +45,8 @@ export default {
 
 		const newProject = ref({
 			"title": "",
-			"starts_at": "",
-			"ends_at": "",
+			"starts_at": Date.now(),
+			"ends_at": Date.now() + 864e5,
 			"description": "",
 			"collaborators": [],
 			"tasks": [],
@@ -55,14 +55,12 @@ export default {
 		});
 
 
-		const clearForm = () => newProject.value = {};
 		const createProject = async () => {
 			const projectId = await createDocuments([newProject.value]);
 			toast({
 				"type": "success",
 				"title": "Project Cteated"
 			});
-			clearForm();
 			router.push({
 				"name": "ProjectDetail",
 				"params": { "id": projectId[0] }

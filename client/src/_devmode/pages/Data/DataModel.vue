@@ -42,7 +42,6 @@ export default {
 		const update = () => { updateDocument(form.value._id, form.value), reset() };
 		const select = _id => form.value = documents.value.find(document => document._id === _id);
 		const remove = _id => deleteDocuments(_id);
-
 		
 		
 		const generate = async q => {

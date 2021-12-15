@@ -1,5 +1,5 @@
 <template lang="pug">
-input(type="time" :value="value" @input="$emit('update:modelValue', $event.target.value)")
+input(type="time" :value="value" @input="updateModelValue($event.target.value)")
 </template>
 
 
@@ -7,9 +7,14 @@ input(type="time" :value="value" @input="$emit('update:modelValue', $event.targe
 export default {
 	"props": {
 		"value": {
-			"type": String,
+			"type": Number,
 			"required": true
 		}
+	},
+	"emits": ["updateValue"],
+	setup ( props, context ) {
+		const updateModelValue = value => context.emit( "updateValue", value );
+		return { updateModelValue };
 	}
 };
 </script>

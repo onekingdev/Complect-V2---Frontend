@@ -10,7 +10,7 @@ label.c-input.c-field(:class="{fullwidth}")
 			:placeholder="placeholder"
 			:required="required"
 			:value="modelValue"
-			@input="$emit('update:modelValue', $event.target.value)")
+			@updateValue="updateModelValue")
 		icon(v-if="iconR" :name="iconR")
 </template>
 
@@ -28,7 +28,8 @@ export default {
 		"Tel": defineAsyncComponent( () => import( "./Types/TypeTel.vue" ) ),
 		"Text": defineAsyncComponent( () => import( "./Types/TypeText.vue" ) ),
 		"Time": defineAsyncComponent( () => import( "./Types/TypeTime.vue" ) ),
-		"Url": defineAsyncComponent( () => import( "./Types/TypeUrl.vue" ) )
+		"Url": defineAsyncComponent( () => import( "./Types/TypeUrl.vue" ) ),
+		"Address": defineAsyncComponent( () => import( "./Types/TypeAddress.vue" ) )
 	},
 	"props": {
 		"type": {
@@ -71,7 +72,15 @@ export default {
 		"fullwidth": Boolean,
 		"disabled": Boolean
 	},
-	"emits": ["update:modelValue"]
+	"emits": ["update:modelValue"],
+	setup ( props, context ) {
+		const updateModelValue = ( value ) => {
+			context.emit( "update:modelValue", value );
+		};
+
+
+		return { updateModelValue };
+	}
 };
 </script>
 

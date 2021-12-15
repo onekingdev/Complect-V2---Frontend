@@ -1,5 +1,5 @@
 <template lang="pug">
-div.c-input.c-radio
+.c-input.c-radio
 	input(type="radio" :id="labelId" :checked="isChecked()" @change="updateModelValue()")
 	label.label(v-if="title" :for="labelId")
 		span {{ title }}

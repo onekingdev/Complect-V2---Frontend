@@ -42,10 +42,11 @@ export default {
 			password: "",
 			search: "",
 			url: "",
-			number: "",
+			number: 0,
 			tel: "",
-			date: "",
-			time: ""
+			date: Date.now(),
+			time: "",
+			address: ""
 
 		})
 		const fieldsStates = [
@@ -66,7 +67,8 @@ export default {
 				{title: "URL", value: "url"},
 				{title: "Tel", value: "tel"},
 				{title: "Date", value: "date"},
-				{title: "Time", value: "time"}
+				// {title: "Time", value: "time"}
+				{title: "Address", value: "address"}
 			],
 			sizes: [
 				{title: "Tiny", value: "tiny"},
