@@ -43,6 +43,11 @@ const icons = [
 	{ title: "Edit", value: "edit", icon: "edit" },
 	{ title: "Check", value: "check", icon: "check" },
 	{ title: "Circle Plus", value: "circle_plus", icon: "circle_plus" },
+	{ title: "Triangle", value: "triangle", icon: "triangle" },
+	{ title: "Policy", value: "policy", icon: "policy" },
+	{ title: "GreenChecked", value: "green_checked", icon: "green_checked" },
+	{ title: "Admin", value: "admin", icon: "admin" },
+	{ title: "Basic", value: "basic", icon: "basic" }
 ]
 
 export { icons }

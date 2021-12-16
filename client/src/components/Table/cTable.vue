@@ -14,7 +14,8 @@
 				th(v-for="(column, index) in columns" :key="index")
 					.cell.column-title(:class="[column.align]")
 						.title {{ column.title }}
-						c-button(v-if="showSortIcon" type="icon" iconR="sort" @click="sortDocuments(column.key)")
+						icon(v-if="column.icon" :name="column.icon.name" :size="column.icon.size" @click="clickIconColumn(column.title)")
+						c-button(v-if="!column.hideSort && showSortIcon" type="icon" iconR="sort" @click="sortDocuments(column.key)")
 		tbody(v-if="filteredDocuments.length")
 			tr(v-for="document in filteredDocuments" :key="document._id")
 				td(v-for="(column, index) in columns" :key="index")
@@ -46,7 +47,8 @@ export default {
 		"Tasks": defineAsyncComponent( () => import( "./Cells/CellTasks.vue" ) ),
 		"Progress": defineAsyncComponent( () => import( "./Cells/CellProgress.vue" ) ),
 		"Label": defineAsyncComponent( () => import( "./Cells/CellLabel.vue" ) ),
-		"Policy": defineAsyncComponent( () => import( "./Cells/CellPolicy.vue" ) )
+		"Policy": defineAsyncComponent( () => import( "./Cells/CellPolicy.vue" ) ),
+		"AvatarName": defineAsyncComponent( () => import( "./Cells/CellAvatarName.vue" ) )
 	},
 	"props": {
 		"columns": {
@@ -67,7 +69,8 @@ export default {
 		},
 		"searchable": Boolean
 	},
-	setup ( props ) {
+	"emits": ["clickIconColumn"],
+	setup ( props, context ) {
 		// filter and Search Documents
 		const searchQuery = ref( "" );
 		const activeFilters = ref({});
@@ -115,6 +118,10 @@ export default {
 			sortArrayByKey( props.documents, key, sortAsc.value[key]);
 		};
 
+		const clickIconColumn = ( title ) => {
+			context.emit( "clickIconColumn", title );
+		};
+
 
 		return {
 			sortDocuments,
@@ -122,7 +129,8 @@ export default {
 			filteredDocuments,
 			activateFilter,
 			activeFilters,
-			selectedFilterTitle
+			selectedFilterTitle,
+			clickIconColumn
 		};
 	}
 };

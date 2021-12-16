@@ -1,6 +1,7 @@
 <template lang="pug">
 label.c-input.c-field(:class="{fullwidth}")
 	.field-label(v-if="label") {{ label }}:
+		slot(name="icon")
 		span.required(v-if="required") *
 	.field-body
 		icon(v-if="iconL || icon" :name="iconL || type")

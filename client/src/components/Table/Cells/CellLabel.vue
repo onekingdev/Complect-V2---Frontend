@@ -1,5 +1,5 @@
 <template lang="pug">
-c-label(:title="title" :iconName="iconName" :type="type")
+c-label(:title="title" :icon="icon" :image="image")
 </template>
 
 
@@ -15,12 +15,12 @@ export default {
 		}
 	},
 	setup ( props ) {
-		const { title, iconName, type } = toRefs( props.data );
+		const { title, icon, image } = toRefs( props.data );
 
 		return {
 			title,
-			iconName,
-			type
+			icon,
+			image
 		};
 	}
 };

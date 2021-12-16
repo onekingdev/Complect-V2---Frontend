@@ -1,7 +1,7 @@
 <template lang="pug">
 teleport(to="#app-container")
 	transition(name="modal-fade")
-		.c-modal-container(v-if="modelValue")
+		.c-modal-container(v-if="modelValue" :id="id")
 			.c-modal-window(ref="modalWindow" :class="{ large: largeWidth }")
 				.c-modal-header
 					.title {{title}}

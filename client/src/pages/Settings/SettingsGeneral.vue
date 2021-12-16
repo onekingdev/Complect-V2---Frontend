@@ -12,3 +12,7 @@ c-card(title="General")
 		c-button(title="Cancel" type="link")
 		c-button(title="Save" type="primary")
 </template>
+<style lang="stylus" scoped>
+.form-container
+	width: 400px
+</style>

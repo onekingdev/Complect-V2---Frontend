@@ -60,6 +60,7 @@ export default {
 		const isModalVisible = ref( false );
 		const toggleModal = () => {
 			isModalVisible.value = !isModalVisible.value;
+			console.log( "aaa" );
 		};
 		return {
 			toggleModal,

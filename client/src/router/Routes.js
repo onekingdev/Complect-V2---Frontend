@@ -49,6 +49,7 @@ const _RisksEntry = () => import( "~/pages/Risks/_RisksEntry.vue" );
 
 const _SettingsEntry = () => import( "~/pages/Settings/_SettingsEntry.vue" );
 const SettingsGeneral = () => import( "~/pages/Settings/SettingsGeneral.vue" );
+const SettingUserList = () => import( "~/pages/Settings/components/SettingUserList.vue" );
 const SettingsUsers = () => import( "~/pages/Settings/SettingsUsers.vue" );
 const SettingsRoles = () => import( "~/pages/Settings/SettingsRoles.vue" );
 const SettingsSecurity = () => import( "~/pages/Settings/SettingsSecurity.vue" );
@@ -262,7 +263,20 @@ const routes = [
 						"path": "users",
 						"meta": { "title": "Settings - Users" },
 						"name": "SettingsUsers",
-						"component": SettingsUsers
+						"component": SettingsUsers,
+						"children": [
+							{
+								"path": "directory",
+								"name": "Directory",
+								"component": SettingUserList,
+								"meta": { "title": "User Setting Directory" }
+							}, {
+								"path": "disabled",
+								"name": "Disabled",
+								"component": SettingUserList,
+								"meta": { "title": "User Setting Disabled" }
+							}
+						]
 					},
 					{
 						"path": "roles",

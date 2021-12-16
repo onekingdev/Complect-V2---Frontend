@@ -1,24 +1,25 @@
 <template lang="pug">
-span.label(:class="[type]")
-  icon.icon(v-if="iconName" :name="iconName")
+span.label
+  icon.icon(v-if="icon && icon.name" :name="icon.name" :size="icon.size" :class="[icon.classes]")
+  img.img(v-if="image" :src="image.url" :class="[image.classes]")
   | {{ title }}
 </template>
 <script>
 export default {
 	"props": {
-		"iconName": {
-			"type": String,
-			"default": "",
+		"icon": {
+			"type": Object,
+			"default": () => {},
+			"required": false
+		},
+		"image": {
+			"type": Object,
+			"default": () => {},
 			"required": false
 		},
 		"title": {
 			"type": String,
 			"required": true
-		},
-		"type": {
-			"type": String,
-			"default": "",
-			"required": false
 		}
 	}
 };

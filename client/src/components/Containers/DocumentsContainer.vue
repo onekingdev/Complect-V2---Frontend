@@ -1,11 +1,12 @@
 <template lang="pug">
 .documents-container
-	.container-header
+	.container-header(v-if="showHeader")
 		.container-title {{ $locale(title) }}
 		.container-controls
 			slot(name="controls")
 	.container-tabs(v-if="$slots.tabs")
 		slot(name="tabs")
+	.tab-border(v-if="tabBorder")
 	.container-content
 		slot(name="content")
 </template>
@@ -17,6 +18,14 @@ export default {
 		"title": {
 			"type": String,
 			"default": "Title"
+		},
+		"showHeader": {
+			"type": Boolean,
+			"default": true
+		},
+		"tabBorder": {
+			"type": Boolean,
+			"default": false
 		}
 	}
 };
@@ -55,6 +64,9 @@ export default {
 			&.router-link-exact-active
 				box-shadow: inset 0 -4px 0 0 var(--c-gold)
 				font-weight: bold
+	.tab-border
+		margin: 0 2em
+		border-bottom: 1px solid var(--c-border)
 	.container-content
 		padding: 2em
 		background: var(--c-bg-z2)
