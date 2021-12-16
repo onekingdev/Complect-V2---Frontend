@@ -1,32 +1,34 @@
 <template lang="pug">
 .c-input.c-select(:class="[{expanded: datalistVisible}, dropdownListDirection]" ref="selectComponent")
 	c-field(
-		type="multiselect"
+		:type="multiple ? 'multiselect': 'text'"
 		iconR="chevron-down"
 		:label="label"
 		:placeholder="placeholder"
 		:required="required"
+		v-model="selectedObjects"
 		disabled
-		v-model="selectedItems"
-		@click="showDropdownList()"
-		@blur="hideDropdownList()")
+		@click="showDropdownList()")
 
 	.dropdown-list(v-show="datalistVisible" tabindex="-1" ref="dropdownList")
 		.search-section(v-if="searchable" :class="{offset}")
 			c-field(type="search" iconL="search" placeholder="Search..." v-model="query")
 		.items-section(ref="dropdownListItems" @scroll.native="dropdownListScrollEvent()")
-			c-checkbox.item(v-for="(item, index) in filteredData" :key="index" :label="item.title" :value="item" v-model="selectedItems" multiple)
+			template(v-if="multiple")
+				c-checkbox.item(v-for="(item, index) in filteredData" :key="index" :label="item.title" :value="item.value" v-model="selectedItems" multiple)
+			template(v-else)
+				.item(v-for="(item, index) in filteredData" :key="index" @click="selectItem(item)") {{item.title}}
 </template>
 
 
 <script>
-import { computed, ref, reactive, toRefs } from "vue";
+import { onMounted, computed, ref, reactive, toRefs, watch } from "vue";
 import { onClickOutside } from "@vueuse/core";
 export default {
 	"props": {
 		"modelValue": {
 			"type": [
-				String, Array
+				String, Number, Array
 			],
 			"required": true
 		},
@@ -49,12 +51,13 @@ export default {
 		"searchable": Boolean
 	},
 	"emits": ["update:modelValue"],
-	setup ( props ) {
+	setup ( props, context ) {
 		const selectComponent = ref( null );
 		const dropdownList = ref( null );
 		const dropdownListItems = ref( null );
 		const dropdownListDirection = ref( "drop-down" );
-		const selectedItems = ref([]);
+		const selectedItems = ref();
+		const selectedObjects = ref( "" );
 		const params = reactive({
 			"query": "",
 			"datalistVisible": false,
@@ -74,13 +77,13 @@ export default {
 			}
 		});
 
-
 		const showDropdownList = () => {
 			params.datalistVisible = true;
 			if ( window.innerHeight - selectComponent.value.getBoundingClientRect().bottom < 300 )
 				dropdownListDirection.value = "drop-up";
 			else dropdownListDirection.value = "drop-down";
 		};
+
 		const hideDropdownList = () => {
 			params.datalistVisible = false;
 			params.query = "";
@@ -88,48 +91,44 @@ export default {
 
 		onClickOutside( selectComponent, () => hideDropdownList() );
 
-
-		const isSelected = value => props.modelValue.includes( value );
-
-		// const selectItem = ( item ) => {
-		// 	params.datalist = false;
-		// 	params.query = "";
-		// 	if ( props.multiple ) {
-		// 		const selected = () => props.modelValue.includes( item.value );
-		// 		const update = [
-		// 			...props.modelValue
-		// 		];
-		// 		if ( !selected() ) update.push( item.value );
-		// 		else update.splice( update.indexOf( item.value ), 1 );
-		// 		selectedItems.value = [
-		// 		];
-		// 		props.data.forEach( ( item ) => {
-		// 			update.forEach( ( value ) => {
-		// 				if ( item.value === value ) selectedItems.value.push( item.title );
-		// 			});
-		// 		});
-		// 		context.emit( "update:modelValue", update );
-		// 	} else {
-		// 		selectedItems.value = item.title;
-		// 		context.emit( "update:modelValue", item.value );
-		// 	}
-		// };
-
-		const removeSelected = ( value ) => {
-			console.log( value );
-		};
-
 		const dropdownListScrollEvent = () => {
 			if ( dropdownListItems.value.scrollTop > 5 ) params.offset = true;
 			else params.offset = false;
 		};
 
 
-		const demo = ref([]);
+		const selectItem = ( item ) => {
+			selectedItems.value = item.value;
+			hideDropdownList();
+		};
+
+		// get full selected object/s (title & value) from selected value/s
+		const valuesToObjects = ( selected ) => {
+			if ( props.multiple ) {
+				const objects = [];
+				selected.forEach( ( value ) => {
+					const index = props.data.findIndex( item => item.value === value );
+					objects.push( props.data[index]);
+				});
+				return objects;
+			}
+			const index = props.data.findIndex( item => item.value === selected );
+			return props.data[index].title;
+		};
+
+		onMounted( () => {
+			selectedItems.value = props.modelValue;
+			selectedObjects.value = valuesToObjects( props.modelValue );
+		});
+
+		watch( selectedItems, ( selected ) => {
+			selectedObjects.value = valuesToObjects( selected );
+			context.emit( "update:modelValue", selected );
+		});
+
 
 		return {
 			...toRefs( params ),
-			demo,
 			selectComponent,
 			filteredData,
 			showDropdownList,
@@ -139,8 +138,8 @@ export default {
 			dropdownListDirection,
 			dropdownListScrollEvent,
 			selectedItems,
-			isSelected,
-			removeSelected
+			selectedObjects,
+			selectItem
 		};
 	}
 };
@@ -175,7 +174,7 @@ export default {
 					border-radius: 0 0 var(--v-inputs-border-radius) var(--v-inputs-border-radius)
 			.dropdown-list
 				border-radius: var(--v-inputs-border-radius) var(--v-inputs-border-radius) 0 0
-				bottom: calc(60% - 0.05em)
+				bottom: calc(100% - 1.4em)
 				.search-section
 					order: 2
 					&.offset
@@ -218,6 +217,7 @@ export default {
 				transition: background .25s
 				font-size: 0.9em
 				color: var(--c-text)
+				cursor: pointer
 				&:hover
 					background: #F0F6FE
 				&.active

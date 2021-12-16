@@ -2,60 +2,58 @@
 c-card(title="Constructor" :maxWidth="700")
 	template(#content)
 		component-constructor
-			template(#controls)
-				c-field.col-full(type="text" label="Label" v-model="selectedOptions.label")
-				c-select.col-1(label="Icon" :data="icons" v-model="selectedOptions.iconL")
-				c-field.col-5(type="text" label="Placeholder" v-model="selectedOptions.placeholder")
-				c-checkers(label="Options" :options="options.boolean" v-model="selectedBoolean")
-			template(#code)
-				code {{code}}
 			template(#preview)
-				c-select(:label="selectedOptions.label" :placeholder="selectedOptions.placeholder" :data="jurisdictions" v-model="selectedJurisdictions" v-bind="selectedBoolean" searchable multiple)
+				.variants
+					.variant
+						c-select(label="Single value" placeholder="Option 1" :data="selectValues" v-model="singleValue" searchable)
+						code.value {{ singleValue }}
+						code.value c-select(label="Single value" placeholder="Option 1" :data="selectValues" v-model="singleValue" searchable)
+					.variant
+						c-select(label="Multiple values" placeholder="Option 1" :data="selectValues" v-model="multipleValues" searchable multiple)
+						code.value {{ multipleValues }}
+						code.value c-select(label="Multiple values" placeholder="Option 1" :data="selectValues" v-model="multipleValues" searchable multiple)
 </template>
 
 
 <script>
-import { ref, reactive, computed } from "vue";
+import { ref } from "vue";
 import ComponentConstructor from "~/_devmode/misc/ComponentConstructor.vue";
-import cSwitcher from "~/components/Inputs/cSwitcher.vue";
-import cCheckers from "~/components/Inputs/cCheckers.vue";
 import cSelect from "~/components/Inputs/cSelect.vue";
-import { jurisdictions } from "~/data/static.js";
-import { icons } from "~/_devmode/misc/iconsList.js";
-
 export default {
-	components: { ComponentConstructor, cSwitcher, cCheckers, cSelect },
+	components: { ComponentConstructor, cSelect },
 	setup() {
-		const options = {
-			boolean: [
-				{title: "Fullwidth", value: "fullwidth"},
-				{title: "Multiselect", value: "multiselect"},
-				{title: "Searchable", value: "searchable"}
-			]
-		}
-		
-		const selectedOptions = reactive({
-			label: "Jurisdictions",
-			placeholder: "USA",
-			iconL: "",
-			size: "regular"
-		})
-		const selectedBoolean = ref([])
+		const selectValues = [
+			{ title: "Value 1", value: "value-1"},
+			{ title: "Value 2", value: "value-2"},
+			{ title: "Value 3", value: "value-3"},
+			{ title: "Value 4", value: "value-4"},
+			{ title: "Value 5", value: "value-5"},
+			{ title: "Value 6", value: "value-6"},
+			{ title: "Value 7", value: "value-7"},
+			{ title: "Value 8", value: "value-8"},
+			{ title: "Value 9", value: "value-9"},
+			{ title: "Value 10", value: "value-10"},
+		]
+		const singleValue = ref("value-3")
+		const multipleValues = ref([ "value-4", "value-5", "value-8" ])
 
-		const selectedJurisdictions = ref([])
-
-		const code = computed(() => {
-			let label = selectedOptions.label ? `label="${selectedOptions.label}"` : ""
-			let placeholder = selectedOptions.placeholder ? `placeholder="${selectedOptions.placeholder}"` : ""
-			let size = selectedOptions.size !== 'regular' ? `size="${selectedOptions.size}"` : ""
-			let iconL = selectedOptions.iconL ? `iconL="${selectedOptions.iconL}"` : ""
-			let data = ':data="jurisdictions"'
-			let model = 'v-model="selectedJurisdictions"'
-			let options = selectedBoolean.value.join(" ")
-			return `c-select(${label} ${placeholder} ${size} ${iconL} ${data} ${model} ${options})`
-		})
-
-		return { icons, options, selectedOptions, selectedBoolean, jurisdictions, selectedJurisdictions, code }
+		return { selectValues, singleValue, multipleValues }
 	}
 };
 </script>
+
+
+<style lang="stylus" scoped>
+.variants
+	width: 100%
+	.variant
+		margin-bottom: 3em
+		code.value
+			margin: 1em auto
+			display: block
+			width: 100%
+			padding: 1em
+			line-height: 1.5
+			background: #f1f1f1
+			border-radius: 0.5em
+</style>

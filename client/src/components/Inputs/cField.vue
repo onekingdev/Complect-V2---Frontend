@@ -77,8 +77,6 @@ export default {
 		const updateModelValue = ( value ) => {
 			context.emit( "update:modelValue", value );
 		};
-
-
 		return { updateModelValue };
 	}
 };

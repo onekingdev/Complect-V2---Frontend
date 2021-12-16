@@ -1,12 +1,13 @@
 <template lang="pug">
-label.c-input.c-checkbox(:class="[type, {checked: isChecked(value)}]")
-	input(type="checkbox" :checked="isChecked(value)" @change="updateModelValue(value, $event.target.checked)")
+label.c-input.c-checkbox(:class="[type, {checked: isChecked}]")
+	input(type="checkbox" :checked="isChecked" @change="updateModelValue(value, $event.target.checked)")
 	.checkbox-body
 	.title(v-if="label") {{label}}
 </template>
 
 
 <script>
+import { computed } from "vue";
 export default {
 	"props": {
 		"label": {
@@ -36,7 +37,7 @@ export default {
 	},
 	"emits": ["update:modelValue"],
 	setup ( props, context ) {
-		const isChecked = value => props.multiple ? props.modelValue.includes( value ) : props.modelValue;
+		const isChecked = computed( () => props.multiple ? props.modelValue.includes( props.value ) : props.modelValue );
 		const updateModelValue = ( value, checked ) => {
 			if ( props.multiple ) {
 				const modelValue = [...props.modelValue];

@@ -41,7 +41,6 @@ export default {
 	border-radius: var(--v-border-radius)
 	width: 100%
 	margin: auto
-	overflow: hidden
 	.c-card-header
 		line-height: 1
 		padding: 1em

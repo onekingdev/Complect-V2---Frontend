@@ -1,29 +1,30 @@
 <template lang="pug">
 .selected-items
-	.item(v-for="item in modelValue")
+	.item(v-for="item in value")
 		.title {{item.title}}
-		icon(name="close" @click="removeSelected(item.value)")
+		//- icon(name="close" @click="removeSelected(item.value)") // need to fix
 </template>
 
 
 <script>
 export default {
 	"props": {
-		"modelValue": {
+		"value": {
 			"type": Array,
 			"required": true
 		}
-	},
-	"emits": ["update:modelValue"],
-	setup ( props, context ) {
-		const removeSelected = ( value ) => {
-			const model = [...props.modelValue];
-			const index = model.findIndex( item => item.value === value );
-			model.splice( index, 1 );
-			context.emit( "update:modelValue", model );
-		};
-		return { removeSelected };
 	}
+	// need to finish removeSelected
+	// "emits": ["updateValue"],
+	// setup ( props, context ) {
+	// 	const removeSelected = ( value ) => {
+	// 		const selected = [...props.value];
+	// 		const index = selected.findIndex( item => item.value === value );
+	// 		selected.splice( index, 1 );
+	// 		context.emit( "updateValue", selected );
+	// 	};
+	// 	return { removeSelected };
+	// }
 };
 </script>
 

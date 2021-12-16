@@ -1,10 +1,10 @@
 <template lang="pug">
 .component-constructor
-	.component-controls.grid-6
+	.component-controls.grid-6(v-if="$slots.controls")
 		slot(name="controls")
-	.component-code
+	.component-code(v-if="$slots.code")
 		slot(name="code")
-	.component-preview
+	.component-preview(v-if="$slots.preview")
 		slot(name="preview")
 </template>
 
