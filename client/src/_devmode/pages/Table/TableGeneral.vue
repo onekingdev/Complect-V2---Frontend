@@ -17,7 +17,6 @@ import cToggle from "~/components/Inputs/cToggle.vue"
 import { randomMongoId, randomBool, randomNumber, randomElement } from "~/_devmode/generator/components/atoms/utils.js";
 import { randomTitles } from "~/_devmode/generator/components/molecules/randomTexts.js";
 import { randomUsers } from "~/_devmode/generator/components/organisms/randomUsers.js";
-
 import { randomDatesInRange } from "~/_devmode/generator/components/molecules/randomDate.js";
 
 

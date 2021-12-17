@@ -1,10 +1,14 @@
 <template lang="pug">
 .c-table
-	.filters(v-if="filters.length > 0")
+	.controls
 		c-field.search-input(v-if="searchable" type="search" iconL="search" placeholder="Search..." v-model="searchQuery")
-		c-dropdown(v-for="(filter, index) in filters" :key="index" :title="filter.title" :selected="selectedFilterTitle(activeFilters[filter.title])")
-			c-button(v-for="key in filter.keys" @click="activateFilter(filter.title, filter.field, key)" :title="key.title" type="transparent" fullwidth)
-		slot(name="controls")
+		.actions(v-if="filters.length > 0")
+			c-dropdown(v-for="(filter, index) in filters" :key="index" :title="filter.title" :selected="selectedFilterTitle(activeFilters[filter.title])")
+				c-button(v-for="key in filter.keys" @click="activateFilter(filter.title, filter.field, key)" :title="key.title" type="transparent" fullwidth)
+			slot(name="controls")
+		.actions
+			slot(name="actions")
+
 
 	table
 		colgroup
@@ -14,14 +18,13 @@
 				th(v-for="(column, index) in columns" :key="index")
 					.cell.column-title(:class="[column.align]")
 						.title {{ column.title }}
-						icon(v-if="column.icon" :name="column.icon.name" :size="column.icon.size" @click="clickIconColumn(column.title)")
-						c-button(v-if="!column.hideSort && showSortIcon" type="icon" iconR="sort" @click="sortDocuments(column.key)")
+						c-button(v-if="showSortIcon" type="icon" iconR="sort" @click="sortDocuments(column.key)")
 		tbody(v-if="filteredDocuments.length")
 			tr(v-for="document in filteredDocuments" :key="document._id")
 				td(v-for="(column, index) in columns" :key="index")
 					component.cell(
 						v-if="document[column.key]"
-						:is="column.type"
+						:is="column.type || 'default'"
 						:class="[column.align]"
 						:meta="column.meta"
 						:id="document._id"
@@ -34,10 +37,10 @@
 <script>
 import { ref, computed, defineAsyncComponent } from "vue";
 import { sortArrayByKey } from "~/core/utils.js";
-import cDropdown from "~/components/Inputs/cDropdown.vue";
 export default {
 	"components": {
-		cDropdown,
+		"cDropdown": defineAsyncComponent( () => import( "~/components/Inputs/cDropdown.vue" ) ),
+		"Default": defineAsyncComponent( () => import( "./Cells/CellDefault.vue" ) ),
 		"Checkbox": defineAsyncComponent( () => import( "./Cells/CellCheckbox.vue" ) ),
 		"Title": defineAsyncComponent( () => import( "./Cells/CellTitle.vue" ) ),
 		"Date": defineAsyncComponent( () => import( "./Cells/CellDate.vue" ) ),
@@ -48,7 +51,10 @@ export default {
 		"Progress": defineAsyncComponent( () => import( "./Cells/CellProgress.vue" ) ),
 		"Label": defineAsyncComponent( () => import( "./Cells/CellLabel.vue" ) ),
 		"Policy": defineAsyncComponent( () => import( "./Cells/CellPolicy.vue" ) ),
-		"AvatarName": defineAsyncComponent( () => import( "./Cells/CellAvatarName.vue" ) )
+		"User": defineAsyncComponent( () => import( "./Cells/CellUser.vue" ) ),
+		"Role": defineAsyncComponent( () => import( "./Cells/CellRole.vue" ) ),
+		"AccessPerson": defineAsyncComponent( () => import( "./Cells/CellAccessPerson.vue" ) ),
+		"Reason": defineAsyncComponent( () => import( "./Cells/CellReason.vue" ) )
 	},
 	"props": {
 		"columns": {
@@ -69,8 +75,7 @@ export default {
 		},
 		"searchable": Boolean
 	},
-	"emits": ["clickIconColumn"],
-	setup ( props, context ) {
+	setup ( props ) {
 		// filter and Search Documents
 		const searchQuery = ref( "" );
 		const activeFilters = ref({});
@@ -118,10 +123,6 @@ export default {
 			sortArrayByKey( props.documents, key, sortAsc.value[key]);
 		};
 
-		const clickIconColumn = ( title ) => {
-			context.emit( "clickIconColumn", title );
-		};
-
 
 		return {
 			sortDocuments,
@@ -129,8 +130,7 @@ export default {
 			filteredDocuments,
 			activateFilter,
 			activeFilters,
-			selectedFilterTitle,
-			clickIconColumn
+			selectedFilterTitle
 		};
 	}
 };
@@ -140,15 +140,20 @@ export default {
 <style lang="stylus" scoped>
 .c-table
 	width: 100%
-	.filters
+	.controls
 		display: flex
 		align-items: center
-		gap: 2em
 		margin-bottom: 2em
+		gap: 2em
 		.search-input
 			flex: 1 1 auto
 			max-width: 25em
 			margin-right: auto
+		.actions
+			display: flex
+			align-items: center
+			gap: 1em
+
 
 .c-table table
 	font-size: 0.85em

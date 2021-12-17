@@ -1,7 +1,7 @@
 <template lang="pug">
 .c-button-modal
 	c-button(:title="title" :type="type" @click="toggleModal()")
-	c-modal(:title="modalTitle" v-model="isModalVisible" :displayBlock="displayBlock" :largeWidth="largeWidth")
+	c-modal(:title="modalTitle" v-model="isModalVisible")
 		template(#content)
 			slot(name="content")
 		template(#left-footer)
@@ -42,25 +42,15 @@ export default {
 			"default": "regular",
 			"required": false
 		},
-		"displayBlock": {
-			"type": Boolean,
-			"default": false
-		},
-		"largeWidth": {
-			"type": Boolean,
-			"default": false
-		},
 		"disabled": Boolean,
 		"modal": Boolean,
 		"fullwidth": Boolean,
-		"danger": Boolean,
-		"devmode": Boolean
+		"danger": Boolean
 	},
 	setup () {
 		const isModalVisible = ref( false );
 		const toggleModal = () => {
 			isModalVisible.value = !isModalVisible.value;
-			console.log( "aaa" );
 		};
 		return {
 			toggleModal,

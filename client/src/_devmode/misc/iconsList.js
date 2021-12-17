@@ -45,9 +45,9 @@ const icons = [
 	{ title: "Circle Plus", value: "circle_plus", icon: "circle_plus" },
 	{ title: "Triangle", value: "triangle", icon: "triangle" },
 	{ title: "Policy", value: "policy", icon: "policy" },
-	{ title: "GreenChecked", value: "green_checked", icon: "green_checked" },
-	{ title: "Admin", value: "admin", icon: "admin" },
-	{ title: "Basic", value: "basic", icon: "basic" }
+	{ title: "Role (admin)", value: "role-admin", icon: "role-admin" },
+	{ title: "Role (trusted", value: "role-trusted", icon: "role-trusted" },
+	{ title: "Role (basic)", value: "role-basic", icon: "role-basic" }
 ]
 
 export { icons }

@@ -34,7 +34,7 @@ export default {
 			},
 			{
 				"title": "Users",
-				"routeName": "Directory"
+				"routeName": "SettingsUsersDirectory"
 			},
 			{
 				"title": "Roles and Permissions",

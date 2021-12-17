@@ -112,6 +112,7 @@ export default {
 				});
 				return objects;
 			}
+
 			const index = props.data.findIndex( item => item.value === selected );
 			return props.data[index].title;
 		};
@@ -151,6 +152,9 @@ export default {
 	position: relative
 	width: 100%
 	:deep(.c-field)
+		cursor: pointer
+		input
+			cursor: pointer
 		svg.icon-chevron-down
 			width: 0.7em
 			height: 0.7em

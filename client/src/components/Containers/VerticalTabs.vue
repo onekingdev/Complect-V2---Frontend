@@ -35,7 +35,7 @@ export default {};
 			line-height: 1.2
 			border-radius: var(--v-border-radius)
 			transition: background var(--fx-input-transition-duration) ease-in-out
-			&:hover, &.router-link-exact-active
+			&:hover, &.router-link-active
 				color: #000
 				background: #dcdee4
 </style>

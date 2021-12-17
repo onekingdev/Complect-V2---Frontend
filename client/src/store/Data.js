@@ -8,6 +8,10 @@ const documents = ref([]);
 
 
 export default function useData ( collectionName ) {
+	const _devmode_pushToStore = ( data ) => {
+		documents.value = data;
+	};
+
 	const createDocuments = async ( newDocuments ) => {
 		let copy;
 		try {
@@ -93,6 +97,7 @@ export default function useData ( collectionName ) {
 		readDocuments,
 		updateDocument,
 		deleteDocuments,
-		clearStore
+		clearStore,
+		_devmode_pushToStore
 	};
 }

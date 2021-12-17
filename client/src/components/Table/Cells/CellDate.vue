@@ -11,9 +11,7 @@ import { formatDate } from "~/core/utils.js";
 export default {
 	"props": {
 		"data": {
-			"type": [
-				Number, String
-			],
+			"type": Number,
 			"required": true
 		},
 		"meta": {
