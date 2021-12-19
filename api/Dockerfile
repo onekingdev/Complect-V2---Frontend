@@ -15,4 +15,4 @@ RUN npm i -g serverless
 
 # Install Dependecies
 COPY package*.json ./
-RUN npm i
+RUN npm ci

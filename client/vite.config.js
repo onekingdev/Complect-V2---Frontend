@@ -20,11 +20,11 @@ export default defineConfig({
 		})
 	],
 	server: {
-		port: 5001,
+		port: 5000,
 		host: "0.0.0.0",
 		hmr: {
 			host: "localhost",
-			port: 81,
+			port: 5000,
 		}
 	},
 	build: {

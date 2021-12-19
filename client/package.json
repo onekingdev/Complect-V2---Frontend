@@ -30,8 +30,11 @@
 		"@babel/core": "^7.16.0",
 		"@babel/node": "^7.16.0",
 		"@babel/preset-env": "^7.16.4",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-vue-scoped-css": "^2.0.0",
 		"jest": "^27.4.3",
 		"jest-extended": "^1.2.0",
+		"prettier": "2.5.1",
 		"vite-plugin-pwa": "^0.10.0"
 	}
 }

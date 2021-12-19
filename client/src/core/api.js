@@ -1,9 +1,6 @@
-/* eslint max-lines-per-function: ["error", 50] */
-/* eslint max-statements: ["error", 50] */
-
 const endpoint = ( collectionName, documentId ) => {
 	let base;
-	base = `http://localhost:82/dev/data/${collectionName}`;
+	base = `http://localhost:5001/dev/data/${collectionName}`;
 	if ( documentId ) base += `/${documentId}`;
 	return base;
 };
