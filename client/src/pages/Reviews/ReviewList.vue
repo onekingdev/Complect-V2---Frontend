@@ -34,38 +34,38 @@ export default {
 			{
 				"title": "Name",
 				"key": "name",
-				"type": "title",
+				"cell": "CellTitle",
 				"meta": { "link": "ReviewDetail" }
 			},
 			{
 				"title": "Progress",
 				"key": "progress",
-				"type": "progress"
+				"cell": "CellProgress"
 			},
 			{
 				"title": "Finding",
 				"key": "finding",
-				"type": "title"
+				"cell": "CellTitle"
 			},
 			{
 				"title": "Last Modified",
 				"key": "lastModified",
-				"type": "date"
+				"cell": "CellDate"
 			},
 			{
 				"title": "Date Created",
 				"key": "dateCreated",
-				"type": "date"
+				"cell": "CellDate"
 			},
 			{
 				"title": "Review Period",
 				"key": "reviewPeriod",
-				"type": "date"
+				"cell": "CellDate"
 			},
 			{
 				"title": "End Date",
 				"key": "endDate",
-				"type": "date"
+				"cell": "CellDate"
 			}
 		];
 

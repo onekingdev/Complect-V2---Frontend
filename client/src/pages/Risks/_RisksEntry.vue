@@ -62,19 +62,19 @@ export default {
 			{
 				"title": "Policy",
 				"key": "name",
-				"type": "policy"
+				"cell": "CellPolicy"
 			}, {
 				"title": "Status",
 				"key": "status",
-				"type": "status"
+				"cell": "CellStatus"
 			}, {
 				"title": "Last Modiied",
 				"key": "updatedAt",
-				"type": "date"
+				"cell": "CellDate"
 			}, {
 				"title": "Date Created",
 				"key": "createdAt",
-				"type": "date"
+				"cell": "CellDate"
 			}
 		];
 
@@ -82,27 +82,27 @@ export default {
 			{
 				"title": "Policy",
 				"key": "completed",
-				"type": "checkbox"
+				"cell": "CellCheckbox"
 			},
 			{
 				"title": "",
 				"key": "name",
-				"type": "policy"
+				"cell": "CellPolicy"
 			},
 			{
 				"title": "Status",
 				"key": "status",
-				"type": "status"
+				"cell": "CellStatus"
 			},
 			{
 				"title": "Last Modiied",
 				"key": "updatedAt",
-				"type": "date"
+				"cell": "CellDate"
 			},
 			{
 				"title": "Date Created",
 				"key": "createdAt",
-				"type": "date"
+				"cell": "CellDate"
 			}
 		];
 

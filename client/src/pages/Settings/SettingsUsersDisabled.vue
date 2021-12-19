@@ -19,32 +19,32 @@ export default {
 			{
 				"title": "Name",
 				"key": "user",
-				"type": "user"
+				"cell": "CellUser"
 			},
 			{
 				"title": "Role",
 				"key": "role",
-				"type": "role"
+				"cell": "CellRole"
 			},
 			{
 				"title": "Reason",
 				"key": "reason",
-				"type": "reason"
+				"cell": "CellReason"
 			},
 			{
 				"title": "Access Person",
 				"key": "accessPerson",
-				"type": "accessPerson"
+				"cell": "CellAccessPerson"
 			},
 			{
 				"title": "Start Date",
 				"key": "startDate",
-				"type": "date"
+				"cell": "CellDate"
 			},
 			{
 				"title": "Disabled Date",
 				"key": "disabledDate",
-				"type": "date"
+				"cell": "CellDate"
 			}
 		];
 

@@ -9,10 +9,9 @@
 		.actions
 			slot(name="actions")
 
-
 	table
 		colgroup
-			col(v-for="(column, index) in columns" :class="[column.type]" :key="index")
+			col(v-for="(column, index) in columns" :class="[column.cell]" :key="index")
 		thead
 			tr
 				th(v-for="(column, index) in columns" :key="index")
@@ -24,7 +23,7 @@
 				td(v-for="(column, index) in columns" :key="index")
 					component.cell(
 						v-if="document[column.key]"
-						:is="column.type || 'default'"
+						:is="getTableCell(column.cell)"
 						:class="[column.align]"
 						:meta="column.meta"
 						:id="document._id"
@@ -38,24 +37,7 @@
 import { ref, computed, defineAsyncComponent } from "vue";
 import { sortArrayByKey } from "~/core/utils.js";
 export default {
-	"components": {
-		"cDropdown": defineAsyncComponent( () => import( "~/components/Inputs/cDropdown.vue" ) ),
-		"Default": defineAsyncComponent( () => import( "./Cells/CellDefault.vue" ) ),
-		"Checkbox": defineAsyncComponent( () => import( "./Cells/CellCheckbox.vue" ) ),
-		"Title": defineAsyncComponent( () => import( "./Cells/CellTitle.vue" ) ),
-		"Date": defineAsyncComponent( () => import( "./Cells/CellDate.vue" ) ),
-		"Collaborators": defineAsyncComponent( () => import( "./Cells/CellCollaborators.vue" ) ),
-		"Price": defineAsyncComponent( () => import( "./Cells/CellPrice.vue" ) ),
-		"Status": defineAsyncComponent( () => import( "./Cells/CellStatus.vue" ) ),
-		"Tasks": defineAsyncComponent( () => import( "./Cells/CellTasks.vue" ) ),
-		"Progress": defineAsyncComponent( () => import( "./Cells/CellProgress.vue" ) ),
-		"Label": defineAsyncComponent( () => import( "./Cells/CellLabel.vue" ) ),
-		"Policy": defineAsyncComponent( () => import( "./Cells/CellPolicy.vue" ) ),
-		"User": defineAsyncComponent( () => import( "./Cells/CellUser.vue" ) ),
-		"Role": defineAsyncComponent( () => import( "./Cells/CellRole.vue" ) ),
-		"AccessPerson": defineAsyncComponent( () => import( "./Cells/CellAccessPerson.vue" ) ),
-		"Reason": defineAsyncComponent( () => import( "./Cells/CellReason.vue" ) )
-	},
+	"components": { "cDropdown": defineAsyncComponent( () => import( "~/components/Inputs/cDropdown.vue" ) ) },
 	"props": {
 		"columns": {
 			"type": Array,
@@ -79,6 +61,8 @@ export default {
 		// filter and Search Documents
 		const searchQuery = ref( "" );
 		const activeFilters = ref({});
+
+		const getTableCell = cell => defineAsyncComponent( () => import( `./Cells/${cell}.vue` ) );
 
 		const activateFilter = ( title, field, key ) => {
 			activeFilters.value[title] = {
@@ -126,6 +110,7 @@ export default {
 
 
 		return {
+			getTableCell,
 			sortDocuments,
 			searchQuery,
 			filteredDocuments,

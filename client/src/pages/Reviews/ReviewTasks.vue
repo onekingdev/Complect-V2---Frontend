@@ -14,19 +14,19 @@ export default {
 			{
 				"title": "Name",
 				"key": "name",
-				"type": "title"
+				"cell": "CellTitle"
 			}, {
 				"title": "Assignee",
 				"key": "assignee",
-				"type": "title"
+				"cell": "CellTitle"
 			}, {
 				"title": "Start Date",
 				"key": "startDate",
-				"type": "date"
+				"cell": "CellDate"
 			}, {
 				"title": "Due Date",
 				"key": "endDate",
-				"type": "date"
+				"cell": "CellDate"
 			}
 		];
 

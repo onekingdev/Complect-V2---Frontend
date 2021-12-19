@@ -14,42 +14,42 @@ export default {
 			{
 				"title": "Name",
 				"key": "title",
-				"type": "title",
+				"cell": "CellTitle",
 				"meta": { "link": "ProjectDetail" }
 			},
 			{
 				"title": "Collaborators",
 				"key": "collaborators",
-				"type": "collaborators"
+				"cell": "CellCollaborators"
 			},
 			{
 				"title": "Tasks Left",
 				"key": "tasks",
-				"type": "tasks",
+				"cell": "CellTasks",
 				"align": "right"
 			},
 			{
 				"title": "Cost",
 				"key": "fixedBudget",
-				"type": "price",
+				"cell": "CellPrice",
 				"align": "right"
 			},
 			{
 				"title": "Status",
 				"key": "status",
-				"type": "status",
+				"cell": "CellStatus",
 				"align": "right"
 			},
 			{
 				"title": "Start Date",
 				"key": "startsAt",
-				"type": "date",
+				"cell": "CellDate",
 				"align": "right"
 			},
 			{
 				"title": "End Date",
 				"key": "endsAt",
-				"type": "date",
+				"cell": "CellDate",
 				"align": "right",
 				"meta": { "overdueWarning": true }
 			}

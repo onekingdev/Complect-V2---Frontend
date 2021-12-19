@@ -13,8 +13,8 @@ div.grid-6
 			template(#content)
 				h3.heading Review Period
 				div.grid-6
-					c-field.col-3(label="Start Date" type="date")
-					c-field.col-3(label="Start Date" type="date")
+					c-field.col-3(label="Start Date" type="date" v-model="tempData.startsAt")
+					c-field.col-3(label="Start Date" type="date" v-model="tempData.endsAt")
 				hr
 				h3.heading Material Business Changes
 				p.paragraph List any changes to your business processes, key vendors, and/or key employees during the Review Period
@@ -61,6 +61,11 @@ export default {
 			"response": ""
 		};
 
+		const tempData = reactive({
+			"startsAt": Date.now(),
+			"endsAt": Date.now()
+		});
+
 		const regulatories = reactive([]);
 
 		const addRegulatoryChange = () => {
@@ -82,6 +87,7 @@ export default {
 			categories,
 			regulatories,
 			employees,
+			tempData,
 			addRegulatoryChange,
 			addNewEmployee
 		};

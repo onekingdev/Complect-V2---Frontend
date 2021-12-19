@@ -24,28 +24,28 @@ export default {
 			{
 				"title": "Name",
 				"key": "name",
-				"type": "title",
+				"cell": "CellTitle",
 				"meta": { "link": "Risk" }
 			},
 			{
 				"title": "Impact",
 				"key": "impact",
-				"type": "title"
+				"cell": "CellTitle"
 			},
 			{
 				"title": "Likelihood",
 				"key": "likelihood",
-				"type": "title"
+				"cell": "CellTitle"
 			},
 			{
 				"title": "Risk Level",
 				"key": "riskLevel",
-				"type": "label"
+				"cell": "CellLabel"
 			},
 			{
 				"title": "Date Created",
 				"key": "createdAt",
-				"type": "date"
+				"cell": "CellDate"
 			}
 		];
 

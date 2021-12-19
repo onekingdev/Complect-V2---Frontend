@@ -14,19 +14,19 @@ export default {
 			{
 				"title": "Name",
 				"key": "name",
-				"type": "title"
+				"cell": "CellTitle"
 			}, {
 				"title": "Owner",
 				"key": "owner",
-				"type": "title"
+				"cell": "CellTitle"
 			}, {
 				"title": "Size",
 				"key": "size",
-				"type": "title"
+				"cell": "CellTitle"
 			}, {
 				"title": "Last Modified",
 				"key": "lastModified",
-				"type": "date"
+				"cell": "CellDate"
 			}
 		];
 

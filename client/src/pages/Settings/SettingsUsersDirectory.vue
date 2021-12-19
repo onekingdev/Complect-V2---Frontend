@@ -19,19 +19,19 @@ export default {
 			{
 				"title": "Name",
 				"key": "user",
-				"type": "user"
+				"cell": "CellUser"
 			}, {
 				"title": "Role",
 				"key": "role",
-				"type": "role"
+				"cell": "CellRole"
 			}, {
 				"title": "Access Person",
 				"key": "accessPerson",
-				"type": "accessPerson"
+				"cell": "CellAccessPerson"
 			}, {
 				"title": "Start Date",
 				"key": "startDate",
-				"type": "date"
+				"cell": "CellDate"
 			}
 		];
 
