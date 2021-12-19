@@ -20,6 +20,9 @@ export default {
 			name: "devInputsSelect",
 			title: "Select"
 		}, {
+			name: "devInputsDropdown",
+			title: "Dropdown"
+		}, {
 			name: "devInputsCheckbox",
 			title: "Checkbox"
 		}, {
