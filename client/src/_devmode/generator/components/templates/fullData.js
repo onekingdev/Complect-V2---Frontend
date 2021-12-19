@@ -36,7 +36,7 @@ export default function full () {
 			const employees = [];
 			businesses.forEach( business => employees.push( ...randomEmployees({
 				q: [0, maxEmployees[business.plan]],
-				id: business.business_id
+				id: business.businessId
 			}) ) );
 			return employees;
 		};
@@ -49,7 +49,7 @@ export default function full () {
 		
 		// get all users ID
 		const usersId = users.map( user => user._id );
-		const businessesId = businesses.map( business => business.business_id );
+		const businessesId = businesses.map( business => business.businessId );
 
 
 		// generate Projects and assign creator and collaborators
@@ -58,16 +58,16 @@ export default function full () {
 			const collaborators = shuffleArray( users );
 			project.creator = {
 				_id: collaborators[0]._id,
-				first_name: collaborators[0].first_name,
-				last_name: collaborators[0].last_name,
+				firstName: collaborators[0].firstName,
+				lastName: collaborators[0].lastName,
 				avatar: collaborators[0].avatar,
 			}
 			for ( let i = 1; i < randomNumber(0,10); i++ ) project.collaborators.push({
 				_id: collaborators[i]._id,
-				first_name: collaborators[i].first_name,
-				last_name: collaborators[i].last_name,
+				firstName: collaborators[i].firstName,
+				lastName: collaborators[i].lastName,
 				avatar: collaborators[i].avatar,
-				user_role: randomElement(["basic", "trusted", "admin"])
+				userRole: randomElement(["basic", "trusted", "admin"])
 			});
 
 			for ( let i = 1; i < randomNumber(0,5); i++ ) project.tasks.push({
@@ -82,9 +82,9 @@ export default function full () {
 			const business = shuffleArray( businessesId );
 			const users = shuffleArray( usersId );
 			const links = shuffleArray( projects );
-			task.business_id = business[0];
-			task.linked_to = links[0]._id;
-			task.assignee_to = users[0][0];
+			task.businessId = business[0];
+			task.linkedTo = links[0]._id;
+			task.assigneeTo = users[0][0];
 		});
 		return {
 			// businesses,

@@ -21,7 +21,7 @@ export default {
 		const router = useRouter();
 		const email = ref( "" );
 		const goToSignIn = () => router.push({ "name": "AuthSignIn" });
-		const resetPassword = () => console.log( `Reset password for: ${email.value}` );
+		const resetPassword = () => {};
 		return {
 			email,
 			resetPassword,

@@ -72,7 +72,7 @@ const industries = [
 	}
 ];
 
-const subindustries_business = [
+const subindustriesBusiness = [
 	{
 		"value": 1.0,
 		"title": "Broker Rep"
@@ -159,7 +159,7 @@ const subindustries_business = [
 	}
 ];
 
-const subindustries_specialist = [
+const subindustriesSpecialist = [
 	{
 		"value": 2.0,
 		"title": "AML/KYC (Banking)"
@@ -657,4 +657,4 @@ const timezones = [
 ];
 
 
-export { industries, subindustries_business, subindustries_specialist, jurisdictions, countries, timezones };
+export { industries, subindustriesBusiness, subindustriesSpecialist, jurisdictions, countries, timezones };

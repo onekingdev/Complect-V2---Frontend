@@ -23,10 +23,10 @@ const randomFirstNames = ({ q, gender }) => {
 const randomLastNames = ({ q }) => {
 	try {
 		const quantity = quantityRange( q );
-		const randomFirstNames = [];
-		for ( let i = 0; i < quantity; i++ ) randomFirstNames.push( lastNamesDict[randomNumber( 0, lastNamesDict.length - 1 )]);
+		const randomLastNames = [];
+		for ( let i = 0; i < quantity; i++ ) randomLastNames.push( lastNamesDict[randomNumber( 0, lastNamesDict.length - 1 )]);
 
-		return randomFirstNames;
+		return randomLastNames;
 	} catch ( error ) {
 		console.error( error );
 		return ["!Error"];

@@ -2,7 +2,7 @@
 .view.dashboard
 	h1
 		b {{$locale("Welcome")}},&nbsp;
-		| {{userProfile.first_name}} {{userProfile.last_name}}
+		| {{userProfile.firstName}} {{userProfile.lastName}}
 	c-card(title="December")
 		template(#content)
 			c-calendar

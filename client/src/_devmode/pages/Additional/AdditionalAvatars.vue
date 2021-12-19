@@ -8,17 +8,17 @@ c-card(title="Constructor")
 			template(#code)
 				code {{code}}
 			template(#preview)
-				c-avatar(:size="selectedOptions.size" :shape="selectedOptions.shape" :avatar="userProfile.avatar" :firstName="userProfile.first_name" :lastName="userProfile.last_name")
-				c-avatar(:size="selectedOptions.size" :shape="selectedOptions.shape" :firstName="userProfile.first_name" :lastName="userProfile.last_name")
+				c-avatar(:size="selectedOptions.size" :shape="selectedOptions.shape" :avatar="userProfile.avatar" :firstName="userProfile.firstName" :lastName="userProfile.lastName")
+				c-avatar(:size="selectedOptions.size" :shape="selectedOptions.shape" :firstName="userProfile.firstName" :lastName="userProfile.lastName")
 			
 c-card(title="Collection" type="grid-6")
 	template(#header-controls)
 		c-button(iconL="refresh" type="transparent" @click="refreshUser()")
 	template(v-if="userProfile" #content)
 		.preview-column.col-2(v-for="(shape, index) in options.shapes" :key="index")
-			c-avatar(v-for="(size, index) in options.sizes" :avatar="userProfile.avatar" :firstName="userProfile.first_name" :lastName="userProfile.last_name" :size="size.value" :shape="shape.value" :key="index")
+			c-avatar(v-for="(size, index) in options.sizes" :avatar="userProfile.avatar" :firstName="userProfile.firstName" :lastName="userProfile.lastName" :size="size.value" :shape="shape.value" :key="index")
 		.preview-column.col-2(v-for="(shape, index) in options.shapes" :key="index")
-			c-avatar(v-for="(size, index) in options.sizes" :firstName="userProfile.first_name" :lastName="userProfile.last_name" :size="size.value" :shape="shape.value" :key="index")
+			c-avatar(v-for="(size, index) in options.sizes" :firstName="userProfile.firstName" :lastName="userProfile.lastName" :size="size.value" :shape="shape.value" :key="index")
 </template>
 
 
@@ -57,8 +57,8 @@ export default {
 
 		const code = computed(() => {
 			let avatar = `avatar="avatar.jpg"`
-			let firstName = `firstName="${userProfile.value.first_name}"`
-			let lastName = `lastName="${userProfile.value.last_name}"`
+			let firstName = `firstName="${userProfile.value.firstName}"`
+			let lastName = `lastName="${userProfile.value.lastName}"`
 			let size = selectedOptions.size !== 'regular' ? `size="${selectedOptions.size}"` : ""
 			let shape = selectedOptions.shape !== 'circle' ? `shape="${selectedOptions.shape}"` : ""
 			return `c-avatar(${avatar} ${firstName} ${lastName} ${size} ${shape})`

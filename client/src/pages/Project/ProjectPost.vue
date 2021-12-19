@@ -1,32 +1,31 @@
 <template lang="pug">
-//- pre {{form}}
 c-form-wizard(section="Projets" title="Post Job" :steps="wizardSteps")
 
 	template(#step1)
-		c-field(label="Job Name" v-model="form.job_name" required)
-		c-field.col-3(label="Start Date" type="date" v-model="form.starts_at" required)
-		c-field.col-3(label="Due Date" type="date" v-model="form.ends_at" required)
+		c-field(label="Job Name" v-model="form.jobName" required)
+		c-field.col-3(label="Start Date" type="date" v-model="form.startsAt" required)
+		c-field.col-3(label="Due Date" type="date" v-model="form.endsAt" required)
 		c-textarea(label="Description" v-model="form.description" required)
-		c-textarea(label="Role Details" v-model="form.role_details" required)
-		c-select(label="Location Type" placeholder="Remote" :data="fieldsOptions.location_type" v-model="form.location_type" required)
-		template(v-if="form.location_type !== 'remote'")
+		c-textarea(label="Role Details" v-model="form.roleDetails" required)
+		c-select(label="Location Type" placeholder="Remote" :data="fieldsOptions.locationType" v-model="form.locationType" required)
+		template(v-if="form.locationType !== 'remote'")
 			c-select(label="Location" :data="fieldsOptions.location" v-model="form.location" required)
 		c-select(label="Industry" :data="fieldsOptions.industries" v-model="form.industries" searchable multiple required)
 		c-select(label="Jurisdiction" :data="fieldsOptions.jurisdictions" v-model="form.jurisdictions" searchable multiple required)
 
 	template(#step2)
-		c-select(label="Minimum Experience" :data="fieldsOptions.min_experience" v-model="form.min_experience" required)
-		c-checkbox(label="Only former regulators" v-model="form.former_regulators")
+		c-select(label="Minimum Experience" :data="fieldsOptions.minExperience" v-model="form.minExperience" required)
+		c-checkbox(label="Only former regulators" v-model="form.formerRegulators")
 		c-select(label="Skills" :data="fieldsOptions.skills" v-model="form.skills" searchable multiple required)
 
 	template(#step3)
-		c-radio-cards(:data="fieldsOptions.price_type" v-model="form.price_type")
-		template(v-if="form.price_type === 'fixed'")
+		c-radio-cards(:data="fieldsOptions.priceType" v-model="form.priceType")
+		template(v-if="form.priceType === 'fixed'")
 			c-field(label="Estimated Budget" v-model="form.budget" required)
 		template(v-else)
-			c-field.col-3(label="Estimated Hourly Rate" v-model="form.hourly_rate" required)
-			c-field.col-3(label="Upper Hourly Rate" v-model="form.max_hourly_rate" required)
-		c-select(label="Payment Schedule" :data="fieldsOptions.payment_schedule" v-model.value="form.payment_schedule" required)
+			c-field.col-3(label="Estimated Hourly Rate" v-model="form.hourlyRate" required)
+			c-field.col-3(label="Upper Hourly Rate" v-model="form.maxHourlyRate" required)
+		c-select(label="Payment Schedule" :data="fieldsOptions.paymentSchedule" v-model.value="form.paymentSchedule" required)
 
 
 	template(#controls)
@@ -53,29 +52,29 @@ export default {
 	setup () {
 		const router = useRouter();
 		const form = reactive({
-			"job_name": "",
-			"starts_at": Date.now(),
-			"ends_at": "",
+			"jobName": "",
+			"startsAt": Date.now(),
+			"endsAt": "",
 			"description": "",
-			"role_details": "",
-			"location_type": [],
+			"roleDetails": "",
+			"locationType": [],
 			"location": "",
 			"industries": [],
 			"jurisdictions": [],
-			"min_experience": "",
-			"former_regulators": false,
+			"minExperience": "",
+			"formerRegulators": false,
 			"skills": ["html"],
 
-			"price_type": "fixed",
+			"priceType": "fixed",
 			"budget": "",
-			"hourly_rate": "3",
-			"max_hourly_rate": "",
-			"payment_schedule": "50"
+			"hourlyRate": "3",
+			"maxHourlyRate": "",
+			"paymentSchedule": "50"
 		});
 
 
 		const fieldsOptions = {
-			"location_type": [
+			"locationType": [
 				{
 					"title": "Remote",
 					"value": "remote"
@@ -93,7 +92,7 @@ export default {
 			}],
 			industries,
 			jurisdictions,
-			"min_experience": [
+			"minExperience": [
 				{
 					"title": "Junior",
 					"value": "1"
@@ -117,7 +116,7 @@ export default {
 					"value": "vue.js"
 				}
 			],
-			"price_type": [
+			"priceType": [
 				{
 					"title": "Fixed Price",
 					"value": "fixed",
@@ -130,7 +129,7 @@ export default {
 					"description": "Pay by the hour. Provides more flexibility."
 				}
 			],
-			"payment_schedule": [
+			"paymentSchedule": [
 				{
 					"title": "Upfront",
 					"value": "upfront"
@@ -139,7 +138,7 @@ export default {
 					"value": "50"
 				}, {
 					"title": "Upon Completion",
-					"value": "upon_completion"
+					"value": "uponCompletion"
 				}
 			]
 		};
@@ -149,12 +148,15 @@ export default {
 		];
 
 		const closeWizard = () => router.go( -1 );
-		const saveDraft = () => console.log( "Save as Draft" );
-		const postProject = () => console.log( "Post Project" );
+		const saveDraft = () => {};
+		const postProject = () => {};
 
 		// cleanUp fields if hidden
-		watch( () => form.price_type, () => {
-			form.budget = form.hourly_rate = form.max_hourly_rate = form.payment_schedule = "";
+		watch( () => form.priceType, () => {
+			form.budget = "";
+			form.hourlyRate = "";
+			form.maxHourlyRate = "";
+			form.paymentSchedule = "";
 		});
 
 		return {

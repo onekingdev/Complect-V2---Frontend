@@ -69,7 +69,8 @@ const routes = [
 		"path": "/error",
 		"name": "ErrorLayer",
 		"props": true,
-		"component": ErrorLayer
+		"component": ErrorLayer,
+		"meta": { "title": "Error" }
 	}, {
 		"path": "/",
 		"component": AuthenticatedLayer,

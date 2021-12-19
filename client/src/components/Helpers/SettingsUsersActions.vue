@@ -24,7 +24,7 @@ export default {
 			"default": () => []
 		}
 	},
-	setup ( props ) {
+	setup () {
 		const userRoles = [
 			{
 				"title": "No Role",
@@ -51,7 +51,7 @@ export default {
 		});
 
 		const createNewUser = () => {};
-		const exportUsers = () => console.log( props.users );
+		const exportUsers = () => {};
 
 		return {
 			userRoles,

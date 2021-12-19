@@ -44,8 +44,7 @@ export default {
 				if ( checked ) modelValue.push( value );
 				else modelValue.splice( modelValue.indexOf( value ), 1 );
 				context.emit( "update:modelValue", modelValue );
-			} else
-				context.emit( "update:modelValue", !props.modelValue );
+			} else context.emit( "update:modelValue", !props.modelValue );
 		};
 		return {
 			isChecked,

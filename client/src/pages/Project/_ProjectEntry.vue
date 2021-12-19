@@ -22,8 +22,8 @@ document-container(section="Projects" :title="document.title" owner="Company Nam
 			c-button-modal(title="Edit" modalTitle="Edit Project" type="transparent")
 				template(#content)
 					c-field.col-full(label="Project Name" v-model="document.title" required)
-					c-field.col-3(label="Start Date" type="date" v-model="document.starts_at" required)
-					c-field.col-3(label="End Date" type="date" v-model="document.ends_at" required)
+					c-field.col-3(label="Start Date" type="date" v-model="document.startsAt" required)
+					c-field.col-3(label="End Date" type="date" v-model="document.endsAt" required)
 					c-field.col-full(label="Description" v-model="document.description")
 				template(#footer)
 					c-button(title="Save" type="primary" @click="updateProject()")
@@ -45,7 +45,7 @@ export default {
 		cCheckbox
 	},
 	setup () {
-		const { document, readDocument, clearStore, updateDocument, deleteDocuments } = useData( "projects" );
+		const { document, readDocuments, clearStore, updateDocument, deleteDocuments } = useData( "projects" );
 		const route = useRoute();
 		const router = useRouter();
 
@@ -68,7 +68,7 @@ export default {
 
 
 		const closeProject = () => router.push({ "name": "ProjectsOverview" });
-		const updateProject = () => console.log( "Update Project" );
+		const updateProject = () => {};
 
 		const markAsComplete = () => {
 			updateDocument( document.value._id, {
@@ -82,7 +82,7 @@ export default {
 			closeProject();
 		};
 
-		onMounted( () => readDocument( route.params.id ) );
+		onMounted( () => readDocuments( route.params.id ) );
 		onUnmounted( () => clearStore() );
 
 		return {

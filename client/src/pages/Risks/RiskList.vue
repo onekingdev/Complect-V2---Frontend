@@ -39,12 +39,12 @@ export default {
 			},
 			{
 				"title": "Risk Level",
-				"key": "risk_level",
+				"key": "riskLevel",
 				"type": "label"
 			},
 			{
 				"title": "Date Created",
-				"key": "created_at",
+				"key": "createdAt",
 				"type": "date"
 			}
 		];
@@ -55,34 +55,34 @@ export default {
 				"name": "Risk",
 				"impact": "Low",
 				"likelihood": "Medium",
-				"risk_level": {
+				"riskLevel": {
 					"title": "Low",
 					"iconName": "triangle",
 					"type": "low"
 				},
-				"created_at": new Date().toString()
+				"createdAt": Date.now()
 			}, {
 				"_id": "2",
 				"name": "Risk",
 				"impact": "Low",
 				"likelihood": "Medium",
-				"risk_level": {
+				"riskLevel": {
 					"title": "Medium",
 					"iconName": "triangle",
 					"type": "medium"
 				},
-				"created_at": new Date().toString()
+				"createdAt": Date.now()
 			}, {
 				"_id": "3",
 				"name": "Risk",
 				"impact": "Low",
 				"likelihood": "Medium",
-				"risk_level": {
+				"riskLevel": {
 					"title": "High",
 					"iconName": "triangle",
 					"type": "high"
 				},
-				"created_at": new Date().toString()
+				"createdAt": Date.now()
 			}
 		];
 
@@ -90,7 +90,7 @@ export default {
 			isShowCreateRiskModal.value = !isShowCreateRiskModal.value;
 		};
 
-		const updateVisibleModal = ( value ) => {
+		const updateVisibleModal = value => {
 			isShowCreateRiskModal.value = value;
 		};
 

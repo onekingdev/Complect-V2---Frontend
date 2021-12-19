@@ -3,7 +3,6 @@
 	.code(v-if="code") {{code}}
 	h1(v-if="title") {{title}}
 	p(v-if="message") {{message}}
-	c-button(v-if="action" iconL="chevron-left" label="Go Back" type="primary")
 </template>
 
 
@@ -14,7 +13,7 @@ export default {
 			"type": [
 				Number, String
 			],
-			"default": 0
+			"default": ""
 		},
 		"title": {
 			"type": String,
@@ -23,14 +22,11 @@ export default {
 		"message": {
 			"type": String,
 			"default": ""
-		},
-		"action": {
-			"type": String,
-			"default": ""
 		}
 	}
 };
 </script>
+
 
 <style lang="stylus" scoped>
 .layer.layer-error
@@ -51,6 +47,4 @@ export default {
 		font-size: 1.3em
 		font-weight: 700
 		margin: 1em 0
-	.c-button
-		margin-top: 2em
 </style>

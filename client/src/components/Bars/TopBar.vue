@@ -11,8 +11,8 @@
 			c-button(title="Find an Expert" type="accent")
 			c-button(iconL="bell" type="transparent")
 	.user-block(@click="toggleUserDropDown()" ref="userDropDown" :class="{expanded: userDropDownExpanded}")
-		c-avatar(:avatar="userProfile.avatar" :firstName="userProfile.first_name" :lastName="userProfile.last_name" size="small")
-		.name {{userProfile.first_name}} {{userProfile.last_name}}
+		c-avatar(:avatar="userProfile.avatar" :firstName="userProfile.firstName" :lastName="userProfile.lastName" size="small")
+		.name {{userProfile.firstName}} {{userProfile.lastName}}
 		icon(name="chevron-down")
 		.dropdown-menu(v-if="userDropDownExpanded")
 			router-link(:to="{name: 'Profile'}") {{$locale("Profile")}}
@@ -23,7 +23,7 @@
 <script>
 import { ref } from "vue";
 import { onClickOutside } from "@vueuse/core";
-import useAuth from "~/core/auth";
+import useAuth from "~/core/auth.js";
 import useProfile from "~/store/Profile.js";
 import cAvatar from "~/components/Misc/cAvatar.vue";
 export default {

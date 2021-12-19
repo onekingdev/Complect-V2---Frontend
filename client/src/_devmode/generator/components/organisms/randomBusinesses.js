@@ -17,10 +17,10 @@ const randomBusinesses = ({ q, byPlans = false }) => {
 			const plan = byPlans ? plans[i] : randomElement( plans );
 			const business = {
 				...randomUsers({ q: 1 })[0],
-				business_id: randomMongoId(),
+				businessId: randomMongoId(),
 				type: "business",
 				plan,
-				business_name: company.name,
+				businessName: company.name,
 				websites: company.website,
 				state: company.state,
 				city: company.city,

@@ -15,16 +15,13 @@ const api = async ({ method, collectionName, newDocuments, documentId }) => {
 			method,
 			"mode": "cors",
 			"cache": "no-cache",
-			"headers": {
-				"Content-Type": "application/json;charset=utf-8"
-				// "Access-Control-Allow-Origin": "*"
-			},
+			"headers": { "Content-Type": "application/json;charset=utf-8" },
 			"body": JSON.stringify( newDocuments )
 		};
-		const response = await fetch( apiUrl, options );
-		if ( !response.ok ) throw new Error( response.message );
-		const answer = await response.json();
-		return answer;
+		const serverAnswer = await fetch( apiUrl, options );
+		if ( !serverAnswer.ok ) throw new Error( serverAnswer.message );
+		const paredServerAnswer = await serverAnswer.json();
+		return paredServerAnswer;
 	} catch ( error ) {
 		console.error( error );
 		return { "error": error.message };
@@ -32,36 +29,25 @@ const api = async ({ method, collectionName, newDocuments, documentId }) => {
 };
 
 
-const readDocumentsFromCloudDb = async ( collectionName, documentId ) => await api({
-	"method": "GET",
-	collectionName,
-	documentId
-});
+const createDocumentsInCloudDb = async ( collectionName, newDocuments ) => {
+	const result = await api({ "method": "POST", collectionName, newDocuments });
+	return result;
+};
 
-const saveDocumentsToCloudDb = async ( collectionName, newDocuments ) => {
-	await api({
-		"method": "POST",
-		collectionName,
-		newDocuments
-	});
+const readDocumentsFromCloudDb = async ( collectionName, documentId ) => {
+	const result = await api({ "method": "GET", collectionName, documentId });
+	return result;
 };
 
 const updateDocumentInCloudDb = async ( collectionName, newDocuments, documentId ) => {
-	await api({
-		"method": "PUT",
-		collectionName,
-		newDocuments,
-		documentId
-	});
+	const result = await api({ "method": "PUT", collectionName, newDocuments, documentId });
+	return result;
 };
 
-const removeDocumentsFromCloudDb = async ( collectionName, documentId ) => {
-	await api({
-		"method": "DELETE",
-		collectionName,
-		documentId
-	});
+const deleteDocumentsFromCloudDb = async ( collectionName, documentId ) => {
+	const result = await api({ "method": "DELETE", collectionName, documentId });
+	return result;
 };
 
 
-export { readDocumentsFromCloudDb, saveDocumentsToCloudDb, updateDocumentInCloudDb, removeDocumentsFromCloudDb };
+export { createDocumentsInCloudDb, readDocumentsFromCloudDb, updateDocumentInCloudDb, deleteDocumentsFromCloudDb };

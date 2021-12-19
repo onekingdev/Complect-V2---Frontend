@@ -5,8 +5,8 @@ documents-container(title="Projects")
 		c-button-modal(title="New Project" modalTitle="New Project" type="primary")
 			template(#content)
 				c-field.col-full(label="Project Name" v-model="newProject.title" required)
-				c-field.col-3(label="Start Date" type="date" v-model="newProject.starts_at" required)
-				c-field.col-3(label="End Date" type="date" v-model="newProject.ends_at" required)
+				c-field.col-3(label="Start Date" type="date" v-model="newProject.startsAt" required)
+				c-field.col-3(label="End Date" type="date" v-model="newProject.endsAt" required)
 				c-field.col-full(label="Description" v-model="newProject.description")
 			template(#footer)
 				c-button(title="Create" type="primary" @click="createProject()")
@@ -45,12 +45,12 @@ export default {
 
 		const newProject = ref({
 			"title": "",
-			"starts_at": Date.now(),
-			"ends_at": Date.now() + 864e5,
+			"startsAt": Date.now(),
+			"endsAt": Date.now() + 864e5,
 			"description": "",
 			"collaborators": [],
 			"tasks": [],
-			"fixed_budget": 0,
+			"fixedBudget": 0,
 			"status": "draft"
 		});
 

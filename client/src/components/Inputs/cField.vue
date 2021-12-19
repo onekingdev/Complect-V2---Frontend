@@ -64,7 +64,7 @@ export default {
 			"type": [
 				String, Number, Array, Object
 			],
-			"required": true
+			"default": ""
 		},
 		"icon": Boolean,
 		"multiselect": Boolean,
@@ -74,7 +74,7 @@ export default {
 	},
 	"emits": ["update:modelValue"],
 	setup ( props, context ) {
-		const updateModelValue = ( value ) => {
+		const updateModelValue = value => {
 			context.emit( "update:modelValue", value );
 		};
 		return { updateModelValue };

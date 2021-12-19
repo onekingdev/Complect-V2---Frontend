@@ -30,7 +30,7 @@ export default {
 			},
 			{
 				"title": "Cost",
-				"key": "fixed_budget",
+				"key": "fixedBudget",
 				"type": "price",
 				"align": "right"
 			},
@@ -42,13 +42,13 @@ export default {
 			},
 			{
 				"title": "Start Date",
-				"key": "starts_at",
+				"key": "startsAt",
 				"type": "date",
 				"align": "right"
 			},
 			{
 				"title": "End Date",
-				"key": "ends_at",
+				"key": "endsAt",
 				"type": "date",
 				"align": "right",
 				"meta": { "overdueWarning": true }
@@ -65,7 +65,7 @@ export default {
 				},
 				{
 					"title": "Not Started",
-					"key": "not_started"
+					"key": "notStarted"
 				},
 				{
 					"title": "Draft",
@@ -90,7 +90,7 @@ export default {
 			]
 		}];
 
-		onMounted( async () => await readDocuments() );
+		onMounted( () => readDocuments() );
 		onUnmounted( () => clearStore() );
 
 		return {

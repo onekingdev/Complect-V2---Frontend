@@ -14,8 +14,8 @@ export default {
 			"columns": {
 				"title": "Name",
 				"assignee": "Assignee",
-				"starts_at": "Start Date",
-				"ends_at": "Due Date"
+				"startsAt": "Start Date",
+				"endsAt": "Due Date"
 			}
 		};
 

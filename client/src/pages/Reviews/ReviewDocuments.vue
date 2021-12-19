@@ -25,7 +25,7 @@ export default {
 				"type": "title"
 			}, {
 				"title": "Last Modified",
-				"key": "last_modified",
+				"key": "lastModified",
 				"type": "date"
 			}
 		];

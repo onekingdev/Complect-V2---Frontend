@@ -79,8 +79,7 @@ export default {
 
 		const showDropdownList = () => {
 			params.datalistVisible = true;
-			if ( window.innerHeight - selectComponent.value.getBoundingClientRect().bottom < 300 )
-				dropdownListDirection.value = "drop-up";
+			if ( window.innerHeight - selectComponent.value.getBoundingClientRect().bottom < 300 ) dropdownListDirection.value = "drop-up";
 			else dropdownListDirection.value = "drop-down";
 		};
 
@@ -97,16 +96,16 @@ export default {
 		};
 
 
-		const selectItem = ( item ) => {
+		const selectItem = item => {
 			selectedItems.value = item.value;
 			hideDropdownList();
 		};
 
 		// get full selected object/s (title & value) from selected value/s
-		const valuesToObjects = ( selected ) => {
+		const valuesToObjects = selected => {
 			if ( props.multiple ) {
 				const objects = [];
-				selected.forEach( ( value ) => {
+				selected.forEach( value => {
 					const index = props.data.findIndex( item => item.value === value );
 					objects.push( props.data[index]);
 				});
@@ -122,7 +121,7 @@ export default {
 			selectedObjects.value = valuesToObjects( props.modelValue );
 		});
 
-		watch( selectedItems, ( selected ) => {
+		watch( selectedItems, selected => {
 			selectedObjects.value = valuesToObjects( selected );
 			context.emit( "update:modelValue", selected );
 		});

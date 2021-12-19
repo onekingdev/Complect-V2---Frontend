@@ -97,13 +97,14 @@ export default {
 
 				// filters (filter and mutate documents array)
 				const activeFiltersKeys = Object.keys( activeFilters.value ); // get filters (filter = dropdown element)
-				if ( activeFiltersKeys.length ) // if active filters exist
-					activeFiltersKeys.forEach( ( filterKey ) => { // filter documents (rows) by every existed filter
+				if ( activeFiltersKeys.length ) { // if active filters exist
+					activeFiltersKeys.forEach( filterKey => { // filter documents (rows) by every existed filter
 						const filterBy = activeFilters.value[filterKey].field; // get document's field (table cell) for filtering
 						const key = activeFilters.value[filterKey].key; // get filter's key (cell value) for filtering
 						if ( !key ) return; // do not filter if empty key (show all)
 						documents = documents.filter( document => document[filterBy] === key ); // filter documents by field/key
 					});
+				}
 
 				// search Query
 				if ( !searchQuery.value ) return documents;
@@ -118,7 +119,7 @@ export default {
 
 		// sort Documents
 		const sortAsc = ref({});
-		const sortDocuments = ( key ) => {
+		const sortDocuments = key => {
 			sortAsc.value[key] = !sortAsc.value[key];
 			sortArrayByKey( props.documents, key, sortAsc.value[key]);
 		};

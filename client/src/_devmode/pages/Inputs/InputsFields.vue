@@ -6,10 +6,7 @@ c-card(title="Constructor" :maxWidth="700")
 				c-switcher.col-full(id="field-types" label="Type" :options="options.types" v-model="selectedOptions.type" fullwidth)
 				c-switcher.col-full(id="field-sizes" label="Size" :options="options.sizes" v-model="selectedOptions.size" fullwidth)
 				c-field.col-full(type="text" label="Label" v-model="selectedOptions.label")
-				//- c-select.col-1(label="Icon" :data="icons" v-model="selectedOptions.iconL")
 				c-field.col-6(type="text" label="Placeholder" v-model="selectedOptions.placeholder")
-				//- c-select.col-1(label="Icon" :data="icons" v-model="selectedOptions.iconR")
-				c-checkers(label="Options" :options="options.boolean" v-model="selectedBoolean")
 			template(#code)
 				code {{code}}
 				code {{inputValues[selectedOptions.type]}}
@@ -79,11 +76,6 @@ export default {
 			],
 			icon: [
 				{title: "No icon", value: false},
-			],
-			boolean: [
-				{title: "Icon", value: "icon"},
-				{title: "Required", value: "required"},
-				{title: "Fullwidth", value: "fullwidth"}
 			]
 		}
 		const selectedOptions = reactive({
@@ -94,7 +86,6 @@ export default {
 			iconR: "",
 			size: "regular"
 		})
-		const selectedBoolean = ref(['required'])
 
 		const fields = [
 			{type: "text", placeholder: "John Smith", label: "Text:", required: true},
@@ -116,15 +107,13 @@ export default {
 			let size = selectedOptions.size !== 'regular' ? `size="${selectedOptions.size}"` : ""
 			let iconL = selectedOptions.iconL ? `iconL="${selectedOptions.iconL}"` : ""
 			let iconR = selectedOptions.iconL ? `iconR="${selectedOptions.iconR}"` : ""
-			let options = selectedBoolean.value.join(" ")
-			return `c-field(${type} ${label} ${placeholder} ${size} ${iconL} ${iconR} ${options})`
+			return `c-field(${type} ${label} ${placeholder} ${size} ${iconL} ${iconR})`
 		})
 
 		return {
 			fieldsStates,
 			options,
 			selectedOptions,
-			selectedBoolean,
 			fields,
 			icons,
 			code,

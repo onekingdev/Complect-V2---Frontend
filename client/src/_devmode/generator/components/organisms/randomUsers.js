@@ -34,9 +34,9 @@ const randomUsers = ({ q }) => {
 					firstName,
 					lastName
 				})[0],
-				first_name: firstName,
-				last_name: lastName,
-				username: userName( firstName, lastName ),
+				firstName: firstName,
+				lastName: lastName,
+				userName: userName( firstName, lastName ),
 				avatar: randomAvatars({
 					q: 1,
 					gender
@@ -44,14 +44,14 @@ const randomUsers = ({ q }) => {
 				country: "United States",
 				state: company.state,
 				city: company.city,
-				address_1: company.address,
-				address_2: null,
+				address1: company.address,
+				address2: null,
 				apartment: randomNumber( 1, 100 ),
 				zip: randomNumber( 90001, 96162 ),
-				time_zone: "UTC -7",
+				timeZone: "UTC -7",
 				jurisdictions: randomJurisdictions({ q: [1, 3] }),
 				industries: randomIndustries({ q: [1, 3] }),
-				sub_industries: []
+				subIndustries: []
 			};
 			users.push( user );
 		}

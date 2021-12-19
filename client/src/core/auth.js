@@ -2,7 +2,7 @@ import { useRouter } from "vue-router";
 import { appState, setUserIdState } from "~/store/appState";
 import useProfile from "~/store/Profile";
 import { randomUsers } from "~/_devmode/generator/components/organisms/randomUsers";
-import { saveDocumentsToCloudDb, readDocumentsFromCloudDb } from "~/core/api.js";
+import { createDocumentsInCloudDb, readDocumentsFromCloudDb } from "~/core/api.js";
 
 export default function useAuth () {
 	const router = useRouter();
@@ -14,7 +14,7 @@ export default function useAuth () {
 		try {
 			const randomUserProfile = await randomUsers({ "q": 1 })[0];
 			userProfile.value = randomUserProfile;
-			saveDocumentsToCloudDb( "users", [randomUserProfile]);
+			createDocumentsInCloudDb( "users", [randomUserProfile]);
 			setUserIdState( randomUserProfile._id );
 			router.push({ "name": "Dashboard" });
 		} catch ( error ) {

@@ -19,12 +19,12 @@ const randomSpecialists = ({ q, byPlans = false }) => {
 				type: "specialist",
 				skills: randomSkills({ q: [1, 10] }),
 				plan,
-				specialist_other: null,
-				resume_url: null,
+				specialistAther: null,
+				resumeUrl: null,
 				availability: randomBool(),
 				experience: randomNumber( 0, 2 ),
-				former_regulator: false,
-				min_hourly_rate: Math.round( randomNumber( 20, 200 ) / 5 ) * 5 // to have nice numbers (20, 55, 120 etc)
+				formerRegulator: false,
+				minHourlyRate: Math.round( randomNumber( 20, 200 ) / 5 ) * 5 // to have nice numbers (20, 55, 120 etc)
 			};
 			specialists.push( specialist );
 		}

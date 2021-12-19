@@ -35,16 +35,16 @@ export default {
 
 		// start _devMode
 		// temp Random Users
-		const { _devmode_pushToStore, clearStore } = useData( "users" );
+		const { devModePushToStore, clearStore } = useData( "users" );
 		const usersRecords = computed( () => {
 			const users = [];
 			for ( let i = 1; i < randomNumber( 10, 20 ); i++ ) {
-				const { first_name, last_name, email, avatar } = randomUsers({ "q": 1 })[0];
+				const { firstName, lastName, email, avatar } = randomUsers({ "q": 1 })[0];
 				const role = randomElement([
 					"admin", "trusted", "basic", ""
 				]);
 				const disabled = randomBool( 30 );
-				const start_date = randomDatesInRange({
+				const startDate = randomDatesInRange({
 					"q": 1,
 					"shift": [
 						-1000, -30
@@ -52,19 +52,19 @@ export default {
 				})[0];
 				const user = {
 					"user": {
-						first_name,
-						last_name,
+						firstName,
+						lastName,
 						email,
 						avatar
 					},
 					role,
-					"access_person": role === "admin" ? randomBool( 40 ) : false,
+					"accessPerson": role === "admin" ? randomBool( 40 ) : false,
 					disabled,
 					"reason": disabled ? randomElement([
 						"termination", "resignation", "temporary", "other"
 					]) : "",
-					start_date,
-					"disabled_date": disabled ? start_date + randomNumber( -1e2, 0 ) : ""
+					startDate,
+					"disabledDate": disabled ? startDate + randomNumber( -1e2, 0 ) : ""
 				};
 				users.push( user );
 			}
@@ -77,7 +77,7 @@ export default {
 			"Disabled": usersRecords.value.filter( user => user.disabled ).length
 		}) );
 
-		onMounted( async () => await _devmode_pushToStore( usersRecords.value ) );
+		onMounted( () => devModePushToStore( usersRecords.value ) );
 		onUnmounted( () => clearStore() );
 		// end _devMode -------------------------------------------
 

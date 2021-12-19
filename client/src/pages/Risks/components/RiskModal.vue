@@ -30,11 +30,9 @@ export default {
 	setup ( props, context ) {
 		const newRisk = reactive({ "name": "" });
 
-		const submit = () => {
-			console.log( newRisk );
-		};
+		const submit = () => {};
 
-		const update = ( value ) => {
+		const update = value => {
 			context.emit( "updateVisibleModal", value );
 		};
 

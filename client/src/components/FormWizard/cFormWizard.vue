@@ -64,7 +64,7 @@ export default {
 		const firstStep = computed( () => currentStep.value === 1 );
 		const lastStep = computed( () => currentStep.value === props.steps.length );
 
-		const nextStep = ( value ) => {
+		const nextStep = value => {
 			if ( firstStep.value && value === -1 || lastStep.value && value === 1 ) return;
 			currentStep.value += value;
 		};

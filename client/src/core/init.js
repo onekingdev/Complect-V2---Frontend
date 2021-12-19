@@ -5,16 +5,16 @@ import { restoreAppState } from "~/store/appState.js";
 
 const localStorageTest = () => {
 	const ls = window.localStorage;
-	if ( !ls ) throw "LocalStorage not detected";
+	if ( !ls ) throw new Error( "LocalStorage not detected" );
 	const x = "localStorageTest";
 	ls.setItem( x, x );
 	const y = ls.getItem( x );
-	if ( x !== y ) throw "LocalStorage not detected";
+	if ( x !== y ) throw new Error( "LocalStorage not detected" );
 	ls.removeItem( x );
 };
 
 const indexedDBTest = () => {
-	if ( !window.indexedDB ) throw "IndexedDB not detected";
+	if ( !window.indexedDB ) throw new Error( "IndexedDB not detected" );
 };
 
 export default function useInit () {

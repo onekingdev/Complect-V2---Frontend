@@ -21,11 +21,11 @@ export default {
 				"type": "title"
 			}, {
 				"title": "Start Date",
-				"key": "start_date",
+				"key": "startDate",
 				"type": "date"
 			}, {
 				"title": "Due Date",
-				"key": "end_date",
+				"key": "endDate",
 				"type": "date"
 			}
 		];

@@ -5,8 +5,8 @@ documents-container(title="Internal Reviews")
 			template(#content)
 				//- c-field.col-full(label="Template" type="singleselect" :modelValue="templateOptions" @update:modelValue="updateTemplateReview" v-model="newReview.template_id")
 				c-field.col-full(label="Review Name" v-model="newReview.title" required)
-				c-field.col-3(label="Start Date" type="date" v-model="newReview.starts_at" required)
-				c-field.col-3(label="End Date" type="date" v-model="newReview.ends_at" required)
+				c-field.col-3(label="Start Date" type="date" v-model="newReview.startsAt" required)
+				c-field.col-3(label="End Date" type="date" v-model="newReview.endsAt" required)
 			template(#footer)
 				c-button(title="Create" type="primary" @click="createNewReview()")
 	template(#content)
@@ -25,10 +25,10 @@ export default {
 	"components": { cBanner },
 	setup () {
 		const newReview = reactive({
-			"template_id": "",
+			"templateId": "",
 			"title": "",
-			"starts_at": "",
-			"ends_at": ""
+			"startsAt": "",
+			"endsAt": ""
 		});
 		const columns = [
 			{
@@ -49,22 +49,22 @@ export default {
 			},
 			{
 				"title": "Last Modified",
-				"key": "last_modified",
+				"key": "lastModified",
 				"type": "date"
 			},
 			{
 				"title": "Date Created",
-				"key": "date_created",
+				"key": "dateCreated",
 				"type": "date"
 			},
 			{
 				"title": "Review Period",
-				"key": "review_period",
+				"key": "reviewPeriod",
 				"type": "date"
 			},
 			{
 				"title": "End Date",
-				"key": "end_date",
+				"key": "endDate",
 				"type": "date"
 			}
 		];
@@ -77,10 +77,10 @@ export default {
 				"max": 2
 			},
 			"finding": "1",
-			"last_modified": new Date().toString(),
-			"date_created": new Date().toString(),
-			"review_period": new Date().toString(),
-			"end_date": new Date().toString()
+			"lastModified": Date.now(),
+			"dateCreated": Date.now(),
+			"reviewPeriod": Date.now(),
+			"endDate": Date.now()
 		}];
 
 		const filters = [];
@@ -88,9 +88,7 @@ export default {
 			window.open( "https://www.sec.gov/exams" );
 		};
 
-		const createNewReview = () => {
-			console.log( newReview );
-		};
+		const createNewReview = () => {};
 
 		return {
 			columns,

@@ -22,7 +22,7 @@ import { reactive } from "vue";
 import cSelect from "~/components/Inputs/cSelect.vue";
 import cUpload from "~/components/Inputs/cUpload.vue";
 import useProfile from "~/store/Profile.js";
-import { industries, subindustries_business, jurisdictions, timezones } from "~/data/static.js";
+import { industries, subindustriesBusiness, jurisdictions, timezones } from "~/data/static.js";
 const sections = [
 	{
 		"title": "My Profile",
@@ -32,7 +32,7 @@ const sections = [
 				"component": "c-upload",
 				"props": { "class": "col-full" }
 			},
-			"first_name": {
+			"firstName": {
 				"component": "c-field",
 				"props": {
 					"type": "text",
@@ -41,7 +41,7 @@ const sections = [
 					"required": true
 				}
 			},
-			"last_name": {
+			"lastName": {
 				"component": "c-field",
 				"props": {
 					"type": "text",
@@ -55,7 +55,7 @@ const sections = [
 		"title": "Company Details",
 		"key": "my-company",
 		"inputs": {
-			"business_name": {
+			"businessName": {
 				"component": "c-field",
 				"props": {
 					"type": "text",
@@ -97,12 +97,12 @@ const sections = [
 					"required": true
 				}
 			},
-			"sub_industries": {
+			"subIndustries": {
 				"component": "c-select",
 				"props": {
 					"label": "Sub-Industry",
 					"placeholder": "Provide advice to mutual funds",
-					"data": subindustries_business,
+					"data": subindustriesBusiness,
 					"required": true
 				}
 			},
@@ -115,7 +115,7 @@ const sections = [
 					"required": true
 				}
 			},
-			"time_zone": {
+			"timeZone": {
 				"component": "c-select",
 				"props": {
 					"label": "Time Zone",

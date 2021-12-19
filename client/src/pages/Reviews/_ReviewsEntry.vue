@@ -11,8 +11,8 @@ document-container(section="Projects" :title="review.title")
 			c-button-modal(title="Edit" modalTitle="Edit Review" type="transparent")
 				template(#content)
 					c-field.col-full(label="New Name" v-model="review.title" required)
-					c-field.col-3(label="Start Date" type="date" v-model="review.starts_at" required)
-					c-field.col-3(label="End Date" type="date" v-model="review.ends_at" required)
+					c-field.col-3(label="Start Date" type="date" v-model="review.startsAt" required)
+					c-field.col-3(label="End Date" type="date" v-model="review.endsAt" required)
 				template(#footer)
 					c-button(title="Save" type="primary")
 			c-button-modal(title="Delete" modalTitle="Delete Review" type="transparent")
@@ -28,8 +28,8 @@ export default {
 	setup () {
 		const review = reactive({
 			"title": "Review One",
-			"starts_at": new Date().toString(),
-			"ends_at": new Date().toString()
+			"startsAt": Date.now(),
+			"endsAt": Date.now()
 		});
 
 		const tabs = [

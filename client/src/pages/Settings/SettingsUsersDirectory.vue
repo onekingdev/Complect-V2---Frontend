@@ -26,11 +26,11 @@ export default {
 				"type": "role"
 			}, {
 				"title": "Access Person",
-				"key": "access_person",
+				"key": "accessPerson",
 				"type": "accessPerson"
 			}, {
 				"title": "Start Date",
-				"key": "start_date",
+				"key": "startDate",
 				"type": "date"
 			}
 		];

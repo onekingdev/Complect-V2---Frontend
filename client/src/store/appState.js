@@ -24,7 +24,7 @@ const collapseSidebar = value => setAppState( "collapsedSidebar", value ); // ch
 
 
 // expand/collapse navigation sections in sidebar
-const collapseSidebarSections = ( index ) => {
+const collapseSidebarSections = index => {
 	const sections = appState.value.collapsedSections;
 	try {
 		// expand sidebar, if collapsed, and expand navigation section

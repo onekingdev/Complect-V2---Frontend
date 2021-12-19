@@ -13,7 +13,6 @@ c-card(title="Table" type="flex-column")
 <script>
 import { ref, onMounted } from "vue";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
-import cToggle from "~/components/Inputs/cToggle.vue"
 import { randomMongoId, randomBool, randomNumber, randomElement } from "~/_devmode/generator/components/atoms/utils.js";
 import { randomTitles } from "~/_devmode/generator/components/molecules/randomTexts.js";
 import { randomUsers } from "~/_devmode/generator/components/organisms/randomUsers.js";
@@ -21,7 +20,7 @@ import { randomDatesInRange } from "~/_devmode/generator/components/molecules/ra
 
 
 export default {
-	components: { cDropdown, cToggle },
+	components: { cDropdown },
 	setup() {
 		const documents = ref([])
 
@@ -41,12 +40,12 @@ export default {
 					"assignee": [],
 					"collaborators": randomUsers({q:[0,7]}),
 					"tasks": [],
-					"fixed_budget": Math.round( randomNumber( 100, 20000 ) / 100 ) * 100,
+					"fixedBudget": Math.round( randomNumber( 100, 20000 ) / 100 ) * 100,
 					"created": startDate + randomNumber(-1e5,-1e3),
 					"modified": startDate + randomNumber(-1e2,0),
 					"status": randomElement(["draft", "inprogress", "complete"]),
-					"starts_at": startDate,
-					"ends_at": startDate + randomNumber(1e5,1e10),
+					"startsAt": startDate,
+					"endsAt": startDate + randomNumber(1e5,1e10),
 				});
 			}
 		}
@@ -75,7 +74,7 @@ export default {
 				"align": "right"
 			}, {
 				"title": "Cost",
-				"key": "fixed_budget",
+				"key": "fixedBudget",
 				"type": "price",
 				"align": "right"
 			}, {
@@ -85,12 +84,12 @@ export default {
 				"align": "right"
 			}, {
 				"title": "Start Date",
-				"key": "starts_at",
+				"key": "startsAt",
 				"type": "date",
 				"align": "right"
 			}, {
 				"title": "End Date",
-				"key": "ends_at",
+				"key": "endsAt",
 				"type": "date",
 				"align": "right",
 				"meta": {

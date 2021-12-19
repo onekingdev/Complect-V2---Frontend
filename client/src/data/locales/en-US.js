@@ -99,8 +99,8 @@ export default {
 
 		// database Keys
 		"title": "Title",
-		"starts_at": "Start Date",
-		"ends_at": "End Date",
+		"startsAt": "Start Date",
+		"endsAt": "End Date",
 		"description": "Description",
 
 		// devMode

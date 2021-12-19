@@ -12,7 +12,7 @@ const randomEmployees = ({ q, id = 1 }) => {
 			const employee = {
 				...randomUsers({ q: 1 })[0],
 				type: "employee",
-				business_id: id,
+				businessId: id,
 				role: randomElement(["basic", "trusted", "admin"])
 			};
 			employees.push( employee );

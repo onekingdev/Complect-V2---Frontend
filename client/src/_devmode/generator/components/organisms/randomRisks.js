@@ -21,23 +21,23 @@ const randomRisks = ({ q }) => {
 			const likelihood = randomNumber( 0, 2 );
 			const risk = {
 				_id: randomMongoId(),
-				business_id: null,
+				businessId: null,
 				title: randomTitles({
 					q: 1,
 					w: [3, 5]
 				})[0],
-				created_at: randomDatesInRange({
+				createdAt: randomDatesInRange({
 					q: 1,
 					shift: [-300, -50]
 				})[0], // shift date back for random days number between 500 and 300
-				updated_at: randomDatesInRange({
+				updatedAt: randomDatesInRange({
 					q: 1,
 					shift: [-50, -20]
 				})[0],
 				impact,
 				likelihood,
-				risk_level: riskLevel( impact, likelihood ),
-				compliance_policies: []
+				riskLevel: riskLevel( impact, likelihood ),
+				compliancePolicies: []
 			};
 			risks.push( risk );
 		}

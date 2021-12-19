@@ -33,17 +33,17 @@ export default {
 			},
 			{
 				"title": "Access Person",
-				"key": "access_person",
+				"key": "accessPerson",
 				"type": "accessPerson"
 			},
 			{
 				"title": "Start Date",
-				"key": "start_date",
+				"key": "startDate",
 				"type": "date"
 			},
 			{
 				"title": "Disabled Date",
-				"key": "disabled_date",
+				"key": "disabledDate",
 				"type": "date"
 			}
 		];

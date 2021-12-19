@@ -69,11 +69,11 @@ export default {
 				"type": "status"
 			}, {
 				"title": "Last Modiied",
-				"key": "updated_at",
+				"key": "updatedAt",
 				"type": "date"
 			}, {
 				"title": "Date Created",
-				"key": "created_at",
+				"key": "createdAt",
 				"type": "date"
 			}
 		];
@@ -96,12 +96,12 @@ export default {
 			},
 			{
 				"title": "Last Modiied",
-				"key": "updated_at",
+				"key": "updatedAt",
 				"type": "date"
 			},
 			{
 				"title": "Date Created",
-				"key": "created_at",
+				"key": "createdAt",
 				"type": "date"
 			}
 		];
@@ -113,8 +113,8 @@ export default {
 				"title": "Policy"
 			},
 			"status": "draft",
-			"updated_at": new Date().toString(),
-			"created_at": new Date().toString()
+			"updatedAt": Date.now(),
+			"createdAt": Date.now()
 		}];
 
 		const documents = [{
@@ -123,15 +123,15 @@ export default {
 				"title": "Policy"
 			},
 			"status": "draft",
-			"updated_at": new Date().toString(),
-			"created_at": new Date().toString()
+			"updatedAt": Date.now(),
+			"createdAt": Date.now()
 		}];
 
 		const showEditRiskModal = () => {
 			isShowEditRiskModal.value = true;
 		};
 
-		const updateVisibleModal = ( value ) => {
+		const updateVisibleModal = value => {
 			isShowEditRiskModal.value = value;
 		};
 

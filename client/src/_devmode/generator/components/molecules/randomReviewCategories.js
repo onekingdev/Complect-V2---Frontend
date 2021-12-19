@@ -66,15 +66,15 @@ const randomReviewCategories = ({ q }) => {
 					q: 1,
 					w: [1, 5]
 				})[0],
-				created_at: randomDatesInRange({
+				createdAt: randomDatesInRange({
 					q: 1,
 					shift: [-300, -50]
 				})[0],
-				updated_at: randomDatesInRange({
+				updatedAt: randomDatesInRange({
 					q: 1,
 					shift: [-50, -20]
 				})[0],
-				review_topics: randomReviewTopics({ q: [0, 10] })
+				reviewTopics: randomReviewTopics({ q: [0, 10] })
 			};
 			randomReviewCategories.push( randomReviewCategory );
 		}

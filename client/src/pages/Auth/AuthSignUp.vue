@@ -11,8 +11,8 @@ c-card
 			h4.heading.medium Create your FREE account
 			div.signup-form
 				div.field.grid-6
-					c-field.col-3(label="First Name:" v-model="user.first_name" required)
-					c-field.col-3(label="Last Name:" v-model="user.last_name" required)
+					c-field.col-3(label="First Name:" v-model="user.firstName" required)
+					c-field.col-3(label="Last Name:" v-model="user.lastName" required)
 				div.field
 					c-field(label="Email:" v-model="user.email" required)
 				div.field
@@ -43,8 +43,8 @@ export default {
 	setup () {
 		const user = reactive({
 			"type": "",
-			"first_name": "",
-			"last_name": "",
+			"firstName": "",
+			"lastName": "",
 			"email": "",
 			"password": ""
 		});
@@ -64,8 +64,8 @@ export default {
 		const password2 = ref( null );
 
 		const currentStep = ref( 1 );
-		// const prevStep = () => currentStep.value--;
-		const nextStep = () => currentStep.value++;
+		// const prevStep = () => currentStep.value -= 1;
+		const nextStep = () => currentStep.value += 1;
 
 		return {
 			user,

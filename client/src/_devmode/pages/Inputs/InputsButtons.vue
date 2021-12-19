@@ -5,11 +5,8 @@ c-card(title="Constructor" :maxWidth="700")
 			template(#controls)
 				c-switcher.col-full(id="button-types" label="Type" :options="options.types" v-model="selectedOptions.type" fullwidth)
 				c-switcher.col-full(id="button-sizes" label="Size" :options="options.sizes" v-model="selectedOptions.size" fullwidth)
-				//- c-select.col-1(label="Icon" :data="icons" v-model="selectedOptions.iconL")
 				c-field.col-3(type="text" label="Title" v-model="selectedOptions.title")
 				c-field.col-3(type="text" label="Second Title" v-model="selectedOptions.secondTitle")
-				//- c-select.col-1(label="Icon" :data="icons" v-model="selectedOptions.iconR")
-				c-checkers(label="Options" :options="options.boolean" v-model="selectedBoolean")
 			template(#code)
 				code {{code}}
 			template(#preview)
@@ -68,9 +65,6 @@ export default {
 				{title: "Regular", value: "regular"},
 				{title: "Big", value: "big"},
 				{title: "Huge", value: "huge"}
-			],
-			boolean: [
-				{title: "Fullwidth", value: "fullwidth"}
 			]
 		}
 		
