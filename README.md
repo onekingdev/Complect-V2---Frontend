@@ -12,7 +12,7 @@ Run: `docker-compose up` to start *Client*, *API*, *MongoDB* and *MongoDB Admin*
 
 
 ### Ports:
-* [localhost:5000](http://localhost:81/) - Client (*front-end*)
+* [localhost:5000](http://localhost:5000/) - Client (*front-end*)
 * `localhost:5001` - API
 * `localhost:5002` - MongoDB
 * [localhost:5003](http://localhost:5003/) - MongoDB Admin ([more](#mongodb-admin))
