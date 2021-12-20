@@ -1,32 +1,30 @@
 <template lang="pug">
 c-dropdown(iconR="more" type="transparent")
-	c-button(v-for="(item, index) in data" :key="index"  type="transparent" :title="item.title" @click="handleClickButton(item)")
+	c-button(v-for="(item, index) in meta.actions" :key="index" :title="item.title" @click="item.action(id)" type="transparent" )
 </template>
+
+
 <script>
 import cDropdown from "~/components/Inputs/cDropdown.vue";
 export default {
 	"components": { cDropdown },
 	"props": {
-		"data": {
-			"type": Array,
+		"id": {
+			"type": String,
 			"required": true
+		},
+		"meta": {
+			"type": Object,
+			"default": () => {}
 		}
-	},
-	setup () {
-		const handleClickButton = button => {
-			if ( !button.action ) return false;
-			button.action( button.data );
-			return button;
-		};
-
-		return { handleClickButton };
 	}
 };
 </script>
+
+
 <style lang="stylus" scoped>
 .c-dropdown
 	:deep(.dropdown)
-		padding: 0.5em 0
 		border-radius: 5px
 		top: 2.5em
 		left: -100%

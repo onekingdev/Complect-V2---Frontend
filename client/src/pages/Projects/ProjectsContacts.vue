@@ -1,6 +1,7 @@
 <template lang="pug">
-c-table(v-bind="{columns, documents}")
 </template>
+
+
 <script>
 export default {
 	setup () {
@@ -8,19 +9,19 @@ export default {
 			{
 				"title": "Name",
 				"key": "name",
-				"type": "title"
+				"cell": "CellTitle"
 			}, {
 				"title": "Location",
 				"key": "location",
-				"type": "title"
+				"cell": "CellTitle"
 			}, {
 				"title": "Status",
 				"key": "status",
-				"type": "status"
+				"cell": "CellStatus"
 			}, {
 				"title": "Rating",
 				"key": "rating",
-				"type": "rating"
+				"cell": "cellRating"
 			}
 		];
 

@@ -1,8 +1,6 @@
 {
     "extends": [
-        "plugin:vue/vue3-recommended",
-		"plugin:vue-scoped-css/all",
-		"prettier"
+        "plugin:vue/vue3-recommended"
     ],
     "rules": {
 		// Possible Errors
@@ -12,7 +10,7 @@
 		"no-await-in-loop": "error",
 		"no-compare-neg-zero": "error",
 		"no-cond-assign": ["error", "always"],
-		"no-console": ["error", { "allow": ["error", "warn"] }],
+		"no-console": ["error", { "allow": ["debug", "error", "warn"] }],
 		"no-constant-condition": "error",
 		"no-control-regex": "error",
 		"no-debugger": "error",

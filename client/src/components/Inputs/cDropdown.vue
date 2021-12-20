@@ -1,12 +1,12 @@
 <template lang="pug">
 .c-input.c-dropdown(:class="{expanded: listVisible}" @click="toggleListVisibility()" ref="dropdownList")
-  c-button(
-    :title="title"
-    :secondTitle="selected"
-    :type="type"
-    :iconR="iconR")
-  .dropdown(v-show="listVisible")
-    slot(name="default")
+	c-button(
+		:title="title"
+		:secondTitle="selected"
+		:type="type"
+		:iconR="iconR")
+	.dropdown(v-show="listVisible")
+		slot(name="default")
 </template>
 
 
@@ -65,11 +65,6 @@ export default {
 			height: 0.7em
 			margin-left: 1em
 			transition: transform var(--fx-duration-short, .15s)
-		svg.icon-role-3dots
-			width: 0.7em
-			height: 0.7em
-			margin-left: 0em
-			font-size: 1.5em
 	.dropdown
 		position: absolute
 		z-index: 5

@@ -261,9 +261,9 @@
 
 			<!-- more with 3-dots -->
 			<symbol id="icon_more" viewBox="0 0 96 96">
-				<ellipse ry="7.642877" rx="7.642877" id="svg_3" cy="48.95318" cx="16.214446" fill-rule="evenodd" fill="#000"/>
-				<ellipse ry="7.642877" rx="7.642877" id="svg_5" cy="48.95318" cx="48.785836" fill-rule="evenodd" fill="#000"/>
-				<ellipse ry="7.642877" rx="7.642877" id="svg_6" cy="48.381753" cx="80.21437" fill-rule="evenodd" fill="#000"/>
+				<ellipse ry="7.642877" rx="7.642877" id="svg_3" cy="48.95318" cx="16.214446" fill-rule="evenodd"/>
+				<ellipse ry="7.642877" rx="7.642877" id="svg_5" cy="48.95318" cx="48.785836" fill-rule="evenodd"/>
+				<ellipse ry="7.642877" rx="7.642877" id="svg_6" cy="48.381753" cx="80.21437" fill-rule="evenodd"/>
 			</symbol>
 
 			<!-- role-admin -->

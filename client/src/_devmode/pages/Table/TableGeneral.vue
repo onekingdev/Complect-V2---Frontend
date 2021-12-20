@@ -27,15 +27,10 @@ export default {
 		const visibleColumns = ref([])
 		const toggleColumnVisibility = (key, state) => visibleColumns.value[key] = state
 		
-		const handleClickEdit = data => {
-			// eslint-disable-next-line
-			console.log( "handleClickEdit", data );
-		};
+		const handleClickEdit = id => console.debug( "Edit", id );
+		const handleClickDuplicate = id => console.debug( "Duplicate", id );
+		const handleClickDelete = id => console.debug( "Delete", id );
 
-		const handleClickDelete = data => {
-			// eslint-disable-next-line
-			console.log( "handleClickDelete", data );
-		};
 
 		const generateDocuments = () => {
 			documents.value = []
@@ -55,11 +50,7 @@ export default {
 					"modified": startDate + randomNumber(-1e2,0),
 					"status": randomElement(["draft", "inprogress", "complete"]),
 					"startsAt": startDate,
-					"endsAt": startDate + randomNumber(1e5,1e10),
-					"more": [
-						{ title: "Edit", action: handleClickEdit },
-						{ title: "Delete", action: handleClickDelete }
-					]
+					"endsAt": startDate + randomNumber(1e5,1e10)
 				});
 			}
 		}
@@ -109,14 +100,13 @@ export default {
 				}
 			},
 			{
-				"title": "",
-				"key": "more",
-				"cell": "CellDropdownButton",
-				"showSortIcon" : false,
+				"unsortable": true,
+				"cell": "CellDropdown",
 				"meta": {
 					"actions": [
-						{ title: "Edit", action: "handleClickEdit" },
-						{ title: "Delete", action: "handleClickDelete" }
+						{ "title": "Edit", "action": handleClickEdit },
+						{ "title": "Duplicate", "action": handleClickDuplicate },
+						{ "title": "Delete", "action": handleClickDelete }
 					]
 				}
 			}

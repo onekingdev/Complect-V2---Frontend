@@ -16,13 +16,12 @@
 			tr
 				th(v-for="(column, index) in columns" :key="index")
 					.cell.column-title(:class="[column.align]")
-						.title {{ column.title }}
-						c-button(type="icon" iconR="sort" @click="sortDocuments(column.key)")
+						.title(v-if="column.title") {{ column.title }}
+						c-button(v-if="!column.unsortable" type="icon" iconR="sort" @click="sortDocuments(column.key)")
 		tbody(v-if="filteredDocuments.length")
 			tr(v-for="document in filteredDocuments" :key="document._id")
 				td(v-for="(column, index) in columns" :key="index")
 					component.cell(
-						v-if="document[column.key]"
 						:is="getTableCell(column.cell)"
 						:class="[column.align]"
 						:meta="column.meta"
@@ -50,10 +49,6 @@ export default {
 		"filters": {
 			"type": Array,
 			"default": () => []
-		},
-		"showSortIcon": {
-			"type": Boolean,
-			"default": true
 		},
 		"searchable": Boolean
 	},
