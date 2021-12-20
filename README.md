@@ -8,7 +8,13 @@
 login: `next`  
 password: `preview`
 
-## Run Project
+## Useful links:
+[Tasks Board](https://github.com/complectco/complect-2.0/projects/3)  
+[Wiki](https://github.com/complectco/complect-2.0/wiki)  
+[Mock-ups](https://github.com/complectco/complect-2.0/wiki)  
+[Legacy App](https://demo.complect.com/unauthorized)  
+
+## Run Project:
 Run: `docker-compose up` in root directory, to start *Client*, *API*, *MongoDB* and *MongoDB Admin* services.
 
 
