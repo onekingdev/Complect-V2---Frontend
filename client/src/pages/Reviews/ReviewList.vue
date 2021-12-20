@@ -64,10 +64,31 @@ export default {
 			},
 			{
 				"title": "End Date",
-				"key": "endDate",
+				"key": "end_date",
 				"cell": "CellDate"
+			},
+			{
+				"title": "",
+				"key": "action",
+				"cell": "dropdownButton"
 			}
 		];
+
+		const handleClickEdit = data => {
+			// eslint-disable-next-line
+			console.log( "handleClickEdit", data );
+		};
+
+		const handleClickDuplicate = data => {
+			// eslint-disable-next-line
+			console.log( "handleClickDuplicate", data );
+		};
+
+		const handleClickDelete = data => {
+			// eslint-disable-next-line
+			console.log( "handleClickDelete", data );
+		};
+
 
 		const documents = [{
 			"_id": "1",
@@ -77,10 +98,25 @@ export default {
 				"max": 2
 			},
 			"finding": "1",
-			"lastModified": Date.now(),
-			"dateCreated": Date.now(),
-			"reviewPeriod": Date.now(),
-			"endDate": Date.now()
+			"last_modified": Date.now(),
+			"date_created": Date.now(),
+			"review_period": Date.now(),
+			"end_date": Date.now(),
+			"action": [
+				{
+					"title": "Edit",
+					"data": { "id": "1" },
+					"handleClick": handleClickEdit
+				}, {
+					"title": "Duplicate",
+					"data": { "id": "1" },
+					"handleClick": handleClickDuplicate
+				}, {
+					"title": "Delete",
+					"data": { "id": "1" },
+					"handleClick": handleClickDelete
+				}
+			]
 		}];
 
 		const filters = [];

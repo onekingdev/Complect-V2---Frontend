@@ -27,6 +27,16 @@ export default {
 		const visibleColumns = ref([])
 		const toggleColumnVisibility = (key, state) => visibleColumns.value[key] = state
 		
+		const handleClickEdit = data => {
+			// eslint-disable-next-line
+			console.log( "handleClickEdit", data );
+		};
+
+		const handleClickDelete = data => {
+			// eslint-disable-next-line
+			console.log( "handleClickDelete", data );
+		};
+
 		const generateDocuments = () => {
 			documents.value = []
 			for ( let i = 1; i < randomNumber(10,20); i++ ) {
@@ -46,13 +56,15 @@ export default {
 					"status": randomElement(["draft", "inprogress", "complete"]),
 					"startsAt": startDate,
 					"endsAt": startDate + randomNumber(1e5,1e10),
+					"more": [
+						{ title: "Edit", action: handleClickEdit },
+						{ title: "Delete", action: handleClickDelete }
+					]
 				});
 			}
 		}
 
 		onMounted(() => generateDocuments())
-
-		
 
 		const columns = [
 			{
@@ -66,7 +78,7 @@ export default {
 			}, {
 				"title": "Collaborators",
 				"key": "collaborators",
-				"cell": "CellCollaborators",
+				"cell": "CellCollaborators"
 			}, {
 				"title": "Tasks Left",
 				"key": "tasks",
@@ -94,6 +106,18 @@ export default {
 				"align": "right",
 				"meta": {
 					"overdueWarning": true
+				}
+			},
+			{
+				"title": "",
+				"key": "more",
+				"cell": "CellDropdownButton",
+				"showSortIcon" : false,
+				"meta": {
+					"actions": [
+						{ title: "Edit", action: "handleClickEdit" },
+						{ title: "Delete", action: "handleClickDelete" }
+					]
 				}
 			}
 		];

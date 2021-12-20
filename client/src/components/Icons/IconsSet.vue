@@ -259,6 +259,13 @@
 				</g>
 			</symbol>
 
+			<!-- more with 3-dots -->
+			<symbol id="icon_more" viewBox="0 0 96 96">
+				<ellipse ry="7.642877" rx="7.642877" id="svg_3" cy="48.95318" cx="16.214446" fill-rule="evenodd" fill="#000"/>
+				<ellipse ry="7.642877" rx="7.642877" id="svg_5" cy="48.95318" cx="48.785836" fill-rule="evenodd" fill="#000"/>
+				<ellipse ry="7.642877" rx="7.642877" id="svg_6" cy="48.381753" cx="80.21437" fill-rule="evenodd" fill="#000"/>
+			</symbol>
+
 			<!-- role-admin -->
 			<symbol id="icon_role-admin" viewBox="0 0 96 96" fill="none">
  				<path fill="#2E304F" d="M3 25.5A22.5 22.5 0 0 1 25.5 3h45A22.5 22.5 0 0 1 93 25.5v45A22.5 22.5 0 0 1 70.5 93h-45A22.5 22.5 0 0 1 3 70.5v-45Z"/>
@@ -278,7 +285,6 @@
 				<path fill="#0EA472" d="M3 25.5A22.5 22.5 0 0 1 25.5 3h45A22.5 22.5 0 0 1 93 25.5v45A22.5 22.5 0 0 1 70.5 93h-45A22.5 22.5 0 0 1 3 70.5v-45Z"/>
 				<path fill="#fff" fill-rule="evenodd" d="m77.08 30.4-37.2 42.52L19 52.03l7.95-7.95 12.39 12.38L68.6 23l8.47 7.4Z" clip-rule="evenodd"/>
 			</symbol>
-
 
 		</defs>
 	</svg>

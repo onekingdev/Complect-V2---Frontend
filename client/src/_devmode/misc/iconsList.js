@@ -47,7 +47,8 @@ const icons = [
 	{ title: "Policy", value: "policy", icon: "policy" },
 	{ title: "Role (admin)", value: "role-admin", icon: "role-admin" },
 	{ title: "Role (trusted", value: "role-trusted", icon: "role-trusted" },
-	{ title: "Role (basic)", value: "role-basic", icon: "role-basic" }
+	{ title: "Role (basic)", value: "role-basic", icon: "role-basic" },
+	{ title: "3 dots", value: "more", icon: "more" }
 ]
 
 export { icons }

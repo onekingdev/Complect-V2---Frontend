@@ -17,7 +17,7 @@
 				th(v-for="(column, index) in columns" :key="index")
 					.cell.column-title(:class="[column.align]")
 						.title {{ column.title }}
-						c-button(v-if="showSortIcon" type="icon" iconR="sort" @click="sortDocuments(column.key)")
+						c-button(type="icon" iconR="sort" @click="sortDocuments(column.key)")
 		tbody(v-if="filteredDocuments.length")
 			tr(v-for="document in filteredDocuments" :key="document._id")
 				td(v-for="(column, index) in columns" :key="index")
@@ -148,7 +148,7 @@ export default {
 		border-bottom: 1px solid var(--c-border)
 		height: 4em
 		th, td
-			overflow: hidden
+			// overflow: hidden
 			text-overflow: ellipsis
 			white-space: nowrap
 	.cell
