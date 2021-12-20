@@ -11,8 +11,8 @@ password: `preview`
 ## Useful links:
 [Tasks Board](https://github.com/complectco/complect-2.0/projects/3)  
 [Wiki](https://github.com/complectco/complect-2.0/wiki)  
-[Mock-ups](https://github.com/complectco/complect-2.0/wiki)  
-[Legacy App](https://demo.complect.com/unauthorized)  
+[Mock-ups](https://www.figma.com/file/ZuxzZnGy8PR8bDR6dUts8u/Complect-Design-System?node-id=350%3A562)  
+[Legacy App](https://demo.complect.com)  
 
 ## Run Project:
 Run: `docker-compose up` in root directory, to start *Client*, *API*, *MongoDB* and *MongoDB Admin* services.
