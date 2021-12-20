@@ -9,7 +9,7 @@ login: `next`
 password: `preview`
 
 ## Run Project
-Run: `docker-compose up` to start *Client*, *API*, *MongoDB* and *MongoDB Admin* services.
+Run: `docker-compose up` in root directory, to start *Client*, *API*, *MongoDB* and *MongoDB Admin* services.
 
 
 ### Ports:
