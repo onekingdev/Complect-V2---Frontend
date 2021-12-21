@@ -29,6 +29,9 @@ export default {
 			name: "devInputsRadio",
 			title: "Radio"
 		}, {
+			name: "devInputsDropzone",
+			title: "Dropzone"
+		}, {
 			name: "devInputsRating",
 			title: "Rating"
 		}, {

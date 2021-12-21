@@ -16,17 +16,14 @@ documents-container(title="Internal Reviews")
 			| Rule 206(4)-7 under the Adviser Act requires that you conduct a review of your compliance program no less than annually. Your last completed internal review was on
 			a(href="/") 12/07/2021
 		c-table(v-bind="{columns, documents}" :showSortIcon="false")
-		c-dropzone-upload(:button="false" accept="image/*" :multiple="true" v-model="files" @update:modelValue="updateFile")
 </template>
 
 
 <script>
 import { reactive } from "vue";
 import cBanner from "~/components/Misc/cBanner.vue";
-import cDropzoneUpload from "~/components/Inputs/cDropzoneUpload.vue";
-
 export default {
-	"components": { cBanner, cDropzoneUpload },
+	"components": { cBanner },
 	setup () {
 		const handleClickEdit = id => console.debug( "Edit", id );
 		const handleClickDuplicate = id => console.debug( "Duplicate", id );
