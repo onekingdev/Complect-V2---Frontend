@@ -8,10 +8,9 @@ provider:
   region: "us-east-1"
   profile: "serverless-framework"
   lambdaHashingVersion: 20201221
+  stage: ${env:API_STAGE}
   apiGateway:
     shouldStartNameWithService: true
-
-  stage: ${env:API_STAGE}
   environment: 
     NODE_ENV: "dev"
 

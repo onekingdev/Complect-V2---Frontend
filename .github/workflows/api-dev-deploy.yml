@@ -22,17 +22,23 @@ jobs:
           cache: 'npm'
           cache-dependency-path: api/package-lock.json
       
-      - name: Install Serverless
+      - name: Install Serverless Framework
         run: npm i -g serverless@2.68.0
+      
+      - name: Serverless AWS authentication
+        run: sls config credentials --provider aws --key ${{ secrets.AWS_ACCESS_KEY_ID }} --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Install dependencies
         run: npm ci
+        
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Deploy
-        run: npm run deploy
-        env:
-          API_STAGE: dev
-          DB_URI: ${{ secrets.DEV_DB_URI }}
-          DB_NAME: ${{ secrets.DEV_DB_NAME }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+     - name: Deploy Lambda functions
+       run: npm run deploy
+       env:
+         API_STAGE: dev
+         DB_URI: ${{ secrets.DEV_DB_URI }}
+         DB_NAME: ${{ secrets.DEV_DB_NAME }}
+         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
