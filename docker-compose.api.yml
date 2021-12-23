@@ -1,26 +1,6 @@
 version: '3.9'
 services:
-    
-    # Client
-    complect-client:
-        container_name: complect-client
-        build:
-            context: ./client
-            dockerfile: Dockerfile
-        image: complect-client:1.0
-        ports:
-            - ${CLIENT_PORT}:5000
-        environment:
-            HOST: 0.0.0.0
-            VITE_API_URI: ${LOCAL_API_URI}
-        volumes:
-            - ./client:/home/app
-            - /home/app/node_modules
-        working_dir: /home/app
-        command: npm run dev
-        depends_on:
-            - complect-mongo
-    
+   
     # API
     complect-api:
         container_name: complect-api
@@ -40,7 +20,7 @@ services:
             - ./api/.aws:/root/.aws
             - /home/app/node_modules
         working_dir: /home/app
-        command: serverless offline start --allowCache
+        command: npm run dev
         depends_on:
             - complect-mongo
 

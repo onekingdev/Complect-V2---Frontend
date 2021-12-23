@@ -11,15 +11,34 @@ data:
         path: data/{collectionName}
         method: post
         cors: true
+        request:
+          parameters:
+            paths:
+              collectionName: true
     - http:
         path: data/{collectionName}/{documentId+}
         method: get
         cors: true
+        request:
+          parameters:
+            paths:
+              collectionName: true
+              documentId: false
     - http:
         path: data/{collectionName}/{documentId}
         method: put
         cors: true
+        request:
+          parameters:
+            paths:
+              collectionName: true
+              documentId: true
     - http:
         path: data/{collectionName}/{documentId+}
         method: delete
         cors: true
+        request:
+          parameters:
+            paths:
+              collectionName: true
+              documentId: false

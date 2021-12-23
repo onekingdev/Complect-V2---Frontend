@@ -1,5 +1,5 @@
 <template lang="pug">
-.bar.topbar(v-if="userProfile")
+.bar.topbar
 	router-link(:to="{name: 'Dashboard'}")
 		icon(name="logo")
 	.navigation
@@ -10,7 +10,7 @@
 		.buttons
 			c-button(title="Find an Expert" type="accent")
 			c-button(iconL="bell" type="transparent")
-	.user-block(@click="toggleUserDropDown()" ref="userDropDown" :class="{expanded: userDropDownExpanded}")
+	.user-block(v-if="userProfile" @click="toggleUserDropDown()" ref="userDropDown" :class="{expanded: userDropDownExpanded}")
 		c-avatar(:avatar="userProfile.avatar" :firstName="userProfile.firstName" :lastName="userProfile.lastName" size="small")
 		.name {{userProfile.firstName}} {{userProfile.lastName}}
 		icon(name="chevron-down")

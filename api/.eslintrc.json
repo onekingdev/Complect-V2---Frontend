@@ -165,7 +165,6 @@
 		"function-paren-newline": ["error", "never"],
 		// "id-denylist": ["error", "callback"],
 		"id-length": ["error", { "min": 3, "properties": "never" , "exceptions": ["a", "b", "c", "x", "y", "i", "l", "key", "id", "to"]}],
-		"id-match":["error", "^[^_]+$", { "ignoreDestructuring": true }],
 		"implicit-arrow-linebreak": ["error", "beside"],
 		"indent": ["error", "tab", { "SwitchCase": 1, "MemberExpression": 1 }],
 		"jsx-quotes": ["error", "prefer-double"],

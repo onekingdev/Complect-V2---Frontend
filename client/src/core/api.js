@@ -1,6 +1,7 @@
 const endpoint = ( collectionName, documentId ) => {
 	let base;
-	base = `http://localhost:5001/dev/data/${collectionName}`;
+	const API_URI = import.meta.env.VITE_API_URI;
+	base = `${API_URI}/data/${collectionName}`;
 	if ( documentId ) base += `/${documentId}`;
 	return base;
 };
