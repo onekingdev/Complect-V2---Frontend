@@ -34,11 +34,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-     - name: Deploy Lambda functions
-       run: npm run deploy
-       env:
-         API_STAGE: dev
-         DB_URI: ${{ secrets.DEV_DB_URI }}
-         DB_NAME: ${{ secrets.DEV_DB_NAME }}
-         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Deploy Lambda functions
+        run: npm run deploy
+        env:
+          API_STAGE: dev
+          DB_URI: ${{ secrets.DEV_DB_URI }}
+          DB_NAME: ${{ secrets.DEV_DB_NAME }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
