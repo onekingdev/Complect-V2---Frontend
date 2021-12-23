@@ -6,7 +6,6 @@ provider:
   memorySize: 128
   timeout: 3
   region: "us-east-1"
-  profile: "serverless-framework"
   lambdaHashingVersion: 20201221
   stage: ${env:API_STAGE}
   apiGateway:
