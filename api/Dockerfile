@@ -11,7 +11,7 @@ RUN unzip awscliv2.zip
 RUN ./aws/install
 
 # Install Serverless
-RUN npm i -g serverless
+RUN npm i -g serverless@2.68.0
 
 # Install Dependecies
 COPY package*.json ./
