@@ -1,7 +1,7 @@
-name: API Deploy (Dev)
+name: API Deploy (Public)
 on:
   push:
-    branches: [ dev ]
+    branches: [ public ]
     paths:
       - "api/**"
 defaults:
@@ -34,6 +34,6 @@ jobs:
       - name: Deploy Lambda functions
         run: npm run deploy
         env:
-          API_STAGE: dev
-          DB_URI: ${{ secrets.DEV_DB_URI }}
-          DB_NAME: ${{ secrets.DEV_DB_NAME }}
+          API_STAGE: v1
+          DB_URI: ${{ secrets.PROD_DB_URI }}
+          DB_NAME: ${{ secrets.PROD_DB_NAME }}
