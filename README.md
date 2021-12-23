@@ -21,17 +21,17 @@ password: `preview`
 
 
 ## Run Project:
-To start *Client*, *API*, *MongoDB* and *MongoDB Admin* services:
+To start complete project with *Client*, *API*, *MongoDB* and *MongoDB Admin* services, just run:
 ```sh
 docker-compose up
 ```
 
-To start only *Client*, and use cloud *API* and *MongoDB*:
+If you plan to work only with *Client App* and use cloud *API*, run:
 ```sh
 docker-compose -f docker-compose.client.yml up
 ```
 
-To start only *API*, *MongoDB* and *MongoDB Admin* services.
+To start only *API*, *MongoDB* and *MongoDB Admin* services, run:
 ```sh
 docker-compose -f docker-compose.api.yml up
 ```
