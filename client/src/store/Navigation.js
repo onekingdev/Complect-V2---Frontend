@@ -33,26 +33,32 @@ const sidebarNavigation = [
 				"view": "Risks"
 			}
 		]
-	}, {
-		"title": "Components",
-		"icon": "components",
-		"links": [
-			{
-				"title": "Inputs",
-				"view": "devInputsButtons"
-			}, {
-				"title": "Data",
-				"view": "devDataModel"
-			}, {
-				"title": "Table",
-				"view": "devTableGeneral"
-			}, {
-				"title": "Additional",
-				"view": "devAdditionalToast"
-			}
-		]
 	}
 ];
+
+
+const _devModeNavigation = {
+	"title": "Components",
+	"icon": "components",
+	"links": [
+		{
+			"title": "Inputs",
+			"view": "devInputsButtons"
+		}, {
+			"title": "Data",
+			"view": "devDataModel"
+		}, {
+			"title": "Table",
+			"view": "devTableGeneral"
+		}, {
+			"title": "Additional",
+			"view": "devAdditionalToast"
+		}
+	]
+};
+
+// enable Components Navigation section in sidebar menu
+if ( import.meta.env.VITE_STAGE === "dev" ) sidebarNavigation.push( _devModeNavigation );
 
 export default function useNavigation () {
 	return {

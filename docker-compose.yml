@@ -13,6 +13,7 @@ services:
         environment:
             HOST: 0.0.0.0
             VITE_API_URI: ${LOCAL_API_URI}
+            VITE_STAGE: 'dev'
         volumes:
             - ./client:/home/app
             - /home/app/node_modules
