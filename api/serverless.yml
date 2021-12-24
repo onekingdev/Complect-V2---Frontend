@@ -12,6 +12,8 @@ provider:
     shouldStartNameWithService: true
   environment: 
     NODE_ENV: "dev"
+    DB_URI: ${env:DB_URI}
+    DB_NAME: ${env:DB_NAME}
 
 functions:
   - "${file(endpoints/data.yml)}"

@@ -32,7 +32,7 @@ jobs:
         run: npm ci
 
       - name: Deploy Lambda functions
-        run: npm run deploy
+        run: sls deploy
         env:
           API_STAGE: dev
           DB_URI: ${{ secrets.DEV_DB_URI }}
