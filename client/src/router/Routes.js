@@ -59,6 +59,8 @@ const SettingsBilling = () => import( "~/pages/Settings/SettingsBilling.vue" );
 
 
 const _ProfileEntry = () => import( "~/pages/Profile/_ProfileEntry.vue" );
+
+
 import { devRoutes } from "~/_devmode/Routes.js";
 
 // ––––––––––––––– Routes ––––––––––––––– //
@@ -79,6 +81,7 @@ const routes = [
 			} else next({ "name": "AuthSignIn" });
 		},
 		"children": [
+			...devRoutes,
 			{
 				"path": "dashboard",
 				"name": "Dashboard",
@@ -353,8 +356,6 @@ const routes = [
 	}
 ];
 
-
-if ( import.meta.env.VITE_STAGE === "dev" ) routes[1].children.push( ...devRoutes );
 
 const router = createRouter({
 	"history": createWebHistory(),

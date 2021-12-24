@@ -3,5 +3,5 @@ api/.serverless
 client/dist
 mongo/db
 node_modules
-Icon?
+/Icon?
 .DS_Store
