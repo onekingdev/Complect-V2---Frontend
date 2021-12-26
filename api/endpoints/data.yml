@@ -1,5 +1,5 @@
 data:
-  name: complect-api-data
+  name: complect-api-${opt:stage, "dev"}-data
   handler: src/functions/data.router
   description: Basic Data API endpoints
   tags:

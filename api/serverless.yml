@@ -1,15 +1,20 @@
 service: "complect-api"
 useDotenv: true
+
 provider:
   name: "aws"
   runtime: "nodejs14.x"
   memorySize: 128
   timeout: 3
   region: "us-east-1"
+  stage: ${opt:stage, "dev"}
   lambdaHashingVersion: 20201221
-  stage: ${env:API_STAGE}
+  versionFunctions: false
   apiGateway:
     shouldStartNameWithService: true
+  httpApi:
+    disableDefaultEndpoint: true
+    cors: true
   environment: 
     NODE_ENV: "dev"
     DB_URI: ${env:DB_URI}
@@ -37,7 +42,6 @@ plugins:
   - "serverless-iam-roles-per-function"
   - "serverless-prune-plugin"
   - "serverless-domain-manager"
-
 
 custom:
   serverless-offline:

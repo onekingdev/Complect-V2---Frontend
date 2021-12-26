@@ -3,6 +3,6 @@ RUN apk update && apk upgrade
 LABEL maintainer="hello@gololobov.dev"
 
 WORKDIR /home/app
-RUN npm i -g serverless@2.68.0
+RUN npm i -g serverless@2.69.1
 COPY package*.json ./
-RUN npm ci
+RUN npm i

@@ -4,4 +4,4 @@ LABEL maintainer="hello@gololobov.dev"
 
 WORKDIR /home/app
 COPY package*.json ./
-RUN npm ci
+RUN npm i
