@@ -9,6 +9,7 @@ export default defineConfig({
 		VitePWA({
 			base: "/",
 			includeAssets: ["img/**/*.*", "fonts/**/*.*"],
+			useCredentials: true,
 			manifest: {
 				"name": "Complect App",
 				"short_name": "Complect",
