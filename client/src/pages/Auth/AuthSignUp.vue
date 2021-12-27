@@ -11,14 +11,14 @@ c-card
 			h4.heading.medium Create your FREE account
 			div.signup-form
 				div.field.grid-6
-					c-field.col-3(label="First Name:" v-model="user.firstName" required)
-					c-field.col-3(label="Last Name:" v-model="user.lastName" required)
+					c-field.col-3(label="First Name" v-model="user.firstName" required)
+					c-field.col-3(label="Last Name" v-model="user.lastName" required)
 				div.field
-					c-field(label="Email:" v-model="user.email" required)
+					c-field(label="Email" v-model="user.email" required)
 				div.field
-					c-field(label="Password:" v-model="user.password" required)
+					c-field(label="Password" v-model="user.password" required)
 				div.field
-					c-field(label="Repeat Password:" v-model="password2" required)
+					c-field(label="Repeat Password" v-model="password2" required)
 			div.terms
 				| By signing up, I accept the
 				a(href="/terms-of-use") Complect Terms of Use

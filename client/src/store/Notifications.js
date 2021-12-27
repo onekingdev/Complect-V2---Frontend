@@ -6,10 +6,12 @@ const notifications = reactive([]);
 export default function useUser () {
 	const createNotification = options => {
 		notifications.unshift({
-			"id": randomMongoId(),
+			"id": options.id || randomMongoId(),
 			"type": options.type || "info",
 			"title": options.title || options.type || "info",
-			"message": options.message || ""
+			"message": options.message || "",
+			"autoClose": options.autoClose,
+			"actions": options.actions
 		});
 	};
 

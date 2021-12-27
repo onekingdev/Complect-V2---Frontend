@@ -67,8 +67,9 @@
 
 			<!-- sort -->
 			<symbol id="icon_sort" viewBox="0 0 96 96">
-				<path fill-rule="evenodd" d="M51.03 91.6a4.8 4.8 0 0 1-6.8 0L15.41 62.76a4.8 4.8 0 0 1 6.8-6.8L47.62 81.4l25.43-25.43a4.8 4.8 0 1 1 6.8 6.8L51.02 91.59ZM44.23 4.4a4.8 4.8 0 0 1 6.8 0l28.82 28.83a4.8 4.8 0 1 1-6.8 6.8L47.64 14.6 22.2 40.03a4.8 4.8 0 0 1-6.8-6.8L44.24 4.41Z" clip-rule="evenodd"/>
+				<path d="M75 39H21L48 3l27 36ZM21 57h54L48 93 21 57Z"/>
 			</symbol>
+
 
 			<!-- login -->
 			<symbol id="icon_login" viewBox="0 0 96 96">

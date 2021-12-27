@@ -1,18 +1,16 @@
 <template lang="pug">
 c-card(title="Table" type="flex-column")
 	template(#header-controls)
+		c-select(:data="columnsSet" v-model="visibleColumns" searchable multiple)
 		c-button(iconL="refresh" @click="generateDocuments()" type="transparent")
-		//- c-dropdown(title="Columns")
-			c-toggle(v-for="column in options.columns" :title="column.title" :value="column.key" v-model="visibleColumns")
-		
 	template(#content)
 		c-table(v-bind="{columns, documents, filters}" searchable)
 </template>
 
 
 <script>
-import { ref, onMounted } from "vue";
-import cDropdown from "~/components/Inputs/cDropdown.vue";
+import { ref, computed, onMounted } from "vue";
+import cSelect from "~/components/Inputs/cSelect.vue";
 import { randomMongoId, randomBool, randomNumber, randomElement } from "~/_devmode/generator/components/atoms/utils.js";
 import { randomTitles } from "~/_devmode/generator/components/molecules/randomTexts.js";
 import { randomUsers } from "~/_devmode/generator/components/organisms/randomUsers.js";
@@ -20,12 +18,21 @@ import { randomDatesInRange } from "~/_devmode/generator/components/molecules/ra
 
 
 export default {
-	components: { cDropdown },
+	components: { cSelect },
 	setup() {
 		const documents = ref([])
+		const columnsSet = [
+			{ title: "Title", value: "title" },
+			{ title: "Collaborators", value: "collaborators" },
+			{ title: "Tasks", value: "tasks" },
+			{ title: "Cost", value: "fixedBudget" },
+			{ title: "Status", value: "status" },
+			{ title: "Start Date", value: "startsAt" },
+			{ title: "End Date", value: "endsAt" },
+			{ title: "Dropdown", value: "dropdown" },
+		]
+		const visibleColumns = ref(["title", "status", "fixedBudget", "startsAt", "dropdown"])
 
-		const visibleColumns = ref([])
-		const toggleColumnVisibility = (key, state) => visibleColumns.value[key] = state
 		
 		const handleClickEdit = id => console.debug( "Edit", id );
 		const handleClickDuplicate = id => console.debug( "Duplicate", id );
@@ -57,7 +64,7 @@ export default {
 
 		onMounted(() => generateDocuments())
 
-		const columns = [
+		const allColumns = [
 			{
 				"title": "Name",
 				"key": "title",
@@ -100,6 +107,7 @@ export default {
 				}
 			},
 			{
+				"key": "dropdown",
 				"unsortable": true,
 				"cell": "CellDropdown",
 				"meta": {
@@ -111,6 +119,10 @@ export default {
 				}
 			}
 		];
+
+		const columns = computed(() => {
+			return allColumns.filter(column => visibleColumns.value.includes(column.key))
+		})
 
 		const filters = [
 			{
@@ -133,12 +145,19 @@ export default {
 			}
 		];
 
-		return { visibleColumns, toggleColumnVisibility, columns, filters, documents, generateDocuments }
+		return { columnsSet, visibleColumns, columns, filters, documents, generateDocuments }
 	}
 };
 </script>
 
 
 <style lang="stylus" scoped>
-
+.c-card
+	width: 100%
+	overflow: hidden
+// :deep(.c-table)
+// 	overflow: scroll
+.c-select
+	max-width: 30em
+	margin-left: 2em
 </style>

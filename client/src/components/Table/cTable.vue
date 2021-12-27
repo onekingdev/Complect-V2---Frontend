@@ -8,27 +8,30 @@
 			slot(name="controls")
 		.actions
 			slot(name="actions")
+	.container
+		table
+			colgroup
+				col(v-for="(column, index) in columns" :class="[column.cell]" :key="index")
+			thead
+				tr
+					th(v-for="(column, index) in columns" :key="index")
+						.cell.column-title(:class="[column.align]")
+							.title(v-if="column.title") {{ column.title }}
+							c-button(v-if="!column.unsortable" type="icon" iconR="sort" @click="sortDocuments(column.key)")
+			tbody(v-if="filteredDocuments.length")
+				tr(v-for="document in filteredDocuments" :key="document._id")
+					td(v-for="(column, index) in columns" :key="index")
+						//- temp suspense solution
+						Suspense
+							component.cell(
+								:is="getTableCell(column.cell)"
+								:class="[column.align]"
+								:key="column.key"
+								:meta="column.meta"
+								:id="document._id"
+								:data="document[column.key]")
 
-	table
-		colgroup
-			col(v-for="(column, index) in columns" :class="[column.cell]" :key="index")
-		thead
-			tr
-				th(v-for="(column, index) in columns" :key="index")
-					.cell.column-title(:class="[column.align]")
-						.title(v-if="column.title") {{ column.title }}
-						c-button(v-if="!column.unsortable" type="icon" iconR="sort" @click="sortDocuments(column.key)")
-		tbody(v-if="filteredDocuments.length")
-			tr(v-for="document in filteredDocuments" :key="document._id")
-				td(v-for="(column, index) in columns" :key="index")
-					component.cell(
-						:is="getTableCell(column.cell)"
-						:class="[column.align]"
-						:meta="column.meta"
-						:id="document._id"
-						:data="document[column.key]")
-
-	icon(v-if="!filteredDocuments.length" name="empty-state")
+		icon(v-if="!filteredDocuments.length" name="empty-state")
 </template>
 
 
@@ -135,7 +138,8 @@ export default {
 			align-items: center
 			gap: 1em
 
-
+.c-table .container
+	overflow-x: scroll
 .c-table table
 	font-size: 0.85em
 	width: 100%
@@ -143,27 +147,30 @@ export default {
 		border-bottom: 1px solid var(--c-border)
 		height: 4em
 		th, td
-			// overflow: hidden
-			text-overflow: ellipsis
 			white-space: nowrap
 	.cell
 		display: flex
 		justify-content: flex-start
 		align-items: center
 		line-height: 1.2
-		// overflow: hidden
-		// text-overflow: ellipsis
-		// white-space: nowrap
 		padding: 0.7em 1em
 		&.center
 			justify-content: center
 		&.right
 			justify-content: flex-end
+			margin-left: auto
 		&.column-title
-			gap: 0.5em
+			gap: 0.2em
 			color: var(--c-dimmed)
 			font-weight: 400
 			user-select: none
+			:deep(svg.icon-sort)
+				fill: var(--c-grey-500)
+				margin-right: -0.5em
+			.c-button:hover
+				:deep(svg.icon-sort)
+					fill: #444
+
 
 svg.icon-empty-state
 	width: 8em

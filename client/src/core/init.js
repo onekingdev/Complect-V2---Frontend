@@ -1,7 +1,6 @@
 import { useRouter } from "vue-router";
 import { restoreAppState } from "~/store/appState.js";
-// import { registerSW } from "virtual:pwa-register";
-// const appVersion = 1;
+import { registerSW } from "virtual:pwa-register";
 
 const localStorageTest = () => {
 	const ls = window.localStorage;
@@ -13,16 +12,12 @@ const localStorageTest = () => {
 	ls.removeItem( x );
 };
 
-const indexedDBTest = () => {
-	if ( !window.indexedDB ) throw new Error( "IndexedDB not detected" );
-};
-
 export default function useInit () {
-	const systemChecks = () => {
+	const systemChecks = async () => {
 		try {
 			localStorageTest();
-			indexedDBTest();
-			restoreAppState();
+			await restoreAppState();
+			await registerSW();
 		} catch ( error ) {
 			const router = useRouter();
 			router.push({

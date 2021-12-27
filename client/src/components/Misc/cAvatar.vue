@@ -1,6 +1,6 @@
 <template lang="pug">
 .c-avatar(:class="[shape, size]")
-	img.c-avatar-photo(v-show="loaded" :src="avatar" @load="onImgLoad()")
+	img.c-avatar-photo(v-show="loaded" :src="avatar" loading="lazy" :alt="`${firstName} ${lastName}`" @load="onImgLoad()")
 	.c-avatar-initials(v-show="!loaded") {{initials}}
 </template>
 

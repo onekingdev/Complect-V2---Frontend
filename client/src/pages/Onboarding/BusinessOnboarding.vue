@@ -9,8 +9,7 @@ div.onboarding
             icon.icon(name="info" size="small")
           div.sub-heading The CRD number will be used to auto-populate information about your business
           div.crdOptions
-            c-radio(title="No" value="no" v-model="onboardingForm.stepOne.hasCrdNumber")
-            c-radio(title="Yes" value="yes" v-model="onboardingForm.stepOne.hasCrdNumber")
+            c-radios(id="crd-number" :data="crdNumberOptions" v-model="onboardingForm.stepOne.hasCrdNumber")
           div.crdInput(v-if="showCrdInput")
             p What is your CRD number?
             c-field.crd-number(type="text" placeholder="Enter your CRD number")
@@ -49,13 +48,13 @@ div.onboarding
 <script>
 import { reactive, computed } from "@vue/reactivity";
 import cFormWizard from "~/components/FormWizard/cFormWizard.vue";
-import cRadio from "~/components/Inputs/cRadio.vue";
+import cRadios from "~/components/Inputs/cRadios.vue";
 import PlanCard from "~/pages/Onboarding/components/PlanCard.vue";
 import cSwitcher from "~/components/Inputs/cSwitcher.vue";
 export default {
 	"components": {
 		cFormWizard,
-		cRadio,
+		cRadios,
 		PlanCard,
 		cSwitcher
 	},
@@ -65,11 +64,13 @@ export default {
 		];
 
 		const onboardingForm = reactive({
-			"stepOne": { "hasCrdNumber": "" },
+			"stepOne": { "hasCrdNumber": false },
 			"stepTwo": {},
 			"stepThree": { "plan": "annually" }
 		});
-
+		const crdNumberOptions = [
+			{ "title": "No", "value": false }, { "title": "Yes", "value": true }
+		];
 		const showCrdInput = computed( () => onboardingForm.stepOne.hasCrdNumber === "yes" );
 		const monthPlanChoice = computed( () => onboardingForm.stepThree.plan === "monthly" );
 		const yearlyPlanChoice = computed( () => onboardingForm.stepThree.plan === "annually" );
@@ -142,6 +143,7 @@ export default {
 			onboardingForm,
 			wizardSteps,
 			optionsPlan,
+			crdNumberOptions,
 			showCrdInput,
 			monthPlanChoice,
 			yearlyPlanChoice,

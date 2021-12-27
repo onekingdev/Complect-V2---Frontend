@@ -2,9 +2,12 @@
 .c-toast(:class="type")
 	icon.status(:name="type")
 	.content
-		.title {{ title || type }}
-		.message(v-if="message") {{ message }}
-	c-button(type="icon" iconL="close" @click="deleteNotification(id)")
+		.text-data
+			.title {{ title || type }}
+			.message(v-if="message") {{ message }}
+		c-button(type="icon" iconL="close" @click="deleteNotification(id)")
+		.actions(v-if="actions")
+			c-button(v-for="action in actions" :title="action.title" :type="action.type" @click="action.method")
 </template>
 
 
@@ -36,6 +39,11 @@ export default {
 		"duration": {
 			"type": Number,
 			"default": 5
+		},
+		"actions": {
+			"type": Array,
+			"default": () => [],
+			"required": false
 		}
 	},
 	setup ( props ) {
@@ -84,15 +92,26 @@ export default {
 			fill: #fff !important
 	.content
 		flex: 1 1 auto
-		.title
-			font-weight: bold
-			text-transform: capitalize
-			line-height: 1.3
-		.message
-			font-size: 0.9em
-			line-height: 1.4
-		.title + .message
-			margin-top: 0.2em
+		display: flex
+		// flex-wrap: wrap
+		.text-data
+			flex: 1 1 auto
+			.title
+				font-weight: bold
+				text-transform: capitalize
+				line-height: 1.3
+			.message
+				font-size: 0.9em
+				line-height: 1.4
+			.title + .message
+				margin-top: 0.2em
+		.actions
+			flex: 1
+			display: flex
+			gap: 1em
+			justify-content: flex-end
+			font-size: 0.8em
+			margin-top: 1em
 	&.info
 		border-color: var(--c-info)
 	&.success
