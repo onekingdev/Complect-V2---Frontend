@@ -124,6 +124,7 @@ export default {
 <style lang="stylus" scoped>
 .c-table
 	width: 100%
+	min-width: 0
 	.controls
 		display: flex
 		align-items: center

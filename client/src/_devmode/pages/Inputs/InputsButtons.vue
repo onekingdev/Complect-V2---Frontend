@@ -1,10 +1,10 @@
 <template lang="pug">
-c-card(title="Constructor" :maxWidth="700")
+c-card(title="Constructor")
 	template(#content)
 		component-constructor
 			template(#controls)
-				c-switcher.col-full(id="button-types" label="Type" :options="options.types" v-model="selectedOptions.type" fullwidth)
-				c-switcher.col-full(id="button-sizes" label="Size" :options="options.sizes" v-model="selectedOptions.size" fullwidth)
+				c-switcher(id="button-types" label="Type" :options="options.types" v-model="selectedOptions.type" fullwidth)
+				c-switcher(id="button-sizes" label="Size" :options="options.sizes" v-model="selectedOptions.size" fullwidth)
 				c-field.col-3(type="text" label="Title" v-model="selectedOptions.title")
 				c-field.col-3(type="text" label="Second Title" v-model="selectedOptions.secondTitle")
 			template(#code)
@@ -15,7 +15,7 @@ c-card(title="Constructor" :maxWidth="700")
 					c-button(v-bind="selectedOptions" :class="state.class")
 			
 
-c-card.buttons-container(title="Collection" :maxWidth="700")
+c-card.buttons-container(title="Collection")
 	template(#content)
 		c-button(v-for="button in buttons" v-bind="button")
 </template>

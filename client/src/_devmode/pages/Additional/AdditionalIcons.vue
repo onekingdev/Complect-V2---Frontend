@@ -5,7 +5,7 @@ c-card(title="Icons")
 	template(#content)
 		component-constructor
 			template(#controls)
-				c-switcher.col-full(id="icon-sizes" label="Size" :options="sizes" v-model="selectedSize" fullwidth)
+				c-switcher(id="icon-sizes" label="Size" :options="sizes" v-model="selectedSize" fullwidth)
 			template(#code)
 				code {{code}}
 			template(#preview)

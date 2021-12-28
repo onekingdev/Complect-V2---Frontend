@@ -3,15 +3,15 @@ c-card(title="Constructor")
 	template(v-if="userProfile" #content)
 		component-constructor
 			template(#controls)
-				c-switcher.col-full(id="avatar-sizes" label="Size" :options="options.sizes" v-model="selectedOptions.size" fullwidth)
-				c-switcher.col-full(id="avatar-shapes" label="Shape" :options="options.shapes" v-model="selectedOptions.shape" fullwidth)
+				c-switcher(id="avatar-sizes" label="Size" :options="options.sizes" v-model="selectedOptions.size" fullwidth)
+				c-switcher(id="avatar-shapes" label="Shape" :options="options.shapes" v-model="selectedOptions.shape" fullwidth)
 			template(#code)
 				code {{code}}
 			template(#preview)
 				c-avatar(:size="selectedOptions.size" :shape="selectedOptions.shape" :avatar="userProfile.avatar" :firstName="userProfile.firstName" :lastName="userProfile.lastName")
 				c-avatar(:size="selectedOptions.size" :shape="selectedOptions.shape" :firstName="userProfile.firstName" :lastName="userProfile.lastName")
 			
-c-card(title="Collection" type="grid-6")
+c-card(title="Collection")
 	template(#header-controls)
 		c-button(iconL="refresh" type="transparent" @click="refreshUser()")
 	template(v-if="userProfile" #content)

@@ -2,6 +2,7 @@ api/.aws
 api/.serverless
 client/dist
 mongo/db
+coverage/
 node_modules
 /Icon?
 .DS_Store

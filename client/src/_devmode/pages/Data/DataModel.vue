@@ -1,5 +1,5 @@
 <template lang="pug">
-c-card(:maxWidth="700")
+c-card
 	template(#header-controls)
 		c-field(label="First name" v-model="form.firstName" fullwidth required)
 		c-field(label="Last name" v-model="form.lastName" fullwidth required)

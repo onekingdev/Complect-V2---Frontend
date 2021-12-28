@@ -3,7 +3,8 @@ document-container(section="Components" title="Additional")
 	template(#tabs)
 		router-link(v-for="(tab, index) in tabs" :to="{name: tab.name}" :key="index") {{tab.title}}
 	template(#content)
-		router-view
+		.dev-mw
+			router-view
 </template>
 
 

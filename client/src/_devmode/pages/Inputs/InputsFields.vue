@@ -1,12 +1,12 @@
 <template lang="pug">
-c-card(title="Constructor" :maxWidth="700")
+c-card(title="Constructor")
 	template(#content)
 		component-constructor
 			template(#controls)
-				c-switcher.col-full(id="field-types" label="Type" :options="options.types" v-model="selectedOptions.type" fullwidth)
-				c-switcher.col-full(id="field-sizes" label="Size" :options="options.sizes" v-model="selectedOptions.size" fullwidth)
-				c-field.col-full(type="text" label="Label" v-model="selectedOptions.label")
-				c-field.col-6(type="text" label="Placeholder" v-model="selectedOptions.placeholder")
+				c-switcher(id="field-types" label="Type" :options="options.types" v-model="selectedOptions.type" fullwidth)
+				c-switcher(id="field-sizes" label="Size" :options="options.sizes" v-model="selectedOptions.size" fullwidth)
+				c-field(type="text" label="Label" v-model="selectedOptions.label")
+				c-field(type="text" label="Placeholder" v-model="selectedOptions.placeholder")
 			template(#code)
 				code {{code}}
 				code {{inputValues[selectedOptions.type]}}
@@ -18,7 +18,7 @@ c-card(title="Constructor" :maxWidth="700")
 
 
 <script>
-import { ref, reactive, computed } from "vue"
+import { reactive, computed } from "vue"
 import cSwitcher from "~/components/Inputs/cSwitcher.vue"
 import cCheckers from "~/components/Inputs/cCheckers.vue"
 import cSelect from "~/components/Inputs/cSelect.vue"

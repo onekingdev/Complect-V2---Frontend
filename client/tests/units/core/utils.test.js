@@ -1,5 +1,5 @@
 /* global describe, test, expect */
-import { randomNumber, randomMongoId, sortArrayByKey, formatDate } from "../../src/core/utils.js";
+import { randomNumber, randomMongoId, sortArrayByKey, formatDate } from "~/core/utils.js";
 
 
 describe( "randomNumber():", () => {
@@ -30,13 +30,10 @@ describe( "sortArrayByKey():", () => {
 		{ name: "Bob", age: 40, skills: ["skill1", "skill2"] },
 		{ name: "Bill", age: 30, skills: ["skill1", "skill2", "skill3"] }
 	]
-	// Empty Array
+	
+	// Empty
 	const result = sortArrayByKey( [], "name", true);
-	test( "should be empty", () => {
-		console.log(result)
-		expect( result ).toBeNil()
-	});
-
+	test( "should be empty", () => expect( result ).toBeNil());
 	// String Type
 	test( "should be same size (string type)", () => {
 		sortArrayByKey( data, "name", true);
@@ -56,7 +53,6 @@ describe( "sortArrayByKey():", () => {
 		expect( data[2].name).toMatch("Bill");
 		expect( data[3].name).toMatch("Alice");
 	});
-
 	// Number Type
 	test( "should be same size (number type)", () => {
 		sortArrayByKey( data, "age", true);
@@ -76,7 +72,6 @@ describe( "sortArrayByKey():", () => {
 		expect( data[2].age).toBeNumber(32);
 		expect( data[3].age).toBeNumber(30);
 	});
-
 	// Object Type
 	test( "should be same size (object type)", () => {
 		sortArrayByKey( data, "skills", true);

@@ -1,9 +1,9 @@
 <template lang="pug">
-.c-card(:style="{maxWidth: maxWidth+'px'}")
+.c-card
 	.c-card-header(v-if="title || $slots['header-controls']")
 		.card-title(v-if="title") {{ $locale(title) }}
 		slot(v-if="$slots['header-controls']" name="header-controls")
-	.c-card-content(v-if="$slots.content" :class="[type]")
+	.c-card-content.grid-6(v-if="$slots.content")
 		slot(name="content")
 	.c-card-footer(v-if="$slots.footer")
 		slot(name="footer")
@@ -17,18 +17,7 @@ export default {
 			"type": String,
 			"default": "",
 			"required": false
-		},
-		"type": {
-			"type": String,
-			"default": "",
-			"required": false
-		},
-		"maxWidth": {
-			"type": Number,
-			"default": null,
-			"required": false
-		},
-		"devmode": Boolean
+		}
 	}
 };
 </script>
@@ -52,19 +41,8 @@ export default {
 		.card-title
 			font-size: 1.2em
 			margin-right: auto
-
 	.c-card-content
 		padding: 1.5em
-		&.flex-column
-			display: flex
-			flex-direction: column
-			gap: 1em
-			align-items: center
-		&.grid-6
-			display: grid
-			grid-template-columns: repeat(6, auto)
-			align-items: flex-end
-			gap: 1em
 
 	.c-card-footer
 		display: flex
@@ -72,5 +50,4 @@ export default {
 		justify-content: flex-end
 		border-top: 1px solid var(--c-border)
 		padding: 1em
-
 </style>

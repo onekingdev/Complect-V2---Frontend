@@ -1,10 +1,10 @@
 <template lang="pug">
-c-card(title="Constructor" :maxWidth="700")
+c-card(title="Constructor")
 	template(#content)
 		component-constructor
 			template(#controls)
-				c-switcher.col-full(id="checkbox-types" label="Type" :options="options.types" v-model="selectedOptions.type" fullwidth)
-				c-field.col-full(type="text" label="Label" v-model="selectedOptions.label")
+				c-switcher(id="checkbox-types" label="Type" :options="options.types" v-model="selectedOptions.type" fullwidth)
+				c-field(type="text" label="Label" v-model="selectedOptions.label")
 			template(#preview)
 				.variants
 					.variant
@@ -19,7 +19,7 @@ c-card(title="Constructor" :maxWidth="700")
 						c-checkbox(v-for="(checkbox, index) in arrayCheckboxes" :key="index" :label="checkbox.label" :type="selectedOptions.type" :value="checkbox.value" v-model="checkedValues" multiple)
 						code.value checkedValues: {{checkedValues}}
 
-c-card.buttons-container(title="Collection" :maxWidth="700")
+c-card.buttons-container(title="Collection")
 	template(#content)
 		.collection
 			c-checkbox(label="Checkbox" v-model="checkedValue")

@@ -1,7 +1,7 @@
 <template lang="pug">
 .c-banner(:class="type")
 	.c-banner-content
-		.title {{ title }}
+		.title(v-if="title") {{ title }}
 		.message {{ message }}
 	.c-banner-controls
 		slot(name="controls")

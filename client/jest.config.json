@@ -1,11 +1,16 @@
 {
 	"collectCoverage": true,
-	"moduleFileExtensions": [
-		"js"
-	],
+	"testEnvironment": "jsdom",
+	"verbose": false,
+	"bail": 1,
+	"moduleFileExtensions": ["js", "vue"],
+	"moduleNameMapper": {
+		"^~/(.*)$": "<rootDir>/src/$1"
+	},
 	"setupFilesAfterEnv": ["jest-extended/all"],
 	"transform": {
-		"^.+\\.js$": "babel-jest"
+		"^.+\\.js$": "babel-jest",
+		"^.+\\.vue$": "vue3-jest"
 	},
 	"testRegex": "((\\.|/*.)(test))\\.js?$"
 }

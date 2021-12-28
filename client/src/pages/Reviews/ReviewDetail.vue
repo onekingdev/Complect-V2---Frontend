@@ -18,7 +18,7 @@ div.grid-6
 				hr
 				h3.heading Material Business Changes
 				p.paragraph List any changes to your business processes, key vendors, and/or key employees during the Review Period
-				c-field.col-full(label="" type="textarea" cols="50")
+				c-field(label="" type="textarea" cols="50")
 				hr
 				h3.heading Material Regulatory Changes
 				p.paragraph List any regulatory changes that impacted you during the Review Period and how the business responded.

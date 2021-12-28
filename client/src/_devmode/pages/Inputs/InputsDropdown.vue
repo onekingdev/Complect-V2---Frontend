@@ -1,5 +1,5 @@
 <template lang="pug">
-c-card(title="Constructor" :maxWidth="700")
+c-card(title="Constructor")
 	template(#content)
 		component-constructor
 			template(#preview)

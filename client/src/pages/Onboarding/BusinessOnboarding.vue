@@ -15,38 +15,38 @@ div.onboarding
             c-field.crd-number(type="text" placeholder="Enter your CRD number")
         template(#step2)
           div.heading Tell us more about your business
-          div.field.company-name.full-width
+          div.field.company-name
             c-field(label="Company Name" type="text" placeholder="Company Name" required)
-          div.field.grid-6.full-width
+          div.field.grid-6
             c-field.col-3(label="AUM" type="text" placeholder="AUM")
             c-field.col-3(label="Number of Accounts" type="text" placeholder="Number of Accounts")
-          div.field.grid-6.full-width
+          div.field.grid-6
             c-field.col-3(label="Industry" type="text" placeholder="Industry" required)
             c-field.col-3(label="Sub-Industry" type="text" placeholder="Sub-Industry")
-          div.field.grid-6.full-width
+          div.field.grid-6
             c-field.col-3(label="Jurisdiction" type="text" placeholder="Jurisdiction" required)
             c-field.col-3(label="Time Zone" type="text" placeholder="Time Zone" required)
-          div.field.grid-6.full-width
+          div.field.grid-6
             c-field.col-3(label="Phone Number" type="text" placeholder="Phone Number")
             c-field.col-3(label="Company Website" type="text" placeholder="Company Website")
           div.divider
-          div.field.grid-6.full-width
+          div.field.grid-6
             c-field.col-5(label="Business Address" type="text" placeholder="Business Address" required)
             c-field.col-1(label="Apt/Unit:" type="text" placeholder="Apt/Unit")
-          div.field.grid-6.full-width
+          div.field.grid-6
             c-field.col-2(label="City" type="text" placeholder="City" required)
             c-field.col-2(label="State" type="text" placeholder="State" required)
             c-field.col-2(label="Zip" type="text" placeholder="Zip" required)
         template(#step3)
           h3.heading.big Choose your plan
           div.switchPlan
-            c-switcher.col-full(id="button-types" :options="optionsPlan.types" v-model="onboardingForm.stepThree.plan" type="primary" fullwidth)
-          div.plans.full-width
+            c-switcher(id="button-types" :options="optionsPlan.types" v-model="onboardingForm.stepThree.plan" type="primary" fullwidth)
+          div.plans
             div.plans-item(v-for="(item, index) in businessPlans" :key="index" )
               plan-card(:plan="item" :type="item.colorType")
 </template>
 <script>
-import { reactive, computed } from "@vue/reactivity";
+import { reactive, computed } from "vue";
 import cFormWizard from "~/components/FormWizard/cFormWizard.vue";
 import cRadios from "~/components/Inputs/cRadios.vue";
 import PlanCard from "~/pages/Onboarding/components/PlanCard.vue";

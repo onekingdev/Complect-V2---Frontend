@@ -1,7 +1,7 @@
 <template lang="pug">
 c-modal(:title="title" :modelValue="isModalVisible" @update:modelValue="update")
 	template(#content)
-		c-field.col-full(label="Risk Name" v-model="newRisk.name" required)
+		c-field(label="Risk Name" v-model="newRisk.name" required)
 		label Risk Level
 	template(#footer)
 		c-button(title="Create" type="primary" @click="submit()")

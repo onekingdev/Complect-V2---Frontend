@@ -97,14 +97,6 @@ const routes = [
 				}]
 			},
 			{
-				"path": "/business/onboarding",
-				"component": BusinessOnBoarding,
-				"meta": {
-					"title": "BusinessOnBoarding",
-					"sidebar": false
-				}
-			},
-			{
 				"path": "projects",
 				"component": _ProjectsEntry,
 				"meta": { "title": "Projects" },
@@ -322,21 +314,32 @@ const routes = [
 					"name": "AuthSignUp",
 					"component": AuthSignUp,
 					"meta": { "title": "Sign Up" }
-				}, {
+				},
+				{
 					"path": "sign-in",
 					"name": "AuthSignIn",
 					"component": AuthSignIn,
 					"meta": { "title": "Sign In" }
-				}, {
+				},
+				{
 					"path": "verification",
 					"name": "AuthVerification",
 					"component": AuthVerification,
 					"meta": { "title": "Verification" }
-				}, {
+				},
+				{
 					"path": "reset-password",
 					"name": "AuthResetPassword",
 					"component": AuthResetPassword,
 					"meta": { "title": "Reset Password" }
+				},
+				{
+					"path": "/business/onboarding",
+					"component": BusinessOnBoarding,
+					"meta": {
+						"title": "BusinessOnBoarding",
+						"sidebar": false
+					}
 				}
 			]
 		}]

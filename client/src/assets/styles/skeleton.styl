@@ -19,12 +19,12 @@ form.form-container
 	.fl-full
 		flex: 1 0 100%
 
+// Basic Grid
 .grid-6
 	display: grid
 	grid-template-columns: repeat(6, auto)
-	// align-items: flex-end
 	gap: 1em
-	> *
+	.col-6, > *
 		grid-column: 1 / -1
 	.col-5
 		grid-column: span 5 !important
@@ -36,27 +36,12 @@ form.form-container
 		grid-column: span 2 !important
 	.col-1
 		grid-column: span 1 !important
+	.col-center
+		margin: auto
 
-// Grid
-.col-full
-	grid-column: 1 / -1
-.col-5
-	grid-column: span 5 !important
-.col-4
-	grid-column: span 4 !important
-.col-3
-	grid-column: span 3 !important
-.col-2
-	grid-column: span 2 !important
-.col-1
-	grid-column: span 1 !important
 
-.full-width
-	@media (max-width: 720px)
-		display: block !important
-		width: 100% !important
-		padding: 0 !important
 
+// Scrolled & Fixed positions
 .flex-column-container
 	min-height: 0
 	display: flex
@@ -66,3 +51,9 @@ form.form-container
 	overflow-y: auto
 .section-fixed
 	flex: 0
+
+
+.dev-mw
+	width: 100%
+	max-width: 40em
+	margin: auto

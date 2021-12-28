@@ -1,29 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1640699290514" clover="3.2.0">
-  <project timestamp="1640699290517" name="All files">
-    <metrics statements="20" coveredstatements="20" conditionals="26" coveredconditionals="25" methods="8" coveredmethods="8" elements="54" coveredelements="53" complexity="0" loc="20" ncloc="20" packages="1" files="1" classes="1"/>
-    <file name="utils.js" path="/home/app/src/core/utils.js">
+<coverage generated="1640732876600" clover="3.2.0">
+  <project timestamp="1640732876602" name="All files">
+    <metrics statements="23" coveredstatements="23" conditionals="26" coveredconditionals="25" methods="8" coveredmethods="8" elements="57" coveredelements="56" complexity="0" loc="23" ncloc="23" packages="3" files="4" classes="4"/>
+    <package name="components.Icons">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="cIcon.vue" path="/home/app/src/components/Icons/cIcon.vue">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="8" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="components.Misc">
+      <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="cBanner.vue" path="/home/app/src/components/Misc/cBanner.vue">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="12" count="1" type="stmt"/>
+      </file>
+      <file name="cCard.vue" path="/home/app/src/components/Misc/cCard.vue">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="14" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="core">
       <metrics statements="20" coveredstatements="20" conditionals="26" coveredconditionals="25" methods="8" coveredmethods="8"/>
-      <line num="2" count="4" type="cond" truecount="2" falsecount="0"/>
-      <line num="5" count="1" type="stmt"/>
-      <line num="6" count="3" type="stmt"/>
-      <line num="7" count="48" type="stmt"/>
-      <line num="8" count="3" type="stmt"/>
-      <line num="12" count="1" type="stmt"/>
-      <line num="13" count="10" type="cond" truecount="2" falsecount="0"/>
-      <line num="14" count="9" type="stmt"/>
-      <line num="15" count="9" type="cond" truecount="2" falsecount="0"/>
-      <line num="16" count="3" type="stmt"/>
-      <line num="17" count="13" type="stmt"/>
-      <line num="18" count="13" type="stmt"/>
-      <line num="19" count="13" type="cond" truecount="3" falsecount="1"/>
-      <line num="20" count="11" type="cond" truecount="4" falsecount="0"/>
-      <line num="21" count="4" type="stmt"/>
-      <line num="24" count="14" type="cond" truecount="6" falsecount="0"/>
-      <line num="25" count="14" type="cond" truecount="6" falsecount="0"/>
-      <line num="29" count="1" type="stmt"/>
-      <line num="30" count="1" type="stmt"/>
-      <line num="35" count="1" type="stmt"/>
-    </file>
+      <file name="utils.js" path="/home/app/src/core/utils.js">
+        <metrics statements="20" coveredstatements="20" conditionals="26" coveredconditionals="25" methods="8" coveredmethods="8"/>
+        <line num="2" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="3" type="stmt"/>
+        <line num="7" count="48" type="stmt"/>
+        <line num="8" count="3" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="13" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="14" count="9" type="stmt"/>
+        <line num="15" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="3" type="stmt"/>
+        <line num="17" count="13" type="stmt"/>
+        <line num="18" count="13" type="stmt"/>
+        <line num="19" count="13" type="cond" truecount="3" falsecount="1"/>
+        <line num="20" count="11" type="cond" truecount="4" falsecount="0"/>
+        <line num="21" count="4" type="stmt"/>
+        <line num="24" count="14" type="cond" truecount="6" falsecount="0"/>
+        <line num="25" count="14" type="cond" truecount="6" falsecount="0"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="35" count="1" type="stmt"/>
+      </file>
+    </package>
   </project>
 </coverage>
