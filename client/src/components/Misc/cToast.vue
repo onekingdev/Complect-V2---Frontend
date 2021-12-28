@@ -6,7 +6,7 @@
 			.title {{ title || type }}
 			.message(v-if="message") {{ message }}
 		c-button(type="icon" iconL="close" @click="deleteNotification(id)")
-		.actions(v-if="actions")
+		//- .actions(v-if="actions")
 			c-button(v-for="action in actions" :title="action.title" :type="action.type" @click="action.method")
 </template>
 

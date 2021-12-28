@@ -8,12 +8,6 @@ const randomMongoId = () => {
 	return `${timestamp}${randomHexString}`;
 };
 
-
-const saveForm = ( original, update ) => {
-	Object.keys( update ).forEach( key => original[key] = update[key]);
-};
-
-
 // sort Array by Key
 const sortArrayByKey = ( array, key, asc ) => {
 	if ( !array.length ) return;
@@ -42,4 +36,4 @@ const formatDate = date => {
 };
 
 
-export { randomNumber, randomMongoId, saveForm, sortArrayByKey, formatDate };
+export { randomNumber, randomMongoId, sortArrayByKey, formatDate };

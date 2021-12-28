@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">31.25% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>10/32</span>
+                <span class='fraction'>29/29</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">7.69% </span>
+                <span class="strong">96.15% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/26</span>
+                <span class='fraction'>25/26</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">30% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/10</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">38.09% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/21</span>
+                <span class='fraction'>20/20</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -102,11 +102,7 @@
 <a name='L37'></a><a href='#L37'>37</a>
 <a name='L38'></a><a href='#L38'>38</a>
 <a name='L39'></a><a href='#L39'>39</a>
-<a name='L40'></a><a href='#L40'>40</a>
-<a name='L41'></a><a href='#L41'>41</a>
-<a name='L42'></a><a href='#L42'>42</a>
-<a name='L43'></a><a href='#L43'>43</a>
-<a name='L44'></a><a href='#L44'>44</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L40'></a><a href='#L40'>40</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -118,33 +114,29 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -159,39 +151,35 @@ const randomMongoId = () =&gt; {
 	return `${timestamp}${randomHexString}`;
 };
 &nbsp;
-&nbsp;
-const saveForm = <span class="fstat-no" title="function not covered" >( </span>original, update ) =&gt; {
-<span class="cstat-no" title="statement not covered" >	Object.keys( update ).forEach( <span class="fstat-no" title="function not covered" >ke</span>y =&gt; <span class="cstat-no" title="statement not covered" >original[key] = update[key])</span>;</span>
-};
-&nbsp;
-&nbsp;
 // sort Array by Key
-const sortArrayByKey = <span class="fstat-no" title="function not covered" >( </span>array, key, asc ) =&gt; {
-<span class="cstat-no" title="statement not covered" >	if ( !array.length ) <span class="cstat-no" title="statement not covered" >return;</span></span>
-	const type = <span class="cstat-no" title="statement not covered" >typeof array[0][key];</span>
-<span class="cstat-no" title="statement not covered" >	if ( type === "string" ) <span class="cstat-no" title="statement not covered" >array.sort( <span class="fstat-no" title="function not covered" >( </span>a, b ) =&gt; {</span></span>
-		const valueA = <span class="cstat-no" title="statement not covered" >a[key].toString().toUpperCase();</span>
-		const valueB = <span class="cstat-no" title="statement not covered" >b[key].toString().toUpperCase();</span>
-<span class="cstat-no" title="statement not covered" >		if ( valueA &lt; valueB ) <span class="cstat-no" title="statement not covered" >return asc ? -1 : 1;</span></span>
-<span class="cstat-no" title="statement not covered" >		if ( valueA &gt; valueB ) <span class="cstat-no" title="statement not covered" >return asc ? 1 : -1;</span></span>
-<span class="cstat-no" title="statement not covered" >		return 0;</span>
-	});
-<span class="cstat-no" title="statement not covered" >	if ( type === "number" ) <span class="cstat-no" title="statement not covered" >array.sort( <span class="fstat-no" title="function not covered" >( </span>a, b ) =&gt; <span class="cstat-no" title="statement not covered" >( asc ? a[key] : b[key]) - ( asc ? b[key] : a[key]) </span>); </span></span>// sort numbers asc/desc
-<span class="cstat-no" title="statement not covered" >	if ( type === "object" ) <span class="cstat-no" title="statement not covered" >array.sort( <span class="fstat-no" title="function not covered" >( </span>a, b ) =&gt; <span class="cstat-no" title="statement not covered" >( asc ? b[key].length : a[key].length ) - ( asc ? a[key].length : b[key].length ) </span>); </span></span>// sort arays by length (asc - from biggest to smallest)
+const sortArrayByKey = ( array, key, asc ) =&gt; {
+	if ( !array.length ) return;
+	const type = typeof array[0][key];
+	if ( type === "string" ) {
+		array.sort( ( a, b ) =&gt; {
+			const valueA = a[key].toString().toUpperCase();
+			const valueB = b[key].toString().toUpperCase();
+			if ( valueA &lt; valueB ) return asc ? -1 : <span class="branch-1 cbranch-no" title="branch not covered" >1;</span>
+			if ( valueA &gt; valueB ) return asc ? 1 : -1;
+			return 0;
+		});
+	}
+	if ( type === "number" ) array.sort( ( a, b ) =&gt; ( asc ? a[key] : b[key]) - ( asc ? b[key] : a[key]) ); // sort numbers asc/desc
+	if ( type === "object" ) array.sort( ( a, b ) =&gt; ( asc ? b[key].length : a[key].length ) - ( asc ? a[key].length : b[key].length ) ); // sort arays by length (asc - from biggest to smallest)
 };
 &nbsp;
 &nbsp;
-const formatDate = <span class="fstat-no" title="function not covered" >( </span>date ) =&gt; {
-	const options = <span class="cstat-no" title="statement not covered" >{</span>
+const formatDate = date =&gt; {
+	const options = {
 		"year": "numeric",
 		"month": "numeric",
 		"day": "numeric"
 	};
-<span class="cstat-no" title="statement not covered" >	return new Date( date ).toLocaleString( "en-US", options );</span>
+	return new Date( date ).toLocaleString( "en-US", options );
 };
 &nbsp;
 &nbsp;
-export { randomNumber, randomMongoId, saveForm, sortArrayByKey, formatDate };
+export { randomNumber, randomMongoId, sortArrayByKey, formatDate };
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -199,7 +187,7 @@ export { randomNumber, randomMongoId, saveForm, sortArrayByKey, formatDate };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener">istanbul</a>
-                at Sun Dec 19 2021 18:18:46 GMT+0000 (Coordinated Universal Time)
+                at Tue Dec 28 2021 13:48:10 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="prettify.js"></script>
