@@ -88,7 +88,8 @@ svg.icon
 	gap: 0.5em
 	font-size: 1.6em
 	input
-		flex: 1
+		flex: 1 1 0
+		width: 0
 		min-width: 0
 		padding: 1em 0
 		text-align: center

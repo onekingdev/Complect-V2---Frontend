@@ -4,6 +4,9 @@
 	"verbose": false,
 	"bail": 1,
 	"moduleFileExtensions": ["js", "vue"],
+	"setupFiles": [
+		"<rootDir>/jest.init.js"
+	],
 	"moduleNameMapper": {
 		"^~/(.*)$": "<rootDir>/src/$1"
 	},

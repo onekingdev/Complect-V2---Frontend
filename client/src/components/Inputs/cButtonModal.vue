@@ -2,11 +2,11 @@
 .c-button-modal
 	c-button(:title="title" :type="type" @click="toggleModal()")
 	c-modal(:title="modalTitle" v-model="isModalVisible")
-		template(#content)
+		template(#content v-if="$slots.content")
 			slot(name="content")
-		template(#left-footer)
+		template(#left-footer v-if="$slots['left-footer']")
 			slot(name="left-footer")
-		template(#footer)
+		template(#footer v-if="$slots.footer")
 			slot(name="footer")
 </template>
 
@@ -43,9 +43,7 @@ export default {
 			"required": false
 		},
 		"disabled": Boolean,
-		"modal": Boolean,
-		"fullwidth": Boolean,
-		"danger": Boolean
+		"fullwidth": Boolean
 	},
 	setup () {
 		const isModalVisible = ref( false );

@@ -2,7 +2,7 @@
 .c-input.c-dropdown(:class="{expanded: listVisible}" @click="toggleListVisibility()" ref="dropdownList")
 	c-button(
 		:title="title"
-		:secondTitle="selected"
+		:additionalTitle="selected"
 		:type="type"
 		:iconR="iconR")
 	.dropdown(v-show="listVisible")

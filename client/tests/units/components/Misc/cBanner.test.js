@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import cBanner from "~/components/Misc/cBanner.vue";
 
 
-test("should render default state", async () => {
+test("should render default type", async () => {
 	const wrapper = mount(cBanner, {
 		props: {
 			message: "Hello World!"
@@ -17,7 +17,7 @@ test("should render default state", async () => {
 	expect(wrapper.classes("info")).toBe(true);
 })
 
-test("should render custom states", async () => {
+test("should render custom types", async () => {
 	const wrapper = mount(cBanner, {
 		props: {
 			message: "Hello World!"

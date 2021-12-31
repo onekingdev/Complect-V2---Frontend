@@ -1,12 +1,9 @@
-import { config, shallowMount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import cCard from "~/components/Misc/cCard.vue";
 
-config.global.mocks = {
-	$locale: key => key
-}
 
-test("should render default state", () => {
-	const wrapper = shallowMount(cCard);
+test("should render default component", () => {
+	const wrapper = mount(cCard);
 	const header = wrapper.find(".c-card-header");
 	const content = wrapper.find(".c-card-content");
 	const footer = wrapper.find(".c-card-footer");
@@ -16,18 +13,19 @@ test("should render default state", () => {
 })
 
 test("should render title", () => {
-	const wrapper = shallowMount(cCard, {
+	const wrapper = mount(cCard, {
 		props: {
 			title: "Hello"
 		}
 	});
+	
 	const header = wrapper.find( ".c-card-header" );
 	expect(header.exists()).toBe( true );
 	expect(header.text()).toContain( "Hello" );
 })
 
 test("should render slots", () => {
-	const wrapper = shallowMount(cCard, {
+	const wrapper = mount(cCard, {
 		slots: {
 			"header-controls": "Controls Slot",
 			"content": "Content Slot",

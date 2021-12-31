@@ -1,11 +1,9 @@
 <template lang="pug">
 button.c-input.c-button(:class="[type, size, {fullwidth, disabled}]" :tabindex="disabled ? -1 : 0")
-	icon(v-if="iconL" :name="iconL")
-	.title(v-if="title") {{ $locale(title) }}
-	.title(v-if="secondTitle") {{ $locale(secondTitle) }}
-	icon(v-if="iconR" :name="iconR")
-	template(v-if="modal")
-		slot(name="default")
+	icon.icon-l(v-if="iconL" :name="iconL")
+	.title.primary-title(v-if="title") {{ $locale(title) }}
+	.title.additional-title(v-if="additionalTitle") {{ $locale(additionalTitle) }}
+	icon.icon-r(v-if="iconR" :name="iconR")
 </template>
 
 
@@ -27,7 +25,7 @@ export default {
 			"default": "",
 			"required": false
 		},
-		"secondTitle": {
+		"additionalTitle": {
 			"type": String,
 			"default": "",
 			"required": false
@@ -43,7 +41,6 @@ export default {
 			"required": false
 		},
 		"disabled": Boolean,
-		"modal": Boolean,
 		"fullwidth": Boolean
 	}
 };
@@ -168,7 +165,7 @@ export default {
 	// Sizes
 	&.tiny
 		font-size: 0.6em
-&.small
+	&.small
 		font-size: 0.75em
 	&.regular
 		font-size: 0.9em
@@ -177,11 +174,9 @@ export default {
 	&.huge
 		font-size: 1.2em
 
-
 	&.fullwidth
 		width: 100%
 		justify-content: center
-
 	&.disabled
 		pointer-events: none
 

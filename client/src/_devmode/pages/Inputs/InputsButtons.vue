@@ -6,7 +6,7 @@ c-card(title="Constructor")
 				c-switcher(id="button-types" label="Type" :options="options.types" v-model="selectedOptions.type" fullwidth)
 				c-switcher(id="button-sizes" label="Size" :options="options.sizes" v-model="selectedOptions.size" fullwidth)
 				c-field.col-3(type="text" label="Title" v-model="selectedOptions.title")
-				c-field.col-3(type="text" label="Second Title" v-model="selectedOptions.secondTitle")
+				c-field.col-3(type="text" label="Additional Title" v-model="selectedOptions.additionalTitle")
 			template(#code)
 				code {{code}}
 			template(#preview)
@@ -70,7 +70,7 @@ export default {
 		
 		const selectedOptions = reactive({
 			title: "Button",
-			secondTitle: "",
+			additionalTitle: "",
 			type: "default",
 			size: "regular",
 			iconL: "",
@@ -81,13 +81,13 @@ export default {
 
 		const code = computed(() => {
 			let title = selectedOptions.title ? `title="${selectedOptions.title}"` : ""
-			let secondTitle = selectedOptions.secondTitle ? `secondTitle="${selectedOptions.secondTitle}"` : ""
+			let additionalTitle = selectedOptions.additionalTitle ? `additionalTitle="${selectedOptions.additionalTitle}"` : ""
 			let type = selectedOptions.type !== 'default' ? `type="${selectedOptions.type}"` : ""
 			let size = selectedOptions.size !== 'regular' ? `size="${selectedOptions.size}"` : ""
 			let iconL = selectedOptions.iconL ? `iconL="${selectedOptions.iconL}"` : ""
 			let iconR = selectedOptions.iconL ? `iconR="${selectedOptions.iconR}"` : ""
 			let options = selectedBoolean.value.join(" ")
-			return `c-button(${title} ${secondTitle} ${type} ${size} ${iconL} ${iconR} ${options})`
+			return `c-button(${title} ${additionalTitle} ${type} ${size} ${iconL} ${iconR} ${options})`
 		})
 
 		return { buttons, icons, options, buttonsStates, selectedOptions, selectedBoolean, code }

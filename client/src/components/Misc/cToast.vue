@@ -1,11 +1,11 @@
 <template lang="pug">
 .c-toast(:class="type")
-	icon.status(:name="type")
+	icon.status-icon(:name="type")
 	.content
 		.text-data
 			.title {{ title || type }}
 			.message(v-if="message") {{ message }}
-		c-button(type="icon" iconL="close" @click="deleteNotification(id)")
+		c-button.close-button(type="icon" iconL="close" @click="deleteNotification(id)")
 		//- .actions(v-if="actions")
 			c-button(v-for="action in actions" :title="action.title" :type="action.type" @click="action.method")
 </template>
@@ -82,7 +82,7 @@ export default {
 	width: 22em
 	svg.icon
 		flex-shrink: 0
-		&.status
+		&.status-icon
 			width: 1.5em
 			height: 1.5em
 	.c-button

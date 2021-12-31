@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import cAvatar from "~/components/Misc/cAvatar.vue";
 
-test("should render default state", async () => {
+test("should render default component", async () => {
 	const wrapper = mount(cAvatar, {
 		props: {
 			firstName: "John",

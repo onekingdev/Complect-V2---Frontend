@@ -30,10 +30,9 @@ export default {
 			"type": [
 				Array, Boolean
 			],
-			"default": []
+			"default": false
 		},
-		"multiple": Boolean,
-		"fulldata": Boolean
+		"multiple": Boolean
 	},
 	"emits": ["update:modelValue"],
 	setup ( props, context ) {
@@ -111,25 +110,27 @@ export default {
 			&:after
 				border-color: #fff
 	&.toggle
-		// $toggle_size = 2em
-		// $toggle_dot_margin = $toggle_size * 0.03
+		$toggle_size = 2em
+		$toggle_height = $toggle_size * 0.5
+		$toggle_dot_size = $toggle_height * 1.2
 		.checkbox-body
-			width: 2em
+			width: $toggle_size
+			height: $toggle_height
+			border-radius: $toggle_size * 0.5
 			background: var(--c-border)
-			border-radius: 0.5em
+			border: none
 			&:after
-				top: 0
-				left: 0
-				width: 0.8em
-				height: 0.8em
+				width: $toggle_dot_size
+				height: $toggle_dot_size
+				top: ($toggle_dot_size - $toggle_height) * -0.5
+				left: ($toggle_dot_size - $toggle_height) * -0.5
 				background: #fff
 				border-radius: 50%
-				border: none
+				border: solid 1px var(--c-border)
 				transition: var(--fx-duration-short)
 		input:checked + .checkbox-body
-			background: #1F80C1
-			border-color: #1F80C1
+			background: #FFC900
 			transition: background var(--fx-duration-short)
 		input:checked + .checkbox-body:after
-			transform: translateX(120%)
+			transform: translateX(85%)
 </style>
