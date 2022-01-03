@@ -21,7 +21,7 @@ export default {
 			{title: "Option 3", value: "option3"}
 		]
 
-		const selectedValue = ref("")
+		const selectedValue = ref("option1")
 
 		return { radiosValues, selectedValue }
 	}

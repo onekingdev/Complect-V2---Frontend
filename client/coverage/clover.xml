@@ -1,81 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1640964997210" clover="3.2.0">
-  <project timestamp="1640964997212" name="All files">
-    <metrics statements="40" coveredstatements="37" conditionals="35" coveredconditionals="25" methods="16" coveredmethods="11" elements="91" coveredelements="73" complexity="0" loc="40" ncloc="40" packages="5" files="7" classes="7"/>
-    <package name="components.Icons">
+<coverage generated="1641131608060" clover="3.2.0">
+  <project timestamp="1641131608062" name="All files">
+    <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0" elements="2" coveredelements="2" complexity="0" loc="2" ncloc="2" packages="2" files="2" classes="2"/>
+    <package name="Icons">
       <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="cIcon.vue" path="/home/app/src/components/Icons/cIcon.vue">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="8" count="9" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
       </file>
     </package>
-    <package name="components.Inputs">
+    <package name="Inputs">
       <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="cButton.vue" path="/home/app/src/components/Inputs/cButton.vue">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="11" count="9" type="stmt"/>
-      </file>
-    </package>
-    <package name="components.Misc">
-      <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="2"/>
-      <file name="cBanner.vue" path="/home/app/src/components/Misc/cBanner.vue">
-        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="12" count="1" type="stmt"/>
-      </file>
-      <file name="cCard.vue" path="/home/app/src/components/Misc/cCard.vue">
-        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="14" count="1" type="stmt"/>
-      </file>
-      <file name="cToast.vue" path="/home/app/src/components/Misc/cToast.vue">
-        <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="2"/>
-        <line num="17" count="1" type="stmt"/>
-        <line num="45" count="2" type="stmt"/>
-        <line num="50" count="2" type="stmt"/>
-        <line num="51" count="2" type="stmt"/>
-        <line num="52" count="2" type="stmt"/>
-        <line num="53" count="2" type="stmt"/>
-        <line num="55" count="2" type="stmt"/>
-        <line num="65" count="2" type="stmt"/>
-      </file>
-    </package>
-    <package name="core">
-      <metrics statements="20" coveredstatements="20" conditionals="26" coveredconditionals="25" methods="8" coveredmethods="8"/>
-      <file name="utils.js" path="/home/app/src/core/utils.js">
-        <metrics statements="20" coveredstatements="20" conditionals="26" coveredconditionals="25" methods="8" coveredmethods="8"/>
-        <line num="2" count="4" type="cond" truecount="2" falsecount="0"/>
-        <line num="5" count="2" type="stmt"/>
-        <line num="6" count="3" type="stmt"/>
-        <line num="7" count="48" type="stmt"/>
-        <line num="8" count="3" type="stmt"/>
-        <line num="12" count="2" type="stmt"/>
-        <line num="13" count="10" type="cond" truecount="2" falsecount="0"/>
-        <line num="14" count="9" type="stmt"/>
-        <line num="15" count="9" type="cond" truecount="2" falsecount="0"/>
-        <line num="16" count="3" type="stmt"/>
-        <line num="17" count="13" type="stmt"/>
-        <line num="18" count="13" type="stmt"/>
-        <line num="19" count="13" type="cond" truecount="3" falsecount="1"/>
-        <line num="20" count="11" type="cond" truecount="4" falsecount="0"/>
-        <line num="21" count="4" type="stmt"/>
-        <line num="24" count="14" type="cond" truecount="6" falsecount="0"/>
-        <line num="25" count="14" type="cond" truecount="6" falsecount="0"/>
-        <line num="29" count="2" type="stmt"/>
-        <line num="30" count="1" type="stmt"/>
-        <line num="35" count="1" type="stmt"/>
-      </file>
-    </package>
-    <package name="store">
-      <metrics statements="8" coveredstatements="5" conditionals="9" coveredconditionals="0" methods="5" coveredmethods="1"/>
-      <file name="Notifications.js" path="/home/app/src/store/Notifications.js">
-        <metrics statements="8" coveredstatements="5" conditionals="9" coveredconditionals="0" methods="5" coveredmethods="1"/>
-        <line num="4" count="1" type="stmt"/>
-        <line num="7" count="2" type="stmt"/>
-        <line num="8" count="0" type="stmt"/>
-        <line num="18" count="2" type="stmt"/>
-        <line num="19" count="0" type="stmt"/>
-        <line num="20" count="0" type="stmt"/>
-        <line num="23" count="2" type="stmt"/>
-        <line num="25" count="2" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
       </file>
     </package>
   </project>

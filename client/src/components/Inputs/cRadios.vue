@@ -1,6 +1,6 @@
 <template lang="pug">
 .c-input.c-radios
-	label.c-radio(v-for="(option, index) in data" :title="option.tooltip" :key="index")
+	label.c-radio(v-for="(option, index) in data" :title="option.tooltip" :key="index" :class="{checked: checked(option)}")
 		input(type="radio" :name="`radio_group_${id}`" :checked="checked(option)" @click="update(option)")
 		.radio-body
 		.title(v-if="option.title") {{option.title}}
@@ -60,9 +60,6 @@ export default {
 			position: relative
 			transition: box-shadow 0.15s
 			margin-right: 0.5em
-		&:hover
-			.radio-body
-				box-shadow: inset 0 0 0 0.1em #000
-		input:checked + .radio-body
-			box-shadow: inset 0 0 0 0.1em #000, inset 0 0 0 0.3em #fff, inset 0 0 0 1em #000
+		&.checked .radio-body
+			box-shadow: inset 0 0 0 0.1em var(--c-border), inset 0 0 0 0.3em #fff, inset 0 0 0 1em #343741
 </style>
