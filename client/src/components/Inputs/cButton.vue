@@ -90,9 +90,9 @@ export default {
 				opacity: 0.4
 	&.primary
 		color: #fff
-		background: #303132
+		background: #2E304F
 		&:hover, &.hovered
-			background: #2e304f
+			background: #1B1C29
 		&.focused
 			background: #2e304f
 			box-shadow: 0 0 0 0.15em #007aff
@@ -146,6 +146,19 @@ export default {
 			background: #e3ebf2
 		&.disabled
 			opacity: 0.4
+	&.destructive
+		color: #CE1938
+		background: #fff
+		box-shadow: 0 0 0 1px var(--c-border)
+		&:hover, &.hovered
+			background: #f3f6f9
+		&.focused
+			background: #f3f6f9
+			border: none
+			outline: none
+			box-shadow: 0 0 0 0.15em #007aff
+		svg.icon
+			fill: #CE1938
 
 	&.icon
 		background: transparent

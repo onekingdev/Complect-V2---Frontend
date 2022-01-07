@@ -1,7 +1,8 @@
 import language from "~/data/locales/en-US.js";
+
 export default {
 	"install": app => {
-		app.config.globalProperties.$locale = key => {
+		const locale = key => {
 			try {
 				if ( !language.dictionary[key]) throw new Error( `No translation found for "${key}"` );
 				return language.dictionary[key];
@@ -10,6 +11,8 @@ export default {
 				return key;
 			}
 		};
-		app.provide( "locale" );
+		app.config.globalProperties.$locale = locale;
+
+		app.provide( "locale", locale );
 	}
 };

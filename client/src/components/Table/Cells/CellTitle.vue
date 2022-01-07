@@ -1,7 +1,7 @@
 <template lang="pug">
 .cell-title
-	template(v-if="meta && meta.checkbox")
-		c-checkbox(type="round")
+	c-checkbox(v-if="meta && meta.checkbox" type="round")
+	icon(v-if="meta && meta.icon" :name="meta.icon" size="big")
 	template(v-if="meta && meta.link")
 		router-link(:to="{name: meta.link, params: {id: id}}") {{data}}
 	template(v-else) {{data}}
@@ -36,6 +36,9 @@ export default {
 	max-width: 20em
 	.c-checkbox
 		margin-right: 0.5em
+	svg.icon
+		margin-right: 0.5em
+		fill: var(--c-text)
 	a
 		overflow: hidden
 		text-overflow: ellipsis

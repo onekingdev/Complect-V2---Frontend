@@ -1,8 +1,8 @@
 <template lang="pug">
 .c-table
-	.controls
+	.controls(v-if="searchable || filters.length || $slots.actions")
 		c-field.search-input(v-if="searchable" type="search" iconL="search" placeholder="Search..." v-model="searchQuery")
-		.actions(v-if="filters.length > 0")
+		.actions(v-if="filters.length")
 			c-dropdown(v-for="(filter, index) in filters" :key="index" :title="filter.title" :selected="selectedFilterTitle(activeFilters[filter.title])")
 				c-button(v-for="key in filter.keys" @click="activateFilter(filter.title, filter.field, key)" :title="key.title" type="transparent" fullwidth)
 			slot(name="controls")

@@ -1,7 +1,7 @@
 <template lang="pug">
 .c-button-modal
 	c-button(:title="title" :type="type" @click="toggleModal()")
-	c-modal(:title="modalTitle" v-model="isModalVisible")
+	c-modal(:title="modalTitle" v-model="isModalVisible" :wide="wide")
 		template(#content v-if="$slots.content")
 			slot(name="content")
 		template(#left-footer v-if="$slots['left-footer']")
@@ -42,6 +42,7 @@ export default {
 			"default": "regular",
 			"required": false
 		},
+		"wide": Boolean,
 		"disabled": Boolean,
 		"fullwidth": Boolean
 	},

@@ -35,5 +35,12 @@ const formatDate = date => {
 	return new Date( date ).toLocaleString( "en-US", options );
 };
 
+const calcRiskLevel = ( impact, likelihood ) => {
+	if ( impact === 2 && likelihood > 0 ) return 2;
+	else if ( impact === 1 && likelihood === 0 ) return 0;
+	else if ( impact === 1 && likelihood === 2 ) return 2;
+	else if ( impact === 0 && likelihood < 2 ) return 0;
+	return 1;
+};
 
-export { randomNumber, randomMongoId, sortArrayByKey, formatDate };
+export { randomNumber, randomMongoId, sortArrayByKey, formatDate, calcRiskLevel };

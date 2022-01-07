@@ -1,7 +1,5 @@
 <template lang="pug">
-label.c-input.c-field(:class="{fullwidth}")
-	.field-label(v-if="label") {{ label }}:
-		span.required(v-if="required") *
+c-label.c-input.c-field(:class="{fullwidth}" v-bind="{label, required}")
 	.field-body
 		icon(v-if="iconL || icon" :name="iconL || type")
 		component.field-input(
@@ -17,8 +15,10 @@ label.c-input.c-field(:class="{fullwidth}")
 
 <script>
 import { defineAsyncComponent } from "vue";
+import cLabel from "~/components/Misc/cLabel.vue";
 export default {
 	"components": {
+		cLabel,
 		"Date": defineAsyncComponent( () => import( "./Types/TypeDate.vue" ) ),
 		"Email": defineAsyncComponent( () => import( "./Types/TypeEmail.vue" ) ),
 		"Multiselect": defineAsyncComponent( () => import( "./Types/TypeMultiselect.vue" ) ),
@@ -86,15 +86,6 @@ export default {
 <style lang="stylus" scoped>
 .c-field
 	min-width: 8em
-	.field-label
-		font-size: 0.8em
-		margin-bottom: 0.2em
-		color: #666
-		span.required
-			color: var(--c-red)
-			line-height: 1
-			font-weight: bold
-			margin-left: 0.2em
 	.field-body
 		background: var(--c-bg-z2)
 		box-shadow: 0 0 0 1px var(--c-border)

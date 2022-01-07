@@ -3,17 +3,19 @@
 	.container-header
 		.container-title
 			.document-collection(v-if="section") {{ $locale(section) }}
-			.document-name(v-if="title") {{ title }}
+			.document-name(v-if="title")
+				c-badge(v-if="badge" :icon="badge.icon" :title="badge.title")
+				.title {{ title }}
 			.document-owner(v-if="owner") {{ owner }}
 		.container-controls
 			.controls
 				slot(name="add-controls")
 			.controls
 				slot(name="controls")
-		.container-sections
-			.tabs
+		.container-sections(v-if="$slots['tabs'] || $slots['navigation-controls']")
+			.tabs(v-if="$slots['tabs']")
 				slot(name="tabs")
-			.controls
+			.controls(v-if="$slots['navigation-controls']")
 				slot(name="navigation-controls")
 
 	.container-content
@@ -23,20 +25,29 @@
 
 
 <script>
+import cBadge from "~/components/Misc/cBadge.vue";
 export default {
+	"components": { cBadge },
 	"props": {
 		"section": {
 			"type": String,
 			"default": ""
 		},
+		"badge": {
+			"type": [
+				Number, String, Object
+			],
+			"default": ""
+		},
 		"title": {
 			"type": String,
-			"default": "Title"
+			"default": ""
 		},
 		"owner": {
 			"type": String,
 			"default": ""
 		}
+
 	}
 };
 </script>
@@ -49,10 +60,16 @@ export default {
 		flex-wrap: wrap
 		align-items: flex-end
 		justify-content: space-between
+		border-bottom: 1px solid var(--c-border)
 		.container-title
 			padding: 2em
 			.document-name
 				font-size: 1.4em
+				display: flex
+				align-items: center
+				.c-badge
+					margin-right: 0.5em
+					font-size: 0.5em
 		.container-controls
 			padding: 2em
 			.controls
@@ -66,7 +83,7 @@ export default {
 			flex-shrink: 0
 			width: 100%
 			border-top: 1px solid var(--c-border)
-			border-bottom: 1px solid var(--c-border)
+
 			display: flex
 			justify-content: space-between
 			align-items: center

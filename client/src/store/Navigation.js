@@ -27,10 +27,10 @@ const sidebarNavigation = [
 				"view": "Policies"
 			}, {
 				"title": "Internal Reviews",
-				"view": "Reviews"
+				"view": "ReviewsOverview"
 			}, {
 				"title": "Risk Register",
-				"view": "Risks"
+				"view": "RisksOverview"
 			}
 		]
 	}

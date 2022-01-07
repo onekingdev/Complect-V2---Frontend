@@ -1,6 +1,6 @@
 <template lang="pug">
-.cell-status(v-if="data")
-	c-badge(:title="data")
+.cell-risk-level(v-if="data")
+	c-badge(:title="`risk${data}`" icon="warning-light")
 </template>
 
 
@@ -19,6 +19,6 @@ export default {
 
 
 <style lang="stylus" scoped>
-.cell-status
+.cell-risk-level
 	max-width: 10em
 </style>

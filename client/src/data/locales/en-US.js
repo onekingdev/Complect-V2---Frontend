@@ -33,6 +33,15 @@ export default {
 		"Next": "Next",
 		"Save as Draft": "Save as Draft",
 
+		// states
+		"draft": "Draft",
+		"inProgress": "In Progress",
+		"complete": "Complete",
+		"available": "Available",
+		"notStarted": "Not Started",
+		"pending": "Pending",
+		"overdue": "Overdue",
+
 		// topbar
 		"Find an Expert": "Find an Expert",
 
@@ -72,12 +81,6 @@ export default {
 		"Discussion": "Discussion",
 		"New Collaborator": "New Collaborator",
 		"All": "All",
-		"Not Started": "Not Started",
-		"Draft": "Draft",
-		"In Progress": "In Progress",
-		"Pending": "Pending",
-		"Complete": "Complete",
-		"Overdue": "Overdue",
 
 
 		// policies
@@ -95,6 +98,11 @@ export default {
 		// risks
 		"Risk Register": "Risk Register",
 		"New Risk": "New Risk",
+		"impact": "Impact",
+		"likelihood": "Likelihood",
+		"risk0": "Low",
+		"risk1": "Medium",
+		"risk2": "High",
 
 
 		// database Keys

@@ -15,3 +15,9 @@ export default {
 	}
 };
 </script>
+
+
+<style lang="stylus" scoped>
+.cell-default
+	text-transform: capitalize
+</style>

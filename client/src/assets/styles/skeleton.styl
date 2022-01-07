@@ -22,20 +22,20 @@ form.form-container
 // Basic Grid
 .grid-6
 	display: grid
-	grid-template-columns: repeat(6, auto)
+	grid-template-columns: repeat(6, 1fr)
 	gap: 1em
 	.col-6, > *
 		grid-column: 1 / -1
 	.col-5
-		grid-column: span 5 !important
+		grid-column: span 5
 	.col-4
-		grid-column: span 4 !important
+		grid-column: span 4
 	.col-3
-		grid-column: span 3 !important
+		grid-column: span 3
 	.col-2
-		grid-column: span 2 !important
+		grid-column: span 2
 	.col-1
-		grid-column: span 1 !important
+		grid-column: span 1
 	.col-center
 		margin: auto
 

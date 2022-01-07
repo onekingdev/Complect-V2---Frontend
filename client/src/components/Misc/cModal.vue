@@ -2,7 +2,7 @@
 teleport(to="#app-container")
 	transition(name="modal-fade")
 		.c-modal-container(v-if="modelValue")
-			.c-modal-window(ref="modalWindow" :class="{ large: largeWidth }")
+			.c-modal-window(ref="modalWindow" :class="{ wide }")
 				.c-modal-header
 					.title {{title}}
 					c-button(type="icon" iconL="close" size="small" @click="closeModal()")
@@ -26,10 +26,7 @@ export default {
 		},
 		"modelValue": Boolean,
 		"visible": Boolean,
-		"largeWidth": {
-			"type": Boolean,
-			"default": false
-		}
+		"wide": Boolean
 	},
 	"emits": ["update:modelValue"],
 	setup ( props, context ) {
@@ -75,10 +72,10 @@ export default {
 
 .c-modal-window
 	margin: auto
-	min-width: 30em
+	width: 30em
 	background: var(--c-bg-z2, #fff)
 	border-radius: 0.3em
-	&.large
+	&.wide
 		width: 80%
 
 .c-modal-header
@@ -93,11 +90,7 @@ export default {
 		margin-left: auto
 
 .c-modal-content
-	padding: 1.5em 1em 2.5em
-	display: grid
-	grid-template-columns: repeat(6, auto)
-	align-items: flex-end
-	gap: 1em
+	padding: 1em 1em 2.5em
 
 .c-modal-footer
 	display: flex
@@ -105,6 +98,4 @@ export default {
 	justify-content: flex-end
 	border-top: 1px solid var(--c-border)
 	padding: 1em
-	position: relative;
-
 </style>

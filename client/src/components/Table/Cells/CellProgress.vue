@@ -1,13 +1,13 @@
 <template lang="pug">
-.cell(v-if="current")
-  | {{ current }}/{{ max }}
-  div.progress
-    div.progress-bar(:style="styles") {{ percent }}
+.cell-progress
+	.progress-text(:class="{completed}") {{ data.current }}/{{ data.max }}
+	.progress-bar(:style="styles")
+		.percent {{ percent }}
 </template>
 
 
 <script>
-import { toRefs } from "@vue/reactivity";
+import { computed, toRefs } from "vue";
 export default {
 	"props": {
 		"data": {
@@ -17,37 +17,44 @@ export default {
 	},
 	setup ( props ) {
 		const { current, max } = toRefs( props.data );
-		const percent = current.value / max.value * 100;
-		const styles = { "width": `${percent}%` };
-		return {
-			current,
-			max,
-			percent,
-			styles
-		};
+		const percent = computed( () => {
+			if ( !max.value ) return 0;
+			return Math.round( current.value / max.value * 100 );
+		});
+		const completed = computed( () => percent.value === 100 && current.value );
+		const styles = { "--v-progress": `${percent.value}%` };
+		return { percent, styles, completed };
 	}
 };
 </script>
 
+
 <style lang="stylus" scoped>
-.progress
-  display: flex
-  width: 100%
-  height: 1.1em
-  margin-left: 0.5em
-  overflow: hidden
-  line-height: 0
-  background: #e9ecef
-  border-radius: 0.25em
-  .progress-bar
-    display: flex
-    flex-direction: column
-    justify-content: center
-    overflow: hidden
-    color: #fff
-    text-align: center
-    white-space: nowrap
-    background-color: #28a745
-    transition: width 0.6s ease
-    font-size: 0.8em
+.cell-progress
+	.progress-text
+		margin-right: 0.5em
+		&.completed
+			color: var(--c-green)
+	.progress-bar
+		flex: 1
+		background: var(--c-border)
+		color: #fff
+		border-radius: 0.25em
+		line-height: 1
+		padding: 0.2em 0.3em
+		position: relative
+		overflow: hidden
+		.percent
+			position: relative
+			font-size: 0.9em
+			z-index: 1
+		&:after
+			content: ""
+			background: var(--c-green)
+			height: 100%
+			width: var(--v-progress)
+			transition: width 0.6s ease
+			position: absolute
+			top: 0
+			left: 0
 </style>

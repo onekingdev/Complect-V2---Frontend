@@ -1,59 +1,60 @@
 <template lang="pug">
-document-container(section="Projects" :title="review.title")
+documents-container(title="Internal Reviews")
 	template(#controls)
-		c-button(title="Dowload")
-		c-button(title="Save and Exit" type="primary")
-		c-button(type="icon" iconL="close" size="small" @click="closeReview()")
-	template(#tabs)
-		router-link(v-for="(tab, index) in tabs" :key="index" :to="{name: tab.routeName}") {{ $locale(tab.title)}}
-	template(#navigation-controls)
-		c-dropdown(title="Actions")
-			c-button-modal(title="Edit" modalTitle="Edit Review" type="transparent")
-				template(#content)
-					c-field(label="New Name" v-model="review.title" required)
-					c-field.col-3(label="Start Date" type="date" v-model="review.startsAt" required)
-					c-field.col-3(label="End Date" type="date" v-model="review.endsAt" required)
-				template(#footer)
-					c-button(title="Save" type="primary")
-			c-button-modal(title="Delete" modalTitle="Delete Review" type="transparent")
-				template(#content)
+		c-button-modal(title="New Review" modalTitle="New Review" type="primary")
+			template(#content)
+				c-field(label="Review Name" v-model="newReview.title" required)
+				c-field.col-3(label="Start Date" type="date" v-model="newReview.startsAt" required)
+				c-field.col-3(label="End Date" type="date" v-model="newReview.endsAt" required)
+			template(#footer)
+				c-button(title="Create" type="primary" @click="createReview()")
 	template(#content)
 		router-view
 </template>
+
+
 <script>
-import { reactive } from "@vue/reactivity";
-import cDropdown from "~/components/Inputs/cDropdown.vue";
+import { ref, inject } from "vue";
+import { useRouter } from "vue-router";
+import useData from "~/store/Data.js";
 export default {
-	"components": { cDropdown },
 	setup () {
-		const review = reactive({
-			"title": "Review One",
+		const toast = inject( "toast" );
+		const router = useRouter();
+		const { createDocuments } = useData( "reviews" );
+
+		const newReview = ref({
+			"title": "",
+			"dateCreated": Date.now(),
+			"lastModified": Date.now(),
 			"startsAt": Date.now(),
-			"endsAt": Date.now()
+			"endsAt": Date.now() + 864e5,
+			"reviewPeriod": Date.now(),
+			"endDate": Date.now(),
+			"finding": 0,
+			"progress": {
+				"current": 0,
+				"max": 0
+			}
 		});
 
-		const tabs = [
-			{
-				"title": "Detail",
-				"routeName": "ReviewDetail"
-			}, {
-				"title": "Tasks",
-				"routeName": "ReviewTasks"
-			}, {
-				"title": "Documents",
-				"routeName": "ReviewDocuments"
-			}
-		];
-
-		const closeReview = () => {
-			window.location = "/reviews";
+		const createReview = async () => {
+			const reviewId = await createDocuments([newReview.value]);
+			toast({
+				"type": "success",
+				"title": "Review Cteated"
+			});
+			router.push({
+				"name": "ReviewDetail",
+				"params": { "id": reviewId[0] }
+			});
 		};
 
 		return {
-			review,
-			tabs,
-			closeReview
+			newReview,
+			createReview
 		};
 	}
 };
 </script>
+
