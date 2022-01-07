@@ -63,11 +63,13 @@ export default {
 		border-bottom: 1px solid var(--c-border)
 		.container-title
 			padding: 2em
+			flex: 1
 			.document-name
 				font-size: 1.4em
 				display: flex
 				align-items: center
 				.c-badge
+					flex: 0 1
 					margin-right: 0.5em
 					font-size: 0.5em
 		.container-controls
