@@ -1,21 +1,21 @@
 import { createWebHistory, createRouter } from "vue-router";
-import { appState } from "~/store/appState.js";
-import { restoreSession } from "~/core/restore.js"; // temp
-
+import { useAuthGuard, useOnboardingGuard, useAppPagesGuard } from "./Guards.js";
 
 // layers
 const ErrorLayer = () => import( "~/layers/ErrorLayer.vue" );
 const UnauthenticatedLayer = () => import( "~/layers/UnauthenticatedLayer.vue" );
 const AuthenticatedLayer = () => import( "~/layers/AuthenticatedLayer.vue" );
 
-const _AuthEntry = () => import( "~/pages/Auth/_AuthEntry.vue" );
 const AuthSignUp = () => import( "~/pages/Auth/AuthSignUp.vue" );
 const AuthSignIn = () => import( "~/pages/Auth/AuthSignIn.vue" );
 const AuthVerification = () => import( "~/pages/Auth/AuthVerification.vue" );
 const AuthResetPassword = () => import( "~/pages/Auth/AuthResetPassword.vue" );
 
-const BusinessOnBoarding = () => import( "~/pages/Onboarding/BusinessOnboarding.vue" );
+const _OnboardingEntry = () => import( "~/pages/Onboarding/_OnboardingEntry.vue" );
+const OnboardingForm = () => import( "~/pages/Onboarding/OnboardingForm.vue" );
+const OnboardingCheckout = () => import( "~/pages/Onboarding/OnboardingCheckout.vue" );
 
+const _PagesEntry = () => import( "~/pages/_PagesEntry.vue" );
 const _DashboardEntry = () => import( "~/pages/Dashboard/_DashboardEntry.vue" );
 
 
@@ -90,298 +90,304 @@ const routes = [
 	}, {
 		"path": "/",
 		"component": AuthenticatedLayer,
-		"beforeEnter": async ( to, from, next ) => {
-			if ( appState.value.userId ) {
-				await restoreSession();
-				next();
-			} else next({ "name": "AuthSignIn" });
-		},
+		"beforeEnter": useAuthGuard,
 		"children": [
 			{
-				"path": "dashboard",
-				"name": "Dashboard",
-				"component": _DashboardEntry,
-				"meta": { "title": "Dashboard" }
-			},
-			{
-				"path": "tasks",
-				"component": _TasksEntry,
-				"meta": { "title": "Tasks" },
-				"children": [{
-					"path": "",
-					"name": "TasksOverview",
-					"component": TasksOverview,
-					"meta": { "title": "Tasks" }
-				}]
-			},
-			{
-				"path": "projects",
-				"component": _ProjectsEntry,
-				"meta": { "title": "Projects" },
-				"children": [
-					{
-						"path": "",
-						"name": "ProjectsOverview",
-						"component": ProjectsOverview,
-						"meta": { "title": "My Projects" }
-					}, {
-						"path": "contacts",
-						"name": "ProjectsContacts",
-						"component": ProjectsContacts,
-						"meta": { "title": "Contacts" }
-					}, {
-						"path": "ratings",
-						"name": "ProjectsRatings",
-						"component": ProjectsRatings,
-						"meta": { "title": "Ratings and Reviews" }
-					}
-				]
-			},
-			{
-				"path": "project/new",
-				"name": "ProjectPost",
-				"component": ProjectPost,
+				"path": "onboarding",
+				"beforeEnter": useOnboardingGuard,
+				"component": _OnboardingEntry,
 				"meta": {
-					"title": "Post Project",
-					"sidebar": false
-				}
-			},
-			{
-				"path": "project/:id",
-				"component": _ProjectEntry,
-				"meta": {
-					"title": "Project",
+					"topbar": "simple",
 					"sidebar": false
 				},
 				"children": [
 					{
 						"path": "",
-						"name": "ProjectDetail",
-						"component": ProjectDetail,
-						"meta": { "title": "Project Detail" }
+						"name": "OnboardingForm",
+						"component": OnboardingForm,
+						"meta": { "title": "Onboarding" }
 					}, {
-						"path": "tasks",
-						"name": "ProjectTasks",
-						"component": ProjectTasks,
-						"meta": { "title": "Project Tasks" }
-					}, {
-						"path": "documents",
-						"name": "ProjectDocuments",
-						"component": ProjectDocuments,
-						"meta": { "title": "Project Documents" }
-					}, {
-						"path": "collaborators",
-						"name": "ProjectCollaborators",
-						"component": ProjectCollaborators,
-						"meta": { "title": "Project Collaborators" }
+						"path": "checkout",
+						"name": "OnboardingCheckout",
+						"component": OnboardingCheckout,
+						"meta": { "title": "Checkout" }
 					}
 				]
-			},
-			{
-				"path": "policies",
-				"component": _PoliciesEntry,
-				"meta": { "title": "Policies" },
+			}, {
+				"path": "",
+				"beforeEnter": useAppPagesGuard,
+				"component": _PagesEntry,
 				"children": [
 					{
-						"path": "",
-						"name": "Policies",
-						"component": PoliciesOverview
-					}, {
-						"path": "archive",
-						"name": "PoliciesArchive",
-						"component": PoliciesArchive
-					}, {
-						"path": "setup",
-						"name": "PoliciesSetup",
-						"component": PoliciesSetup
-					}
-				]
-			},
-			{
-				"path": "reviews",
-				"component": _ReviewsEntry,
-				"children": [{
-					"path": "",
-					"name": "ReviewsOverview",
-					"component": ReviewsOverview,
-					"meta": { "title": "Reviews" }
-				}]
-			},
-			{
-				"path": "review/:id",
-				"component": _ReviewEntry,
-				"meta": {
-					"title": "Review",
-					"sidebar": false
-				},
-				"children": [
-					{
-						"path": "",
-						"name": "ReviewDetail",
-						"component": ReviewDetail,
-						"meta": { "title": "Review Detail" },
-						"children": [{
-							"path": "category/:catId",
-							"name": "ReviewCategory",
-							"component": ReviewCategory,
-							"props": true,
-							"meta": { "title": "Review Category" }
-						}]
-					}, {
-						"path": "tasks",
-						"name": "ReviewTasks",
-						"component": ReviewTasks,
-						"meta": { "title": "Review Tasks" }
-					}, {
-						"path": "documents",
-						"name": "ReviewDocuments",
-						"component": ReviewDocuments,
-						"meta": { "title": "Review Documents" }
-					}
-				]
-			},
-
-
-			{
-				"path": "risks",
-				"component": _RisksEntry,
-				"children": [{
-					"path": "",
-					"name": "RisksOverview",
-					"component": RisksOverview,
-					"meta": { "title": "Risks" }
-				}]
-			},
-			{
-				"path": "risk/:id",
-				"component": _RiskEntry,
-				"meta": {
-					"title": "Risk",
-					"sidebar": false
-				},
-				"children": [{
-					"path": "",
-					"name": "RiskDetail",
-					"component": RiskDetail,
-					"meta": { "title": "Risk Detail" }
-				}]
-			},
-			{
-				"path": "profile",
-				"name": "Profile",
-				"component": _ProfileEntry,
-				"meta": {
-					"title": "Profile",
-					"sidebar": false
-				}
-			},
-			{
-				"path": "settings",
-				"component": _SettingsEntry,
-				"meta": {
-					"title": "Settings",
-					"sidebar": false
-				},
-				"children": [
-					{
-						"path": "general",
-						"meta": { "title": "Settings - General" },
-						"name": "SettingsGeneral",
-						"component": SettingsGeneral
+						"path": "dashboard",
+						"name": "Dashboard",
+						"component": _DashboardEntry,
+						"meta": { "title": "Dashboard" }
 					},
 					{
-						"path": "users",
-						"meta": { "title": "Settings - Users" },
-						"component": SettingsUsers,
+						"path": "tasks",
+						"component": _TasksEntry,
+						"meta": { "title": "Tasks" },
+						"children": [{
+							"path": "",
+							"name": "TasksOverview",
+							"component": TasksOverview,
+							"meta": { "title": "Tasks" }
+						}]
+					},
+					{
+						"path": "projects",
+						"component": _ProjectsEntry,
+						"meta": { "title": "Projects" },
 						"children": [
 							{
 								"path": "",
-								"name": "SettingsUsersDirectory",
-								"component": SettingsUsersDirectory
+								"name": "ProjectsOverview",
+								"component": ProjectsOverview,
+								"meta": { "title": "My Projects" }
 							}, {
-								"path": "disabled",
-								"name": "SettingsUsersDisabled",
-								"component": SettingsUsersDisabled,
-								"meta": { "title": "Settings - Disabled Users" }
+								"path": "contacts",
+								"name": "ProjectsContacts",
+								"component": ProjectsContacts,
+								"meta": { "title": "Contacts" }
+							}, {
+								"path": "ratings",
+								"name": "ProjectsRatings",
+								"component": ProjectsRatings,
+								"meta": { "title": "Ratings and Reviews" }
 							}
 						]
 					},
 					{
-						"path": "roles",
-						"meta": { "title": "Settings - Roles" },
-						"name": "SettingsRoles",
-						"component": SettingsRoles
+						"path": "project/new",
+						"name": "ProjectPost",
+						"component": ProjectPost,
+						"meta": {
+							"title": "Post Project",
+							"sidebar": false
+						}
 					},
 					{
-						"path": "security",
-						"meta": { "title": "Settings - Security" },
-						"name": "SettingsSecurity",
-						"component": SettingsSecurity
+						"path": "project/:id",
+						"component": _ProjectEntry,
+						"meta": {
+							"title": "Project",
+							"sidebar": false
+						},
+						"children": [
+							{
+								"path": "",
+								"name": "ProjectDetail",
+								"component": ProjectDetail,
+								"meta": { "title": "Project Detail" }
+							}, {
+								"path": "tasks",
+								"name": "ProjectTasks",
+								"component": ProjectTasks,
+								"meta": { "title": "Project Tasks" }
+							}, {
+								"path": "documents",
+								"name": "ProjectDocuments",
+								"component": ProjectDocuments,
+								"meta": { "title": "Project Documents" }
+							}, {
+								"path": "collaborators",
+								"name": "ProjectCollaborators",
+								"component": ProjectCollaborators,
+								"meta": { "title": "Project Collaborators" }
+							}
+						]
 					},
 					{
-						"path": "subscriptions",
-						"meta": { "title": "Settings - Subscriptions" },
-						"name": "SettingsSubscriptions",
-						"component": SettingsSubscriptions
+						"path": "policies",
+						"component": _PoliciesEntry,
+						"meta": { "title": "Policies" },
+						"children": [
+							{
+								"path": "",
+								"name": "Policies",
+								"component": PoliciesOverview
+							}, {
+								"path": "archive",
+								"name": "PoliciesArchive",
+								"component": PoliciesArchive
+							}, {
+								"path": "setup",
+								"name": "PoliciesSetup",
+								"component": PoliciesSetup
+							}
+						]
 					},
 					{
-						"path": "billing",
-						"meta": { "title": "Settings - Billing" },
-						"name": "SettingsBilling",
-						"component": SettingsBilling
+						"path": "reviews",
+						"component": _ReviewsEntry,
+						"children": [{
+							"path": "",
+							"name": "ReviewsOverview",
+							"component": ReviewsOverview,
+							"meta": { "title": "Reviews" }
+						}]
+					},
+					{
+						"path": "review/:id",
+						"component": _ReviewEntry,
+						"meta": {
+							"title": "Review",
+							"sidebar": false
+						},
+						"children": [
+							{
+								"path": "",
+								"name": "ReviewDetail",
+								"component": ReviewDetail,
+								"meta": { "title": "Review Detail" },
+								"children": [{
+									"path": "category/:catId",
+									"name": "ReviewCategory",
+									"component": ReviewCategory,
+									"props": true,
+									"meta": { "title": "Review Category" }
+								}]
+							}, {
+								"path": "tasks",
+								"name": "ReviewTasks",
+								"component": ReviewTasks,
+								"meta": { "title": "Review Tasks" }
+							}, {
+								"path": "documents",
+								"name": "ReviewDocuments",
+								"component": ReviewDocuments,
+								"meta": { "title": "Review Documents" }
+							}
+						]
+					},
+					{
+						"path": "risks",
+						"component": _RisksEntry,
+						"children": [{
+							"path": "",
+							"name": "RisksOverview",
+							"component": RisksOverview,
+							"meta": { "title": "Risks" }
+						}]
+					},
+					{
+						"path": "risk/:id",
+						"component": _RiskEntry,
+						"meta": {
+							"title": "Risk",
+							"sidebar": false
+						},
+						"children": [{
+							"path": "",
+							"name": "RiskDetail",
+							"component": RiskDetail,
+							"meta": { "title": "Risk Detail" }
+						}]
+					},
+					{
+						"path": "profile",
+						"name": "Profile",
+						"component": _ProfileEntry,
+						"meta": {
+							"title": "Profile",
+							"sidebar": false
+						}
+					},
+					{
+						"path": "settings",
+						"component": _SettingsEntry,
+						"meta": {
+							"title": "Settings",
+							"sidebar": false
+						},
+						"children": [
+							{
+								"path": "general",
+								"meta": { "title": "Settings - General" },
+								"name": "SettingsGeneral",
+								"component": SettingsGeneral
+							},
+							{
+								"path": "users",
+								"meta": { "title": "Settings - Users" },
+								"component": SettingsUsers,
+								"children": [
+									{
+										"path": "",
+										"name": "SettingsUsersDirectory",
+										"component": SettingsUsersDirectory
+									}, {
+										"path": "disabled",
+										"name": "SettingsUsersDisabled",
+										"component": SettingsUsersDisabled,
+										"meta": { "title": "Settings - Disabled Users" }
+									}
+								]
+							},
+							{
+								"path": "roles",
+								"meta": { "title": "Settings - Roles" },
+								"name": "SettingsRoles",
+								"component": SettingsRoles
+							},
+							{
+								"path": "security",
+								"meta": { "title": "Settings - Security" },
+								"name": "SettingsSecurity",
+								"component": SettingsSecurity
+							},
+							{
+								"path": "subscriptions",
+								"meta": { "title": "Settings - Subscriptions" },
+								"name": "SettingsSubscriptions",
+								"component": SettingsSubscriptions
+							},
+							{
+								"path": "billing",
+								"meta": { "title": "Settings - Billing" },
+								"name": "SettingsBilling",
+								"component": SettingsBilling
+							},
+							{
+								"path": "",
+								"redirect": { "name": "SettingsGeneral" }
+							}
+						]
 					},
 					{
 						"path": "",
-						"redirect": { "name": "SettingsGeneral" }
+						"redirect": { "name": "Dashboard" }
 					}
 				]
-			},
-			{
-				"path": "",
-				"redirect": { "name": "Dashboard" }
 			}
 		]
 	}, {
 		"path": "/",
 		"component": UnauthenticatedLayer,
-		"children": [{
-			"path": "",
-			"component": _AuthEntry,
-			"children": [
-				{
-					"path": "sign-up",
-					"name": "AuthSignUp",
-					"component": AuthSignUp,
-					"meta": { "title": "Sign Up" }
-				},
-				{
-					"path": "sign-in",
-					"name": "AuthSignIn",
-					"component": AuthSignIn,
-					"meta": { "title": "Sign In" }
-				},
-				{
-					"path": "verification",
-					"name": "AuthVerification",
-					"component": AuthVerification,
-					"meta": { "title": "Verification" }
-				},
-				{
-					"path": "reset-password",
-					"name": "AuthResetPassword",
-					"component": AuthResetPassword,
-					"meta": { "title": "Reset Password" }
-				},
-				{
-					"path": "/business/onboarding",
-					"component": BusinessOnBoarding,
-					"meta": {
-						"title": "BusinessOnBoarding",
-						"sidebar": false
-					}
-				}
-			]
-		}]
+		"children": [
+			{
+				"path": "sign-up",
+				"name": "AuthSignUp",
+				"component": AuthSignUp,
+				"meta": { "title": "Sign Up" }
+			}, {
+				"path": "sign-in",
+				"name": "AuthSignIn",
+				"component": AuthSignIn,
+				"meta": { "title": "Sign In" }
+			}, {
+				"path": "verification",
+				"name": "AuthVerification",
+				"component": AuthVerification,
+				"meta": { "title": "Verification" }
+			}, {
+				"path": "reset-password",
+				"name": "AuthResetPassword",
+				"component": AuthResetPassword,
+				"meta": { "title": "Reset Password" }
+			}
+		]
 	}, {
 		"path": "/:pathMatch(.*)*",
 		"redirect": {

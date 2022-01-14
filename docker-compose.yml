@@ -42,7 +42,9 @@ services:
             - ./api/.aws:/root/.aws
             - /home/app/node_modules
         working_dir: /home/app
-        command: serverless offline start --allowCache
+        command: serverless offline start
+        # command: serverless offline start --allowCache
+        # command: tail -F anything
         depends_on:
             - complect-mongo
 

@@ -17,9 +17,9 @@ const api = async ({ method, collectionName, newDocuments, documentId }) => {
 			"body": JSON.stringify( newDocuments )
 		};
 		const serverAnswer = await fetch( apiUrl, options );
-		if ( !serverAnswer.ok ) throw new Error( serverAnswer.message );
-		const paredServerAnswer = await serverAnswer.json();
-		return paredServerAnswer;
+		const parsedServerAnswer = await serverAnswer.json();
+		if ( !parsedServerAnswer.ok ) throw new Error( serverAnswer.message );
+		return parsedServerAnswer;
 	} catch ( error ) {
 		console.error( error );
 		return { "error": error.message };

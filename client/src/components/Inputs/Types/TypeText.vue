@@ -1,5 +1,5 @@
 <template lang="pug">
-input(type="text" :value="value" @input="updateModelValue($event.target.value)")
+input(type="text" :value="value" @change="updateModelValue($event.target.value)")
 </template>
 
 

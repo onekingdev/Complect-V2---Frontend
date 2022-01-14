@@ -2,7 +2,7 @@
 .view.dashboard
 	h1
 		b {{$locale("Welcome")}},&nbsp;
-		| {{userProfile.firstName}} {{userProfile.lastName}}
+		| {{profile.firstName}} {{profile.lastName}}
 	c-card(title="December")
 		template(#content)
 			c-calendar
@@ -16,8 +16,8 @@ import useProfile from "~/store/Profile.js";
 export default {
 	"components": { cCalendar },
 	setup () {
-		const { userProfile } = useProfile();
-		return { userProfile };
+		const { profile } = useProfile();
+		return { profile };
 	}
 };
 </script>

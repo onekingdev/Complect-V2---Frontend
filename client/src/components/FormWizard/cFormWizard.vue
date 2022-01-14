@@ -1,37 +1,28 @@
 <template lang="pug">
-.c-form-wizard(:class="{ fullWidth }")
-	.c-form-wizard-header
-		.wizard-meta(v-if="section || title || subtitle")
-			.wizard-section(v-if="section") {{section}}
-			h1.wizard-title(v-if="title") {{title}}
-			h2.wizard-title(v-if="subtitle") {{subtitle}}
-		.wizard-progress
-			.progress-step(v-for="(step, index) in steps" :key="index" :class="[currentStep >= index+1 ? 'passed':'']") {{index+1}}. {{step.title}}
-	.c-form-wizard-step.grid-6
-		div(v-for="(step, index) in steps" :key="`step-${index}`" v-show="currentStep === index + 1")
-			slot(:name="`step${index + 1}`" )
-		//- slot(name="step2")
-		//- slot(name="step3")
-		//- component(v-for="field in steps[currentStep-1].fields" :is="field.component" v-model="field.model" v-bind="field")
-	.c-form-wizard-controls
-		c-button(v-if="!firstStep" title="Previous" iconL="chevron-left" @click="nextStep(-1)")
-		slot(name="controls")
-		c-button(v-if="!lastStep" title="Next" type="primary" iconR="chevron-right" @click="nextStep(1)")
-		c-button(v-if="lastStep" title="Submit" type="primary" @click="nextStep(1)")
+.c-form-wizard
+	.header(v-if="progress")
+		//- .meta(v-if="section || title || subtitle")
+			.section(v-if="section") {{section}}
+			h1.title(v-if="title") {{title}}
+			h2.title(v-if="subtitle") {{subtitle}}
+		.progress(v-if="progress")
+			.progress-step(v-for="(s, index) in steps" :key="index" :class="[step >= index+1 ? 'passed':'']" )
+				.bar
+				.name {{index+1}}. {{s.title}}
+	.step.grid-6
+		keep-alive
+			slot(:name="`step${step}`" )
+	.controls(v-if="navigation")
+		c-button(v-if="!firstStep" title="Go Back" @click="nextStep(-1)")
+		c-button(v-if="!lastStep" title="Next" type="primary" @click="nextStep(1)")
+		//- c-button(v-if="lastStep" title="Submit" type="primary" @click="nextStep(1)")
 </template>
 
 
 <script>
-import { ref, computed } from "vue";
-import cCheckbox from "~/components/Inputs/cCheckbox.vue";
-import cSelect from "~/components/Inputs/cSelect.vue";
-import cRadioCards from "~/components/Inputs/cRadioCards.vue";
+import { ref, computed, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
 export default {
-	"components": {
-		cCheckbox,
-		cSelect,
-		cRadioCards
-	},
 	"props": {
 		"section": {
 			"type": String,
@@ -52,27 +43,41 @@ export default {
 			"type": Array,
 			"required": true
 		},
-		"fullWidth": {
+		"progress": {
 			"type": Boolean,
-			"required": false,
-			"default": false
+			"default": true
+		},
+		"navigation": {
+			"type": Boolean,
+			"default": true
 		}
 	},
+	"emits": ["update:step"],
 	setup ( props ) {
-		const currentStep = ref( 1 );
-
-		const firstStep = computed( () => currentStep.value === 1 );
-		const lastStep = computed( () => currentStep.value === props.steps.length );
+		const router = useRouter();
+		const route = useRoute();
+		const step = ref( 1 );
+		const firstStep = computed( () => step.value === 1 );
+		const lastStep = computed( () => step.value === props.steps.length );
 
 		const nextStep = value => {
 			if ( firstStep.value && value === -1 || lastStep.value && value === 1 ) return;
-			currentStep.value += value;
+			step.value += value;
+			router.push({ "query": { "step": step.value } });
 		};
+
+
+		onMounted( () => {
+			const routeStep = parseFloat( route.query.step ) || 1;
+			step.value = routeStep;
+			router.push({ "query": { "step": routeStep } });
+		});
+
 		return {
 			firstStep,
 			lastStep,
-			currentStep,
-			nextStep
+			nextStep,
+			step
 		};
 	}
 };
@@ -81,36 +86,48 @@ export default {
 <style lang="stylus" scoped>
 .c-form-wizard
 	background: var(--c-bg-z2)
-	max-width: 800px
-	min-height: 100%
-	margin: auto
-	padding: 3em 2em
-	&.fullWidth
-		max-width: 100%
-	.c-form-wizard-header
-		.wizard-meta
+	// max-width: 800px
+	// min-height: 100%
+	// margin: auto
+	// padding: 3em 2em
+	.header
+		margin-bottom: 3em
+		.meta
 			margin-bottom: 2em
-		.wizard-progress
+		.progress
 			display: flex
 			gap: 0.6em
 			.progress-step
 				flex: 1
-				padding-top: 0.5em
 				color: var(--c-dimmed-light)
-				border-top: 0.4em solid var(--c-border)
+				width: 100%
+				line-height: 1.3
+				.bar
+					width: 100%
+					height: 0.4em
+					background: transparent
+					position: relative
+					background: var(--c-border)
+					margin-bottom: 0.5em
+					&:after
+						content: ""
+						width: 0
+						height: 100%
+						position: absolute
+						top: 0
+						left: 0
+						background: var(--c-text)
+						transition: 0.2s width
 				&.passed
 					color: var(--c-text)
-					border-color: var(--c-text)
-.c-form-wizard-step
-	margin-top: 2em
-	// display: flex
-	// flex-direction: column
-	// gap: 1em
-.c-form-wizard-controls
-	display: flex
-	justify-content: flex-end
-	gap: 1em
-	margin-top: 2em
-	button:first-child
-		margin-right: auto
+					.bar:after
+						width: 100%
+						background: var(--c-text)
+
+	.controls
+		margin-top: auto
+		display: flex
+		justify-content: flex-end
+		gap: 1em
+		margin-top: 2em
 </style>

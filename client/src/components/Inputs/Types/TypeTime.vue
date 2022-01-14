@@ -13,7 +13,7 @@ export default {
 	},
 	"emits": ["updateValue"],
 	setup ( props, context ) {
-		const updateModelValue = value => context.emit( "updateValue", value );
+		const updateModelValue = value => context.emit( "updateValue", parseInt( value, 10 ) );
 		return { updateModelValue };
 	}
 };

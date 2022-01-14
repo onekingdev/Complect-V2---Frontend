@@ -15,7 +15,6 @@ exports.router = async event => {
 		};
 		return await methods[event.httpMethod]();
 	} catch ( error ) {
-		console.error( error );
 		return response( 400, error );
 	}
 };

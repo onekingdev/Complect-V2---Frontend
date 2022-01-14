@@ -72,179 +72,180 @@ const industries = [
 	}
 ];
 
-const subindustriesBusiness = [
-	{
-		"value": 1.0,
-		"title": "Broker Rep"
-	},
-	{
-		"value": 1.1,
-		"title": "Funding Portal"
-	},
-	{
-		"value": 1.2,
-		"title": "Capital Acquisition Broker"
-	},
-	{
-		"value": 1.3,
-		"title": "Limited Purpose Broker Dealer"
-	},
-	{
-		"value": 1.4,
-		"title": "Broker Dealer"
-	},
-	{
-		"value": 1.5,
-		"title": "Alternative Trading System/Exchange"
-	},
-	{
-		"value": 2.0,
-		"title": "Investment Banking"
-	},
-	{
-		"value": 2.1,
-		"title": "Retail/Commercial Banking"
-	},
-	{
-		"value": 4.0,
-		"title": "Provide advice to separately managed accounts (e.g. individuals)"
-	},
-	{
-		"value": 4.1,
-		"title": "Provide advice to mutual funds"
-	},
-	{
-		"value": 4.2,
-		"title": "Provide advice to hedge funds"
-	},
-	{
-		"value": 4.3,
-		"title": "Provide advice to private equity funds"
-	},
-	{
-		"value": 4.4,
-		"title": "Provide advice to venture capital funds"
-	},
-	{
-		"value": 4.5,
-		"title": "Provide advice to ERISA accounts"
-	},
-	{
-		"value": 4.6,
-		"title": "Provide advice to Taft-Hartley accounts"
-	},
-	{
-		"value": 4.7,
-		"title": "Provide advice to municipalities or on municipal securities"
-	},
-	{
-		"value": 14.0,
-		"title": "Commodities Pool Operator/Commodities Trading Adviser (exempt and non-exempt)"
-	},
-	{
-		"value": 14.1,
-		"title": "Futures Commission Merchant"
-	},
-	{
-		"value": 14.2,
-		"title": "Retail Foreign Exchange Dealer"
-	},
-	{
-		"value": 14.3,
-		"title": "Introducing Broker"
-	},
-	{
-		"value": 14.4,
-		"title": "Swap Dealer"
-	}
-];
-
-const subindustriesSpecialist = [
-	{
-		"value": 2.0,
-		"title": "AML/KYC (Banking)"
-	},
-	{
-		"value": 1.0,
-		"title": "Funding portals"
-	},
-	{
-		"value": 1.1,
-		"title": "ATS/Exchanges"
-	},
-	{
-		"value": 1.2,
-		"title": "Limited purpose broker dealers"
-	},
-	{
-		"value": 1.3,
-		"title": "Capital acquisition brokers"
-	},
-	{
-		"value": 1.4,
-		"title": "Broker dealers"
-	},
-	{
-		"value": 1.5,
-		"title": "AML/KYC (Broker Dealer)"
-	},
-	{
-		"value": 4.0,
-		"title": "ERISA"
-	},
-	{
-		"value": 4.1,
-		"title": "GIPS"
-	},
-	{
-		"value": 4.2,
-		"title": "Mutual funds"
-	},
-	{
-		"value": 4.3,
-		"title": "Business development corporations"
-	},
-	{
-		"value": 4.4,
-		"title": "Private equity funds"
-	},
-	{
-		"value": 4.5,
-		"title": "Hedge funds"
-	},
-	{
-		"value": 4.6,
-		"title": "Venture capital funds"
-	},
-	{
-		"value": 4.7,
-		"title": "Municipal advisors"
-	},
-	{
-		"value": 4.8,
-		"title": "Financial Planners"
-	},
-	{
-		"value": 14.0,
-		"title": "CPO/CTAs (exempt and non-exempt)"
-	},
-	{
-		"value": 14.1,
-		"title": "Futures Commission Merchant"
-	},
-	{
-		"value": 14.2,
-		"title": "Retail Foreign Exchange Dealer"
-	},
-	{
-		"value": 14.3,
-		"title": "Introducing Broker"
-	},
-	{
-		"value": 14.4,
-		"title": "Swap Dealer"
-	}
-];
+const subIndustries = {
+	"business": [
+		{
+			"value": 1.0,
+			"title": "Broker Rep"
+		},
+		{
+			"value": 1.1,
+			"title": "Funding Portal"
+		},
+		{
+			"value": 1.2,
+			"title": "Capital Acquisition Broker"
+		},
+		{
+			"value": 1.3,
+			"title": "Limited Purpose Broker Dealer"
+		},
+		{
+			"value": 1.4,
+			"title": "Broker Dealer"
+		},
+		{
+			"value": 1.5,
+			"title": "Alternative Trading System/Exchange"
+		},
+		{
+			"value": 2.0,
+			"title": "Investment Banking"
+		},
+		{
+			"value": 2.1,
+			"title": "Retail/Commercial Banking"
+		},
+		{
+			"value": 4.0,
+			"title": "Provide advice to separately managed accounts (e.g. individuals)"
+		},
+		{
+			"value": 4.1,
+			"title": "Provide advice to mutual funds"
+		},
+		{
+			"value": 4.2,
+			"title": "Provide advice to hedge funds"
+		},
+		{
+			"value": 4.3,
+			"title": "Provide advice to private equity funds"
+		},
+		{
+			"value": 4.4,
+			"title": "Provide advice to venture capital funds"
+		},
+		{
+			"value": 4.5,
+			"title": "Provide advice to ERISA accounts"
+		},
+		{
+			"value": 4.6,
+			"title": "Provide advice to Taft-Hartley accounts"
+		},
+		{
+			"value": 4.7,
+			"title": "Provide advice to municipalities or on municipal securities"
+		},
+		{
+			"value": 14.0,
+			"title": "Commodities Pool Operator/Commodities Trading Adviser (exempt and non-exempt)"
+		},
+		{
+			"value": 14.1,
+			"title": "Futures Commission Merchant"
+		},
+		{
+			"value": 14.2,
+			"title": "Retail Foreign Exchange Dealer"
+		},
+		{
+			"value": 14.3,
+			"title": "Introducing Broker"
+		},
+		{
+			"value": 14.4,
+			"title": "Swap Dealer"
+		}
+	],
+	"specialist": [
+		{
+			"value": 1.0,
+			"title": "Funding portals"
+		},
+		{
+			"value": 1.1,
+			"title": "ATS/Exchanges"
+		},
+		{
+			"value": 1.2,
+			"title": "Limited purpose broker dealers"
+		},
+		{
+			"value": 1.3,
+			"title": "Capital acquisition brokers"
+		},
+		{
+			"value": 1.4,
+			"title": "Broker dealers"
+		},
+		{
+			"value": 1.5,
+			"title": "AML/KYC (Broker Dealer)"
+		},
+		{
+			"value": 2.0,
+			"title": "AML/KYC (Banking)"
+		},
+		{
+			"value": 4.0,
+			"title": "ERISA"
+		},
+		{
+			"value": 4.1,
+			"title": "GIPS"
+		},
+		{
+			"value": 4.2,
+			"title": "Mutual funds"
+		},
+		{
+			"value": 4.3,
+			"title": "Business development corporations"
+		},
+		{
+			"value": 4.4,
+			"title": "Private equity funds"
+		},
+		{
+			"value": 4.5,
+			"title": "Hedge funds"
+		},
+		{
+			"value": 4.6,
+			"title": "Venture capital funds"
+		},
+		{
+			"value": 4.7,
+			"title": "Municipal advisors"
+		},
+		{
+			"value": 4.8,
+			"title": "Financial Planners"
+		},
+		{
+			"value": 14.0,
+			"title": "CPO/CTAs (exempt and non-exempt)"
+		},
+		{
+			"value": 14.1,
+			"title": "Futures Commission Merchant"
+		},
+		{
+			"value": 14.2,
+			"title": "Retail Foreign Exchange Dealer"
+		},
+		{
+			"value": 14.3,
+			"title": "Introducing Broker"
+		},
+		{
+			"value": 14.4,
+			"title": "Swap Dealer"
+		}
+	]
+};
 
 // const states = [
 // 	"Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
@@ -657,4 +658,4 @@ const timezones = [
 ];
 
 
-export { industries, subindustriesBusiness, subindustriesSpecialist, jurisdictions, countries, timezones };
+export { industries, subIndustries, jurisdictions, countries, timezones };

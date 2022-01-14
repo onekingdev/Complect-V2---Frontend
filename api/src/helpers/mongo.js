@@ -22,6 +22,23 @@ const getCollection = async collectionName => {
 	return collection;
 };
 
+
+// temp!!! Will be replaced soon with agregation pipeline
+const findInCollections = async ( collections, query, options ) => {
+	try {
+		let results;
+		results = [];
+		for ( const collection of collections ) {
+			const col = await getCollection( collection );
+			const find = await col.find( query, options ).toArray();
+			if ( find ) results = [...results, ...find];
+		}
+		return results;
+	} catch ( error ) {
+		console.error( error );
+	}
+};
+
 const disconnectFromDatabase = async () => {
 	const client = await connectToDatabase();
 	client.close( error => {
@@ -32,5 +49,6 @@ const disconnectFromDatabase = async () => {
 module.exports = {
 	connectToDatabase,
 	getCollection,
+	findInCollections,
 	disconnectFromDatabase
 };

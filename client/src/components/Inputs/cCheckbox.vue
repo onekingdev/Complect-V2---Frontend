@@ -30,7 +30,8 @@ export default {
 			"type": [
 				Array, Boolean
 			],
-			"default": false
+			"required": true,
+			"default": () => []
 		},
 		"multiple": Boolean
 	},
@@ -70,6 +71,7 @@ export default {
 		visibility: hidden
 		display: none
 	.checkbox-body
+		flex-shrink: 0
 		font-size: 1.2em
 		cursor: pointer
 		width: 1em

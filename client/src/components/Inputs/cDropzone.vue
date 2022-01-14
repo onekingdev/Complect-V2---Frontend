@@ -16,6 +16,10 @@
 import { reactive, ref } from "vue";
 export default {
 	"props": {
+		"text": {
+			"type": String,
+			"default": "Drag and drop files to upload"
+		},
 		"modelValue": {
 			"type": [
 				Array, String
@@ -24,7 +28,6 @@ export default {
 		},
 		"button": {
 			"type": Boolean,
-			"required": false,
 			"default": true
 		},
 		"accept": {
@@ -32,18 +35,13 @@ export default {
 			"required": false,
 			"default": "*"
 		},
-		"multiple": {
-			"type": Boolean,
-			"default": false
-		}
+		"multiple": Boolean
 	},
 	"emits": ["update:modelValue"],
 	setup ( props, context ) {
 		const files = reactive([]);
 		const fileInput = ref( null );
 		const isDragover = ref( false );
-
-		const text = props.button ? "Drag and drop files to upload" : "Drag and drop elements into the builder";
 
 		const uploadFiles = () => fileInput.value.click();
 
@@ -70,7 +68,6 @@ export default {
 		};
 
 		return {
-			text,
 			fileInput,
 			files,
 			uploadFiles,

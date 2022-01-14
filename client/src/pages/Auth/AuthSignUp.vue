@@ -1,30 +1,25 @@
 <template lang="pug">
 c-card
 	template(#content)
-		div.step-one(v-if="currentStep === 1")
-			h2.heading.large Let's get you started!
-			h4.heading.medium Select your account type
-			c-radio-cards.account-types(id="user-type" :data="accountTypes" :alignCenter="true" v-model="user.type")
-			c-button(title="Next" type="primary" @click="nextStep" fullwidth)
-		div.step-two(v-if="currentStep === 2")
-			h2.heading.large Let's get you started!
-			h4.heading.medium Create your FREE account
-			div.signup-form
-				div.field.grid-6
-					c-field.col-3(label="First Name" v-model="user.firstName" required)
-					c-field.col-3(label="Last Name" v-model="user.lastName" required)
-				div.field
-					c-field(label="Email" v-model="user.email" required)
-				div.field
-					c-field(label="Password" v-model="user.password" required)
-				div.field
-					c-field(label="Repeat Password" v-model="password2" required)
-			div.terms
-				| By signing up, I accept the
-				a(href="/terms-of-use") Complect Terms of Use
-				| and acknowledge the
-				a(href="/privacy-policy") Privacy Policy
-			c-button(title="Sign Up" type="primary" fullwidth)
+		template(v-if="step === 1")
+			h1 Let's get you started!
+			h2 Select your account type
+			c-radio-cards.account-types(id="user-type" :data="accountTypes" :alignCenter="true" v-model="form.type")
+			c-button(title="Next" type="primary" @click="nextStep(1)" fullwidth)
+		template(v-if="step === 2")
+			h1 Let's get you started!
+			h2 Create your FREE account
+			.form.grid-6
+				c-field.col-3(label="First Name" v-model="form.firstName" required)
+				c-field.col-3(label="Last Name" v-model="form.lastName" required)
+				c-field(label="Email" v-model="form.email" required)
+				c-field(label="Password" type="password" v-model="form.password" required)
+				c-field(label="Repeat Password" type="password" v-model="password2" required)
+			.terms By signing up, I accept the Complect&nbsp;
+				a(href="https://www.complect.com/terms-of-use" target="_blank" rel="noopener") Terms of Use&nbsp;
+				| and acknowledge the&nbsp;
+				a(href="https://www.complect.com/privacy-policy" target="_blank" rel="noopener") Privacy Policy
+			c-button(title="Sign Up" type="primary" @click="signUpUser()" fullwidth)
 	template(#footer)
 		p Already have a Complect account?
 			router-link(:to="{name: 'AuthSignIn'}")  Sign In
@@ -32,48 +27,54 @@ c-card
 
 
 <script>
-import { ref, reactive } from "vue";
-import cFormWizard from "~/components/FormWizard/cFormWizard.vue";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import useAuth from "~/core/auth";
+import useForm from "~/store/Form.js";
 import cRadioCards from "~/components/Inputs/cRadioCards.vue";
+
 export default {
-	"components": {
-		cFormWizard,
-		cRadioCards
-	},
+	"components": { cRadioCards },
 	setup () {
-		const user = reactive({
-			"type": "",
-			"firstName": "",
-			"lastName": "",
-			"email": "",
-			"password": ""
-		});
+		const router = useRouter();
+		const { registration } = useAuth();
+		const { form, resetForm } = useForm( "registration" );
 		const accountTypes = [
 			{
-				"key": "business",
+				"value": "business",
 				"title": "I am a business",
 				"image": "business",
 				"description": "Looking to effectively manage my compliance program and find expertise"
 			}, {
-				"key": "specialist",
+				"value": "specialist",
 				"title": "I am a specialist",
 				"image": "briefcase",
 				"description": "Looking to work with potential clients on compliance projects"
 			}
 		];
-		const password2 = ref( null );
 
-		const currentStep = ref( 1 );
-		// const prevStep = () => currentStep.value -= 1;
-		const nextStep = () => currentStep.value += 1;
+		const password2 = ref( "" );
+		const step = ref( 1 );
+		const nextStep = value => step.value += value;
+
+		const signUpUser = async () => {
+			try {
+				await registration( form.value );
+				sessionStorage.setItem( "email", JSON.stringify( form.value.email ) ); // will be changed to sessionID
+				router.push({ "name": "AuthVerification" });
+				await resetForm();
+			} catch ( error ) {
+				console.error( error );
+			}
+		};
 
 		return {
-			user,
-			accountTypes,
+			form,
 			password2,
-			currentStep,
-			// prevStep,
-			nextStep
+			step,
+			nextStep,
+			accountTypes,
+			signUpUser
 		};
 	}
 };
@@ -81,19 +82,8 @@ export default {
 
 
 <style lang="stylus" scoped>
-.heading
-	text-align: center
-	&.large
-		font-size: 2em
-		font-weight: bold
-	&.medium
-		font-size: 1.2em
 .account-types
-	margin: 2em 0
-.signup-form
-	margin: 1.8em 0 0.8em 0
-	.field
-		margin: 0.6em 0
+	margin: 1em 0
 .terms
 	font-size: 0.9em
 	margin-bottom: 1em

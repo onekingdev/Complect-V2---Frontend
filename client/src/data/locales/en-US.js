@@ -122,6 +122,11 @@ export default {
 		"Examples": "Examples",
 		"Collection": "Collection",
 		"Misc": "Misc",
-		"Additional": "Additional"
+		"Additional": "Additional",
+
+
+		// api codes
+		"auth0": "Incorrect email",
+		"auth1": "Incorrect password"
 	}
 };

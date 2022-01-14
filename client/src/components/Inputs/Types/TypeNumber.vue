@@ -1,5 +1,5 @@
 <template lang="pug">
-input(type="number" :value="value" @input="updateModelValue($event.target.value)")
+input(type="number" :value="value" @change="updateModelValue($event.target.value)")
 </template>
 
 
@@ -8,8 +8,8 @@ export default {
 	"props": {
 		"value": {
 			"type": Number,
-			"default": 0,
-			"required": true
+			"default": null,
+			"required": false
 		}
 	},
 	"emits": ["updateValue"],

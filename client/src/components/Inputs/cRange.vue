@@ -1,8 +1,8 @@
 <template lang="pug">
 .c-input.c-range
-	icon(v-if="iconL" :name="iconL" @click="stepValue(-1)")
-	input(type="range" :min="min" :max="max" step=1 :value="modelValue" @input="updateValue")
-	icon(v-if="iconR" :name="iconR" @click="stepValue(1)")
+	icon(v-if="iconL" :name="iconL" @click="stepValue(-step)")
+	input(type="range" :min="min" :max="max" :step="step" :value="modelValue" @input="updateValue")
+	icon(v-if="iconR" :name="iconR" @click="stepValue(step)")
 </template>
 
 
@@ -122,6 +122,4 @@ export default {
 			border-radius: 50%
 			background: #eee
 			cursor: pointer
-
-
 </style>

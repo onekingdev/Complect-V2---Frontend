@@ -2,11 +2,11 @@
 c-card
 	template(#content)
 		h1 Let's get you started!
-		.form
-			c-field(label="Email:" placeholder="example@email.com" type="email" v-model="data.email" fullwidth required)
-			c-field(label="Password:" placeholder="********" type="password" v-model="data.password" fullwidth required)
+		.form.grid-6
+			c-field(label="Email" type="email" v-model="form.email" fullwidth required)
+			c-field(label="Password" type="password" v-model="form.password" fullwidth required)
 			c-button(title="Sign In" type="primary" @click="signIn()" fullwidth)
-			router-link(:to="{name: 'AuthResetPassword'}") Forgot Password
+			c-button(title="Forgot Password" type="link" @click="toResetPassword()" fullwidth)
 	template(#footer)
 		p Don't have an account yet?&nbsp;
 			router-link(:to="{name: 'AuthSignUp'}") Sign Up
@@ -14,19 +14,32 @@ c-card
 
 
 <script>
-import { reactive } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
+import useAuth from "~/core/auth";
+
 export default {
 	setup () {
 		const router = useRouter();
-		const data = reactive({
-			"email": "",
-			"password": ""
-		});
-		const signIn = () => router.push({ "name": "AuthVerification" });
+		const { authentication } = useAuth();
+		const form = ref({});
+		const signIn = async () => {
+			try {
+				await authentication( form.value );
+				sessionStorage.setItem( "email", JSON.stringify( form.value.email ) ); // will be changed to sessionID
+				router.push({ "name": "AuthVerification" });
+			} catch ( error ) {
+				console.error( error );
+			}
+		};
+
+
+		const toResetPassword = () => router.push({ "name": "AuthResetPassword" });
+
 		return {
-			data,
-			signIn
+			form,
+			signIn,
+			toResetPassword
 		};
 	}
 };

@@ -7,7 +7,8 @@
 		:placeholder="placeholder"
 		:required="required"
 		v-model="selectedObjects"
-		disabled
+		:disabled="disabled"
+		readonly
 		@click="showDropdownList()")
 
 	.dropdown-list(v-show="datalistVisible" tabindex="-1" ref="dropdownList")
@@ -30,7 +31,7 @@ export default {
 			"type": [
 				String, Number, Array
 			],
-			"required": true
+			"default": ""
 		},
 		"label": {
 			"type": String,
@@ -46,6 +47,7 @@ export default {
 			"type": Array,
 			"required": true
 		},
+		"disabled": Boolean,
 		"multiple": Boolean,
 		"required": Boolean,
 		"searchable": Boolean
@@ -111,12 +113,12 @@ export default {
 				});
 				return objects;
 			}
-
 			const index = props.data.findIndex( item => item.value === selected );
 			return props.data[index].title;
 		};
 
 		onMounted( () => {
+			if ( !props.modelValue ) return;
 			selectedItems.value = props.modelValue;
 			selectedObjects.value = valuesToObjects( props.modelValue );
 		});

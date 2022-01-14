@@ -1,5 +1,5 @@
 <template lang="pug">
-input(type="email" :value="value" @input="updateModelValue($event.target.value)")
+input(type="email" :value="value" :placeholder="placeholder" @change="updateModelValue($event.target.value)")
 </template>
 
 
@@ -9,6 +9,11 @@ export default {
 		"value": {
 			"type": String,
 			"required": true
+		},
+		"placeholder": {
+			"type": String,
+			"default": "example@email.com",
+			"required": false
 		}
 	},
 	"emits": ["updateValue"],

@@ -1,5 +1,8 @@
 "use strict";
 
+const bcrypt = require( "bcrypt" );
+
+
 // request guard
 const requestGuard = async event => {
 	try {
@@ -13,14 +16,15 @@ const requestGuard = async event => {
 };
 
 // server response format
-const response = ( code = 200, message = "", data = "" ) => {
+const response = ({ httpCode, internalCode, message, data }) => {
 	const body = {
-		ok: code === 200,
+		ok: httpCode < 400,
+		internalCode,
 		message,
 		data
 	};
 	return {
-		statusCode: code,
+		statusCode: httpCode,
 		headers: {
 			"Content-Type": "application/json",
 			"Access-Control-Allow-Origin": "*",
@@ -30,8 +34,41 @@ const response = ( code = 200, message = "", data = "" ) => {
 	};
 };
 
+const randomNumber = ( minimum = 0, maximum = 100 ) => Math.round( Math.random() * ( maximum - minimum ) + minimum );
+
+const checkFields = ( object, keys ) => {
+	try {
+		keys.forEach( key => {
+			if ( key in object === false && !object[key].length ) ;
+		});
+		return true;
+	} catch ( error ) {
+		console.debug( false );
+		return false;
+	}
+};
+
+
+const devStageLog = data => {
+	if ( process.env.STAGE === "dev" ) {
+		console.debug( "------------------------" );
+		console.debug( data );
+		console.debug( "------------------------" );
+	}
+};
+
+
+// functions
+const generateHash = async plain => await bcrypt.hash( plain, 10 );
+const compareHash = async ( plain, hashed ) => await bcrypt.compare( plain, hashed );
+
 
 module.exports = {
 	requestGuard,
-	response
+	response,
+	randomNumber,
+	checkFields,
+	devStageLog,
+	generateHash,
+	compareHash
 };

@@ -53,11 +53,12 @@ export default {
 	font-size: 0.9em
 	border-radius: var(--v-inputs-border-radius)
 	transition: color 0.2s ease-in, background 0.2s ease-in, opacity 0.2s ease-in
-	padding: 0.4em 1em
+	padding: 0.5em 1em
 	display: flex
 	align-items: center
 	justify-content: center
 	position: relative
+	flex-shrink: 0
 	svg.icon
 		width: 1em
 		height: 1em
@@ -138,7 +139,7 @@ export default {
 		.title
 			font-weight: 400
 		&:hover, &.hovered
-			background: #f3f6f9
+			background: #F6F6F8
 		&.focused
 			background: #f3f6f9
 			box-shadow: 0 0 0 0.15em #007aff
@@ -159,6 +160,13 @@ export default {
 			box-shadow: 0 0 0 0.15em #007aff
 		svg.icon
 			fill: #CE1938
+	&.plan
+		color: #303132
+		background: #fff
+		box-shadow: 0 0 0 1px #303132
+		&:hover, &.hovered
+			background: #303132
+			color: #fff
 
 	&.icon
 		background: transparent

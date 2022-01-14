@@ -1,8 +1,7 @@
 <template lang="pug">
 .bar.topbar
-	router-link(:to="{name: 'Dashboard'}")
-		icon(name="logo")
-	.navigation
+	icon(name="logo" @click="toDashboard()")
+	.navigation(v-if="!simpleTopBar")
 		.menu
 			a.active Home
 			a Documents
@@ -10,18 +9,19 @@
 		.buttons
 			c-button(title="Find an Expert" type="accent")
 			c-button(iconL="bell" type="transparent")
-	.user-block(v-if="userProfile" @click="toggleUserDropDown()" ref="userDropDown" :class="{expanded: userDropDownExpanded}")
-		c-avatar(:avatar="userProfile.avatar" :firstName="userProfile.firstName" :lastName="userProfile.lastName" size="small")
-		.name {{userProfile.firstName}} {{userProfile.lastName}}
+	.user-block(v-if="profile" @click="toggleUserDropDown()" ref="userDropDown" :class="{expanded: userDropDownExpanded}")
+		c-avatar(:avatar="profile.avatar" :firstName="profile.firstName" :lastName="profile.lastName" size="small")
+		.name {{profile.firstName}} {{profile.lastName}}
 		icon(name="chevron-down")
 		.dropdown-menu(v-if="userDropDownExpanded")
-			router-link(:to="{name: 'Profile'}") {{$locale("Profile")}}
+			router-link(v-if="!simpleTopBar" :to="{name: 'Profile'}") {{$locale("Profile")}}
 			a(@click="signOut()") {{$locale("Sign Out")}}
 </template>
 
 
 <script>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { onClickOutside } from "@vueuse/core";
 import useAuth from "~/core/auth.js";
 import useProfile from "~/store/Profile.js";
@@ -29,18 +29,31 @@ import cAvatar from "~/components/Misc/cAvatar.vue";
 export default {
 	"components": { cAvatar },
 	setup () {
+		const route = useRoute();
+		const router = useRouter();
 		const { signOut } = useAuth();
-		const { userProfile } = useProfile();
+		const { profile } = useProfile();
 		const userDropDown = ref( null );
 		const userDropDownExpanded = ref( false );
 		const toggleUserDropDown = () => userDropDownExpanded.value = !userDropDownExpanded.value;
 		onClickOutside( userDropDown, () => userDropDownExpanded.value = false );
+
+		// render topbar style, depend on route meta
+		const simpleTopBar = computed( () => {
+			if ( "topbar" in route.meta && route.meta.topbar === "simple" ) return true;
+			return false;
+		});
+
+		const toDashboard = () => simpleTopBar.value ? router.push({ "name": "Dashboard" }) : router.push({ "name": "OnboardingForm" });
+
 		return {
 			signOut,
-			userProfile,
+			profile,
 			userDropDown,
 			userDropDownExpanded,
-			toggleUserDropDown
+			toggleUserDropDown,
+			simpleTopBar,
+			toDashboard
 		};
 	}
 };
@@ -58,6 +71,7 @@ export default {
 	svg.icon-logo
 		width: 1.5em
 		height: 1.5em
+		cursor: pointer
 	.navigation
 		display: flex
 		align-items: center
@@ -130,5 +144,4 @@ export default {
 				&.router-link-exact-active
 					color: var(--c-link)
 					background: var(--c-bg-light-active, #ecf4ff)
-
 </style>

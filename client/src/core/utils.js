@@ -43,4 +43,10 @@ const calcRiskLevel = ( impact, likelihood ) => {
 	return 1;
 };
 
-export { randomNumber, randomMongoId, sortArrayByKey, formatDate, calcRiskLevel };
+const removeSensitiveData = ( object, keys ) => {
+	keys.forEach( key => {
+		delete object[key];
+	});
+};
+
+export { randomNumber, randomMongoId, sortArrayByKey, formatDate, calcRiskLevel, removeSensitiveData };

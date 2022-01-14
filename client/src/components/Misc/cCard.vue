@@ -3,6 +3,8 @@
 	.c-card-header(v-if="title || $slots['header-controls']")
 		.card-title(v-if="title") {{ $locale(title) }}
 		slot(v-if="$slots['header-controls']" name="header-controls")
+	.c-card-sub-header.grid-6(v-if="$slots['sub-header']")
+		slot(name="sub-header")
 	.c-card-content.grid-6(v-if="$slots.content")
 		slot(name="content")
 	.c-card-footer(v-if="$slots.footer")
@@ -30,10 +32,11 @@ export default {
 	border-radius: var(--v-border-radius)
 	width: 100%
 	margin: auto
-	.c-card-header
-		line-height: 1
-		padding: 1em
+	.c-card-header, .c-card-sub-header
 		border-bottom: 1px solid var(--c-border)
+	.c-card-header
+		padding: 1em
+		line-height: 1
 		display: flex
 		gap: 0.5em
 		align-items: center
@@ -41,9 +44,8 @@ export default {
 		.card-title
 			font-size: 1.2em
 			margin-right: auto
-	.c-card-content
+	.c-card-content, .c-card-sub-header
 		padding: 1.5em
-
 	.c-card-footer
 		display: flex
 		gap: 1em

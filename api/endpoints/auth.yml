@@ -1,0 +1,97 @@
+authSignUp:
+  name: complect-api-${opt:stage, "dev"}-auth-signUp
+  handler: src/functions/auth.signUp
+  description: Sign Up API endpoints
+  tags:
+    website: Complect App
+    type: API
+    subtype: Auth
+  events:
+    - http:
+        path: auth/sign-up
+        method: post
+        cors: true
+
+authSignIn:
+  name: complect-api-${opt:stage, "dev"}-auth-signIn
+  handler: src/functions/auth.signIn
+  description: Sign In API endpoints
+  tags:
+    website: Complect App
+    type: API
+    subtype: Auth
+  events:
+    - http:
+        path: auth/sign-in
+        method: post
+        cors: true
+
+newOtp:
+  name: complect-api-${opt:stage, "dev"}-auth-newOtp
+  handler: src/functions/auth.newOtp
+  description: Generate New OTP API endpoints
+  tags:
+    website: Complect App
+    type: API
+    subtype: Auth
+  events:
+    - http:
+        path: auth/new-otp
+        method: post
+        cors: true
+
+checkOtp:
+  name: complect-api-${opt:stage, "dev"}-auth-checkOtp
+  handler: src/functions/auth.checkOtp
+  description: OTP Check API endpoints
+  tags:
+    website: Complect App
+    type: API
+    subtype: Auth
+  events:
+    - http:
+        path: auth/otp
+        method: post
+        cors: true
+
+sendResetLink:
+  name: complect-api-${opt:stage, "dev"}-auth-sendResetLink
+  handler: src/functions/auth.sendResetLink
+  description: Send Reset Link API endpoints
+  tags:
+    website: Complect App
+    type: API
+    subtype: Auth
+  events:
+    - http:
+        path: auth/reset
+        method: post
+        cors: true
+
+onboarding:
+  name: complect-api-${opt:stage, "dev"}-auth-onboardingResetLink
+  handler: src/functions/auth.onboarding
+  description: Onboarding API endpoints
+  tags:
+    website: Complect App
+    type: API
+    subtype: Auth
+  events:
+    - http:
+        path: auth/onboarding
+        method: post
+        cors: true
+
+profile:
+  name: complect-api-${opt:stage, "dev"}-auth-profile
+  handler: src/functions/auth.profile
+  description: Profile API endpoints
+  tags:
+    website: Complect App
+    type: API
+    subtype: Auth
+  events:
+    - http:
+        path: auth/profile
+        method: post
+        cors: true

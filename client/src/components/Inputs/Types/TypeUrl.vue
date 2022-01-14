@@ -1,5 +1,5 @@
 <template lang="pug">
-input(type="url" :value="value" @input="updateModelValue($event.target.value)")
+input(type="url" :value="value" @change="updateModelValue($event.target.value)")
 </template>
 
 

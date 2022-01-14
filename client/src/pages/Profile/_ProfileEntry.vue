@@ -9,7 +9,7 @@
 					:key="index"
 					:is="input.component"
 					v-bind="input.props"
-					:modelValue="userProfile[key]"
+					:modelValue="profile[key]"
 					@update:modelValue="update[key] = $event")
 				.controls
 					c-button(type="link" title="Cancel" @click="restoreInformation()")
@@ -22,7 +22,7 @@ import { reactive } from "vue";
 import cSelect from "~/components/Inputs/cSelect.vue";
 import cUpload from "~/components/Inputs/cUpload.vue";
 import useProfile from "~/store/Profile.js";
-import { industries, subindustriesBusiness, jurisdictions, timezones } from "~/data/static.js";
+import { industries, jurisdictions, timezones } from "~/data/static.js";
 const sections = [
 	{
 		"title": "My Profile",
@@ -97,15 +97,15 @@ const sections = [
 					"required": true
 				}
 			},
-			"subIndustries": {
-				"component": "c-select",
-				"props": {
-					"label": "Sub-Industry",
-					"placeholder": "Provide advice to mutual funds",
-					"data": subindustriesBusiness,
-					"required": true
-				}
-			},
+			// "subIndustries": {
+			// 	"component": "c-select",
+			// 	"props": {
+			// 		"label": "Sub-Industry",
+			// 		"placeholder": "Provide advice to mutual funds",
+			// 		"data": subIndustries,
+			// 		"required": true
+			// 	}
+			// },
 			"jurisdictions": {
 				"component": "c-select",
 				"props": {
@@ -198,13 +198,13 @@ export default {
 		cUpload
 	},
 	setup () {
-		const { userProfile, updateProfile } = useProfile();
+		const { profile, updateProfile } = useProfile();
 		const update = reactive({});
-		const restoreInformation = () => updateProfile( userProfile );
+		const restoreInformation = () => updateProfile( profile );
 		const saveInformation = () => updateProfile( update );
 		return {
 			sections,
-			userProfile,
+			profile,
 			update,
 			restoreInformation,
 			saveInformation

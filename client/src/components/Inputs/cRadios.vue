@@ -19,8 +19,10 @@ export default {
 			"required": true
 		},
 		"modelValue": {
-			"type": String,
-			"required": true
+			"type": [
+				String, Boolean
+			],
+			"default": false
 		}
 	},
 	"emits": ["update:modelValue"],

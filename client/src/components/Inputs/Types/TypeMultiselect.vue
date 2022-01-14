@@ -1,5 +1,6 @@
 <template lang="pug">
-.selected-items
+input(v-if="!value.length" type="text" :placeholder="placeholder" readonly)
+.selected-items(v-else)
 	.item(v-for="item in value")
 		.title {{item.title}}
 		//- icon(name="close" @click="removeSelected(item.value)") // need to fix
@@ -12,6 +13,10 @@ export default {
 		"value": {
 			"type": Array,
 			"required": true
+		},
+		"placeholder": {
+			"type": String,
+			"default": ""
 		}
 	}
 	// need to finish removeSelected
@@ -36,6 +41,7 @@ export default {
 	flex-wrap: wrap
 	gap: 0.5em
 	line-height: 1.3
+	width: 100%
 	.item
 		display: flex
 		align-items: baseline
@@ -45,7 +51,11 @@ export default {
 		background: var(--c-bg-light-active)
 		color: var(--c-link)
 		border-radius: var(--v-border-radius)
-		white-space: nowrap
+		overflow: hidden
+		.title
+			text-overflow: ellipsis
+			white-space: nowrap
+			overflow: hidden
 		svg.icon
 			cursor: pointer
 			width: 0.6em

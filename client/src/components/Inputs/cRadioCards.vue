@@ -47,7 +47,7 @@ export default {
 <style lang="stylus" scoped>
 .c-radio-card
 	display: flex
-	gap: 1em
+	gap: 1.5em
 	label.radio-card
 		flex: 1 0 0
 		display: flex
@@ -67,15 +67,15 @@ export default {
 			cursor: pointer
 			&.center
 				text-align: center
-				padding: 1.5em
+				padding: 2.5em 1em
 				.title
 					font-weight: bold
-					margin: 1em 0
+					margin-bottom: 1em
 				svg.icon
 					width: 3em
 					height: 3em
 					margin: 1.2em 0
-			svg.title-icon
+			svg
 				flex-shrink: 0
 				width: 1.1em
 				height: 1.1em

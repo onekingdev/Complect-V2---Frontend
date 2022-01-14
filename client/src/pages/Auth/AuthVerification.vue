@@ -17,14 +17,18 @@ import { ref, computed, onMounted, onUnmounted, onBeforeUpdate } from "vue";
 import useAuth from "~/core/auth.js";
 export default {
 	setup () {
-		const { signIn } = useAuth();
-		const email = ref( "example@email.com" );
+		const { verification, newOtp } = useAuth();
+		const email = ref( "" );
 		const inputs = ref([]);
 		const numbers = ref([]);
-		const code = computed( () => numbers.value.join( "" ) );
+		const otp = computed( () => numbers.value.join( "" ) );
 
-		const submitCode = () => signIn();
-		const sendNewCode = () => numbers.value = [];
+
+		const submitCode = () => verification( email.value, otp.value );
+		const sendNewCode = async () => {
+			await newOtp( email.value );
+			numbers.value = [];
+		};
 
 		const keydownHandler = ( e, index ) => {
 			if ( e.keyCode === 8 && e.target.value === "" ) inputs.value[index - 1].focus();
@@ -33,7 +37,7 @@ export default {
 		const inputHandler = ( e, index ) => {
 			const [first] = e.target.value;
 			e.target.value = first ?? "";
-			if ( code.value.length >= 6 ) inputs.value[index].blur();
+			if ( otp.value.length >= 6 ) inputs.value[index].blur();
 			if ( index !== inputs.value.length - 1 && first !== undefined ) inputs.value[index + 1].focus();
 			// inputs.value[index + 1].dispatchEvent( new Event( "input" ) );
 		};
@@ -41,6 +45,7 @@ export default {
 
 		// add Event Listners to all six number's inputs, for input & remove events
 		onMounted( () => {
+			if ( sessionStorage.getItem( "email" ) ) email.value = JSON.parse( sessionStorage.getItem( "email" ) );
 			inputs.value.forEach( ( input, index ) => {
 				input.addEventListener( "keydown", e => {
 					keydownHandler( e, index );
@@ -64,7 +69,7 @@ export default {
 
 		return {
 			email,
-			code,
+			otp,
 			inputs,
 			numbers,
 			submitCode,
