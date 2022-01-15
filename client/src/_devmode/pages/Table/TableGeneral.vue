@@ -1,6 +1,6 @@
 <template lang="pug">
-c-card(title="Table" type="flex-column")
-	template(#header-controls)
+card-container(title="Table" type="flex-column")
+	template(#controls)
 		c-select(:data="columnsSet" v-model="visibleColumns" searchable multiple)
 		c-button(iconL="refresh" @click="generateDocuments()" type="transparent")
 	template(#content)
@@ -152,7 +152,7 @@ export default {
 
 
 <style lang="stylus" scoped>
-.c-card
+.card-container
 	width: 100%
 	overflow: hidden
 // :deep(.c-table)

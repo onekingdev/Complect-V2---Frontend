@@ -1,5 +1,5 @@
 <template lang="pug">
-documents-container(title="Internal Reviews")
+page-container(title="Internal Reviews")
 	template(#controls)
 		c-button-modal(title="New Review" modalTitle="New Review" type="primary")
 			template(#content)

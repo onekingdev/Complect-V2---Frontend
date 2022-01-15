@@ -1,6 +1,6 @@
 <template lang="pug">
 .page
-	c-card(title="Profile")
+	card-container(title="Profile")
 		template(#content)
 			section(v-for="section in sections")
 				h3 {{section.title}}

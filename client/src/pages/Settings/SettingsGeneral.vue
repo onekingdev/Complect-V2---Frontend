@@ -1,5 +1,5 @@
 <template lang="pug">
-c-card(title="General")
+card-container(title="General")
 	template(#content)
 		form.form-container
 			h3 Location

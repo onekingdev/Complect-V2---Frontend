@@ -1,3 +1,3 @@
 <template lang="pug">
-c-card(title="Roles and Permissions")
+card-container(title="Roles and Permissions")
 </template>

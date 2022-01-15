@@ -1,6 +1,6 @@
 <template lang="pug">
 .onboarding-form
-	c-card(title="Set Up Your Account")
+	card-container(title="Set Up Your Account")
 		template(#content)
 			//- Business
 			c-form-wizard(v-if="userType === 'business'" :steps="wizardSteps.business")

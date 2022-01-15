@@ -1,5 +1,5 @@
 <template lang="pug">
-document-container(section="Risk Register" :title="document.title" :badge="{icon:'warning-light', title: `risk${riskLevel}`}")
+page-container(section="Risk Register" :title="document.title" :badge="{icon:'warning-light', title: `risk${riskLevel}`}" type="document")
 	template(#controls)
 		c-button(title="Delete" type="destructive" @click="deleteRisk()")
 		c-button(type="icon" iconL="close" size="small" @click="closeRisk()")

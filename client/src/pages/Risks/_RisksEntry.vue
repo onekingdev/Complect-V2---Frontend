@@ -1,5 +1,5 @@
 <template lang="pug">
-documents-container(title="Risk Register")
+page-container(title="Risk Register")
 	template(#controls)
 		c-button-modal(title="New Risk" modalTitle="New Risk" type="primary")
 			template(#content)

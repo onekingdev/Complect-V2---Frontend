@@ -1,5 +1,5 @@
 <template lang="pug">
-document-container(section="Internal Review" :title="document.title")
+page-container(section="Internal Review" :title="document.title" type="document")
 	template(#controls)
 		c-button(title="Download")
 		c-button(title="Save and Exit" type="primary")

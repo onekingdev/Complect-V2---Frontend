@@ -1,5 +1,5 @@
 <template lang="pug">
-c-card(title="Users")
+card-container(title="Users")
 	template(#content)
 		horizontal-tabs
 			template(#tabs)

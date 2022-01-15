@@ -1,6 +1,6 @@
 <template lang="pug">
-c-card(title="Icons")
-	template(#header-controls)
+card-container(title="Icons")
+	template(#controls)
 		c-field(icon type="search" v-model="searchQuery" placeholder="Search...")
 	template(#content)
 		component-constructor

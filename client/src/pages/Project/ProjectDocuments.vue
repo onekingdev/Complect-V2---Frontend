@@ -1,5 +1,5 @@
 <template lang="pug">
-c-card(title="Documents")
+card-container(title="Documents")
 	template(#controls)
 		c-button(title="Upload" type="primary")
 </template>

@@ -1,5 +1,5 @@
 <template lang="pug">
-c-card(title="Security")
+card-container(title="Security")
 	template(#content)
 		form.form-container
 			h3 Change Email

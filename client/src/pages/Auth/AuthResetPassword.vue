@@ -1,5 +1,5 @@
 <template lang="pug">
-c-card
+card-container
 	template(#content)
 		h1 Reset Password
 		p Please enter the email address used to log into your account to receive a link to reset your password. If you no longer have access to that email account, please contact us at&nbsp;

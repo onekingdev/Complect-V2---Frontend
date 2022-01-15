@@ -1,5 +1,5 @@
 <template lang="pug">
-c-card
+card-container
 	template(#content)
 		template(v-if="step === 1")
 			h1 Let's get you started!

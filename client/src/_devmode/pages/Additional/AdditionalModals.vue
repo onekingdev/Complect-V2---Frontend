@@ -1,11 +1,11 @@
 <template lang="pug">
-c-card(title="Modals")
+card-container(title="Modals")
 	template(#content)
 </template>
 
 <style lang="stylus" scoped>
-.c-card 
-	:deep(.c-card-content)
+.card-container
+	:deep(.card-content)
 		display: flex
 		flex-direction: column
 		gap: 1em

@@ -14,10 +14,12 @@ const devDataEntry = () => import( "~/_devmode/pages/Data/DataEntry.vue" );
 const devDataModel = () => import( "~/_devmode/pages/Data/DataModel.vue" );
 
 const devAdditionalEntry = () => import( "~/_devmode/pages/Additional/AdditionalEntry.vue" );
+const devAdditionalIcons = () => import( "~/_devmode/pages/Additional/AdditionalIcons.vue" );
 const devAdditionalNotifications = () => import( "~/_devmode/pages/Additional/AdditionalNotifications.vue" );
 const devAdditionalBanners = () => import( "~/_devmode/pages/Additional/AdditionalBanners.vue" );
 const devAdditionalAvatars = () => import( "~/_devmode/pages/Additional/AdditionalAvatars.vue" );
-const devAdditionalIcons = () => import( "~/_devmode/pages/Additional/AdditionalIcons.vue" );
+const devAdditionalTooltip = () => import( "~/_devmode/pages/Additional/AdditionalTooltip.vue" );
+
 
 const devAdditionalModals = () => import( "~/_devmode/pages/Additional/AdditionalModals.vue" );
 
@@ -132,6 +134,11 @@ const devRoutes = [{
 			meta: { title: "Modal Component" },
 			name: "devAdditionalModals",
 			component: devAdditionalModals
+		}, {
+			path: "tooltip",
+			meta: { title: "Tooltip Component" },
+			name: "devAdditionalTooltip",
+			component: devAdditionalTooltip
 		}, {
 			path: "",
 			redirect: { name: "devAdditionalIcons" },

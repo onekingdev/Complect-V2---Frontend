@@ -1,6 +1,6 @@
 <template lang="pug">
-c-card
-	template(#header-controls)
+card-container
+	template(#controls)
 		c-field(label="First name" v-model="form.firstName" fullwidth required)
 		c-field(label="Last name" v-model="form.lastName" fullwidth required)
 		c-button(title="Reset" type="link" @click="reset()" :disabled="!form.firstName || !form.lastName")
@@ -93,8 +93,8 @@ export default {
 
 
 <style lang="stylus" scoped>
-.c-card
-	:deep(.c-card-header)
+.card-container
+	:deep(.card-header)
 		align-items: flex-end
 		.c-field + .c-field
 			margin-left: 1em
@@ -128,7 +128,7 @@ export default {
 		&:hover
 			background: var(--c-bg-light-active)
 
-:deep(.c-card-footer)
+:deep(.card-footer)
 	.total
 		margin-right: auto
 </style>

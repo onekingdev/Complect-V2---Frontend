@@ -1,10 +1,9 @@
 <template lang="pug">
-document-container(section="Components" title="Additional")
+page-container(section="Components" title="Additional")
 	template(#tabs)
 		router-link(v-for="(tab, index) in tabs" :to="{name: tab.name}" :key="index") {{tab.title}}
 	template(#content)
-		.dev-mw
-			router-view
+		router-view
 </template>
 
 
@@ -24,6 +23,9 @@ export default {
 			}, {
 				name: "devAdditionalAvatars",
 				title: "Avatar"
+			}, {
+				name: "devAdditionalTooltip",
+				title: "Tooltip"
 			}]
 		};
 	}

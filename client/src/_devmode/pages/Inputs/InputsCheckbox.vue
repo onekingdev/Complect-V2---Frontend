@@ -1,5 +1,5 @@
 <template lang="pug">
-c-card(title="Constructor")
+card-container(title="Constructor")
 	template(#content)
 		component-constructor
 			template(#controls)
@@ -19,7 +19,7 @@ c-card(title="Constructor")
 						c-checkbox(v-for="(checkbox, index) in arrayCheckboxes" :key="index" :label="checkbox.label" :type="selectedOptions.type" :value="checkbox.value" v-model="checkedValues" multiple)
 						code.value checkedValues: {{checkedValues}}
 
-c-card.buttons-container(title="Collection")
+card-container.buttons-container(title="Collection")
 	template(#content)
 		.collection
 			c-checkbox(label="Checkbox" v-model="checkedValue")

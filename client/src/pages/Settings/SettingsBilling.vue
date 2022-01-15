@@ -1,3 +1,3 @@
 <template lang="pug">
-c-card(title="Billing")
+card-container(title="Billing")
 </template>

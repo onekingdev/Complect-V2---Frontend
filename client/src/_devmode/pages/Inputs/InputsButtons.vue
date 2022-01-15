@@ -1,5 +1,5 @@
 <template lang="pug">
-c-card(title="Constructor")
+card-container(title="Constructor")
 	template(#content)
 		component-constructor
 			template(#controls)
@@ -15,7 +15,7 @@ c-card(title="Constructor")
 					c-button(v-bind="selectedOptions" :class="state.class")
 			
 
-c-card.buttons-container(title="Collection")
+card-container.buttons-container(title="Collection")
 	template(#content)
 		c-button(v-for="button in buttons" v-bind="button")
 </template>
@@ -98,7 +98,7 @@ export default {
 
 <style lang="stylus" scoped>
 .buttons-container
-	:deep(.c-card-content)
+	:deep(.card-content)
 		display: flex
 		flex-wrap: wrap
 		justify-content: center

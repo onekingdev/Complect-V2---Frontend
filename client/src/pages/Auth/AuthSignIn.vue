@@ -1,5 +1,5 @@
 <template lang="pug">
-c-card
+card-container
 	template(#content)
 		h1 Let's get you started!
 		.form.grid-6

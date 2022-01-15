@@ -1,5 +1,5 @@
 <template lang="pug">
-c-card
+card-container
 	template(#content)
 		h1 Confirm Your Email
 		h3 We sent a 6 digit code to {{email}}. Please enter it below.

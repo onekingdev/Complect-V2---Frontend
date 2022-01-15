@@ -14,17 +14,17 @@
 		content: attr(tooltip)
 		text-align: center
 		position: absolute
-		min-width: 3em
-		max-width: 21em
+		min-width: 5rem
+		max-width: 25rem
 		white-space: nowrap
 		overflow: hidden
 		text-overflow: ellipsis
 		padding: 0.5rem
 		border-radius: 0.3rem
-		box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35)
+		box-shadow: 0 1rem 1rem -0.5rem rgba(0, 0, 0, 0.35)
 		background: var(--c-tooltip-bgColor)
 		color: var(--c-tooltip-color)
-		font-size: var(--c-tooltip-fontSize)
+		font-size: 1.4rem
 		z-index: 1000
 		opacity: 0
 		pointer-events: none
@@ -50,7 +50,7 @@
 	&[position^="top"]::before,
 	&[position^="top"]::after
 		left: 50%
-		transform: translate(-50%, -0.5em)
+		transform: translate(-50%, -1rem)
 
 	&[position^="bottom"]::before
 		top: calc(105% + 5px)
@@ -70,7 +70,7 @@
 		border-right-width: 0
 		border-left-color: var(--c-tooltip-bgColor)
 		left: calc(0em - 10px)
-		transform: translate(-0.5em, -50%)
+		transform: translate(-1rem, -50%)
 
 	&[position^="left"]::after
 		top: 50%

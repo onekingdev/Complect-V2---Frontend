@@ -1,5 +1,5 @@
 <template lang="pug">
-documents-container(title="Projects")
+page-container(title="Projects")
 	template(#controls)
 		c-button(title="Post Job" @click="postJob()")
 		c-button-modal(title="New Project" modalTitle="New Project" type="primary")
@@ -10,7 +10,6 @@ documents-container(title="Projects")
 				c-field(label="Description" v-model="newProject.description")
 			template(#footer)
 				c-button(title="Create" type="primary" @click="createProject()")
-
 	template(#tabs)
 		router-link(v-for="(tab, index) in tabs" :key="index" :to="{name: tab.routeName}") {{ $locale(tab.title)}}
 	template(#content)

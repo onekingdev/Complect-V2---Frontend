@@ -1,6 +1,6 @@
 <template lang="pug">
-c-card(title="Notifications" type="flex-column")
-	template(#header-controls)
+card-container(title="Notifications" type="flex-column")
+	template(#controls)
 		c-button(iconL="refresh" type="transparent" @click="refreshNotifications()")
 	template(#content)
 		c-notification.col-center(v-for="(notification, index) in notifications" v-bind="notification" :id="index.toString()" :key="index")

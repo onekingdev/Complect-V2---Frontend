@@ -1,12 +1,12 @@
 <template lang="pug">
-c-card(title="Risk Details")
-	template(#header-controls)
+card-container(title="Risk Details")
+	template(#controls)
 		c-button(title="Edit" type="primary")
 	template(#content)
 		definition-list(:data="riskDetails")
 
-c-card(title="Controls")
-	template(#header-controls)
+card-container(title="Controls")
+	template(#controls)
 		c-button-modal(title="New Control" modalTitle="Select Control" type="primary")
 			template(#content)
 				c-table(v-bind="{columns: controlsColumns, documents: controlsDocuments}")
@@ -89,8 +89,3 @@ export default {
 	}
 };
 </script>
-
-
-<style lang="stylus" scoped>
-</style>
-

@@ -1,5 +1,5 @@
 <template lang="pug">
-c-card(title="Constructor")
+card-container(title="Constructor")
 	template(#content)
 		component-constructor
 			template(#controls)

@@ -29,6 +29,7 @@ export default {
 
 <style lang="stylus" scoped>
 .c-banner
+	flex: 1
 	padding: 0.7em 1em
 	background: #eee
 	border-left: 0.4em solid transparent

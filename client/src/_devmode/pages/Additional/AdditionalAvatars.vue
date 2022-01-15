@@ -1,5 +1,5 @@
 <template lang="pug">
-c-card(title="Constructor")
+card-container(title="Constructor")
 	template(v-if="userProfile" #content)
 		component-constructor
 			template(#controls)
@@ -11,8 +11,8 @@ c-card(title="Constructor")
 				c-avatar(:size="selectedOptions.size" :shape="selectedOptions.shape" :avatar="userProfile.avatar" :firstName="userProfile.firstName" :lastName="userProfile.lastName")
 				c-avatar(:size="selectedOptions.size" :shape="selectedOptions.shape" :firstName="userProfile.firstName" :lastName="userProfile.lastName")
 			
-c-card(title="Collection")
-	template(#header-controls)
+card-container(title="Collection")
+	template(#controls)
 		c-button(iconL="refresh" type="transparent" @click="refreshUser()")
 	template(v-if="userProfile" #content)
 		.preview-column.col-2(v-for="(shape, index) in options.shapes" :key="index")
@@ -74,7 +74,7 @@ export default {
 
 
 <style lang="stylus" scoped>
-.c-card
+.card-container
 	margin-bottom: 2em
 	.preview-column
 		display: flex

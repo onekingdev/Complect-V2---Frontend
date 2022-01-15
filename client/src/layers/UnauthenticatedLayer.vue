@@ -50,9 +50,9 @@ export default {
 	flex: 1
 	display: flex
 	padding: 2em
-	:deep(.c-card)
+	:deep(.card-container)
 		max-width: 35em
-		.c-card-content
+		.card-content
 			padding: 2em
 			h1, h2
 				text-align: center
@@ -65,7 +65,7 @@ export default {
 				font-size: 1.3em
 			.form
 				margin: 1em 0 0em
-		.c-card-footer
+		.card-footer
 			font-size: 0.9em
 			justify-content: center
 </style>

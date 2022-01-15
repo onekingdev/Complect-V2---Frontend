@@ -1,12 +1,12 @@
 <template lang="pug">
-.document-container
+.page-container(:class="[type]")
 	.container-header
 		.container-title
-			.document-collection(v-if="section") {{ $locale(section) }}
-			.document-name(v-if="title")
+			.page-collection(v-if="section") {{ $locale(section) }}
+			.page-name(v-if="title")
 				c-badge(v-if="badge" :icon="badge.icon" :title="badge.title")
 				.title {{ title }}
-			.document-owner(v-if="owner") {{ owner }}
+			.page-owner(v-if="owner") {{ owner }}
 		.container-controls
 			.controls
 				slot(name="add-controls")
@@ -17,18 +17,20 @@
 				slot(name="tabs")
 			.controls(v-if="$slots['navigation-controls']")
 				slot(name="navigation-controls")
-
 	.container-content
 		slot(name="content")
-
 </template>
 
 
 <script>
-import cBadge from "~/components/Misc/cBadge.vue";
+import { defineAsyncComponent } from "vue";
 export default {
-	"components": { cBadge },
+	"components": { "cBadge": defineAsyncComponent( () => import( "~/components/Misc/cBadge.vue" ) ) },
 	"props": {
+		"type": {
+			"type": String,
+			"default": "documents"
+		},
 		"section": {
 			"type": String,
 			"default": ""
@@ -53,21 +55,26 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.document-container
+.page-container
+	display: flex
+	flex-direction: column
+	height: 100%
+	min-height: 0
 	.container-header
-		background: var(--c-bg-z2)
+		flex-shrink: 0
 		display: flex
 		flex-wrap: wrap
 		align-items: flex-end
 		justify-content: space-between
-		border-bottom: 1px solid var(--c-border)
 		.container-title
 			padding: 2em
 			flex: 1
-			.document-name
+			.page-name
 				font-size: 1.4em
 				display: flex
 				align-items: center
+				.title
+					line-height: 1.3
 				.c-badge
 					flex: 0 1
 					margin-right: 0.5em
@@ -84,15 +91,12 @@ export default {
 		.container-sections
 			flex-shrink: 0
 			width: 100%
-			border-top: 1px solid var(--c-border)
-
 			display: flex
 			justify-content: space-between
 			align-items: center
 			.tabs
 				flex-shrink: 1
 				overflow: scroll
-				background: var(--c-bg-z2)
 				display: flex
 				gap: 2em
 				padding: 1em 2em 0
@@ -109,9 +113,23 @@ export default {
 				padding: 0 2em
 				display: flex
 				gap: 1em
-
 	.container-content
-		display: grid
-		gap: 1em
+		flex: 1
+		align-content: flex-start
+		display: flex
+		flex-wrap: wrap
+		gap: 2em
 		padding: 1em 2em
+
+	// Types
+	&.documents
+		.container-content
+			background: var(--c-bg-z2)
+
+	&.document
+		.container-header
+			background: var(--c-bg-z2)
+			border-bottom: 1px solid var(--c-border)
+			.container-sections
+				border-top: 1px solid var(--c-border)
 </style>

@@ -1,6 +1,6 @@
 <template lang="pug">
-c-card(title="Banner" type="flex-column")
-	template(#header-controls)
+card-container(title="Banner" type="flex-column")
+	template(#controls)
 		c-button(iconL="refresh" type="transparent" @click="refreshBanners()")
 	template(#content)
 		c-banner(v-for="(banner, index) in banners" v-bind="banner.content" :key="index")

@@ -1,5 +1,5 @@
 <template lang="pug">
-c-card(title="Tasks")
+card-container(title="Tasks")
 	template(#controls)
 		c-button(title="New Task" type="primary")
 </template>

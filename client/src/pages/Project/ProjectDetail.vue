@@ -8,17 +8,17 @@ c-banner(
 		c-button(title="View")
 		c-button(type="icon" iconL="close" size="small")
 
-c-card(title="Project Details")
+card-container(title="Project Details")
 	template(#controls)
 		c-button(title="Edit" type="primary")
 	template(#content)
 		definition-list(:data="projectDetails")
 
-c-card(title="Collaborators")
+card-container(title="Collaborators")
 	template(#controls)
 		c-button(title="View All" type="link")
 
-c-card(title="Discussion")
+card-container(title="Discussion")
 </template>
 
 
@@ -43,16 +43,9 @@ export default {
 			"description": document.value.description
 		}) );
 
-		const options = { "columns": { "title": "Name" } };
-
-		const documents = [{ "title": "1" }];
-
-
 		return {
 			projectDetails,
-			options,
-			document,
-			documents
+			document
 		};
 	}
 };

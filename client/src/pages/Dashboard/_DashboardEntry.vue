@@ -3,10 +3,10 @@
 	h1
 		b {{$locale("Welcome")}},&nbsp;
 		| {{profile.firstName}} {{profile.lastName}}
-	c-card(title="December")
+	card-container(title="December")
 		template(#content)
 			c-calendar
-	c-card(title="Upcoming")
+	card-container(title="Upcoming")
 </template>
 
 
@@ -28,7 +28,7 @@ export default {
 	display: flex
 	gap: 2em
 	flex-wrap: wrap
-	h1, .c-card
+	h1, .card-container
 		flex: 1 0 auto
 	h1
 		width: 100%

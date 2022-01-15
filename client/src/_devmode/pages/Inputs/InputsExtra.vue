@@ -1,11 +1,11 @@
 <template lang="pug">
-c-card(title="Switcher")
+card-container(title="Switcher")
 	template(#content)
 		section
 			code.result {{values.switcher}}
 			c-switcher(id="layout" :options="options.checkboxes" v-model="values.switcher")
 
-c-card(title="Checkers")
+card-container(title="Checkers")
 	template(#content)
 		section
 			code.result {{values.checkers}}

@@ -22,7 +22,7 @@
 			c-button.add-button(title="Add" type="primary")
 
 
-	c-card.summary(title="Purchase Summary")
+	card-container.summary(title="Purchase Summary")
 		template(#sub-header)
 			c-field.col-5(label="Promo Code")
 			c-button.col-1.apply-promo(title="Apply" type="primary")
