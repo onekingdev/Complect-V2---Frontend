@@ -1,6 +1,5 @@
 <template lang="pug">
 .layout.layout-authenticated
-	toasts-container
 	transition(appear name="pushTop")
 		TopBar
 	transition(appear name="pushLeft")
@@ -11,47 +10,13 @@
 
 
 <script>
-// promt for App Update
-// import { inject, onMounted } from "vue";
-// import useNotifications from "~/store/Notifications.js";
-// import { useRegisterSW } from "virtual:pwa-register/vue";
-import ToastsContainer from "~/components/Containers/ToastsContainer.vue";
 import TopBar from "~/components/Bars/TopBar.vue";
 import SideBar from "~/components/Bars/SideBar.vue";
 export default {
 	"components": {
-		ToastsContainer,
 		TopBar,
 		SideBar
 	}
-	// promt for App Update
-	// setup() {
-	// 	const toast = inject('toast');
-	// 	const { deleteNotification } = useNotifications();
-	// 	const { offlineReady, needRefresh, updateServiceWorker } = useRegisterSW()
-
-	// 	const cancelUpdate = async() => {
-	// 		offlineReady.value = false;
-	// 		needRefresh.value = false;
-	// 		deleteNotification("update-app-toast");
-	// 	}
-
-	// 	onMounted(() => {
-	// 		if(needRefresh.value) {
-	// 			toast({
-	// 				id: "update-app-toast",
-	// 				type: "info",
-	// 				title: "New version available",
-	// 				message: "Please update application",
-	// 				autoClose: false,
-	// 				actions: [
-	// 					{title: "Dismiss", type: "icon", method: cancelUpdate},
-	// 					{title: "Update", method: updateServiceWorker}
-	// 				]
-	// 			})
-	// 		}
-	// 	});
-	// }
 };
 </script>
 

@@ -1,5 +1,5 @@
 <template lang="pug">
-.c-toast(:class="type")
+.c-notification(:class="type")
 	icon.status-icon(:name="type")
 	.content
 		.text-data
@@ -68,7 +68,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.c-toast
+.c-notification
 	z-index: 10
 	top: 0.4em
 	right: 0.4em

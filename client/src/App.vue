@@ -1,6 +1,7 @@
 <template lang="pug">
 icons-set
 #app-container.default-theme
+	notifications-container
 	router-view
 </template>
 
@@ -9,8 +10,10 @@ icons-set
 import { onMounted } from "vue";
 import IconsSet from "~/components/Icons/IconsSet.vue";
 import useInit from "~/core/init.js";
+import NotificationsContainer from "~/components/Containers/NotificationsContainer.vue";
+
 export default {
-	"components": { IconsSet },
+	"components": { IconsSet, NotificationsContainer },
 	setup () {
 		const { systemChecks } = useInit();
 		onMounted( () => {

@@ -16,8 +16,8 @@ export default {
 				name: "devAdditionalIcons",
 				title: "Icons"
 			}, {
-				name: "devAdditionalToast",
-				title: "Toast"
+				name: "devAdditionalNotifications",
+				title: "Notifications"
 			}, {
 				name: "devAdditionalBanners",
 				title: "Banner"

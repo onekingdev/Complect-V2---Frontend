@@ -1,12 +1,12 @@
 import { reactive } from "vue";
-import { randomMongoId } from "~/core/utils.js";
+import { randomId } from "~/core/utils.js";
 
 const notifications = reactive([]);
 
 export default function useUser () {
 	const createNotification = options => {
 		notifications.unshift({
-			"id": options.id || randomMongoId(),
+			"id": options.id || randomId(),
 			"type": options.type || "info",
 			"title": options.title || options.type || "info",
 			"message": options.message || "",

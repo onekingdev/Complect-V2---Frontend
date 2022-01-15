@@ -14,7 +14,7 @@ const devDataEntry = () => import( "~/_devmode/pages/Data/DataEntry.vue" );
 const devDataModel = () => import( "~/_devmode/pages/Data/DataModel.vue" );
 
 const devAdditionalEntry = () => import( "~/_devmode/pages/Additional/AdditionalEntry.vue" );
-const devAdditionalToast = () => import( "~/_devmode/pages/Additional/AdditionalToasts.vue" );
+const devAdditionalNotifications = () => import( "~/_devmode/pages/Additional/AdditionalNotifications.vue" );
 const devAdditionalBanners = () => import( "~/_devmode/pages/Additional/AdditionalBanners.vue" );
 const devAdditionalAvatars = () => import( "~/_devmode/pages/Additional/AdditionalAvatars.vue" );
 const devAdditionalIcons = () => import( "~/_devmode/pages/Additional/AdditionalIcons.vue" );
@@ -113,10 +113,10 @@ const devRoutes = [{
 			name: "devAdditionalIcons",
 			component: devAdditionalIcons
 		}, {
-			path: "toast",
-			meta: { title: "Toast Component" },
-			name: "devAdditionalToast",
-			component: devAdditionalToast
+			path: "notifications",
+			meta: { title: "Notification Component" },
+			name: "devAdditionalNotifications",
+			component: devAdditionalNotifications
 		}, {
 			path: "banner",
 			meta: { title: "Banner Component" },

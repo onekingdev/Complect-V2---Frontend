@@ -26,7 +26,7 @@ import cBadge from "~/components/Misc/cBadge.vue";
 export default {
 	"components": { cSelect, cLabel, cBadge },
 	setup () {
-		const toast = inject( "toast" );
+		const notification = inject( "notification" );
 		const router = useRouter();
 		const { createDocuments } = useData( "risks" );
 
@@ -45,7 +45,7 @@ export default {
 		const createRisk = async () => {
 			newRisk.value.riskLevel = newRiskLevel.value;
 			const riskId = await createDocuments([newRisk.value]);
-			toast({
+			notification({
 				"type": "success",
 				"title": "Risk Cteated"
 			});

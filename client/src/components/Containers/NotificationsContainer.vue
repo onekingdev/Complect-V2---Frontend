@@ -1,17 +1,17 @@
 <template lang="pug">
 transition-group(
-	name="toast-notification"
+	name="notifications"
 	tag="div"
-	class="toast-container")
-		c-toast(v-for="notification in notifications" v-bind="notification" :key="notification.id")
+	class="notifications-container")
+		c-notification(v-for="notification in notifications" v-bind="notification" :key="notification.id")
 </template>
 
 
 <script>
-import cToast from "~/components/Misc/cToast.vue";
+import cNotification from "~/components/Misc/cNotification.vue";
 import useNotifications from "~/store/Notifications.js";
 export default {
-	"components": { cToast },
+	"components": { cNotification },
 	setup () {
 		const { notifications } = useNotifications();
 		return { notifications };
@@ -21,7 +21,7 @@ export default {
 
 
 <style lang="stylus" scoped>
-.toast-container
+.notifications-container
 	position: absolute
 	right: 0
 	z-index: 10
@@ -34,18 +34,18 @@ export default {
 	align-items: flex-end
 	gap: 0.5em
 	pointer-events: none
-	.c-toast
+	.c-notification
 		transition: transform 0.5s ease, opacity 0.5s ease
 		pointer-events: auto
-.toast-notification-enter-from
+.notifications-enter-from
 	opacity: 0
 	transform: translateY(-20em)
 
-.toast-notification-leave-to
+.notifications-leave-to
 	opacity: 0
 	transform: translateX(20em)
 
-.toast-notification-leave-active
+.notifications-leave-active
 	z-index: 1
 	position: absolute
 </style>

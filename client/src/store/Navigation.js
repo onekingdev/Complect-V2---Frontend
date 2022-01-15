@@ -52,7 +52,7 @@ const _devModeNavigation = {
 			"view": "devTableGeneral"
 		}, {
 			"title": "Additional",
-			"view": "devAdditionalToast"
+			"view": "devAdditionalIcons"
 		}
 	]
 };

@@ -19,7 +19,7 @@ import { useRouter } from "vue-router";
 import useData from "~/store/Data.js";
 export default {
 	setup () {
-		const toast = inject( "toast" );
+		const notification = inject( "notification" );
 		const router = useRouter();
 		const { createDocuments } = useData( "reviews" );
 
@@ -40,7 +40,7 @@ export default {
 
 		const createReview = async () => {
 			const reviewId = await createDocuments([newReview.value]);
-			toast({
+			notification({
 				"type": "success",
 				"title": "Review Cteated"
 			});

@@ -1,9 +1,9 @@
 import { mount } from '@vue/test-utils'
-import cToast from "~/components/Misc/cToast.vue";
+import cNotification from "~/components/Misc/cNotification.vue";
 
 
 test("should render default type", () => {
-	const wrapper = mount(cToast, {
+	const wrapper = mount(cNotification, {
 		props: {
 			id: "1"
 		}
@@ -30,32 +30,32 @@ test("should render default type", () => {
 })
 
 test("should render custom types", async () => {
-	const wrapper = mount(cToast, {
+	const wrapper = mount(cNotification, {
 		props: {
 			id: "1"
 		}
 	})
 
-	const toasts = [
+	const notifications = [
 		{ title: "Info Toast", message: "Info Message", type: "info" },
 		{ title: "Success Toast", message: "Success Message", type: "success" },
 		{ title: "Warning Toast", message: "Warningnfo Message", type: "warning" },
 		{ title: "Error Toast", message: "Error Message", type: "error" },
 	]
 
-	for (const toast of toasts) {
-		await wrapper.setProps(toast);
-		expect(wrapper.props("type")).toBe( toast.type );
-		expect(wrapper.props( "title" )).toBe( toast.title );
-		expect(wrapper.props( "message" )).toBe( toast.message );
+	for (const notification of notifications) {
+		await wrapper.setProps(notification);
+		expect(wrapper.props("type")).toBe( notification.type );
+		expect(wrapper.props( "title" )).toBe( notification.title );
+		expect(wrapper.props( "message" )).toBe( notification.message );
 
 		const statusIcon = wrapper.find(".status-icon");
 		const title = wrapper.find(".title");
 		const message = wrapper.find(".message");
 
-		expect(wrapper.classes(toast.type)).toBe(true);
-		expect(statusIcon.classes(`icon-${toast.type}`)).toBe(true);
-		expect(title.text()).toContain(toast.title);
-		expect(message.text()).toContain(toast.message);
+		expect(wrapper.classes(notification.type)).toBe(true);
+		expect(statusIcon.classes(`icon-${notification.type}`)).toBe(true);
+		expect(title.text()).toContain(notification.title);
+		expect(message.text()).toContain(notification.message);
 	}
 })

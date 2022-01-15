@@ -24,7 +24,7 @@ import { useRouter } from "vue-router";
 import useData from "~/store/Data.js";
 export default {
 	setup () {
-		const toast = inject( "toast" );
+		const notification = inject( "notification" );
 		const router = useRouter();
 		const { createDocuments } = useData( "projects" );
 		const tabs = [
@@ -57,7 +57,7 @@ export default {
 
 		const createProject = async () => {
 			const projectId = await createDocuments([newProject.value]);
-			toast({
+			notification({
 				"type": "success",
 				"title": "Project Cteated"
 			});

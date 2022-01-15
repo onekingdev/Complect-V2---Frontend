@@ -8,6 +8,8 @@ const randomMongoId = () => {
 	return `${timestamp}${randomHexString}`;
 };
 
+const randomId = () => randomMongoId(); // temp ID Generator
+
 // sort Array by Key
 const sortArrayByKey = ( array, key, asc ) => {
 	if ( !array.length ) return;
@@ -49,4 +51,4 @@ const removeSensitiveData = ( object, keys ) => {
 	});
 };
 
-export { randomNumber, randomMongoId, sortArrayByKey, formatDate, calcRiskLevel, removeSensitiveData };
+export { randomNumber, randomId, randomMongoId, sortArrayByKey, formatDate, calcRiskLevel, removeSensitiveData };
