@@ -14,9 +14,14 @@ import cToast from "~/components/Misc/cToast.vue";
 import cTable from "~/components/Table/cTable.vue";
 import documentsContainer from "~/components/Containers/DocumentsContainer.vue";
 import documentContainer from "~/components/Containers/DocumentContainer.vue";
+import directives from "~/directives/Index.js";
 import "./assets/styles/index.styl";
 
-createApp( App )
+const app = createApp( App );
+
+directives( app );
+
+app
 	.use( Routes )
 	.use( Locale )
 	.use( Toast )
