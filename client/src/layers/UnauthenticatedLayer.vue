@@ -5,7 +5,7 @@
 			icon(name="logo")
 			icon(name="brandname")
 		c-button(title="Sign In" type="primary" @click="goToSignIn()")
-	.card-container
+	.container
 		router-view
 </template>
 
@@ -45,13 +45,14 @@ export default {
 			margin-left: 0.5em
 			fill: #000
 
-.card-container
+.container
 	background: #f6f6f8
 	flex: 1
 	display: flex
 	padding: 2em
 	:deep(.card-container)
 		max-width: 35em
+		margin: auto
 		.card-content
 			padding: 2em
 			h1, h2
