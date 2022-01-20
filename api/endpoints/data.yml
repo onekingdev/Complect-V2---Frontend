@@ -8,31 +8,31 @@ data:
     subtype: Data
   events:
     - http:
-        path: data/{collectionName}
+        path: data/{collection}
         method: post
         cors: true
 
     - http:
-        path: data/{collectionName}
+        path: data/{collection}
         method: get
         cors: true
     
     - http:
-        path: data/{collectionName}/{documentId}
+        path: data/{collection}/{_id}
         method: get
         cors: true
 
     - http:
-        path: data/{collectionName}/{documentId}
+        path: data/{collection}/{_id}
         method: put
         cors: true
 
     - http:
-        path: data/{collectionName}
+        path: data/{collection}
         method: delete
         cors: true
     
     - http:
-        path: data/{collectionName}/{documentId}
+        path: data/{collection}/{_id}
         method: delete
         cors: true

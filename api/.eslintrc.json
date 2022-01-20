@@ -180,7 +180,7 @@
 		"max-statements": ["error", 20],
 		"max-statements-per-line": ["error", { "max": 1 }],
 		"multiline-ternary": ["error", "never"],
-		"new-cap": ["error", { "capIsNew": true }],
+		"new-cap": ["error", { "capIsNewExceptions": ["ObjectID"] }],
 		"new-parens": "error",
 		"newline-per-chained-call": ["error", {"ignoreChainWithDepth": 3}],
 		"no-array-constructor": "error",

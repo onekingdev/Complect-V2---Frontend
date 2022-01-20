@@ -1,34 +1,50 @@
 module.exports = {
 	bsonType: "object",
-	required: ["_id", "email", "password", "firstName", "lastName"],
+	required: ["_id", "business", "name"],
 	properties: {
 		_id: {
 			bsonType: "objectId",
 			description: "must be an ObjectId and is required"
 		},
-		email: {
+		business: {
 			bsonType: "string",
 			description: "must be a string and is required"
 		},
-		password: {
+		name: {
 			bsonType: "string",
 			description: "must be a string and is required"
 		},
-		firstName: {
+		creator: {
 			bsonType: "string",
 			description: "must be a string and is required"
 		},
-		lastName: {
+		project: {
 			bsonType: "string",
 			description: "must be a string and is required"
+		},
+		startsAt: {
+			bsonType: "int",
+			description: "must be a number"
+		},
+		endsAt: {
+			bsonType: "int",
+			description: "must be a number"
 		},
 		description: {
 			bsonType: "string",
 			description: "must be a string and is required"
 		},
-		timeZone: {
-			bsonType: "object",
-			description: "must be an object"
+		details: {
+			bsonType: "string",
+			description: "must be a string and is required"
+		},
+		locationType: {
+			bsonType: "string",
+			description: "must be a string and is required"
+		},
+		location: {
+			bsonType: "string",
+			description: "must be a string and is required"
 		},
 		jurisdictions: {
 			bsonType: "array",
@@ -38,9 +54,15 @@ module.exports = {
 			bsonType: "array",
 			description: "must be an array"
 		},
-		subIndustries: {
-			bsonType: "array",
-			description: "must be an array"
+		status: {
+			bsonType: "string",
+			description: "must be a string and is required"
+		},
+		minExperience: {
+			bsonType: "int",
+			minimum: 0,
+			maximum: 2,
+			description: "must be a number"
 		},
 		regulator: {
 			bsonType: "bool",
@@ -48,46 +70,23 @@ module.exports = {
 		},
 		skills: {
 			bsonType: "array",
-			description: "Skills must be an array"
+			description: "must be an array"
 		},
-		hourlyRate: {
-			bsonType: "int",
-			minimum: 0,
-			description: "must be a number"
+		budget: {
+			bsonType: "array",
+			description: "must be an array"
 		},
-		experience: {
-			bsonType: "int",
-			minimum: 0,
-			maximum: 2,
-			description: "must be a number"
-		},
-		resume: {
+		payment: {
 			bsonType: "string",
-			description: "must be a string"
+			description: "must be a string and is required"
 		},
-		available: {
-			bsonType: "bool",
-			description: "must be a boolean"
-		},
-		plan: {
-			bsonType: "string",
-			description: "must be a string"
-		},
-		profileImage: {
-			bsonType: "string",
-			description: "must be a string"
+		proposals: {
+			bsonType: "array",
+			description: "must be an array"
 		},
 		contracts: {
 			bsonType: "array",
 			description: "must be an array"
-		},
-		notifications: {
-			bsonType: "object",
-			description: "must be an object"
-		},
-		settings: {
-			bsonType: "object",
-			description: "must be an object"
 		}
 	}
 };

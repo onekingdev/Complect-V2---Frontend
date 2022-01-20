@@ -6,9 +6,13 @@ const bcrypt = require( "bcrypt" );
 // request guard
 const requestGuard = async event => {
 	try {
-		const { collectionName, documentId } = event.pathParameters;
-		const newDocuments = await JSON.parse( event.body );
-		return [collectionName, documentId, newDocuments].filter( Boolean );
+		const { collection, _id } = event.pathParameters;
+		const documents = await JSON.parse( event.body );
+		return {
+			collection,
+			_id,
+			documents
+		};
 	} catch ( error ) {
 		console.error( `requestGuard ${error}` );
 		return false;
@@ -43,7 +47,6 @@ const checkFields = ( object, keys ) => {
 		});
 		return true;
 	} catch ( error ) {
-		console.debug( false );
 		return false;
 	}
 };
@@ -58,7 +61,6 @@ const devStageLog = data => {
 };
 
 
-// functions
 const generateHash = async plain => await bcrypt.hash( plain, 10 );
 const compareHash = async ( plain, hashed ) => await bcrypt.compare( plain, hashed );
 

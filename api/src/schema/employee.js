@@ -1,10 +1,14 @@
 module.exports = {
 	bsonType: "object",
-	required: ["_id", "email", "password", "firstName", "lastName"],
+	required: ["_id", "email", "password", "firstName", "lastName", "business"],
 	properties: {
 		_id: {
 			bsonType: "objectId",
 			description: "must be an ObjectId and is required"
+		},
+		type: {
+			bsonType: "string",
+			description: "must be a string and is required"
 		},
 		email: {
 			bsonType: "string",
@@ -22,64 +26,33 @@ module.exports = {
 			bsonType: "string",
 			description: "must be a string and is required"
 		},
-		description: {
+		business: {
 			bsonType: "string",
 			description: "must be a string and is required"
+		},
+		country: {
+			bsonType: "string",
+			description: "must be a string"
+		},
+		state: {
+			bsonType: "string",
+			description: "must be a string"
+		},
+		city: {
+			bsonType: "string",
+			description: "must be a string"
+		},
+		phoneNumber: {
+			bsonType: "int",
+			description: "must be a number"
 		},
 		timeZone: {
 			bsonType: "object",
 			description: "must be an object"
 		},
-		jurisdictions: {
-			bsonType: "array",
-			description: "must be an array"
-		},
-		industries: {
-			bsonType: "array",
-			description: "must be an array"
-		},
-		subIndustries: {
-			bsonType: "array",
-			description: "must be an array"
-		},
-		regulator: {
-			bsonType: "bool",
-			description: "must be a boolean"
-		},
-		skills: {
-			bsonType: "array",
-			description: "Skills must be an array"
-		},
-		hourlyRate: {
-			bsonType: "int",
-			minimum: 0,
-			description: "must be a number"
-		},
-		experience: {
-			bsonType: "int",
-			minimum: 0,
-			maximum: 2,
-			description: "must be a number"
-		},
-		resume: {
-			bsonType: "string",
-			description: "must be a string"
-		},
-		available: {
-			bsonType: "bool",
-			description: "must be a boolean"
-		},
-		plan: {
-			bsonType: "string",
-			description: "must be a string"
-		},
 		profileImage: {
 			bsonType: "string",
 			description: "must be a string"
-		},
-		contracts: {
-			bsonType: "array",
-			description: "must be an array"
 		},
 		notifications: {
 			bsonType: "object",
