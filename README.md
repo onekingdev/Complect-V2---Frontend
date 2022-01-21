@@ -17,7 +17,8 @@ password: `preview`
 [Wiki](https://github.com/complectco/complect-2.0/wiki)  
 [Mock-ups](https://www.figma.com/file/ZuxzZnGy8PR8bDR6dUts8u/Complect-Design-System?node-id=350%3A562)  
 [Legacy App](https://demo.complect.com)  
-[AWS Console](https://complect.signin.aws.amazon.com/console)
+[AWS Console (Dev Stage)](https://complect-dev.signin.aws.amazon.com/console)
+[AWS Console (Production Stage)](https://complect.signin.aws.amazon.com/console)
 
 
 ## Run Project:

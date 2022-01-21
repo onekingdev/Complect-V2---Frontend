@@ -8,6 +8,7 @@ provider:
   timeout: 3
   region: "us-east-1"
   stage: ${opt:stage, "dev"}
+  profile: ${self:custom.profiles.${sls:stage}}
   lambdaHashingVersion: 20201221
   versionFunctions: false
   apiGateway:
@@ -46,14 +47,17 @@ plugins:
   - "serverless-domain-manager"
 
 custom:
+  profiles:
+    dev: devProfile
+    prod: prodProfile
   serverless-offline:
     httpPort: 6099
     host: 0.0.0.0
   customDomain:
-    domainName: "api2.complect.com"
+    domainName: "api.complect.dev"
     basePath: ${self:provider.stage}
     stage:  ${self:provider.stage}
-    certificateName: "*.complect.com"
+    certificateName: "*.complect.dev"
     endpointType: "edge"
     createRoute53Record: true
   prune:

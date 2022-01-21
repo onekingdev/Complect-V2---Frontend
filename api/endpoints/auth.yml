@@ -1,5 +1,5 @@
 authSignUp:
-  name: complect-api-${opt:stage, "dev"}-auth-signUp
+  name: complect-api-auth-signUp
   handler: src/functions/auth.signUp
   description: Sign Up API endpoints
   tags:
@@ -13,7 +13,7 @@ authSignUp:
         cors: true
 
 authSignIn:
-  name: complect-api-${opt:stage, "dev"}-auth-signIn
+  name: complect-api-auth-signIn
   handler: src/functions/auth.signIn
   description: Sign In API endpoints
   tags:
@@ -27,7 +27,7 @@ authSignIn:
         cors: true
 
 newOtp:
-  name: complect-api-${opt:stage, "dev"}-auth-newOtp
+  name: complect-api-auth-newOtp
   handler: src/functions/auth.newOtp
   description: Generate New OTP API endpoints
   tags:
@@ -41,7 +41,7 @@ newOtp:
         cors: true
 
 checkOtp:
-  name: complect-api-${opt:stage, "dev"}-auth-checkOtp
+  name: complect-api-auth-checkOtp
   handler: src/functions/auth.checkOtp
   description: OTP Check API endpoints
   tags:
@@ -55,7 +55,7 @@ checkOtp:
         cors: true
 
 sendResetLink:
-  name: complect-api-${opt:stage, "dev"}-auth-sendResetLink
+  name: complect-api-auth-sendResetLink
   handler: src/functions/auth.sendResetLink
   description: Send Reset Link API endpoints
   tags:
@@ -69,7 +69,7 @@ sendResetLink:
         cors: true
 
 onboarding:
-  name: complect-api-${opt:stage, "dev"}-auth-onboardingResetLink
+  name: complect-api-auth-onboardingResetLink
   handler: src/functions/auth.onboarding
   description: Onboarding API endpoints
   tags:
@@ -83,7 +83,7 @@ onboarding:
         cors: true
 
 profile:
-  name: complect-api-${opt:stage, "dev"}-auth-profile
+  name: complect-api-auth-profile
   handler: src/functions/auth.profile
   description: Profile API endpoints
   tags:
