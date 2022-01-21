@@ -74,7 +74,7 @@ export default {
 		"Ratings and Reviews": "Ratings and Reviews",
 		"View Post": "View Post",
 		"Mark as Complete": "Mark as Complete",
-		"Detail": "Detail",
+		"Detail": "Details",
 		"Documents": "Documents",
 		"Project Details": "Project Details",
 		"Collaborators": "Collaborators",
