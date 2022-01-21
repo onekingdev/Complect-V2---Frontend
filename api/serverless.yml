@@ -8,7 +8,6 @@ provider:
   timeout: 3
   region: "us-east-1"
   stage: ${opt:stage, "dev"}
-  profile: ${self:custom.profiles.${sls:stage}}
   lambdaHashingVersion: 20201221
   versionFunctions: false
   apiGateway:
@@ -47,9 +46,6 @@ plugins:
   - "serverless-domain-manager"
 
 custom:
-  profiles:
-    dev: devProfile
-    prod: prodProfile
   serverless-offline:
     httpPort: 6099
     host: 0.0.0.0
