@@ -20,10 +20,17 @@ provider:
     DB_URI: ${env:DB_URI}
     DB_NAME: ${env:DB_NAME}
     STAGE: ${opt:stage, "dev"}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "ses:SendEmail"
+        - "ses:SendRawEmail"
+      Resource: "*"
 
 functions:
   - "${file(endpoints/auth.yml)}"
   - "${file(endpoints/data.yml)}"
+  - "${file(endpoints/_debug.yml)}"
 
 package:
   patterns:

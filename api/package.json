@@ -13,9 +13,11 @@
   },
   "dependencies": {
     "dotenv": "10.0.0",
+    "handlebars": "4.7.7",
     "mongodb": "4.2.2"
   },
   "devDependencies": {
+    "aws-sdk": "2.1062.0",
     "eslint": "8.5.0",
     "jest": "27.4.5",
     "jest-extended": "1.2.0",
