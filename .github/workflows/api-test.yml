@@ -24,9 +24,9 @@ jobs:
       
       - name: Install dependencies
         run: npm ci
-      
-      - name: Lint code
-        run: npm run lint
+        
+      - name: Lint code (fix)
+        run: npm run lint:fix
 
       - name: Test code
         run: npm run test
