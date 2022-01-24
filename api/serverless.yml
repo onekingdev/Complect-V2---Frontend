@@ -25,11 +25,17 @@ provider:
       Action:
         - "ses:SendEmail"
         - "ses:SendRawEmail"
+        - "s3:GetObject"
       Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "s3:GetObject"
+      Resource: "arn:aws:s3:::<s3-bucket-name>/*"
 
 functions:
   - "${file(endpoints/auth.yml)}"
   - "${file(endpoints/data.yml)}"
+  - "${file(endpoints/download.yml)}"
   - "${file(endpoints/cron.yml)}"
   - "${file(endpoints/_debug.yml)}"
 

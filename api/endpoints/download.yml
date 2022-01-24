@@ -1,0 +1,13 @@
+pdfprint:
+  name: complect-api-pdfprint
+  handler: src/functions/download.pdfprint
+  description: API endpoint for PDF Print
+  tags:
+    website: Complect App
+    type: API
+    subtype: Data
+  events:
+    - http:
+        path: /pdf
+        method: post
+        cors: true
