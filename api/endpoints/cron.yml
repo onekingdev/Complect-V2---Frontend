@@ -1,5 +1,45 @@
+projectEndCron:
+  name: complect-api-project-end-cron
+  handler: src/functions/cron.projectEnd
+  description: Cron Job for Project End Notification
+  tags:
+    website: Complect App
+    type: Cron
+    subtype: Project
+  events:
+    - schedule: rate(${env:SCHEDULE_TIME} hours)
+jobStartCron:
+  name: complect-api-job-start-cron
+  handler: src/functions/cron.jobStart
+  description: Cron Job for Job Start Notification
+  tags:
+    website: Complect App
+    type: Cron
+    subtype: Job
+  events:
+    - schedule: rate(${env:SCHEDULE_TIME} hours)
+jobPostingCron:
+  name: complect-api-job-posting-cron
+  handler: src/functions/cron.jobPosting
+  description: Cron Job for Job Posting Notification
+  tags:
+    website: Complect App
+    type: Cron
+    subtype: Project
+  events:
+    - schedule: rate(${env:SCHEDULE_TIME} hours)
+contractEndCron:
+  name: complect-api-contract-end-cron
+  handler: src/functions/cron.contractEnd
+  description: Cron Job for Contract End Notification
+  tags:
+    website: Complect App
+    type: Cron
+    subtype: Contract
+  events:
+    - schedule: rate(${env:SCHEDULE_TIME} hours)
 crdScrapy:
-  name: complect-api-${opt:stage, "dev"}-crdScrapy
+  name: complect-api-crdScrapy
   handler: src/functions/cron.crdScrapy
   description: Schedule every 10th of month CRD Scraping
   tags:
