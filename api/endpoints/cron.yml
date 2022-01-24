@@ -1,0 +1,10 @@
+crdScrapy:
+  name: complect-api-${opt:stage, "dev"}-crdScrapy
+  handler: src/functions/cron.crdScrapy
+  description: Schedule every 10th of month CRD Scraping
+  tags:
+    website: Complect App
+    type: API
+    subtype: Scrapy
+  events:
+    - schedule: cron(0 0 10 * ? *)

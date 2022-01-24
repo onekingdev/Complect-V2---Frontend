@@ -5,8 +5,8 @@
 
 
 ## Live versions
-* [Public Stage](https://next.complect.com)
-* [Dev Stage](https://dev.next.complect.com)  
+* [Dev Stage](https://app.complect.dev)  
+* [Public Stage](https://app.complect.com)
 
 login: `next`  
 password: `preview`
