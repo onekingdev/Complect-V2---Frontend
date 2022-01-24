@@ -1,0 +1,13 @@
+teamPlan:
+  name: complect-api-team-plan-sub
+  handler: src/functions/payment.createSubscription
+  description: Team Plan Subscription
+  tags:
+    website: Complect App
+    type: API
+    subtype: Dev
+  events:
+    - http:
+        path: payment/subscription
+        method: post
+        cors: true

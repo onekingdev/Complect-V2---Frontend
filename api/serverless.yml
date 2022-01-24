@@ -30,8 +30,8 @@ provider:
 functions:
   - "${file(endpoints/auth.yml)}"
   - "${file(endpoints/data.yml)}"
-  - "${file(endpoints/cron.yml)}"
   - "${file(endpoints/_debug.yml)}"
+  - "${file(endpoints/payment.yml)}"
 
 package:
   patterns:
