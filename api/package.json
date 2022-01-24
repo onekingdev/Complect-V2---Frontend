@@ -12,7 +12,11 @@
     "lint:fix": "eslint 'src/**/*.js' --fix"
   },
   "dependencies": {
+    "adm-zip": "^0.5.9",
+    "axios": "^0.25.0",
+    "cheerio": "^1.0.0-rc.10",
     "dotenv": "10.0.0",
+    "fast-csv": "^4.3.6",
     "handlebars": "4.7.7",
     "mongodb": "4.2.2"
   },
