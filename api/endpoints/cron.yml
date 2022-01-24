@@ -7,7 +7,7 @@ projectEndCron:
     type: Cron
     subtype: Project
   events:
-    - schedule: rate(${env:SCHEDULE_TIME} hours)
+    - schedule: rate(24 hours)
 jobStartCron:
   name: complect-api-job-start-cron
   handler: src/functions/cron.jobStart
@@ -17,7 +17,7 @@ jobStartCron:
     type: Cron
     subtype: Job
   events:
-    - schedule: rate(${env:SCHEDULE_TIME} hours)
+    - schedule: rate(24 hours)
 jobPostingCron:
   name: complect-api-job-posting-cron
   handler: src/functions/cron.jobPosting
@@ -27,7 +27,7 @@ jobPostingCron:
     type: Cron
     subtype: Project
   events:
-    - schedule: rate(${env:SCHEDULE_TIME} hours)
+    - schedule: rate(24 hours)
 contractEndCron:
   name: complect-api-contract-end-cron
   handler: src/functions/cron.contractEnd
@@ -37,7 +37,7 @@ contractEndCron:
     type: Cron
     subtype: Contract
   events:
-    - schedule: rate(${env:SCHEDULE_TIME} hours)
+    - schedule: rate(24 hours)
 crdScrapy:
   name: complect-api-crdScrapy
   handler: src/functions/cron.crdScrapy
