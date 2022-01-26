@@ -1,0 +1,26 @@
+checkCard:
+  name: complect-api-check-card
+  handler: src/functions/payment.checkCard
+  description: Save Card Information to Stripe
+  tags:
+    website: Complect App
+    type: API
+    subtype: Dev
+  events:
+    - http:
+        path: payment/checkCard
+        method: post
+        cors: true
+updatePlan:
+  name: complect-api-update-plan
+  handler: src/functions/payment.createSubscription
+  description: Update Plan
+  tags:
+    website: Complect App
+    type: API
+    subtype: Dev
+  events:
+    - http:
+        path: payment/subscription
+        method: post
+        cors: true

@@ -60,15 +60,6 @@ const devStageLog = data => {
 	}
 };
 
-const randomName = length => {
-	const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-	const charactersLength = characters.length;
-	// eslint-disable-next-line init-declarations
-	let result = "";
-	for ( let i = 0; i < length; i++ ) result += characters.charAt( Math.floor( Math.random() * charactersLength ) );
-	return result;
-};
-
 
 // const generateHash = async plain => await bcrypt.hash( plain, 10 );
 // const compareHash = async ( plain, hashed ) => await bcrypt.compare( plain, hashed );
@@ -79,6 +70,5 @@ module.exports = {
 	response,
 	randomNumber,
 	checkFields,
-	devStageLog,
-	randomName
+	devStageLog
 };
