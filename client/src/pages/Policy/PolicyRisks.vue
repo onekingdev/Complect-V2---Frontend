@@ -1,5 +1,9 @@
 <template lang="pug">
-c-table(v-bind="{columns, documents}" searchable)
+card-container(title="Risks")
+	template(#controls)
+		c-button(title="New Risk" type="primary")
+	template(#content)
+		c-table(v-bind="{columns, documents}" searchable)
 </template>
 
 
@@ -11,7 +15,7 @@ import cBanner from "~/components/Misc/cBanner.vue";
 export default {
 	"components": { cBanner },
 	setup () {
-		const { documents, readDocuments, deleteDocuments, clearStore } = useData( "policies" );
+		const { documents, readDocuments, deleteDocuments, clearStore } = useData( "risks" );
 
 		const handleClickEdit = id => console.debug( "Edit", id );
 		const handleClickDuplicate = id => console.debug( "Duplicate", id );
@@ -22,32 +26,43 @@ export default {
 				"title": "Name",
 				"key": "title",
 				"cell": "CellTitle",
-                "unsortable": true,
 				"meta": { "link": "RiskDetail" }
 			},
 			{
-				"title": "Status",
-				"key": "status",
-				"cell": "CellStatus",
+				"title": "Impact",
+				"key": "impact",
+				"cell": "CellText",
+				"meta": {
+					"locale": true,
+					"prefix": "risk"
+				}
 			},
 			{
-				"title": "Last Modified",
-				"key": "modifiedAt",
-				"cell": "CellDate",
-				"align": "right"
+				"title": "Likelihood",
+				"key": "likelihood",
+				"cell": "CellText",
+				"meta": {
+					"locale": true,
+					"prefix": "risk"
+				}
+			},
+			{
+				"title": "Risk Level",
+				"key": "riskLevel",
+				"cell": "CellRiskLevel"
 			},
 			{
 				"title": "Date Created",
-				"key": "createdAt",
+				"key": "dateCreated",
 				"cell": "CellDate",
 				"align": "right"
 			},
-            {
+			{
 				"unsortable": true,
 				"cell": "CellDropdown",
 				"meta": {
 					"actions": [
-						{ "title": "Unarchive", "action": handleClickEdit }, { "title": "Delete", "action": handleClickDelete }
+						{ "title": "Edit", "action": handleClickEdit }, { "title": "Duplicate", "action": handleClickDuplicate }, { "title": "Delete", "action": handleClickDelete }
 					]
 				}
 			}

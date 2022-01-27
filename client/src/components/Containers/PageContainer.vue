@@ -96,7 +96,6 @@ export default {
 			align-items: center
 			.tabs
 				flex-shrink: 1
-				overflow: scroll
 				display: flex
 				gap: 2em
 				padding: 1em 2em 0

@@ -37,3 +37,4 @@ jobs:
           API_STAGE: v1
           DB_URI: ${{ secrets.PROD_DB_URI }}
           DB_NAME: ${{ secrets.PROD_DB_NAME }}
+          SCHEDULE_TIME: 24

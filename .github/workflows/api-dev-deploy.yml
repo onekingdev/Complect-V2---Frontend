@@ -37,3 +37,4 @@ jobs:
           API_STAGE: dev
           DB_URI: ${{ secrets.DEV_DB_URI }}
           DB_NAME: ${{ secrets.DEV_DB_NAME }}
+          SCHEDULE_TIME: 24
