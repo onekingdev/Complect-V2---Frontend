@@ -139,6 +139,8 @@ export default {
 			align-items: center
 			gap: 1em
 
+.c-table .container
+	overflow-x: scroll
 .c-table table
 	font-size: 0.85em
 	width: 100%
