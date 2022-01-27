@@ -15,7 +15,7 @@ const getUserData = async userId => {
 	return user;
 };
 
-exports.createCustomer = async userId => {
+exports.createCustomer = async ({ userId }) => {
 	const user = await getUserData( userId );
 	const customer = await stripe.customers.create({
 		description: `${user.firstName} ${user.lastName}`,
@@ -28,8 +28,9 @@ exports.createCustomer = async userId => {
 	});
 };
 
-exports.getCustomerById = async customerId => {
-	const customer = await stripe.customer.retrieve( customerId );
+exports.getCustomerById = async ({ userId }) => {
+	const { stripe_customer } = await getUserData( userId );
+	const customer = await stripe.customer.retrieve( stripe_customer );
 	return customer;
 };
 
@@ -53,6 +54,13 @@ exports.subscribePayment = async ({ productPlan, userId }) => {
 		customer: stripe_customer,
 		items: [{ price: productPlan }]
 	});
+
+	await updateDocument({
+		collection: 'users',
+		subscriptionStartAt: subscription.current_period_start,
+		subscriptionEndAt: subscription.current_period_end,
+	});
+
 	return subscription;
 };
 
@@ -68,3 +76,25 @@ exports.getSubscriptions = async ({ subId, userId }) => {
 	else await stripe.subscriptions.list();
 };
 
+exports.makeCharge = async ({ userId, amount, description }) => {
+	const { customer } = await getUserData( userId );
+	const charge = await stripe.charges.create({
+		amount,
+		customer,
+		description,
+		currency: 'usd',
+	});
+	return charge;
+}
+
+exports.makePayment = async ({ userId, amount, description, paymentMethod }) => {
+	const { customer } = await getUserData( userId );
+	const charge = await stripe.charges.create({
+		amount,
+		customer,
+		description,
+		currency: 'usd',
+		paymentMethod
+	});
+	return charge;
+}
