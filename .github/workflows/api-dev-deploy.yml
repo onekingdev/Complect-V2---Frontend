@@ -43,6 +43,6 @@ jobs:
       - name: Deploy Lambda functions
         run: sls deploy --stage dev
         env:
-          DB_URI: ${{ secrets.TEST_DB_URI }}
-          DB_NAME: ${{ secrets.TEST_DB_NAME }}
+          DB_URI: ${{ secrets.DEV_DB_URI }}
+          DB_NAME: ${{ secrets.DEV_DB_NAME }}
           SCHEDULE_TIME: 24

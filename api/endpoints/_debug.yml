@@ -1,5 +1,5 @@
 emailDebug:
-  name: complect-api-${opt:stage, 'dev'}-debug--email
+  name: ${opt:stage, 'dev'}-debug--email
   handler: src/functions/debug.email
   description: Email Test Enpoint
   tags:
