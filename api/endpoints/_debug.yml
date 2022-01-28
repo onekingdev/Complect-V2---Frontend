@@ -1,11 +1,13 @@
-emailTest:
-  name: complect-api-email-test
+emailDebug:
+  name: complect-api-${opt:stage, 'dev'}-debug--email
   handler: src/functions/debug.email
   description: Email Test Enpoint
   tags:
     website: Complect App
     type: API
-    subtype: Dev
+    subtype: Debug
+  layers:
+    - {Ref: BaseLibsLambdaLayer}
   events:
     - http:
         path: debug/email

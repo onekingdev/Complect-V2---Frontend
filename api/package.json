@@ -11,14 +11,17 @@
     "lint": "eslint 'src/**/*.js'",
     "lint:fix": "eslint 'src/**/*.js' --fix"
   },
-  "dependencies": {
-    "dotenv": "10.0.0",
-    "handlebars": "4.7.7",
-    "mongodb": "4.2.2",
-    "stripe": "^8.199.0"
-  },
   "devDependencies": {
+    "dotenv": "10.0.0",
+    "mongodb": "4.2.2",
     "aws-sdk": "2.1062.0",
+    "adm-zip": "0.5.9",
+    "axios": "0.25.0",
+    "cheerio": "1.0.0-rc.10",
+    "fast-csv": "4.3.6",
+    "handlebars": "4.7.7",
+    "chrome-aws-lambda": "10.1.0",
+    "puppeteer-core": "13.1.2",
     "eslint": "8.5.0",
     "jest": "27.4.5",
     "jest-extended": "1.2.0",

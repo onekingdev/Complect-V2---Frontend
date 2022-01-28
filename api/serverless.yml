@@ -25,13 +25,19 @@ provider:
       Action:
         - "ses:SendEmail"
         - "ses:SendRawEmail"
+        - "s3:GetObject"
       Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "s3:GetObject"
+      Resource: "arn:aws:s3:::<s3-bucket-name>/*"
 
 functions:
   - "${file(endpoints/auth.yml)}"
   - "${file(endpoints/data.yml)}"
+  # - "${file(endpoints/download.yml)}"
+  # - "${file(endpoints/cron.yml)}"
   - "${file(endpoints/_debug.yml)}"
-  - "${file(endpoints/payment.yml)}"
 
 package:
   patterns:
@@ -45,7 +51,8 @@ package:
     - "!package.json"
     - "!README.md"
     - "!.DS_Store"
-
+    - "!layers/**"
+    - "!node_modules/**"
 
 plugins:
   - "serverless-offline"
@@ -67,3 +74,20 @@ custom:
   prune:
     automatic: true
     number: 3
+
+layers:
+  baseLibs:
+    path: layers/base
+    description: Basic libraries for most endpoints
+    compatibleRuntimes:
+      - nodejs14.x
+  pdfLibs:
+    path: layers/pdf
+    description: Additional libraries for PDF generator
+    compatibleRuntimes:
+      - nodejs14.x
+  scraperLibs:
+    path: layers/scraper
+    description: Additional libraries for Scraper
+    compatibleRuntimes:
+      - nodejs14.x

@@ -22,18 +22,27 @@ jobs:
           cache: 'npm'
           cache-dependency-path: api/package-lock.json
       
+      - name: Install dependencies
+        run: npm ci
+
       - name: Install Serverless Framework
         run: npm i -g serverless@2.69.1
       
       - name: Serverless AWS authentication
         run: sls config credentials --provider aws --key ${{ secrets.DEV_AWS_ACCESS_KEY_ID }} --secret ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Install dependencies for Base Layer
+        run: cd layers/base/nodejs && npm i && cd ../../../
+      
+      - name: Install dependencies for PDF Layer
+        run: cd layers/pdf/nodejs && npm i && cd ../../../
+      
+      - name: Install dependencies for Scraper Layer
+        run: cd layers/scraper/nodejs && npm i && cd ../../../
 
       - name: Deploy Lambda functions
-        run: sls deploy
+        run: sls deploy --stage dev
         env:
-          API_STAGE: dev
-          DB_URI: ${{ secrets.DEV_DB_URI }}
-          DB_NAME: ${{ secrets.DEV_DB_NAME }}
+          DB_URI: ${{ secrets.TEST_DB_URI }}
+          DB_NAME: ${{ secrets.TEST_DB_NAME }}
+          SCHEDULE_TIME: 24

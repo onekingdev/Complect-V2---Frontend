@@ -1,0 +1,9 @@
+{
+  "description": "Base Libraries for Complect App API",
+  "private": true,
+  "dependencies": {
+    "dotenv": "10.0.0",
+    "mongodb": "4.2.2",
+    "handlebars": "4.7.7"
+  }
+}

@@ -1,0 +1,18 @@
+pdfprint:
+  name: ${opt:stage, 'dev'}-api--pdfprint
+  handler: src/functions/download.pdfprint
+  description: API endpoint for PDF Print
+  memorySize: 2056
+  timeout: 60
+  tags:
+    website: Complect App
+    type: API
+    subtype: Data
+  layers:
+    - {Ref: BaseLibsLambdaLayer}
+    - {Ref: PdfLibsLambdaLayer}
+  events:
+    - http:
+        path: /pdf
+        method: post
+        cors: true

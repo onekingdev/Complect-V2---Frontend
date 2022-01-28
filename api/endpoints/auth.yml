@@ -1,11 +1,13 @@
 authSignUp:
-  name: complect-api-auth-signUp
+  name: ${opt:stage, 'dev'}-api--auth-signUp
   handler: src/functions/auth.signUp
   description: Sign Up API endpoints
   tags:
     website: Complect App
     type: API
     subtype: Auth
+  layers:
+    - {Ref: BaseLibsLambdaLayer}
   events:
     - http:
         path: auth/sign-up
@@ -13,13 +15,15 @@ authSignUp:
         cors: true
 
 authSignIn:
-  name: complect-api-auth-signIn
+  name: ${opt:stage, 'dev'}-api--auth-signIn
   handler: src/functions/auth.signIn
   description: Sign In API endpoints
   tags:
     website: Complect App
     type: API
     subtype: Auth
+  layers:
+    - {Ref: BaseLibsLambdaLayer}
   events:
     - http:
         path: auth/sign-in
@@ -27,13 +31,15 @@ authSignIn:
         cors: true
 
 newOtp:
-  name: complect-api-auth-newOtp
+  name: ${opt:stage, 'dev'}-api--auth-newOtp
   handler: src/functions/auth.newOtp
   description: Generate New OTP API endpoints
   tags:
     website: Complect App
     type: API
     subtype: Auth
+  layers:
+    - {Ref: BaseLibsLambdaLayer}
   events:
     - http:
         path: auth/new-otp
@@ -41,13 +47,15 @@ newOtp:
         cors: true
 
 checkOtp:
-  name: complect-api-auth-checkOtp
+  name: ${opt:stage, 'dev'}-api--auth-checkOtp
   handler: src/functions/auth.checkOtp
   description: OTP Check API endpoints
   tags:
     website: Complect App
     type: API
     subtype: Auth
+  layers:
+    - {Ref: BaseLibsLambdaLayer}
   events:
     - http:
         path: auth/otp
@@ -55,13 +63,15 @@ checkOtp:
         cors: true
 
 sendResetLink:
-  name: complect-api-auth-sendResetLink
+  name: ${opt:stage, 'dev'}-api--auth-sendResetLink
   handler: src/functions/auth.sendResetLink
   description: Send Reset Link API endpoints
   tags:
     website: Complect App
     type: API
     subtype: Auth
+  layers:
+    - {Ref: BaseLibsLambdaLayer}
   events:
     - http:
         path: auth/reset
@@ -69,13 +79,15 @@ sendResetLink:
         cors: true
 
 onboarding:
-  name: complect-api-auth-onboardingResetLink
+  name: ${opt:stage, 'dev'}-api--auth-onboardingResetLink
   handler: src/functions/auth.onboarding
   description: Onboarding API endpoints
   tags:
     website: Complect App
     type: API
     subtype: Auth
+  layers:
+    - {Ref: BaseLibsLambdaLayer}
   events:
     - http:
         path: auth/onboarding
@@ -83,13 +95,15 @@ onboarding:
         cors: true
 
 profile:
-  name: complect-api-auth-profile
+  name: ${opt:stage, 'dev'}-api--auth-profile
   handler: src/functions/auth.profile
   description: Profile API endpoints
   tags:
     website: Complect App
     type: API
     subtype: Auth
+  layers:
+    - {Ref: BaseLibsLambdaLayer}
   events:
     - http:
         path: auth/profile

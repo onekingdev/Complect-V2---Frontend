@@ -1,11 +1,13 @@
 data:
-  name: complect-api-data
+  name: ${opt:stage, 'dev'}-api--data
   handler: src/functions/data.router
   description: Basic Data API endpoints
   tags:
     website: Complect App
     type: API
     subtype: Data
+  layers:
+    - {Ref: BaseLibsLambdaLayer}
   events:
     - http:
         path: data/{collection}
