@@ -6,6 +6,7 @@ import Locale from "./plugins/locales";
 import Notifications from "./plugins/notifications";
 
 import PageContainer from "~/components/Containers/PageContainer.vue";
+import MenuContainer from "~/components/Containers/MenuContainer.vue";
 import CardContainer from "~/components/Containers/CardContainer.vue";
 
 import cIcon from "~/components/Icons/cIcon.vue";
@@ -29,6 +30,7 @@ app
 	.use( Notifications )
 	.component( "CardContainer", CardContainer )
 	.component( "PageContainer", PageContainer )
+	.component( "MenuContainer", MenuContainer )
 	.component( "Icon", cIcon )
 	.component( "cButton", cButton )
 	.component( "cButtonModal", cButtonModal )

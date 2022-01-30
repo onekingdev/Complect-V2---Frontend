@@ -24,7 +24,7 @@ import cSelect from "~/components/Inputs/cSelect.vue";
 import cLabel from "~/components/Misc/cLabel.vue";
 import cBadge from "~/components/Misc/cBadge.vue";
 export default {
-	"components": { cSelect, cLabel, cBadge },
+	"components": { cSelect, cLabel, cBadge, cLabel },
 	setup () {
 		const notification = inject( "notification" );
 		const router = useRouter();
