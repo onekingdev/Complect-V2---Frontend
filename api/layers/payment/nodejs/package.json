@@ -1,0 +1,7 @@
+{
+	"description": "Payment Libraries for Complect App API",
+	"private": true,
+	"dependencies": {
+		"stripe": "^8.201.0"
+	}
+}

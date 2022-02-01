@@ -35,12 +35,12 @@ exports.method = async event => {
 exports.customer = async event => {
 	try {
 		const request = await JSON.parse( event.body );
-		const { userId } = event.pathParameters;
+		const { userIdCustomer } = event.pathParameters;
 		const stripePayment = new StripePayment();
 		let paymentData;
 		const methods = {
-			POST: () => stripePayment.updateCustomerDetail(	userId, request ),
-			GET: () => stripePayment.getCustomerById( userId )
+			POST: () => stripePayment.updateCustomerDetail(	userIdCustomer, request ),
+			GET: () => stripePayment.getCustomerById( userIdCustomer )
 		};
 
 		paymentData = await methods[event.httpMethod]();
@@ -61,13 +61,13 @@ exports.customer = async event => {
 exports.subscription = async event => {
 	try {
 		const request = await JSON.parse( event.body );
-		const { userId, subId } = event.pathParameters;
+		const { userIdSub, subId } = event.pathParameters;
 		const stripePayment = new StripePayment();
 		let paymentData;
 		const methods = {
 			PUT: () => stripePayment.updateSubscription( subId, request ),
-			POST: () => stripePayment.subscribePayment( userId, request.planId, request.cardId ),
-			GET: () => stripePayment.getSubscriptions( userId ),
+			POST: () => stripePayment.subscribePayment( userIdSub, request.planId, request.cardId ),
+			GET: () => stripePayment.getSubscriptions( userIdSub ),
 			DELETE: () => stripePayment.cancelSubscribe( subId )
 		};
 
