@@ -19,7 +19,7 @@ const devAdditionalNotifications = () => import( "~/_devmode/pages/Additional/Ad
 const devAdditionalBanners = () => import( "~/_devmode/pages/Additional/AdditionalBanners.vue" );
 const devAdditionalAvatars = () => import( "~/_devmode/pages/Additional/AdditionalAvatars.vue" );
 const devAdditionalTooltip = () => import( "~/_devmode/pages/Additional/AdditionalTooltip.vue" );
-
+const devAdditionalChat = () => import( "~/_devmode/pages/Additional/AdditionalChat.vue" );
 
 const devAdditionalModals = () => import( "~/_devmode/pages/Additional/AdditionalModals.vue" );
 
@@ -139,6 +139,11 @@ const devRoutes = [{
 			meta: { title: "Tooltip Component" },
 			name: "devAdditionalTooltip",
 			component: devAdditionalTooltip
+		}, {
+			path: "chat",
+			meta: { title: "Chat Component" },
+			name: "devAdditionalChat",
+			component: devAdditionalChat
 		}, {
 			path: "",
 			redirect: { name: "devAdditionalIcons" },

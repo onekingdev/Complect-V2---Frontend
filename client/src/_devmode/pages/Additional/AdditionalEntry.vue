@@ -26,6 +26,9 @@ export default {
 			}, {
 				name: "devAdditionalTooltip",
 				title: "Tooltip"
+			}, {
+				name: "devAdditionalChat",
+				title: "Chat"
 			}]
 		};
 	}
