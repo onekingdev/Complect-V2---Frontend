@@ -3,12 +3,12 @@ import { randomId } from "~/core/utils.js";
 
 const notifications = reactive([]);
 
-export default function useUser () {
+export default function useNotifications () {
 	const createNotification = options => {
 		notifications.unshift({
 			"id": options.id || randomId(),
-			"type": options.type || "info",
-			"title": options.title || options.type || "info",
+			"type": options.type || "success",
+			"title": options.title || options.type || "success",
 			"message": options.message || "",
 			"autoClose": options.autoClose,
 			"actions": options.actions
