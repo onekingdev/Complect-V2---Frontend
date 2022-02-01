@@ -1,5 +1,5 @@
 <template lang="pug">
-.cell-date(v-if="data" :class="{overdue: isOverdue}")
+.cell-date(:class="{overdue: isOverdue}")
 	icon(v-if="isOverdue" name="warning")
 	| {{ formatDate(data) }}
 </template>
@@ -12,13 +12,11 @@ export default {
 	"props": {
 		"data": {
 			"type": Number,
-			"default": () => Date.now(),
-			"required": false
+			"required": true
 		},
 		"meta": {
 			"type": Object,
-			"default": () => {},
-			"required": false
+			"default": () => {}
 		}
 	},
 	setup ( props ) {

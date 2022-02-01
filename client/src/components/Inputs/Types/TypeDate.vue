@@ -4,7 +4,6 @@ input(type="date" :value="dateFormatted(value)" @input="updateModelValue($event.
 
 
 <script>
-import { onMounted } from "vue";
 export default {
 	"props": {
 		"value": {
@@ -20,10 +19,6 @@ export default {
 		const dateFormatted = value => new Date( value || Date.now() ).toISOString().split( "T" )[0];
 		const toUnix = value => new Date( value ).getTime();
 		const updateModelValue = value => context.emit( "updateValue", toUnix( value ) );
-
-		onMounted( () => {
-			if ( !props.value ) updateModelValue( Date.now() );
-		});
 		return {
 			dateFormatted,
 			updateModelValue
