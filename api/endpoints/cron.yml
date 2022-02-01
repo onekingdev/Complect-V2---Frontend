@@ -78,6 +78,6 @@ updatePlan:
     subtype: Scraper
   layers:
     - {Ref: BaseLibsLambdaLayer}
-    - {Ref: paymentLibsLambdaLayer}
+    - {Ref: PaymentLibsLambdaLayer}
   events:
     - schedule: rate(1 day)

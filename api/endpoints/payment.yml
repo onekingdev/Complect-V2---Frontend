@@ -25,7 +25,7 @@ paymentMethod:
         cors: true
   layers:
     - {Ref: BaseLibsLambdaLayer}
-    - {Ref: paymentLibsLambdaLayer}
+    - {Ref: PaymentLibsLambdaLayer}
     
 stripeCustomer:
   name: complect-api-stripe-customer
@@ -46,7 +46,7 @@ stripeCustomer:
         cors: true
   layers:
     - {Ref: BaseLibsLambdaLayer}
-    - {Ref: paymentLibsLambdaLayer}
+    - {Ref: PaymentLibsLambdaLayer}
 
 paymentSubscription:
   name: complect-api-payment-subscription
@@ -75,7 +75,7 @@ paymentSubscription:
         cors: true
   layers:
     - {Ref: BaseLibsLambdaLayer}
-    - {Ref: paymentLibsLambdaLayer}
+    - {Ref: PaymentLibsLambdaLayer}
 
 oneTimePayment:
   name: complect-api-pay-project
@@ -92,4 +92,4 @@ oneTimePayment:
         cors: true
   layers:
     - {Ref: BaseLibsLambdaLayer}
-    - {Ref: paymentLibsLambdaLayer}
+    - {Ref: PaymentLibsLambdaLayer}
