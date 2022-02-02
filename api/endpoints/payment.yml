@@ -7,10 +7,10 @@ paymentMethod:
     type: API
     subtype: Dev
   events:
-    - http:
-        path: payment/method/{userId}
-        method: post
-        cors: true
+    # - http:
+    #     path: payment/method/{userId}
+    #     method: post
+    #     cors: true
     # - http:
     #     path: payment/method/{userId}/{paymentId}
     #     method: get
@@ -36,14 +36,14 @@ stripeCustomer:
     type: API
     subtype: Dev
   events:
-    - http:
-        path: payment/customer/{userIdCustomer}
-        method: post
-        cors: true
-    - http:
-        path: payment/customer/{userIdCustomer}
-        method: get
-        cors: true
+    # - http:
+    #     path: payment/customer/{userIdCustomer}
+    #     method: post
+    #     cors: true
+    # - http:
+    #     path: payment/customer/{userIdCustomer}
+    #     method: get
+    #     cors: true
   layers:
     - {Ref: BaseLibsLambdaLayer}
     - {Ref: PaymentLibsLambdaLayer}
@@ -57,18 +57,18 @@ paymentSubscription:
     type: API
     subtype: Dev
   events:
-    - http:
-        path: payment/subscription/{userIdSub}
-        method: get
-        cors: true
-    - http:
-        path: payment/subscription/{userIdSub}
-        method: post
-        cors: true
-    - http:
-        path: payment/subscription/{subId}
-        method: delete
-        cors: true
+    # - http:
+    #     path: payment/subscription/{userIdSub}
+    #     method: get
+    #     cors: true
+    # - http:
+    #     path: payment/subscription/{userIdSub}
+    #     method: post
+    #     cors: true
+    # - http:
+    #     path: payment/subscription/{subId}
+    #     method: delete
+    #     cors: true
   layers:
     - {Ref: BaseLibsLambdaLayer}
     - {Ref: PaymentLibsLambdaLayer}
@@ -82,10 +82,10 @@ oneTimePayment:
     type: API
     subtype: Dev
   events:
-    - http:
-        path: payment/pay
-        method: post
-        cors: true
+    # - http:
+    #     path: payment/pay
+    #     method: post
+    #     cors: true
   layers:
     - {Ref: BaseLibsLambdaLayer}
     - {Ref: PaymentLibsLambdaLayer}
