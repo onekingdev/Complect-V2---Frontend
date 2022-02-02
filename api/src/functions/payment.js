@@ -8,13 +8,13 @@ const { StripePayment } = require( "../modules/payment" );
 exports.method = async event => {
 	try {
 		const request = await JSON.parse( event.body );
-		const { userId, paymentId } = event.pathParameters;
+		const { userId, paymentId, paymentIdDelete } = event.pathParameters;
 		const stripePayment = new StripePayment();
 		let paymentData;
 		const methods = {
 			POST: () => stripePayment.addPaymentMethod(	userId, request.stripeToken ),
 			GET: () => stripePayment.getPaymentMethods( userId, paymentId ),
-			DELETE: () => stripePayment.removePaymentMethod( paymentId )
+			DELETE: () => stripePayment.removePaymentMethod( paymentIdDelete )
 		};
 
 		paymentData = await methods[event.httpMethod]();
