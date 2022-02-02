@@ -4,7 +4,7 @@ card-container.c-modal-task(:title="title" :class="{wide: !isNewTask}" ref="moda
 		c-button(type="icon" iconL="close" size="small" @click="closeModal()")
 	template(#content)
 		.grid-6(:class="{'col-3':!isNewTask}")
-			c-field(label="Task Name" v-model="form.title" required)
+			c-field(label="Task Name" v-model="form.name" required)
 			c-field(label="Link" v-model="form.Link")
 			c-field(label="Assignee" v-model="form.assigned")
 			c-field.col-3(label="Start Date" type="date" v-model="form.startsAt" required)
@@ -54,7 +54,7 @@ export default {
 		const { deleteModal } = useModals();
 		const form = ref({});
 
-		const { document, readDocuments, createDocuments, updateDocument, deleteDocuments } = useData( "tasks" );
+		const tasks = new useData( "tasks" );
 
 		const isNewTask = computed( () => !props.id );
 		const isCompleted = computed( () => form.value.completedAt );
@@ -67,7 +67,7 @@ export default {
 
 		const createTask = async () => {
 			try {
-				await createDocuments([form.value]);
+				await tasks.createDocuments([form.value]);
 				notification({
 					"title": "Success",
 					"message": "Task has been created."
@@ -84,7 +84,7 @@ export default {
 
 		const updateTask = async () => {
 			try {
-				await updateDocument( form.value._id, form.value );
+				await tasks.updateDocument( form.value._id, form.value );
 				notification({ "title": "Success", "message": "Task has been updated." });
 			} catch ( error ) {
 				console.error( error );
@@ -98,7 +98,7 @@ export default {
 
 		const completeTask = async timestamp => {
 			try {
-				await updateDocument( form.value._id, { "completedAt": timestamp });
+				await tasks.updateDocument( form.value._id, { "completedAt": timestamp });
 				notification({
 					"title": "Success",
 					"message": `Task has been marked as ${timestamp ? "complete" : "incomplete"}.`
@@ -115,7 +115,7 @@ export default {
 
 		const deleteTask = async () => {
 			try {
-				await deleteDocuments( props.id );
+				await tasks.deleteDocuments( props.id );
 				notification({
 					"title": "Success",
 					"message": "Task has been deleted."
@@ -145,8 +145,8 @@ export default {
 
 
 		const getData = async () => {
-			await readDocuments( props.id );
-			form.value = document.value;
+			await tasks.readDocuments( props.id );
+			form.value = tasks.document.value;
 		};
 
 

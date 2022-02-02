@@ -21,7 +21,7 @@ export default {
 	setup () {
 		const notification = inject( "notification" );
 		const router = useRouter();
-		const { createDocuments } = useData( "reviews" );
+		const reviews = new useData( "reviews" );
 
 		const newReview = ref({
 			"title": "",
@@ -39,7 +39,7 @@ export default {
 		});
 
 		const createReview = async () => {
-			const reviewId = await createDocuments([newReview.value]);
+			const reviewId = await reviews.createDocuments([newReview.value]);
 			notification({
 				"type": "success",
 				"title": "Review Cteated"

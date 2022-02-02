@@ -23,7 +23,7 @@ import VerticalTabs from "~/components/Containers/VerticalTabs.vue";
 export default {
 	"components": { VerticalTabs },
 	setup () {
-		const { document } = useData( "reviews" );
+		const reviews = new useData( "reviews" );
 		const categories = [{
 			"id": 1,
 			"title": "General",
@@ -32,7 +32,7 @@ export default {
 
 		const addCategory = () => console.debug( "Add new Category" );
 		return {
-			document,
+			document: reviews.getDocument(),
 			categories,
 			addCategory
 		};

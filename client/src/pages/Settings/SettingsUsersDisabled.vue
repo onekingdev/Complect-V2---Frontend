@@ -12,8 +12,8 @@ import SettingsUsersActions from "~/components/Helpers/SettingsUsersActions.vue"
 export default {
 	"components": { SettingsUsersActions },
 	setup () {
-		const { documents } = useData( "users" );
-		const users = computed( () => documents.value.filter( document => document.disabled ) );
+		const usersModel = new useData( "users" );
+		const users = computed( () => usersModel.documents.value.filter( document => document.disabled ) );
 
 		const columns = [
 			{

@@ -34,18 +34,18 @@ export default {
 		definitionList
 	},
 	setup () {
-		const { document } = useData( "projects" );
+		const projects = new useData( "projects" );
 
 		const projectDetails = computed( () => ({
-			"title": document.value.title,
-			"startsAt": formatDate( document.value.startsAt ),
-			"endsAt": formatDate( document.value.endsAt ),
-			"description": document.value.description
+			"title": projects.getDocument().value.title,
+			"startsAt": formatDate( projects.getDocument().value.startsAt ),
+			"endsAt": formatDate( projects.getDocument().value.endsAt ),
+			"description": projects.getDocument().value.description
 		}) );
 
 		return {
 			projectDetails,
-			document
+			document: projects.getDocument()
 		};
 	}
 };

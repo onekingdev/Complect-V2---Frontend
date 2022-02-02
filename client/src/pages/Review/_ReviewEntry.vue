@@ -23,7 +23,7 @@ export default {
 		cCheckbox
 	},
 	setup () {
-		const { document, readDocuments, clearStore, deleteDocuments } = useData( "reviews" );
+		const reviews = new useData( "reviews" );
 		const route = useRoute();
 		const router = useRouter();
 
@@ -46,16 +46,16 @@ export default {
 
 
 		const deleteProject = () => {
-			deleteDocuments( document.value._id );
+			reviews.deleteDocuments( reviews.getDocument().value._id );
 			closeReview();
 		};
 
-		onMounted( () => readDocuments( route.params.id ) );
-		onUnmounted( () => clearStore() );
+		onMounted( () => reviews.readDocuments( route.params.id ) );
+		onUnmounted( () => reviews.clearStore() );
 
 		return {
 			tabs,
-			document,
+			document: reviews.getDocument(),
 			closeReview,
 			updateProject,
 			deleteProject

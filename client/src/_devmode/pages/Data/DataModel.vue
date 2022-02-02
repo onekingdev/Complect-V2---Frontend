@@ -30,25 +30,19 @@ import { randomFirstNames, randomLastNames } from "~/_devmode/generator/componen
 import { randomGenders } from "~/_devmode/generator/components/molecules/randomGenders.js";
 export default {
 	setup() {
-		const {
-			readDocuments,
-			clearStore,
-			documents,
-			createDocuments,
-			updateDocument,
-			deleteDocuments } = useData('_devmode')
+		const devmode = new useData('_devmode')
 
 		const form = ref({})
 
 		const reset = () => form.value = {};
-		const create = () => { createDocuments([form.value]), reset() };
-		const update = () => { updateDocument(form.value._id, form.value), reset() };
+		const create = () => { devmode.createDocuments([form.value]), reset() };
+		const update = () => { devmode.updateDocument(form.value._id, form.value), reset() };
 		const select = _id => {
-			let original = documents.value.find(document => document._id === _id);
+			let original = devmode.getDocuments().value.find(document => document._id === _id);
 			let copy = _clonedeep( original );
 			form.value = copy
 		};
-		const remove = _id => deleteDocuments(_id);
+		const remove = _id => devmode.deleteDocuments(_id);
 		
 		
 		const generate = async q => {
@@ -59,20 +53,20 @@ export default {
 				let lastName = randomLastNames({q:1})[0]
 				randomUsers.push({firstName, lastName});
 			}
-			return await createDocuments(randomUsers);
+			return await devmode.createDocuments(randomUsers);
 		}
 
 		// CRUD Test. Generate n-records, save them, update and delete
 		const crudTest = async q => {
 			try {
 				await generate(q);
-				await updateDocument(documents.value[0]._id, {firstName: "John"});
-				await updateDocument(documents.value[1]._id, {lastName: "Smith"});
-				await deleteDocuments(documents.value[2]._id);
-				await updateDocument(documents.value[3]._id, {lastName: "Alice"});
-				await deleteDocuments(documents.value[4]._id);
-				await deleteDocuments(documents.value[5]._id);
-				await deleteDocuments();
+				await devmode.updateDocument(devmode.getDocuments().value[0]._id, {firstName: "John"});
+				await devmode.updateDocument(devmode.getDocuments().value[1]._id, {lastName: "Smith"});
+				await devmode.deleteDocuments(devmode.getDocuments().value[2]._id);
+				await devmode.updateDocument(devmode.getDocuments().value[3]._id, {lastName: "Alice"});
+				await devmode.deleteDocuments(devmode.getDocuments().value[4]._id);
+				await devmode.deleteDocuments(devmode.getDocuments().value[5]._id);
+				await devmode.deleteDocuments();
 			} catch(error) {
 				console.error(error)
 			}
@@ -80,13 +74,13 @@ export default {
 
 		const randomPatch = () => {
 			let gender = randomGenders({ q: 1 })[0];
-			updateDocument(documents.value[0]._id, {firstName: randomFirstNames({q:1, gender})[0]});
+			devmode.updateDocument(devmode.getDocuments().value[0]._id, {firstName: randomFirstNames({q:1, gender})[0]});
 		}
 
-		onMounted(() => readDocuments())
+		onMounted(() => devmode.readDocuments())
 		onUnmounted(() => clearStore())
 		
-		return { form, documents, reset, create, update, select, remove, generate, crudTest, randomPatch }
+		return { form, documents : devmode.getDocuments(), reset, create, update, select, remove, generate, crudTest, randomPatch }
 	}
 };
 </script>

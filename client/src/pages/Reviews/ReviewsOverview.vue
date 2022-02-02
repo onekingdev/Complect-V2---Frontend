@@ -15,11 +15,11 @@ import cBanner from "~/components/Misc/cBanner.vue";
 export default {
 	"components": { cBanner },
 	setup () {
-		const { documents, readDocuments, deleteDocuments, clearStore } = useData( "reviews" );
+		const reviews = new useData( "reviews" );
 
 		const handleClickEdit = id => console.debug( "Edit", id );
 		const handleClickDuplicate = id => console.debug( "Duplicate", id );
-		const handleClickDelete = id => deleteDocuments( id );
+		const handleClickDelete = id => reviews.deleteDocuments( id );
 
 		const columns = [
 			{
@@ -69,12 +69,12 @@ export default {
 			}
 		];
 
-		onMounted( () => readDocuments() );
-		onUnmounted( () => clearStore() );
+		onMounted( () => reviews.readDocuments() );
+		onUnmounted( () => reviews.clearStore() );
 
 		return {
 			columns,
-			documents
+			documents: reviews.getDocuments()
 		};
 	}
 };
