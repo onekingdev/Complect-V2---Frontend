@@ -45,10 +45,23 @@ const calcRiskLevel = ( impact, likelihood ) => {
 	return 1;
 };
 
+const calcExpandDirections = element => {
+	const clientRect = element.getBoundingClientRect();
+	const gap = 10;
+	const directions = [
+		"toRight", "toBottom"
+	];
+	const toRightEdge = window.innerWidth - clientRect.right;
+	const toBottomEdge = window.innerHeight - clientRect.bottom;
+	if ( toRightEdge < gap ) directions[0] = "toLeft";
+	if ( toBottomEdge < gap ) directions[1] = "toTop";
+	return directions;
+};
+
 const removeSensitiveData = ( object, keys ) => {
 	keys.forEach( key => {
 		delete object[key];
 	});
 };
 
-export { randomNumber, randomId, randomMongoId, sortArrayByKey, formatDate, calcRiskLevel, removeSensitiveData };
+export { randomNumber, randomId, randomMongoId, sortArrayByKey, formatDate, calcRiskLevel, calcExpandDirections, removeSensitiveData };

@@ -3,6 +3,7 @@
 const { createDocuments, readDocuments, updateDocument, deleteDocuments } = require( "../helpers/crud" );
 const { response, randomNumber, checkFields, devStageLog } = require( "../helpers/utils" );
 const codes = require( "../helpers/codes" );
+const { sendEmail } = require( "../modules/sendEmail" );
 
 // temp Test Data
 const token = "123456789";
@@ -19,6 +20,12 @@ const generateOtp = async email => {
 		query: { email },
 		documents: { otp },
 		options: { upsert: true }
+	});
+	await sendEmail({
+		template: "otp",
+		email,
+		subject: "OTP",
+		data: { otp }
 	});
 	devStageLog( `OTP is: ${otp}` ); // print otp number to console at dev stage
 };

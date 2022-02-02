@@ -3,21 +3,27 @@
 	h1
 		b {{$locale("Welcome")}},&nbsp;
 		| {{profile.firstName}} {{profile.lastName}}
-	card-container(title="December")
-		template(#content)
-			c-calendar
+	c-calendar(:events="documents")
 	card-container(title="Upcoming")
 </template>
 
 
 <script>
-import cCalendar from "~/components/Misc/cCalendar.vue";
+import { onMounted, onUnmounted } from "vue";
+import useData from "~/store/Data.js";
+import cCalendar from "~/components/Calendar/cCalendar.vue";
 import useProfile from "~/store/Profile.js";
+
+
 export default {
 	"components": { cCalendar },
 	setup () {
+		const { documents, readDocuments, clearStore } = useData( "projects" );
 		const { profile } = useProfile();
-		return { profile };
+
+		onMounted( () => readDocuments() );
+		onUnmounted( () => clearStore() );
+		return { profile, documents };
 	}
 };
 </script>

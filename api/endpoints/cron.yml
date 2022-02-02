@@ -65,19 +65,3 @@ crdScraper:
     - {Ref: ScraperLibsLambdaLayer}
   events:
     - schedule: cron(0 0 10 * ? *)
-
-updatePlan:
-  name: ${opt:stage, 'dev'}-cron-update-plan
-  handler: src/functions/cron.updatePlan
-  description: Schedule every day of plan
-  memorySize: 2056
-  timeout: 60
-  tags:
-    website: Complect App
-    type: API
-    subtype: Scraper
-  layers:
-    - {Ref: BaseLibsLambdaLayer}
-    - {Ref: PaymentLibsLambdaLayer}
-  events:
-    - schedule: rate(1 day)

@@ -5,14 +5,14 @@ card-container.c-modal-task(:title="title" :class="{wide: !isNewTask}" ref="moda
 	template(#content)
 		.grid-6(:class="{'col-3':!isNewTask}")
 			c-field(label="Task Name" v-model="form.title" required)
-			c-field(label="AssLinkignee" v-model="form.Link")
+			c-field(label="Link" v-model="form.Link")
 			c-field(label="Assignee" v-model="form.assigned")
 			c-field.col-3(label="Start Date" type="date" v-model="form.startsAt" required)
 			c-field.col-3(label="Due Date" type="date" v-model="form.endsAt" required)
 			c-field.col-3(label="Repeats" v-model="form.repeats")
 			c-field.col-3(label="On Day" v-model="form.onday")
 			c-field(label="Description" type="textarea" v-model="form.description")
-		//- c-chat.col-3(v-if="!isNewTask")
+		c-chat.col-3(v-if="!isNewTask")
 
 	template(#footer)
 		template(v-if="!isNewTask && !form.completedAt")
@@ -31,16 +31,12 @@ card-container.c-modal-task(:title="title" :class="{wide: !isNewTask}" ref="moda
 import { ref, computed, onMounted, onUnmounted, inject } from "vue";
 import useModals from "~/store/Modals.js";
 import useData from "~/store/Data.js";
-// import cChat from "~/components/Misc/cChat.vue";
-// import cSelect from "~/components/Inputs/cSelect.vue";
+import cChat from "~/components/Misc/cChat.vue";
 import { formatDate } from "~/core/utils.js";
 import { onClickOutside } from "@vueuse/core";
 
 export default {
-	// components: {
-	// 	cChat,
-	// 	cSelect
-	// },
+	"components": { cChat },
 	"props": {
 		"modalId": {
 			"type": String,
