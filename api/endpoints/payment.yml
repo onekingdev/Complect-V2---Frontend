@@ -1,0 +1,91 @@
+paymentMethod:
+  name: complect-api-payment-method
+  handler: src/functions/payment.method
+  description: End point for Payment Method
+  tags:
+    website: Complect App
+    type: API
+    subtype: Dev
+  events:
+    - http:
+        path: payment/method/{userId}
+        method: post
+        cors: true
+    - http:
+        path: payment/method/{userId}/{paymentId}
+        method: get
+        cors: true
+    - http:
+        path: payment/method/{userId}
+        method: get
+        cors: true
+    - http:
+        path: payment/method/{paymentIdDelete}
+        method: delete
+        cors: true
+  layers:
+    - {Ref: BaseLibsLambdaLayer}
+    - {Ref: PaymentLibsLambdaLayer}
+    
+stripeCustomer:
+  name: complect-api-stripe-customer
+  handler: src/functions/payment.customer
+  description: End point for Stripe Customer
+  tags:
+    website: Complect App
+    type: API
+    subtype: Dev
+  events:
+    - http:
+        path: payment/customer/{userIdCustomer}
+        method: post
+        cors: true
+    - http:
+        path: payment/customer/{userIdCustomer}
+        method: get
+        cors: true
+  layers:
+    - {Ref: BaseLibsLambdaLayer}
+    - {Ref: PaymentLibsLambdaLayer}
+
+paymentSubscription:
+  name: complect-api-payment-subscription
+  handler: src/functions/payment.subscription
+  description: Update Plan
+  tags:
+    website: Complect App
+    type: API
+    subtype: Dev
+  events:
+    - http:
+        path: payment/subscription/{userIdSub}
+        method: get
+        cors: true
+    - http:
+        path: payment/subscription/{userIdSub}
+        method: post
+        cors: true
+    - http:
+        path: payment/subscription/{subId}
+        method: delete
+        cors: true
+  layers:
+    - {Ref: BaseLibsLambdaLayer}
+    - {Ref: PaymentLibsLambdaLayer}
+
+oneTimePayment:
+  name: complect-api-pay-project
+  handler: src/functions/payment.pay
+  description: Endpoint for Subscription
+  tags:
+    website: Complect App
+    type: API
+    subtype: Dev
+  events:
+    - http:
+        path: payment/pay
+        method: post
+        cors: true
+  layers:
+    - {Ref: BaseLibsLambdaLayer}
+    - {Ref: PaymentLibsLambdaLayer}
