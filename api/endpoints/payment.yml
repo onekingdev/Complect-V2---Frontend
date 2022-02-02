@@ -11,18 +11,18 @@ paymentMethod:
         path: payment/method/{userId}
         method: post
         cors: true
-    - http:
-        path: payment/method/{userId}/{paymentId}
-        method: get
-        cors: true
-    - http:
-        path: payment/method/{userId}
-        method: get
-        cors: true
-    - http:
-        path: payment/method/{paymentIdDelete}
-        method: delete
-        cors: true
+    # - http:
+    #     path: payment/method/{userId}/{paymentId}
+    #     method: get
+    #     cors: true
+    # - http:
+    #     path: payment/method/{userId}
+    #     method: get
+    #     cors: true
+    # - http:
+    #     path: payment/method/{paymentIdDelete}
+    #     method: delete
+    #     cors: true
   layers:
     - {Ref: BaseLibsLambdaLayer}
     - {Ref: PaymentLibsLambdaLayer}
