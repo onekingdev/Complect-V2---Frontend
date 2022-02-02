@@ -25,6 +25,7 @@ svg.icon
 	width: 1em
 	height: 1em
 	fill: #777
+	flex-shrink: 0
 	&.tiny
 		width: 0.6em
 		height: 0.6em

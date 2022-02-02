@@ -8,7 +8,7 @@
 * [Dev Stage](https://app.complect.dev)  
 * [Public Stage](https://app.complect.com)
 
-login: `next`  
+login: `dev`  
 password: `preview`
 
 

@@ -4,7 +4,6 @@ const CRDImport = require( "../modules/CRDImport" );
 const { readDocuments, createDocuments, updateDocument } = require( "../helpers/crud" );
 const { response, devStageLog } = require( "../helpers/utils" );
 const { sendEmail } = require( "../modules/sendEmail" );
-const { StripePayment } = require( "../modules/payment" );
 
 
 const findAndsendEmail = async ( data, scheduler, subject ) => {
@@ -57,7 +56,7 @@ exports.projectEnd = async () => {
 	try {
 		const projects = await readDocuments({
 			collection: "projects",
-			query: { endsAt: { $lt: Date.now() + 86400000 }	}
+			query: { endsAt: { $lt: new Date( Date.now() + 86400000 ) }	}
 		});
 		for ( let i = 0; i < projects.length; i++ ) {
 			await findAndsendEmail( projects[i], "projectEnd", "Project Ended in 24 hours" );
@@ -85,7 +84,7 @@ exports.jobStartCron = async () => {
 	try {
 		const jobs = await readDocuments({
 			collection: "jobs",
-			query: { startsAt: { $lt: Date.now() }	}
+			query: { startsAt: { $lt: new Date( Date.now() ) }	}
 		});
 		for ( let i = 0; i < jobs.length; i++ ) await findAndsendEmail( jobs[i], "jobStart", "Job Started" );
 	} catch ( error ) {
@@ -98,7 +97,7 @@ exports.jobPostingCron = async () => {
 		const jobs = await readDocuments({
 			collection: "jobs",
 			query: {
-				startsAt: { $lt: Date.now() + 172800000 },
+				startsAt: { $lt: new Date( Date.now() + 172800000 ) },
 				status: "pending"
 			}
 		});
@@ -112,7 +111,7 @@ exports.contractEndCron = async () => {
 	try {
 		const contracts = await readDocuments({
 			collection: "contracts",
-			query: { endsAt: { $lt: Date.now() + 172800000 } }
+			query: { endsAt: { $lt: new Date( Date.now() + 172800000 ) } }
 		});
 		for ( let i = 0; i < contracts.length; i++ ) await findAndsendEmail( contracts[i], "contractEnd", "Contract Ended in 24 hours" );
 	} catch ( error ) {
@@ -125,48 +124,6 @@ exports.crdScrapy = async () => {
 		const crdImport = new CRDImport();
 		await crdImport.initialize();
 		await crdImport.call();
-	} catch ( error ) {
-		return response({
-			httpCode: 400,
-			message: error.message
-		});
-	}
-};
-
-exports.updatePlan = async () => {
-	try {
-		const users = await readDocuments({
-			collection: "users",
-			query: {
-				schedulePlan: {
-					subscriptionStartAt: {
-						$lt: Date.now() + 172800000,
-						$gt: Date.now()
-					}
-				}
-			}
-		});
-		for ( let i = 0; i < users.length; i++ ) {
-			const stripePayment = new StripePayment();
-			const currentSubId = users[i].currentPlan?.subId;
-			// eslint-disable-next-line no-continue
-			if ( currentSubId ) {
-				await stripePayment.cancelSubscribe( currentSubId );
-				await updateDocument({
-					collection: "users",
-					_id: users[i]._id,
-					documents: {
-						currentPlan: users[i].schedulePlan,
-						schedulePlan: {
-							subscriptionStartAt: "",
-							subscriptionEndAt: "",
-							subId: "",
-							planId: ""
-						}
-					}
-				});
-			}
-		}
 	} catch ( error ) {
 		return response({
 			httpCode: 400,

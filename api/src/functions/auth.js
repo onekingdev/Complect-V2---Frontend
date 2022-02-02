@@ -3,6 +3,7 @@
 const { createDocuments, readDocuments, updateDocument, deleteDocuments } = require( "../helpers/crud" );
 const { response, randomNumber, checkFields, devStageLog } = require( "../helpers/utils" );
 const codes = require( "../helpers/codes" );
+const { sendEmail } = require( "../modules/sendEmail" );
 
 // temp Test Data
 const token = "123456789";
@@ -19,6 +20,12 @@ const generateOtp = async email => {
 		query: { email },
 		documents: { otp },
 		options: { upsert: true }
+	});
+	await sendEmail({
+		template: "otp",
+		email,
+		subject: "OTP",
+		data: { otp }
 	});
 	devStageLog( `OTP is: ${otp}` ); // print otp number to console at dev stage
 };
@@ -120,12 +127,13 @@ exports.checkOtp = async event => {
 			query: { email: request.email }
 		});
 		if ( !document.length ) throw { internalCode: 40500 }; // if no OTP in DB
-
-		// dev mode
-		if ( process.env.STAGE !== "dev" ) {
-			if ( document.otp !== parseInt( request.otp, 10 ) ) throw { internalCode: 40501 }; // compare OTP
+		const otpClient = parseInt( request.otp, 10 );
+		const otpServer = document[0].otp;
+		if ( process.env.STAGE === "dev" ) {
+			if ( otpClient !== 111111 && otpClient !== otpServer ) throw { internalCode: 40501 }; // compare OTP to devCode (111111) or OTP record
 		} else
-		if ( parseInt( request.otp, 10 ) !== 111111 ) throw { internalCode: 40501 }; // compare OTP
+		if ( otpClient !== otpServer ) throw { internalCode: 40501 }; // compare OTP record
+
 
 		await deleteDocuments({
 			collection: "otp",
