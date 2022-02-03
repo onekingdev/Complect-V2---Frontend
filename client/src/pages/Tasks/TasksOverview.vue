@@ -94,7 +94,7 @@ export default {
 
 		return {
 			columns,
-			documents: tasks.getDocuments(),
+			"documents": tasks.getDocuments(),
 			filters
 		};
 	}

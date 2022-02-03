@@ -95,7 +95,7 @@ export default {
 
 		return {
 			columns,
-			documents : projects.getDocuments(),
+			"documents": projects.getDocuments(),
 			filters
 		};
 	}

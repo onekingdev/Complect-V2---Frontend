@@ -4,7 +4,7 @@ const endpoint = ( collectionName, documentId, query ) => {
 	base = `${API_URI}/data/${collectionName}`;
 	if ( documentId ) base += `/${documentId}`;
 	if ( query ) {
-		const queryString = Object.keys(query).map(key => key + '=' + query[key]).join('&');
+		const queryString = Object.keys( query ).map( key => `${key}=${query[key]}` ).join( "&" );
 		base += `?${queryString}`;
 	}
 	return base;
@@ -51,10 +51,10 @@ const deleteDocumentsFromCloudDb = async ( collectionName, documentId ) => {
 	return result;
 };
 
-const manualApi = async ({ method, endpoint, newData }) => {
+const manualApi = async ({ method, url, newData }) => {
 	try {
 		const API_URI = import.meta.env.VITE_API_URI;
-		const apiUrl = `${API_URI}/${endpoint}`;
+		const apiUrl = `${API_URI}/${url}`;
 		const options = {
 			method,
 			"mode": "cors",

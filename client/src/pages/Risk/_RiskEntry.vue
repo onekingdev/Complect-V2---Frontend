@@ -34,7 +34,7 @@ export default {
 		onUnmounted( () => risks.clearStore() );
 
 		return {
-			document: risks.getDocument(),
+			"document": risks.getDocument(),
 			riskLevel,
 			closeRisk,
 			deleteRisk

@@ -51,7 +51,6 @@ const PolicyTasks = () => import( "~/pages/Policy/PolicyTasks.vue" );
 const PolicyHistory = () => import( "~/pages/Policy/PolicyHistory.vue" );
 
 
-
 // reviews
 const _ReviewsEntry = () => import( "~/pages/Reviews/_ReviewsEntry.vue" );
 const ReviewsOverview = () => import( "~/pages/Reviews/ReviewsOverview.vue" );
@@ -267,7 +266,7 @@ const routes = [
 						}]
 					},
 					{
-						"path": "review/:id",
+						"path": "internal_review/:id",
 						"component": _ReviewEntry,
 						"meta": {
 							"title": "Review",

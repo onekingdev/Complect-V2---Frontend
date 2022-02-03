@@ -11,11 +11,12 @@ import cBanner from "~/components/Misc/cBanner.vue";
 export default {
 	"components": { cBanner },
 	setup () {
-		const { documents, readDocuments, deleteDocuments, clearStore } = UseData( "risks" );
+		// const { documents, readDocuments, deleteDocuments, clearStore } = UseData( "risks" );
+		const risks = new UseData( "risks" );
 
 		const handleClickEdit = id => console.debug( "Edit", id );
 		const handleClickDuplicate = id => console.debug( "Duplicate", id );
-		const handleClickDelete = id => deleteDocuments( id );
+		const handleClickDelete = id => risks.deleteDocuments( id );
 
 		const columns = [
 			{
@@ -64,13 +65,13 @@ export default {
 			}
 		];
 
-		onMounted( () => readDocuments() );
-		onUnmounted( () => clearStore() );
+		onMounted( () => risks.readDocuments() );
+		onUnmounted( () => risks.clearStore() );
 
 
 		return {
 			columns,
-			documents
+			"documents": risks.getDocuments()
 		};
 	}
 };

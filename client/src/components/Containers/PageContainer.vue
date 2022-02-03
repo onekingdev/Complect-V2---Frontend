@@ -86,8 +86,6 @@ export default {
 				flex-wrap: wrap
 				gap: 1em
 				justify-content: flex-end
-				+ .controls
-					margin-top: 2em
 		.container-sections
 			flex-shrink: 0
 			width: 100%
@@ -115,9 +113,7 @@ export default {
 	.container-content
 		flex: 1
 		align-content: flex-start
-		display: flex
 		flex-wrap: wrap
-		gap: 2em
 		padding: 1em 2em
 
 	// Types

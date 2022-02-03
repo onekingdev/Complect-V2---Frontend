@@ -55,7 +55,7 @@ export default {
 
 		return {
 			tabs,
-			document: reviews.getDocument(),
+			"document": reviews.getDocument(),
 			closeReview,
 			updateProject,
 			deleteProject

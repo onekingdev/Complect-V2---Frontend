@@ -32,7 +32,7 @@ export default {
 
 		const addCategory = () => console.debug( "Add new Category" );
 		return {
-			document: reviews.getDocument(),
+			"document": reviews.getDocument(),
 			categories,
 			addCategory
 		};

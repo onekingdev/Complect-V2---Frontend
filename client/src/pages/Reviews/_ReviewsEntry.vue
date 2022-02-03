@@ -42,7 +42,7 @@ export default {
 			const reviewId = await reviews.createDocuments([newReview.value]);
 			notification({
 				"type": "success",
-				"title": "Review Cteated"
+				"title": "Review Created"
 			});
 			router.push({
 				"name": "ReviewDetail",

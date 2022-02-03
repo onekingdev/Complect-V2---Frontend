@@ -23,7 +23,7 @@ export default {
 
 		onMounted( () => projects.readDocuments() );
 		onUnmounted( () => projects.clearStore() );
-		return { profile, documents : projects.getDocuments() };
+		return { profile, "documents": projects.getDocuments() };
 	}
 };
 </script>

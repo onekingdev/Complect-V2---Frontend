@@ -71,14 +71,14 @@ export default {
 		const updateProject = () => {};
 
 		const markAsComplete = () => {
-			updateDocument( projects.getDocument().value._id, {
+			projects.updateDocument( projects.getDocument().value._id, {
 				"status": "complete",
 				"completed": true
 			});
 			closeProject();
 		};
 		const deleteProject = () => {
-			deleteDocuments( projects.getDocument().value._id );
+			projects.deleteDocuments( projects.getDocument().value._id );
 			closeProject();
 		};
 
@@ -86,7 +86,7 @@ export default {
 		onUnmounted( () => projects.clearStore() );
 
 		return {
-			document: projects.getDocument(),
+			"document": projects.getDocument(),
 			tabs,
 			markAsComplete,
 			closeProject,

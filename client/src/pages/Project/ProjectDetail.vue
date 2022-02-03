@@ -45,7 +45,7 @@ export default {
 
 		return {
 			projectDetails,
-			document: projects.getDocument()
+			"document": projects.getDocument()
 		};
 	}
 };
