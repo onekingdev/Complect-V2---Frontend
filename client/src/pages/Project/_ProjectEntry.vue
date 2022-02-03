@@ -45,7 +45,7 @@ export default {
 		cCheckbox
 	},
 	setup () {
-		const projects = new useData( "projects" );
+		const { document, readDocuments, clearStore, updateDocument, deleteDocuments } = useData( "projects" );
 		const route = useRoute();
 		const router = useRouter();
 
@@ -71,22 +71,22 @@ export default {
 		const updateProject = () => {};
 
 		const markAsComplete = () => {
-			updateDocument( projects.getDocument().value._id, {
+			updateDocument( document.value._id, {
 				"status": "complete",
 				"completed": true
 			});
 			closeProject();
 		};
 		const deleteProject = () => {
-			deleteDocuments( projects.getDocument().value._id );
+			deleteDocuments( document.value._id );
 			closeProject();
 		};
 
-		onMounted( () => projects.readDocuments( route.params.id ) );
-		onUnmounted( () => projects.clearStore() );
+		onMounted( () => readDocuments( route.params.id ) );
+		onUnmounted( () => clearStore() );
 
 		return {
-			document: projects.getDocument(),
+			document,
 			tabs,
 			markAsComplete,
 			closeProject,

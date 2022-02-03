@@ -18,12 +18,12 @@ import useProfile from "~/store/Profile.js";
 export default {
 	"components": { cCalendar },
 	setup () {
-		const projects = new useData( "projects" );
+		const { documents, readDocuments, clearStore } = useData( "projects" );
 		const { profile } = useProfile();
 
-		onMounted( () => projects.readDocuments() );
-		onUnmounted( () => projects.clearStore() );
-		return { profile, documents : projects.getDocuments() };
+		onMounted( () => readDocuments() );
+		onUnmounted( () => clearStore() );
+		return { profile, documents };
 	}
 };
 </script>

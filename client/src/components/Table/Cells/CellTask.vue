@@ -24,12 +24,12 @@ export default {
 	setup ( props ) {
 		const notification = inject( "notification" );
 		const modal = inject( "modal" );
-		const tasks = new useData( "tasks" );
+		const { documents, updateDocument } = useData( "tasks" );
 
 		const openTaskModal = () => modal({ "name": "cModalTask", "id": props.id });
 
 		const isCompleted = computed( () => {
-			const document = tasks.getDocuments().value.find( doc => doc._id === props.id );
+			const document = documents.value.find( doc => doc._id === props.id );
 			return Boolean( document.completedAt );
 		});
 
@@ -53,7 +53,7 @@ export default {
 		};
 
 
-		return { documents : tasks.getDocuments() , isCompleted, toggleComplete, openTaskModal };
+		return { documents, isCompleted, toggleComplete, openTaskModal };
 	}
 };
 </script>

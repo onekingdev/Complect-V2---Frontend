@@ -24,11 +24,11 @@ import cSelect from "~/components/Inputs/cSelect.vue";
 import cLabel from "~/components/Misc/cLabel.vue";
 import cBadge from "~/components/Misc/cBadge.vue";
 export default {
-	"components": { cSelect, cLabel, cBadge, cLabel },
+	"components": { cSelect, cLabel, cBadge },
 	setup () {
 		const notification = inject( "notification" );
 		const router = useRouter();
-		const risks = new useData( "risks" );
+		const { createDocuments } = useData( "risks" );
 
 		const options = [
 			{ "title": "Low", "value": 0 }, { "title": "Medium", "value": 1 }, { "title": "High", "value": 2 }
@@ -44,7 +44,7 @@ export default {
 
 		const createRisk = async () => {
 			newRisk.value.riskLevel = newRiskLevel.value;
-			const riskId = await risks.createDocuments([newRisk.value]);
+			const riskId = await createDocuments([newRisk.value]);
 			notification({
 				"type": "success",
 				"title": "Risk Cteated"

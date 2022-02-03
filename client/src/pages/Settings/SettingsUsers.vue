@@ -35,7 +35,7 @@ export default {
 
 		// start _devMode
 		// temp Random Users
-		const usersModel = new useData( "users" );
+		const { devModePushToStore, clearStore } = useData( "users" );
 		const usersRecords = computed( () => {
 			const users = [];
 			for ( let i = 1; i < randomNumber( 10, 20 ); i++ ) {
@@ -77,8 +77,8 @@ export default {
 			"Disabled": usersRecords.value.filter( user => user.disabled ).length
 		}) );
 
-		onMounted( () => usersModel.devModePushToStore( usersRecords.value ) );
-		onUnmounted( () => usersModel.clearStore() );
+		onMounted( () => devModePushToStore( usersRecords.value ) );
+		onUnmounted( () => clearStore() );
 		// end _devMode -------------------------------------------
 
 

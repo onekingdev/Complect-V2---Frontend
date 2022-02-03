@@ -1,66 +1,85 @@
 <template lang="pug">
 c-banner(title="Key Regulatory Developments 2021" message="New regulatory changes can have an impact on your policies and procedures.")
 	template(#controls)
-		c-button(title="View" @click="viewPolicy()")
-.rules-block Rule 206(4)-7 under the Adviser Act requires that you conduct a review of your compliance program no less than annually. Your last completed internal review was on
-	a(href="/") 12/07/2021
+		a(href='https://www.sec.gov/exams' target='_blank')
+			c-button(title="View" @click="viewPolicy()")
+.rules-block Rule 206(4)-7 under the Adviser Act requires that you conduct a review of your compliance program no less than annually.
 c-table(v-bind="{columns, documents}")
 </template>
 
 
 <script>
-import { onMounted, onUnmounted } from "vue";
+import { onMounted, onUnmounted, inject } from "vue";
 import useData from "~/store/Data.js";
+import { useRouter } from "vue-router";
 import cBanner from "~/components/Misc/cBanner.vue";
 export default {
 	"components": { cBanner },
 	setup () {
-		const reviews = new useData( "reviews" );
+		const { documents, readDocuments, createDocuments, deleteDocuments, clearStore } = useData( "reviews" );
+		const router = useRouter();
+		const notification = inject( "notification" );
 
-		const handleClickEdit = id => console.debug( "Edit", id );
-		const handleClickDuplicate = id => console.debug( "Duplicate", id );
-		const handleClickDelete = id => reviews.deleteDocuments( id );
+		const handleClickEdit = id => {
+			router.push({
+				"name": "ReviewDetail",
+				"params": { id }
+			});
+		};
+
+		const handleClickDuplicate = async id => {
+			const index = documents.value.findIndex( doc => doc._id === id );
+			await createDocuments([documents.value[index]]);
+			notification({
+				"type": "success",
+				"title": "Internal review has been duplicated."
+			});
+		};
+
+		const handleClickDelete = id => deleteDocuments( id );
 
 		const columns = [
 			{
 				"title": "Name",
 				"key": "title",
 				"cell": "CellTitle",
+				"width": "25%",
 				"meta": { "link": "ReviewDetail" }
 			},
 			{
 				"title": "Progress",
 				"key": "progress",
-				"cell": "CellProgress"
+				"cell": "CellProgress",
+				"width": "25%"
 			},
 			{
 				"title": "Finding",
 				"key": "finding",
-				"cell": "CellDefault"
+				"cell": "CellDefault",
+				"align": "right"
 			},
 			{
 				"title": "Last Modified",
 				"key": "lastModified",
-				"cell": "CellDate"
+				"cell": "CellDate",
+				"align": "right"
 			},
 			{
 				"title": "Date Created",
 				"key": "dateCreated",
-				"cell": "CellDate"
+				"cell": "CellDate",
+				"align": "right"
 			},
 			{
-				"title": "Review Period",
+				"title": "Review Period End Date	",
 				"key": "reviewPeriod",
-				"cell": "CellDate"
-			},
-			{
-				"title": "End Date",
-				"key": "endDate",
-				"cell": "CellDate"
+				"cell": "CellDate",
+				"align": "right"
 			},
 			{
 				"unsortable": true,
 				"cell": "CellDropdown",
+				"width": "35px",
 				"meta": {
 					"actions": [
 						{ "title": "Edit", "action": handleClickEdit }, { "title": "Duplicate", "action": handleClickDuplicate }, { "title": "Delete", "action": handleClickDelete }
@@ -69,12 +88,12 @@ export default {
 			}
 		];
 
-		onMounted( () => reviews.readDocuments() );
-		onUnmounted( () => reviews.clearStore() );
+		onMounted( () => readDocuments() );
+		onUnmounted( () => clearStore() );
 
 		return {
 			columns,
-			documents: reviews.getDocuments()
+			documents
 		};
 	}
 };

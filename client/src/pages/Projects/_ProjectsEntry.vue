@@ -25,7 +25,7 @@ export default {
 	setup () {
 		const notification = inject( "notification" );
 		const router = useRouter();
-		const projects = new useData( "projects" );
+		const { createDocuments } = useData( "projects" );
 		const tabs = [
 			{
 				"title": "My Projects",
@@ -55,7 +55,7 @@ export default {
 
 
 		const createProject = async () => {
-			const projectId = await projects.createDocuments([newProject.value]);
+			const projectId = await createDocuments([newProject.value]);
 			notification({
 				"type": "success",
 				"title": "Project Cteated"
