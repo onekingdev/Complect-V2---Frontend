@@ -18,7 +18,7 @@ import { randomBool, randomNumber, randomElement } from "~/_devmode/generator/co
 import { randomUsers } from "~/_devmode/generator/components/organisms/randomUsers.js";
 import { randomDatesInRange } from "~/_devmode/generator/components/molecules/randomDate.js";
 
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 export default {
 	"components": { HorizontalTabs },
 	setup () {
@@ -35,7 +35,7 @@ export default {
 
 		// start _devMode
 		// temp Random Users
-		const { devModePushToStore, clearStore } = useData( "users" );
+		const usersModel = new UseData( "users" );
 		const usersRecords = computed( () => {
 			const users = [];
 			for ( let i = 1; i < randomNumber( 10, 20 ); i++ ) {
@@ -77,8 +77,8 @@ export default {
 			"Disabled": usersRecords.value.filter( user => user.disabled ).length
 		}) );
 
-		onMounted( () => devModePushToStore( usersRecords.value ) );
-		onUnmounted( () => clearStore() );
+		onMounted( () => usersModel.devModePushToStore( usersRecords.value ) );
+		onUnmounted( () => usersModel.clearStore() );
 		// end _devMode -------------------------------------------
 
 

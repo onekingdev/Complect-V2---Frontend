@@ -86,6 +86,8 @@ export default {
 				flex-wrap: wrap
 				gap: 1em
 				justify-content: flex-end
+				+ .controls
+					margin-top: 2em
 		.container-sections
 			flex-shrink: 0
 			width: 100%
@@ -94,7 +96,6 @@ export default {
 			align-items: center
 			.tabs
 				flex-shrink: 1
-				overflow: scroll
 				display: flex
 				gap: 2em
 				padding: 1em 2em 0
@@ -114,18 +115,25 @@ export default {
 	.container-content
 		flex: 1
 		align-content: flex-start
+		display: flex
 		flex-wrap: wrap
+		gap: 2em
 		padding: 1em 2em
 
 	// Types
 	&.documents
 		.container-content
 			background: var(--c-bg-z2)
-
 	&.document
 		.container-header
 			background: var(--c-bg-z2)
 			border-bottom: 1px solid var(--c-border)
 			.container-sections
 				border-top: 1px solid var(--c-border)
+	&.full-width
+		width: 100%
+		.tabs
+			width: 100%
+		.container-content
+			background: var(--c-bg-z1)
 </style>

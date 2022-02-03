@@ -26,7 +26,7 @@ card-container(title="Discussion")
 import { computed } from "vue";
 import cBanner from "~/components/Misc/cBanner.vue";
 import definitionList from "~/components/Misc/DefinitionList.vue";
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 import { formatDate } from "~/core/utils.js";
 export default {
 	"components": {
@@ -34,18 +34,18 @@ export default {
 		definitionList
 	},
 	setup () {
-		const { document } = useData( "projects" );
+		const projects = new UseData( "projects" );
 
 		const projectDetails = computed( () => ({
-			"title": document.value.title,
-			"startsAt": formatDate( document.value.startsAt ),
-			"endsAt": formatDate( document.value.endsAt ),
-			"description": document.value.description
+			"title": projects.getDocument().value.title,
+			"startsAt": formatDate( projects.getDocument().value.startsAt ),
+			"endsAt": formatDate( projects.getDocument().value.endsAt ),
+			"description": projects.getDocument().value.description
 		}) );
 
 		return {
 			projectDetails,
-			document
+			document: projects.getDocument()
 		};
 	}
 };

@@ -5,13 +5,13 @@ c-table(v-bind="{columns, documents}" searchable)
 
 <script>
 import { onMounted, onUnmounted } from "vue";
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 import cBanner from "~/components/Misc/cBanner.vue";
 
 export default {
 	"components": { cBanner },
 	setup () {
-		const { documents, readDocuments, deleteDocuments, clearStore } = useData( "risks" );
+		const { documents, readDocuments, deleteDocuments, clearStore } = UseData( "risks" );
 
 		const handleClickEdit = id => console.debug( "Edit", id );
 		const handleClickDuplicate = id => console.debug( "Duplicate", id );

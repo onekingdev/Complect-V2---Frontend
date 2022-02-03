@@ -13,6 +13,7 @@
 		"check": "vite build && eslint 'src/**/*.{js,vue}' --fix && node --experimental-vm-modules node_modules/.bin/jest"
 	},
 	"dependencies": {
+		"@tinymce/tinymce-vue": "^4.0.5",
 		"@vitejs/plugin-vue": "1.10.1",
 		"@vue/compiler-sfc": "3.2.26",
 		"@vueuse/core": "7.4.1",
