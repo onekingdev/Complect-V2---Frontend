@@ -1,6 +1,6 @@
 <template lang="pug">
 .verticals-tabs-container
-	.container-tabs
+	.container-tabs(v-if="$slots['tabs']")
 		slot(name="tabs")
 	.container-content
 		slot(name="content")
@@ -23,8 +23,6 @@ export default {};
 	position: relative
 	.container-tabs, .container-content
 		max-height: 100%
-		overflow-y: scroll
-		overflow-x: hidden
 	.container-tabs
 		display: flex
 		flex-direction: column

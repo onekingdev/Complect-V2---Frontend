@@ -3,7 +3,7 @@ c-banner(title="Key Regulatory Developments 2021" message="New regulatory change
 	template(#controls)
 		a(href='https://www.sec.gov/exams' target='_blank')
 			c-button(title="View" @click="viewPolicy()")
-.rules-block Rule 206(4)-7 under the Advisers Act requires that you conduct a review of your compliance program no less than annually. You can document this review and other internal reviews here.
+.rules-block Rule 206(4)-7 under the Adviser Act requires that you conduct a review of your compliance program no less than annually.
 c-table(v-bind="{columns, documents}")
 </template>
 
@@ -53,7 +53,7 @@ export default {
 				"width": "25%"
 			},
 			{
-				"title": "Findings",
+				"title": "Finding",
 				"key": "finding",
 				"cell": "CellDefault",
 				"align": "right"
