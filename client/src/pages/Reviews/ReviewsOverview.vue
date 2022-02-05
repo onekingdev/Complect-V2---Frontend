@@ -9,29 +9,19 @@ c-table(v-bind="{columns, documents}")
 
 
 <script>
-import { onMounted, onUnmounted, inject, ref } from "vue";
+import { onMounted, onUnmounted, inject } from "vue";
 import useData from "~/store/Data.js";
-import { useRouter } from "vue-router";
 import cBanner from "~/components/Misc/cBanner.vue";
-import cModal from "~/components/Misc/cModal.vue";
 export default {
-	"components": { cBanner, cModal },
+	"components": { cBanner },
 	setup () {
 		const { documents, readDocuments, createDocuments, clearStore } = useData( "reviews" );
-		const router = useRouter();
 		const notification = inject( "notification" );
 		const modal = inject( "modal" );
 
-		const handleClickEdit = id => {
-			router.push({
-				"name": "ReviewDetail",
-				"params": { id }
-			});
-		};
+		const handleClickEdit = id => modal({ "name": "cModalReview", "id": id });
 
-		const handleClickDelete = id => {
-			modal({ "name": "cModalConfirm", "id": id });
-		}
+		const handleClickDelete = id => modal({ "name": "cModalConfirm", "id": id });
 
 		const handleClickDuplicate = async id => {
 			const index = documents.value.findIndex( doc => doc._id === id );
