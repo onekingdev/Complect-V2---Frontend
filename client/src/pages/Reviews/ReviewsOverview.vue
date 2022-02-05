@@ -75,12 +75,6 @@ export default {
 				"align": "right"
 			},
 			{
-				"title": "Review Period End Date	",
-				"key": "reviewPeriod",
-				"cell": "CellDate",
-				"align": "right"
-			},
-			{
 				"unsortable": true,
 				"cell": "CellDropdown",
 				"width": "35px",
