@@ -4,14 +4,6 @@ c-banner(title="Key Regulatory Developments 2021" message="New regulatory change
 		a(href='https://www.sec.gov/exams' target='_blank')
 			c-button(title="View" @click="viewPolicy()")
 .rules-block Rule 206(4)-7 under the Advisers Act requires that you conduct a review of your compliance program no less than annually. You can document this review and other internal reviews here.
-c-modal(title="Delete Internal Review" v-model="isModalVisible")
-	template(#content)
-		img.minuse.col-1(src="/img/error_20.5080af0b.svg")
-		.text.col-5
-			p Removing this internal review will delete any progress and tasks associated with the file.
-			b Do you want to continue?
-	template(#footer)
-		c-button(title="Confirm" type="primary" @click="deleteReview()")
 c-table(v-bind="{columns, documents}")
 </template>
 
@@ -25,11 +17,10 @@ import cModal from "~/components/Misc/cModal.vue";
 export default {
 	"components": { cBanner, cModal },
 	setup () {
-		const { documents, readDocuments, createDocuments, deleteDocuments, clearStore } = useData( "reviews" );
+		const { documents, readDocuments, createDocuments, clearStore } = useData( "reviews" );
 		const router = useRouter();
 		const notification = inject( "notification" );
-		const isModalVisible = ref( false );
-		let selectedId = null;
+		const modal = inject( "modal" );
 
 		const handleClickEdit = id => {
 			router.push({
@@ -39,8 +30,7 @@ export default {
 		};
 
 		const handleClickDelete = id => {
-			selectedId = id;
-			isModalVisible.value = !isModalVisible.value;
+			modal({ "name": "cModalConfirm", "id": id });
 		}
 
 		const handleClickDuplicate = async id => {
@@ -61,28 +51,6 @@ export default {
 				});
 			}
 		};
-
-		const deleteReview = async () => {
-			if(!selectedId) return;
-
-			try {
-				await deleteDocuments( selectedId );
-				notification({
-					"type": "success",
-					"title": "Success",
-					"message": "Internal review has been deleted."
-				});
-			} catch ( error ) {
-				console.error( error );
-				notification({
-					"type": "error",
-					"title": "Error",
-					"message": "Internal review has not been deleted. Please try again."
-				});
-			} finally {
-				isModalVisible.value = !isModalVisible.value;
-			}
-		}
 
 		const columns = [
 			{
@@ -139,9 +107,7 @@ export default {
 
 		return {
 			columns,
-			documents,
-			isModalVisible,
-			deleteReview
+			documents
 		};
 	}
 };
