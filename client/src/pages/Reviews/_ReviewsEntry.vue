@@ -27,7 +27,7 @@ export default {
 		const router = useRouter();
 		const { documents, createDocuments, readDocuments, clearStore } = useData( "reviews" );
 
-		const selectedId = null;
+		const selectedId = ref( null );
 		const newReview = ref({
 			"title": "",
 			"dateCreated": Date.now(),
@@ -46,10 +46,11 @@ export default {
 		const createReview = async () => {
 			try {
 				let reviewId;
-				if(selectedId){
+				if(selectedId.value){
+					console.log(selectedId)
 					const index = documents.value.findIndex( doc => doc._id === selectedId );
-					duplicate = _clonedeep([documents.value[index]]);
-					duplicate = { ...newReview, ...duplicate };
+					const copy = _clonedeep([documents.value[index]]);
+					const duplicate = { ...newReview, ...copy };
 					reviewId = await createDocuments([duplicate]);
 				}
 				else{
