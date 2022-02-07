@@ -3,9 +3,17 @@ detail-container
 	template(#header)
 		c-field.category-title(type="text" placeholder="Enter category name" v-model="category.title" fullwidth transparent)
 	template(#controls)
-		c-button(title="Delete")
+		//- c-button(title="Delete")
+		c-button-modal(title="Delete" modalTitle="Delete Category" type="primary")
+			template(#content)
+				icon.col-1(name="success" size="big")
+				.text.col-5
+					p This will remove the category from this internal review and all of its associated content.
+					b Do you want to continue?
+			template(#footer)
+				c-button(title="Confirm" type="primary" @click="deleteCategory()")
 	template(#content)
-		.category-container(v-for="(topic, index) in category.content" :key="index")
+		.category-container(v-for="(topic, i) in category.content" :key="i")
 			.topic-container
 				.col-8
 					c-textarea(placeholder="Add Topic" v-model="topic.topicContent")
@@ -13,8 +21,8 @@ detail-container
 					c-dropdown.right(title="Actions")
 						c-button(title="Add Items" type="transparent" @click="addItem(topic)")
 						c-button(title="New Task" type="transparent" @click="newTask()")
-						c-button(title="Delete" type="transparent" @click="deleteTopic()")
-			.item-container(v-for="(item, index) in topic.items" :key="index")
+						c-button(title="Delete" type="transparent" @click="deleteTopic(category.content, i)")
+			.item-container(v-for="(item, j) in topic.items" :key="j")
 				.item
 					.col-1
 						.reviews-checkbox
@@ -27,28 +35,28 @@ detail-container
 					.col-2
 						c-dropdown.right(iconR="more" type="transparent")
 							c-button(title="Log Finding" type="transparent" @click="addLogFinding(item)")
-							c-button(title="Delete" type="transparent" @click="deleteItem(index)")
-				.finding(v-for="(finding, index) in item.finding" :key="index")
+							c-button(title="Delete" type="transparent" @click="deleteItem(topic.items, j)")
+				.finding(v-for="(finding, k) in item.finding" :key="k")
 					c-textarea(label="Finding" v-model="finding.findingContent")
-					icon.icon-r(name="close")
+					icon.icon-r(name="close" @click="deleteFinding(item.finding, k)")
 	template(#footer)
 		c-button(title="Add Topic" iconL="circle_plus" @click="addTopic()")
 		.end-buttons
 			c-button(title="Save" @click="updateCategory()")
-			c-button-modal(:title="btnTitle" modalTitle="Complete Category" type="primary")
-				template(#content)
-					icon.col-1(name="success" size="big")
-					.text.col-5
-						p This will mark the category as complete and your progress will be updated.
-						b Do you want to continue?
-				template(#footer)
-					c-button(title="Confirm" type="primary" @click="completeCategory()")
-			//- c-button(:title="btnTitle" type="primary" @click="completeCategory()")
+			//- c-button-modal(:title="btnTitle" modalTitle="Complete Category" type="primary")
+			//- 	template(#content)
+			//- 		icon.col-1(name="success" size="big")
+			//- 		.text.col-5
+			//- 			p This will mark the category as complete and your progress will be updated.
+			//- 			b Do you want to continue?
+			//- 	template(#footer)
+			//- 		c-button(title="Confirm" type="primary" @click="completeCategory()")
+			c-button(:title="btnTitle" type="primary" @click="completeCategory()")
 </template>
 
 <script>
 import { ref, computed, onMounted, onUnmounted, inject } from "vue";
-import { useRoute } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import useData from "~/store/Data.js";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
 export default {
@@ -58,6 +66,7 @@ export default {
 		const { document, clearStore, readDocuments, updateDocument } = useData( "reviews" );
 		const modal = inject( "modal" );
 		const notification = inject( "notification" );
+		const router = useRouter();
 		const route = useRoute();
 		let catId = route.params.catId;
 
@@ -78,23 +87,41 @@ export default {
 
 		const newTask = () => modal({ "name": "cModalTask" });
 
-		const deleteTopic = () => {
-			modal({"title": "asdfasdf", "content": "sdfsdf", "name": "cMConfirm" });
-		}
+		const deleteTopic = ( topicArr, index ) => topicArr.splice(index, 1);
 
-		const selectTrueCheck = item => {
-			item.flag = true;
-		}
+		const selectTrueCheck = item => item.flag = true;
 
-		const selectFalseCheck = item => {
-			item.flag = false;
-		}
+		const selectFalseCheck = item => item.flag = false;
 
-		const addLogFinding = item => {
-			item.finding.push({"findingContent": ""});
-		}
+		const addLogFinding = item => item.finding.push({"findingContent": ""});
 
-		const deleteItem = () => console.log("delete item clicked!");
+		const deleteItem = ( itemArr, index ) => itemArr.splice(index, 1);
+
+		const deleteFinding = ( findingArr, index ) => findingArr.splice(index, 1);
+
+		const deleteCategory = async () => {
+			try {
+				document.value.categories.splice(catId, 1);
+				await updateDocument( document.value._id, document.value );
+				notification({
+					"type": "success",
+					"title": "Success",
+					"message": "Category has been deleted."
+				});
+				router.push({
+					"name": "ReviewDetail",
+					"params": { "id": document.value._id }
+				});
+				getData();
+			} catch ( error ) {
+				console.error( error );
+				notification({
+					"type": "error",
+					"title": "Error",
+					"message": "Category has not been deleted. Please try again."
+				});
+			}
+		}
 
 		const updateCategory = async () => {
 			try {
@@ -150,6 +177,7 @@ export default {
 		return {
 			btnTitle,
 			category,
+			deleteCategory,
 			addTopic,
 			addItem,
 			newTask,
@@ -159,6 +187,7 @@ export default {
 			updateCategory,
 			selectTrueCheck,
 			selectFalseCheck,
+			deleteFinding,
 			completeCategory
 		};
 	}
@@ -230,7 +259,7 @@ export default {
 			margin: auto
 			svg
 				position: relative
-				top: 0.5em
+				top: 0.3em
 				font-size: 20px
 				padding: 0.2em
 	.end-buttons

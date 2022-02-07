@@ -25,10 +25,10 @@ vertical-detail
 					.sub-title Material Regulatory Changes
 					p List any regulatory changes that impacted you during the Review Period and how the business responded.
 					//- .regulatory-entry(v-for="(regulatory, index) in regulatories" :key="index")
-					.regulatory-entry(v-for="(regulatoryChange, index) in document.regulatoryChanges" :key="index")
+					.regulatory-entry(v-for="(regulatoryChange, i) in document.regulatoryChanges" :key="i")
 						c-textarea(label="Change" placeholder="Describe the change" v-model="regulatoryChange.change")
 						c-textarea(label="Response" placeholder="Describe the response" v-model="regulatoryChange.response")
-						icon.icon-r(name="close")
+						icon.icon-r(name="close" @click="deleteRegulatoryChange(document.regulatoryChanges, i)")
 					c-button(title="Add Entry" iconL="circle_plus" @click="addRegulatoryChange()")
 				.sub-item-container
 					.sub-title Key Employees Interviewed
@@ -42,7 +42,7 @@ vertical-detail
 						c-field(type="text" placeholder="Enter Name" v-model="interviewItem.name" fullwidth)
 						c-field(type="text" placeholder="Enter Title" v-model="interviewItem.role" fullwidth)
 						c-field(type="text" placeholder="Enter Department" v-model="interviewItem.department" fullwidth)
-						icon.icon-r(name="close")
+						icon.icon-r(name="close" @click="deleteEmployeesInterviewed(document.employeesInterviewed, j)")
 					c-button(title="Add Entry" iconL="circle_plus" @click="addEmployeesInterviewed()")
 			template(#footer)
 				c-button(title="Save" @click="updateReview()")
@@ -134,13 +134,13 @@ export default {
 			}
 		};
 
-		const addRegulatoryChange = () => {
-			document.value.regulatoryChanges.push({"change": "", "response": ""});
-		}
+		const addRegulatoryChange = () => document.value.regulatoryChanges.push({"change": "", "response": ""});
 
-		const addEmployeesInterviewed = () => {
-			document.value.employeesInterviewed.push({"name": "", "role": "", "department": ""});
-		}
+		const addEmployeesInterviewed = () => document.value.employeesInterviewed.push({"name": "", "role": "", "department": ""});
+
+		const deleteRegulatoryChange = ( regulatoryChange, index ) => regulatoryChange.splice(index, 1);
+
+		const deleteEmployeesInterviewed = ( employeesInterviewed, index ) => employeesInterviewed.splice(index, 1);
 
 		const toggleCategory = () => {
 			isButton.value = !isButton.value;
@@ -149,7 +149,6 @@ export default {
 		const createCategory = async () => {
 			isButton.value = !isButton.value;
 			document.value.categories.push({"title": categoryName, "content": [], "completedAt": null});
-			categoryName = ref("");
 			try {
 				await updateDocument( document.value._id, document.value );
 				notification({
@@ -168,7 +167,10 @@ export default {
 			}
 		}
 
-		onMounted( () => readDocuments( route.params.id ) );
+		onMounted( () => {
+			readDocuments( route.params.id );
+			isGeneral.value = true;
+		});
 		onUnmounted( () => clearStore() );
 
 		return {
@@ -184,6 +186,8 @@ export default {
 			addEmployeesInterviewed,
 			updateReview,
 			completeReview,
+			deleteRegulatoryChange,
+			deleteEmployeesInterviewed,
 			selectCategory,
 			btnTitle,
 			toggleCategory
