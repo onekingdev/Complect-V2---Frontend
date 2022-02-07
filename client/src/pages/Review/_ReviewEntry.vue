@@ -7,10 +7,9 @@ page-container(section="Internal Review" :title="document.title" type="document"
 	template(#tabs)
 		router-link(v-for="(tab, index) in tabs" :key="index" :to="{name: tab.routeName}") {{ $locale(tab.title) }}
 	template(#navigation-controls)
-		.buttons-container
-			c-dropdown(title="Actions" wide)
-				c-button(title="Edit" type="transparent" @click="editReview()")
-				c-button(title="Delete" type="transparent" @click="deleteReiew()")
+		c-dropdown(title="Actions" wide)
+			c-button(title="Edit" type="transparent" @click="editReview()")
+			c-button(title="Delete" type="transparent" @click="deleteReiew()")
 	template(#content)
 		router-view
 </template>
@@ -66,11 +65,3 @@ export default {
 	}
 };
 </script>
-
-<style lang="stylus" scoped>
-.buttons-container
-	.c-dropdown
-		width: 10em
-		.c-button
-			padding: 1.25rem
-</style>
