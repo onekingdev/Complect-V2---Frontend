@@ -4,10 +4,9 @@ vertical-detail
 		.category
 			.title General
 			icon.icon-r(name="check")
-		.category(v-for="(category, index) in categories" :key="index")
-			router-link(:to="{name: 'ReviewCategory', params: {catId: category.id}}")
-				.title {{ category.title }}
-				icon.icon-r(name="check")
+		.category(v-for="(category, index) in categories" :key="index" @click="selectCategory(category.id)")
+			.title {{ category.title }}
+			icon.icon-r(name="check")
 		c-button.new-category(title="New Category" iconL="circle_plus" @click="toggleCategory()")
 		c-field(type="text" fullwidth @blur="toggleCategory()")
 	template(#content)
@@ -54,6 +53,7 @@ vertical-detail
 
 <script>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import useData from "~/store/Data.js";
 import VerticalDetail from "~/components/Containers/VerticalDetail.vue";
 export default {
@@ -61,6 +61,7 @@ export default {
 	setup () {
 		const { document } = useData( "reviews" );
 		const isGeneral = true;
+		const router = useRouter();
 
 		const categories = [{
 			"id": 1,
@@ -73,13 +74,21 @@ export default {
 			"end": null
 		});
 
+		const selectCategory = (id) => {
+			router.push({
+				"name": "ReviewCategory",
+				"params": { catId: id }
+			});
+		};
 		const addCategory = () => console.debug( "Add new Category" );
 		const toggleCategory = () => console.log( "Toggle Category" );
+
 		return {
 			document,
 			categories,
 			dateRange,
 			isGeneral,
+			selectCategory,
 			toggleCategory
 		};
 	}
@@ -93,10 +102,9 @@ export default {
 	align-items: center
 	justify-content: space-between
 	margin-bottom: 1em
-	.router-link
-		.icon
-			font-size: 1.25em
-			fill: #cecfd2
+	.icon
+		font-size: 1.25em
+		fill: #cecfd2
 .sub-item-container
 	border-bottom: 1px solid #dcdee4
 	padding: 1.25em 0
