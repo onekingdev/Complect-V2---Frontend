@@ -1,57 +1,173 @@
 <template lang="pug">
 detail-container
 	template(#header)
-		c-field(type="text" placeholder="Enter category name" fullwidth transparent)
+		c-field.category-title(type="text" placeholder="Enter category name" v-model="category.title" fullwidth transparent)
 	template(#controls)
 		c-button(title="Delete")
 	template(#content)
-		.category-container
+		.category-container(v-for="(topic, index) in category.content" :key="index")
 			.topic-container
 				.col-8
-					c-textarea(placeholder="Add Topic")
+					c-textarea(placeholder="Add Topic" v-model="topic.topicContent")
 				.col-2
-					c-dropdown.right(title="Actions" wide)
-						c-button(title="Add Items" type="transparent" @click="editReview()")
-						c-button(title="New Task" type="transparent" @click="editReview()")
-						c-button(title="Delete" type="transparent" @click="deleteReiew()")
-			.item-container
+					c-dropdown.right(title="Actions")
+						c-button(title="Add Items" type="transparent" @click="addItem(topic)")
+						c-button(title="New Task" type="transparent" @click="newTask()")
+						c-button(title="Delete" type="transparent" @click="deleteTopic()")
+			.item-container(v-for="(item, index) in topic.items" :key="index")
 				.item
 					.col-1
 						.reviews-checkbox
-							.checkbox.checkbox-true
+							.checkbox.checkbox-true(:class="{ checked: item.flag }" @click="selectTrueCheck(item)")
 								icon.icon-r(name="check" color="white")
-							.checkbox.checkbox-false.checked
+							.checkbox.checkbox-false(:class="{ checked: !item.flag }" @click="selectFalseCheck(item)")
 								icon.icon-r(name="close")
 					.col-7
-						c-textarea(placeholder="New Item")
+						c-textarea(placeholder="New Item" v-model="item.itemContent")
 					.col-2
 						c-dropdown.right(iconR="more" type="transparent")
-							c-button(title="Log Finding" type="transparent" @click="deleteReiew()")
-							c-button(title="Delete" type="transparent" @click="deleteReiew()")
-				.finding
-					c-textarea(label="Finding")
+							c-button(title="Log Finding" type="transparent" @click="addLogFinding(item)")
+							c-button(title="Delete" type="transparent" @click="deleteItem(index)")
+				.finding(v-for="(finding, index) in item.finding" :key="index")
+					c-textarea(label="Finding" v-model="finding.findingContent")
 					icon.icon-r(name="close")
 	template(#footer)
-		c-button(title="Add Topic" iconL="circle_plus")
+		c-button(title="Add Topic" iconL="circle_plus" @click="addTopic()")
 		.end-buttons
-			c-button(title="Save")
-			c-button(title="Mark as Complete" type="primary")
+			c-button(title="Save" @click="updateCategory()")
+			c-button-modal(:title="btnTitle" modalTitle="Complete Category" type="primary")
+				template(#content)
+					icon.col-1(name="success" size="big")
+					.text.col-5
+						p This will mark the category as complete and your progress will be updated.
+						b Do you want to continue?
+				template(#footer)
+					c-button(title="Confirm" type="primary" @click="completeCategory()")
+			//- c-button(:title="btnTitle" type="primary" @click="completeCategory()")
 </template>
 
 <script>
+import { ref, computed, onMounted, onUnmounted, inject } from "vue";
+import { useRoute } from "vue-router";
+import useData from "~/store/Data.js";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
 export default {
 
 	"components": { cDropdown	},
 	setup () {
-		return {
+		const { document, clearStore, readDocuments, updateDocument } = useData( "reviews" );
+		const modal = inject( "modal" );
+		const notification = inject( "notification" );
+		const route = useRoute();
+		let catId = route.params.catId;
 
+		const btnTitle = computed( () => category.value.completedAt ? "Mark as Incomplete" : "Mark as Complete" );
+
+		const category = ref( {
+			"title": "",
+			"content": []
+		} );
+
+		const addTopic = () => {
+			category.value.content.push({"topicContent": "", "items": []});
+		}
+
+		const addItem = topic => {
+			topic.items.push({"itemContent": "", "flag": false, "finding": []});
+		}
+
+		const newTask = () => modal({ "name": "cModalTask" });
+
+		const deleteTopic = () => {
+			modal({"title": "asdfasdf", "content": "sdfsdf", "name": "cMConfirm" });
+		}
+
+		const selectTrueCheck = item => {
+			item.flag = true;
+		}
+
+		const selectFalseCheck = item => {
+			item.flag = false;
+		}
+
+		const addLogFinding = item => {
+			item.finding.push({"findingContent": ""});
+		}
+
+		const deleteItem = () => console.log("delete item clicked!");
+
+		const updateCategory = async () => {
+			try {
+				document.value.categories[catId] = category.value;
+				await updateDocument( document.value._id, document.value );
+				notification({
+					"type": "success",
+					"title": "Success",
+					"message": "Category has been updated."
+				});
+				getData();
+			} catch ( error ) {
+				console.error( error );
+				notification({
+					"type": "error",
+					"title": "Error",
+					"message": "Category has not been updated.. Please try again."
+				});
+			}
+		};
+
+		const completeCategory = async () => {
+			let timestamp = category.value.completedAt ? null : Date.now();
+			document.value.categories[catId].completedAt = timestamp;
+			try {
+				await updateDocument( document.value._id, document.value);
+				notification({
+					"type": "success",
+					"title": "Success",
+					"message": `Review has been marked as ${timestamp ? "complete" : "incomplete"}.`
+				});
+				getData();
+			} catch ( error ) {
+				console.error( error );
+				notification({
+					"type": "error",
+					"title": "Error",
+					"message": `Review has not been marked as ${timestamp ? "complete" : "incomplete"}. Please try again.`
+				});
+			}
+		};
+
+		const getData = async () => {
+			catId = route.params.catId;
+			console.log("catId", catId);
+			readDocuments( route.params.id );
+			category.value = document.value.categories[catId];
+		};
+
+		onMounted( () => getData() );
+		onUnmounted( () => clearStore() );
+
+		return {
+			btnTitle,
+			category,
+			addTopic,
+			addItem,
+			newTask,
+			deleteTopic,
+			addLogFinding,
+			deleteItem,
+			updateCategory,
+			selectTrueCheck,
+			selectFalseCheck,
+			completeCategory
 		};
 	}
 };
 </script>
 
 <style lang="stylus" scoped>
+	.category-title
+		font-size: 1.25em
 	.category-container
 		padding: 1.25em 0
 		border-bottom: 1px solid #dcdee4
@@ -82,6 +198,7 @@ export default {
 				justify-content: space-between
 				font-size: 0.8em
 				.checkbox
+					cursor: pointer
 					background-color: white
 					color: black !important
 					padding: 0.1em 0.75em

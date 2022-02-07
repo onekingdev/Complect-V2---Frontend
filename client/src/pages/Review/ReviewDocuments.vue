@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { reactive, ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
 import useData from "~/store/Data.js";
 import _clonedeep from "lodash.clonedeep";

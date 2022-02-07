@@ -1,9 +1,9 @@
 <template lang="pug">
 page-container(section="Internal Review" :title="document.title" type="document")
 	template(#controls)
-		c-button(title="Export")
-		c-button(title="Save and Exit" type="primary")
-		c-button(type="icon" iconL="close" size="small" @click="closeReview()")
+		c-button(title="Export" @click="exportReview()")
+		c-button(title="Save and Exit" type="primary" @click="saveAndExit()")
+		c-button(type="icon" iconL="close" size="small" @click="closeDetail()")
 	template(#tabs)
 		router-link(v-for="(tab, index) in tabs" :key="index" :to="{name: tab.routeName}") {{ $locale(tab.title) }}
 	template(#navigation-controls)
@@ -16,7 +16,7 @@ page-container(section="Internal Review" :title="document.title" type="document"
 
 
 <script>
-import { onMounted, onUnmounted } from "vue";
+import { onMounted, onUnmounted, inject } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import useData from "~/store/Data.js";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
@@ -29,7 +29,9 @@ export default {
 	setup () {
 		const { document, readDocuments, clearStore, deleteDocuments } = useData( "reviews" );
 		const route = useRoute();
+		const notification = inject( "notification" );
 		const router = useRouter();
+		const modal = inject( "modal" );
 
 		const tabs = [
 			{
@@ -44,12 +46,38 @@ export default {
 			}
 		];
 
-		const closeReview = () => router.push({ "name": "ReviewsOverview" });
-		const updateProject = () => {};
+		const editReview = id => modal({ "name": "cModalReview", "id": document.value._id });
 
-		const deleteProject = () => {
-			deleteDocuments( document.value._id );
-			closeReview();
+		const deleteReiew = id => {
+			modal({ "name": "cModalConfirm", "id": id });
+		};
+
+		const closeDetail = () => {
+			router.push({
+				"name": "ReviewsOverview",
+			});
+		};
+
+		const exportReview = () => {
+			let flag = true;
+			flag = flag && document.value.completedAt;
+			document.value.categories.forEach(category => {
+				flag = flag && category.completedAt;
+			});
+			if(flag) console.log("Download start!!!");
+			else {
+				notification({
+					"type": "error",
+					"title": "Error",
+					"message": "Internal Review report cannot be generated until all categories have been marked as complete."
+				});
+			}
+		};
+
+		const saveAndExit = () => {
+			router.push({
+				"name": "ReviewsOverview",
+			});
 		};
 
 		onMounted( () => readDocuments( route.params.id ) );
@@ -58,9 +86,11 @@ export default {
 		return {
 			tabs,
 			document,
-			closeReview,
-			updateProject,
-			deleteProject
+			editReview,
+			exportReview,
+			saveAndExit,
+			closeDetail,
+			deleteReiew
 		};
 	}
 };

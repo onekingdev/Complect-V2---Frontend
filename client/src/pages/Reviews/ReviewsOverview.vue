@@ -3,7 +3,7 @@ c-banner(title="Key Regulatory Developments 2021" message="New regulatory change
 	template(#controls)
 		a(href='https://www.sec.gov/exams' target='_blank')
 			c-button(title="View" @click="viewPolicy()")
-.rules-block Rule 206(4)-7 under the Adviser Act requires that you conduct a review of your compliance program no less than annually.
+.rules-block Rule 206(4)-7 under the Advisers Act requires that you conduct a review of your compliance program no less than annually. You can document this review and other internal reviews here.
 c-table(v-bind="{columns, documents}")
 </template>
 
@@ -11,32 +11,36 @@ c-table(v-bind="{columns, documents}")
 <script>
 import { onMounted, onUnmounted, inject } from "vue";
 import useData from "~/store/Data.js";
-import { useRouter } from "vue-router";
 import cBanner from "~/components/Misc/cBanner.vue";
 export default {
 	"components": { cBanner },
 	setup () {
-		const { documents, readDocuments, createDocuments, deleteDocuments, clearStore } = useData( "reviews" );
-		const router = useRouter();
+		const { documents, readDocuments, createDocuments, clearStore } = useData( "reviews" );
 		const notification = inject( "notification" );
+		const modal = inject( "modal" );
 
-		const handleClickEdit = id => {
-			router.push({
-				"name": "ReviewDetail",
-				"params": { id }
-			});
-		};
+		const handleClickEdit = id => modal({ "name": "cModalReview", "id": id });
+
+		const handleClickDelete = id => modal({ "name": "cModalConfirm", "id": id });
 
 		const handleClickDuplicate = async id => {
 			const index = documents.value.findIndex( doc => doc._id === id );
-			await createDocuments([documents.value[index]]);
-			notification({
-				"type": "success",
-				"title": "Internal review has been duplicated."
-			});
+			try {
+				await createDocuments([documents.value[index]]);
+				notification({
+					"type": "success",
+					"title": "Success",
+					"message": "Internal review has been duplicated."
+				});
+			} catch ( error ) {
+				console.error( error );
+				notification({
+					"type": "error",
+					"title": "Error",
+					"message": "Internal review has not been duplicated. Please try again."
+				});
+			}
 		};
-
-		const handleClickDelete = id => deleteDocuments( id );
 
 		const columns = [
 			{
@@ -53,7 +57,7 @@ export default {
 				"width": "25%"
 			},
 			{
-				"title": "Finding",
+				"title": "Findings",
 				"key": "finding",
 				"cell": "CellDefault",
 				"align": "right"
@@ -67,12 +71,6 @@ export default {
 			{
 				"title": "Date Created",
 				"key": "dateCreated",
-				"cell": "CellDate",
-				"align": "right"
-			},
-			{
-				"title": "Review Period End Date	",
-				"key": "reviewPeriod",
 				"cell": "CellDate",
 				"align": "right"
 			},
@@ -104,4 +102,8 @@ export default {
 .rules-block
 	font-size: 0.9em
 	margin: 1em 0
+.minuse
+	width: 1.5em
+	height: 1.5em
+	margin: 0 auto
 </style>
