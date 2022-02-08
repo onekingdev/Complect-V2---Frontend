@@ -11,16 +11,12 @@
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted } from "vue";
-import { useRoute } from "vue-router";
-import useData from "~/store/Data.js";
+import { ref } from "vue";
 import _clonedeep from "lodash.clonedeep";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
 export default {
 	"components": { cDropdown },
 	setup () {
-		const { document, readDocuments, clearStore } = useData( "reviews" );
-		const route = useRoute();
 		const documents = ref([]);
 		const fileInput = ref( null );
 
@@ -67,12 +63,8 @@ export default {
 			}
 		];
 
-		onMounted( () => readDocuments( route.params.id ) );
-		onUnmounted( () => clearStore() );
-
 		return {
 			columns,
-			document,
 			documents,
 			fileInput,
 			onChange,

@@ -9,11 +9,11 @@
 
 <script>
 import { inject } from "vue";
-import { onMounted, onUnmounted } from "vue";
+import { onMounted } from "vue";
 import useData from "~/store/Data.js";
 export default {
 	setup () {
-		const { documents, readDocuments, deleteDocuments, clearStore } = useData( "tasks" );
+		const { documents, readDocuments, deleteDocuments } = useData( "tasks" );
 		const modal = inject( "modal" );
 
 		const openTaskModal = () => modal({ "name": "cModalTask" });
@@ -56,7 +56,6 @@ export default {
 		];
 
 		onMounted( () => readDocuments() );
-		onUnmounted( () => clearStore() );
 
 		return {
 			columns,

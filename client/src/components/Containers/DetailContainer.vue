@@ -29,7 +29,7 @@ export default {
 
 <style lang="stylus" scoped>
 .detail-container
-	padding: 1em 1.5em
+	padding: 1.25em 1.875em
 	width: 100%
 	display: flex
 	flex-direction: column
@@ -42,7 +42,8 @@ export default {
 		font-size: 1em
 		.card-title, .header-content
 			flex: 1
-	.card-content, .card-sub-header, .card-footer
+			font-size: 1.25em
+	.card-content, .card-sub-header
 		border-top: 0.0625em solid var(--c-border)
 	.card-console
 		padding: 1.25em 0

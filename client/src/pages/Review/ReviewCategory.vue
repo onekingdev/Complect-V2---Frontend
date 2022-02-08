@@ -1,19 +1,11 @@
 <template lang="pug">
 detail-container
 	template(#header)
-		c-field.category-title(type="text" placeholder="Enter category name" v-model="category.title" fullwidth transparent)
+		c-field.category-title(type="text" placeholder="Enter category name" v-model="reviewCategory.title" fullwidth transparent)
 	template(#controls)
-		//- c-button(title="Delete")
-		c-button-modal(title="Delete" modalTitle="Delete Category" type="primary")
-			template(#content)
-				icon.col-1(name="success" size="big")
-				.text.col-5
-					p This will remove the category from this internal review and all of its associated content.
-					b Do you want to continue?
-			template(#footer)
-				c-button(title="Confirm" type="primary" @click="deleteCategory()")
+		c-button(title="Delete" @click="deleteCategory()")
 	template(#content)
-		.category-container(v-for="(topic, i) in category.content" :key="i")
+		.category-container(v-for="(topic, i) in reviewCategory.content" :key="i")
 			.topic-container
 				.col-8
 					c-textarea(placeholder="Add Topic" v-model="topic.topicContent")
@@ -21,7 +13,7 @@ detail-container
 					c-dropdown.right(title="Actions")
 						c-button(title="Add Items" type="transparent" @click="addItem(topic)")
 						c-button(title="New Task" type="transparent" @click="newTask()")
-						c-button(title="Delete" type="transparent" @click="deleteTopic(category.content, i)")
+						c-button(title="Delete" type="transparent" @click="deleteTopic(reviewCategory.content, i)")
 			.item-container(v-for="(item, j) in topic.items" :key="j")
 				.item
 					.col-1
@@ -43,34 +35,33 @@ detail-container
 		c-button(title="Add Topic" iconL="circle_plus" @click="addTopic()")
 		.end-buttons
 			c-button(title="Save" @click="updateCategory()")
-			//- c-button-modal(:title="btnTitle" modalTitle="Complete Category" type="primary")
-			//- 	template(#content)
-			//- 		icon.col-1(name="success" size="big")
-			//- 		.text.col-5
-			//- 			p This will mark the category as complete and your progress will be updated.
-			//- 			b Do you want to continue?
-			//- 	template(#footer)
-			//- 		c-button(title="Confirm" type="primary" @click="completeCategory()")
 			c-button(:title="btnTitle" type="primary" @click="completeCategory()")
 </template>
 
 <script>
-import { ref, computed, onMounted, onUnmounted, inject } from "vue";
+import { ref, computed, inject } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import useData from "~/store/Data.js";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
 export default {
-
 	"components": { cDropdown	},
-	setup () {
-		const { document, clearStore, readDocuments, updateDocument } = useData( "reviews" );
+	"props": {
+		"reviewCategory": {
+			"type": Object,
+			"required": true,
+			"default": {}
+		}
+	},
+	"emits": ["update:reviewCategory"],
+	setup ( props ) {
+		const { document, updateDocument, readDocuments } = useData( "reviews" );
 		const modal = inject( "modal" );
 		const notification = inject( "notification" );
 		const router = useRouter();
 		const route = useRoute();
-		let catId = route.params.catId;
 
-		const btnTitle = computed( () => category.value.completedAt ? "Mark as Incomplete" : "Mark as Complete" );
+		const reviewCategory = computed( () => props.reviewCategory );
+		const btnTitle = computed( () => reviewCategory.value.completedAt ? "Mark as Incomplete" : "Mark as Complete" );
 
 		const category = ref( {
 			"title": "",
@@ -78,7 +69,7 @@ export default {
 		} );
 
 		const addTopic = () => {
-			category.value.content.push({"topicContent": "", "items": []});
+			reviewCategory.value.content.push({"topicContent": "", "items": []});
 		}
 
 		const addItem = topic => {
@@ -101,6 +92,7 @@ export default {
 
 		const deleteCategory = async () => {
 			try {
+				const catId = route.params.catId;
 				document.value.categories.splice(catId, 1);
 				await updateDocument( document.value._id, document.value );
 				notification({
@@ -112,7 +104,6 @@ export default {
 					"name": "ReviewDetail",
 					"params": { "id": document.value._id }
 				});
-				getData();
 			} catch ( error ) {
 				console.error( error );
 				notification({
@@ -125,14 +116,14 @@ export default {
 
 		const updateCategory = async () => {
 			try {
-				document.value.categories[catId] = category.value;
+				const catId = route.params.catId;
+				document.value.categories[catId] = reviewCategory.value;
 				await updateDocument( document.value._id, document.value );
 				notification({
 					"type": "success",
 					"title": "Success",
 					"message": "Category has been updated."
 				});
-				getData();
 			} catch ( error ) {
 				console.error( error );
 				notification({
@@ -144,7 +135,8 @@ export default {
 		};
 
 		const completeCategory = async () => {
-			let timestamp = category.value.completedAt ? null : Date.now();
+			const timestamp = reviewCategory.value.completedAt ? null : Date.now();
+			const catId = route.params.catId;
 			document.value.categories[catId].completedAt = timestamp;
 			try {
 				await updateDocument( document.value._id, document.value);
@@ -153,7 +145,7 @@ export default {
 					"title": "Success",
 					"message": `Review has been marked as ${timestamp ? "complete" : "incomplete"}.`
 				});
-				getData();
+				readDocuments( route.params.id );
 			} catch ( error ) {
 				console.error( error );
 				notification({
@@ -164,19 +156,10 @@ export default {
 			}
 		};
 
-		const getData = async () => {
-			catId = route.params.catId;
-			console.log("catId", catId);
-			readDocuments( route.params.id );
-			category.value = document.value.categories[catId];
-		};
-
-		onMounted( () => getData() );
-		onUnmounted( () => clearStore() );
-
 		return {
 			btnTitle,
 			category,
+			reviewCategory,
 			deleteCategory,
 			addTopic,
 			addItem,
@@ -196,7 +179,7 @@ export default {
 
 <style lang="stylus" scoped>
 	.category-title
-		font-size: 1.25em
+		font-size: 1em
 	.category-container
 		padding: 1.25em 0
 		border-bottom: 1px solid #dcdee4

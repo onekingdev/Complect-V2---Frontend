@@ -2,11 +2,13 @@
 vertical-detail
 	template(#list)
 		.category(@click="selectGeneral()")
-			.title General
-			icon.icon-r(name="check" :class="{ active: document.completedAt }")
+			.title(:class="{ active: isGeneral }") General
+			icon.icon-r(name="check" v-if="!document.completedAt")
+			icon.icon-r(name="success" v-else)
 		.category(v-for="(category, index) in document.categories" :key="index" @click="selectCategory(index)")
-			.title {{ category.title }}
-			icon.icon-r(name="check" :class="{ active: category.completedAt }")
+			.title(:class="{ active: index == catId && !isGeneral }") {{ category.title }}
+			icon.icon-r(name="check" v-if="!category.completedAt")
+			icon.icon-r(name="success" v-else)
 		c-button.new-category(v-if="isButton" title="New Category" iconL="circle_plus" @click="toggleCategory()")
 		c-field(v-else type="text" @change="createCategory()" v-model="categoryName" fullwidth wide)
 	template(#content)
@@ -24,7 +26,6 @@ vertical-detail
 				.sub-item-container
 					.sub-title Material Regulatory Changes
 					p List any regulatory changes that impacted you during the Review Period and how the business responded.
-					//- .regulatory-entry(v-for="(regulatory, index) in regulatories" :key="index")
 					.regulatory-entry(v-for="(regulatoryChange, i) in document.regulatoryChanges" :key="i")
 						c-textarea(label="Change" placeholder="Describe the change" v-model="regulatoryChange.change")
 						c-textarea(label="Response" placeholder="Describe the response" v-model="regulatoryChange.response")
@@ -47,25 +48,27 @@ vertical-detail
 			template(#footer)
 				c-button(title="Save" @click="updateReview()")
 				c-button(:title="btnTitle" type="primary" @click="completeReview()")
-		router-view(v-else)
+		router-view(v-else v-model:reviewCategory="reviewCategory")
 </template>
 
 
 <script>
-import { ref, computed, onMounted, onUnmounted, inject } from "vue";
+import { ref, computed, onMounted, inject } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import useData from "~/store/Data.js";
 import VerticalDetail from "~/components/Containers/VerticalDetail.vue";
 export default {
 	"components": { VerticalDetail },
 	setup () {
-		const { document, clearStore, readDocuments, updateDocument } = useData( "reviews" );
+		const { document, readDocuments, updateDocument } = useData( "reviews" );
 		const notification = inject( "notification" );
 		const route = useRoute();
 		const router = useRouter();
 		let isGeneral = ref( true );
 		let isButton = ref( true );
 		let categoryName = ref("");
+		let reviewCategory = ref({});
+		let catId = ref(null);
 
 		const btnTitle = computed( () => document.value.completedAt ? "Mark as Incomplete" : "Mark as Complete" );
 
@@ -90,6 +93,8 @@ export default {
 
 		const selectCategory = (id) => {
 			isGeneral.value = false;
+			catId.value = id;
+			reviewCategory.value = document.value.categories[id];
 			router.push({
 				"name": "ReviewCategory",
 				"params": { catId: id }
@@ -168,18 +173,18 @@ export default {
 		}
 
 		onMounted( () => {
-			readDocuments( route.params.id );
 			isGeneral.value = true;
 		});
-		onUnmounted( () => clearStore() );
 
 		return {
 			document,
 			categories,
 			dateRange,
 			isGeneral,
+			catId,
 			isButton,
 			categoryName,
+			reviewCategory,
 			createCategory,
 			selectGeneral,
 			addRegulatoryChange,
@@ -203,6 +208,15 @@ export default {
 	align-items: center
 	justify-content: space-between
 	margin-bottom: 1em
+	.title
+		font-size: 1em
+		font-weight: 300
+		color: #a2a3a9
+		&:hover
+			color: #2180c2
+		&.active
+			font-weight: 600
+			color: #2180c2
 	.icon
 		font-size: 1.25em
 		fill: #cecfd2
@@ -212,11 +226,11 @@ export default {
 	border-bottom: 1px solid #dcdee4
 	padding: 1.25em 0
 	p
-		margin-bottom: 1em
+		margin-bottom: 1.14286em
 		font-size: 0.875em
 	.sub-title
-		margin-bottom: 0.675em
-		font-size: 1.25
+		margin-bottom: 0.5em
+		font-size: 1.25em
 		font-weight: bold
 	.date-range-container
 		display: flex
