@@ -2,17 +2,17 @@
 vertical-detail
 	template(#list)
 		.category(@click="selectGeneral()")
-			.title(:class="{ active: isGeneral }") General
+			.title(:class="{ active: state.isGeneral }") General
 			icon.icon-r(name="check" v-if="!document.completedAt")
 			icon.icon-r(name="success" v-else)
 		.category(v-for="(category, index) in document.categories" :key="index" @click="selectCategory(index)")
-			.title(:class="{ active: index == catId && !isGeneral }") {{ category.title }}
+			.title(:class="{ active: index == state.catId && !state.isGeneral }") {{ category.title }}
 			icon.icon-r(name="check" v-if="!category.completedAt")
 			icon.icon-r(name="success" v-else)
-		c-button.new-category(v-if="isButton" title="New Category" iconL="circle_plus" @click="toggleCategory()")
-		c-field(v-else type="text" @change="createCategory()" v-model="categoryName" fullwidth wide)
+		c-button.new-category(v-if="state.isButton" title="New Category" iconL="circle_plus" @click="toggleCategory()")
+		c-field(v-else type="text" @change="createCategory()" v-model="state.categoryName" fullwidth wide)
 	template(#content)
-		detail-container.detail-container(v-if="isGeneral" title="General")
+		detail-container.detail-container(v-if="state.isGeneral" title="General")
 			template(#content)
 				.sub-item-container
 					.sub-title Review Period
@@ -67,16 +67,23 @@ export default {
 		const notification = inject( "notification" );
 		const route = useRoute();
 		const router = useRouter();
-		const isGeneral = ref( true );
-		const isButton = ref( true );
-		const categoryName = ref( "" );
 		const reviewCategory = ref({});
-		const catId = ref( null );
+		// const isGeneral = ref( true );
+		// const isButton = ref( true );
+		// const categoryName = ref( "" );
+		// const catId = ref( null );
+
+		const state = ref({
+			"isGeneral": true,
+			"isButton": true,
+			"categoryName": "",
+			"catId": null
+		});
 
 		const btnTitle = computed( () => document.value.completedAt ? "Mark as Incomplete" : "Mark as Complete" );
 
 		const selectGeneral = () => {
-			isGeneral.value = true;
+			state.value.isGeneral = true;
 			router.push({
 				"name": "ReviewDetail",
 				"params": { "id": document.value._id }
@@ -84,8 +91,8 @@ export default {
 		};
 
 		const selectCategory = id => {
-			isGeneral.value = false;
-			catId.value = id;
+			state.value.isGeneral = false;
+			state.value.catId = id;
 			reviewCategory.value = document.value.categories[id];
 			router.push({
 				"name": "ReviewCategory",
@@ -139,11 +146,11 @@ export default {
 
 		const deleteEmployeesInterviewed = ( employeesInterviewed, index ) => employeesInterviewed.splice( index, 1 );
 
-		const toggleCategory = () => isButton.value = !isButton.value;
+		const toggleCategory = () => state.value.isButton = !state.value.isButton;
 
 		const createCategory = async () => {
-			isButton.value = !isButton.value;
-			document.value.categories.push({ "title": categoryName, "content": [], "completedAt": null });
+			state.value.isButton = !state.value.isButton;
+			document.value.categories.push({ "title": state.value.categoryName, "content": [], "completedAt": null });
 			try {
 				await updateDocument( document.value._id, document.value );
 				notification({
@@ -164,10 +171,7 @@ export default {
 
 		return {
 			document,
-			isGeneral,
-			catId,
-			isButton,
-			categoryName,
+			state,
 			reviewCategory,
 			createCategory,
 			selectGeneral,
