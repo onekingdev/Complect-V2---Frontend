@@ -8,8 +8,7 @@
 </template>
 
 <script>
-import { inject } from "vue";
-import { onMounted } from "vue";
+import { inject, onMounted } from "vue";
 import useData from "~/store/Data.js";
 export default {
 	setup () {
@@ -17,7 +16,7 @@ export default {
 		const modal = inject( "modal" );
 
 		const openTaskModal = () => modal({ "name": "cModalTask" });
-		const handleClickEdit = id => modal({ "name": "cModalTask", "id": id });
+		const handleClickEdit = id => modal({ "name": "cModalTask", id });
 		const handleClickDelete = id => deleteDocuments( id );
 
 		const columns = [

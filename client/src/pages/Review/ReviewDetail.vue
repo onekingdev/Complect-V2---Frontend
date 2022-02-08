@@ -64,19 +64,13 @@ export default {
 		const notification = inject( "notification" );
 		const route = useRoute();
 		const router = useRouter();
-		let isGeneral = ref( true );
-		let isButton = ref( true );
-		let categoryName = ref("");
-		let reviewCategory = ref({});
-		let catId = ref(null);
+		const isGeneral = ref( true );
+		const isButton = ref( true );
+		const categoryName = ref( "" );
+		const reviewCategory = ref( {} );
+		const catId = ref( null );
 
 		const btnTitle = computed( () => document.value.completedAt ? "Mark as Incomplete" : "Mark as Complete" );
-
-		const categories = [{
-			"id": 1,
-			"title": "General",
-			"sections": []
-		}];
 
 		const dateRange = ref({
 			"start": null,
@@ -89,15 +83,15 @@ export default {
 				"name": "ReviewDetail",
 				"params": { "id": document.value._id }
 			});
-		}
+		};
 
-		const selectCategory = (id) => {
+		const selectCategory = id => {
 			isGeneral.value = false;
 			catId.value = id;
 			reviewCategory.value = document.value.categories[id];
 			router.push({
 				"name": "ReviewCategory",
-				"params": { catId: id }
+				"params": { "catId": id }
 			});
 		};
 
@@ -120,7 +114,7 @@ export default {
 		};
 
 		const completeReview = async () => {
-			let timestamp = document.value.completedAt ? null : Date.now();
+			const timestamp = document.value.completedAt ? null : Date.now();
 			try {
 				await updateDocument( document.value._id, { "completedAt": timestamp });
 				notification({
@@ -139,21 +133,21 @@ export default {
 			}
 		};
 
-		const addRegulatoryChange = () => document.value.regulatoryChanges.push({"change": "", "response": ""});
+		const addRegulatoryChange = () => document.value.regulatoryChanges.push({ "change": "", "response": "" });
 
-		const addEmployeesInterviewed = () => document.value.employeesInterviewed.push({"name": "", "role": "", "department": ""});
+		const addEmployeesInterviewed = () => document.value.employeesInterviewed.push({ "name": "", "role": "", "department": "" });
 
-		const deleteRegulatoryChange = ( regulatoryChange, index ) => regulatoryChange.splice(index, 1);
+		const deleteRegulatoryChange = ( regulatoryChange, index ) => regulatoryChange.splice( index, 1 );
 
-		const deleteEmployeesInterviewed = ( employeesInterviewed, index ) => employeesInterviewed.splice(index, 1);
+		const deleteEmployeesInterviewed = ( employeesInterviewed, index ) => employeesInterviewed.splice( index, 1 );
 
 		const toggleCategory = () => {
 			isButton.value = !isButton.value;
-		}
+		};
 
 		const createCategory = async () => {
 			isButton.value = !isButton.value;
-			document.value.categories.push({"title": categoryName, "content": [], "completedAt": null});
+			document.value.categories.push({ "title": categoryName, "content": [], "completedAt": null });
 			try {
 				await updateDocument( document.value._id, document.value );
 				notification({
@@ -170,15 +164,10 @@ export default {
 					"message": "Category has not been added. Please try again."
 				});
 			}
-		}
-
-		onMounted( () => {
-			isGeneral.value = true;
-		});
+		};
 
 		return {
 			document,
-			categories,
 			dateRange,
 			isGeneral,
 			catId,

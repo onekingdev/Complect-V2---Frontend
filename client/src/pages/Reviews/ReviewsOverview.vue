@@ -19,9 +19,9 @@ export default {
 		const notification = inject( "notification" );
 		const modal = inject( "modal" );
 
-		const handleClickEdit = id => modal({ "name": "cModalReview", "id": id });
+		const handleClickEdit = id => modal({ "name": "cModalReview", id });
 
-		const handleClickDelete = id => modal({ "name": "cModalConfirm", "id": id });
+		const handleClickDelete = id => modal({ "name": "cModalConfirm", id });
 
 		const handleClickDuplicate = async id => {
 			const index = documents.value.findIndex( doc => doc._id === id );

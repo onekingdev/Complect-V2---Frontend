@@ -21,6 +21,7 @@ import useData from "~/store/Data.js";
 import { onClickOutside } from "@vueuse/core";
 import cChat from "~/components/Misc/cChat.vue";
 import cSelect from "~/components/Inputs/cSelect.vue";
+import _clonedeep from "lodash.clonedeep";
 
 export default {
 	"components": { cChat, cSelect },
@@ -73,20 +74,20 @@ export default {
 		const createReview = async () => {
 			try {
 				let reviewId;
-				if(selectedId.value){
-					const index = documents.value.findIndex( doc => doc._id === selectedId );
+
+				if ( selectedId.value ) {
+					const index = documents.value.findIndex( doc => doc._id === selectedId.value );
 					const copy = _clonedeep([documents.value[index]]);
 					const duplicate = { ...form.value, ...copy };
 					reviewId = await createDocuments([duplicate]);
-				}
-				else{
-					reviewId = await createDocuments([form.value]);
-				}
+				} else reviewId = await createDocuments([form.value]);
+
 				notification({
 					"type": "success",
 					"title": "Success",
 					"message": "Internal review has been created"
 				});
+
 				router.push({
 					"name": "ReviewDetail",
 					"params": { "id": reviewId[0] }

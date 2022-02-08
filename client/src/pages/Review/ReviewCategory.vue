@@ -63,37 +63,32 @@ export default {
 		const reviewCategory = computed( () => props.reviewCategory );
 		const btnTitle = computed( () => reviewCategory.value.completedAt ? "Mark as Incomplete" : "Mark as Complete" );
 
-		const category = ref( {
-			"title": "",
-			"content": []
-		} );
-
 		const addTopic = () => {
-			reviewCategory.value.content.push({"topicContent": "", "items": []});
-		}
+			reviewCategory.value.content.push({ "topicContent": "", "items": [] });
+		};
 
 		const addItem = topic => {
-			topic.items.push({"itemContent": "", "flag": false, "finding": []});
-		}
+			topic.items.push({ "itemContent": "", "flag": false, "finding": [] });
+		};
 
 		const newTask = () => modal({ "name": "cModalTask" });
 
-		const deleteTopic = ( topicArr, index ) => topicArr.splice(index, 1);
+		const deleteTopic = ( topicArr, index ) => topicArr.splice( index, 1 );
 
 		const selectTrueCheck = item => item.flag = true;
 
 		const selectFalseCheck = item => item.flag = false;
 
-		const addLogFinding = item => item.finding.push({"findingContent": ""});
+		const addLogFinding = item => item.finding.push({ "findingContent": "" });
 
-		const deleteItem = ( itemArr, index ) => itemArr.splice(index, 1);
+		const deleteItem = ( itemArr, index ) => itemArr.splice( index, 1 );
 
-		const deleteFinding = ( findingArr, index ) => findingArr.splice(index, 1);
+		const deleteFinding = ( findingArr, index ) => findingArr.splice( index, 1 );
 
 		const deleteCategory = async () => {
 			try {
 				const catId = route.params.catId;
-				document.value.categories.splice(catId, 1);
+				document.value.categories.splice( catId, 1 );
 				await updateDocument( document.value._id, document.value );
 				notification({
 					"type": "success",
@@ -112,7 +107,7 @@ export default {
 					"message": "Category has not been deleted. Please try again."
 				});
 			}
-		}
+		};
 
 		const updateCategory = async () => {
 			try {
@@ -139,7 +134,7 @@ export default {
 			const catId = route.params.catId;
 			document.value.categories[catId].completedAt = timestamp;
 			try {
-				await updateDocument( document.value._id, document.value);
+				await updateDocument( document.value._id, document.value );
 				notification({
 					"type": "success",
 					"title": "Success",
@@ -158,7 +153,6 @@ export default {
 
 		return {
 			btnTitle,
-			category,
 			reviewCategory,
 			deleteCategory,
 			addTopic,

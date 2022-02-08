@@ -12,7 +12,6 @@
 
 <script>
 import { ref } from "vue";
-import _clonedeep from "lodash.clonedeep";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
 export default {
 	"components": { cDropdown },
@@ -20,13 +19,13 @@ export default {
 		const documents = ref([]);
 		const fileInput = ref( null );
 
-		const handleClickDownload = id => console.log("Download Clicked!");
-		const handleClickDelete = id => console.log("Delete Clicked!");
+		const handleClickDownload = id => console.debug( "Download Clicked!", id );
+		const handleClickDelete = id => console.debug( "Delete Clicked!", id );
 		const uploadFile = () => fileInput.value.click();
-		const selectExistingFile = () => console.log("Select existing file button Clicked!");
+		const selectExistingFile = () => console.debug( "Select existing file button Clicked!" );
 
 		const onChange = () => {
-			let file = fileInput.value.files[0];
+			const file = fileInput.value.files[0];
 			documents.value.push( file );
 		};
 
@@ -40,17 +39,17 @@ export default {
 			{
 				"title": "Owner",
 				"key": "owner",
-				"cell": "CellAssigned",
+				"cell": "CellAssigned"
 			},
 			{
 				"title": "Size",
 				"key": "size",
-				"cell": "CellAssigned",
+				"cell": "CellAssigned"
 			},
 			{
 				"title": "Last Modified",
 				"key": "lastModified",
-				"cell": "CellDate",
+				"cell": "CellDate"
 			},
 			{
 				"unsortable": true,

@@ -8,17 +8,14 @@ page-container(title="Internal Reviews")
 
 <script>
 import { inject } from "vue";
-import _clonedeep from "lodash.clonedeep";
 
 export default {
 	setup () {
 		const modal = inject( "modal" );
 
-		const createReview = async () => modal({ "name": "cModalReview" });
+		const createReview = () => modal({ "name": "cModalReview" });
 
-		return {
-			createReview
-		};
+		return { createReview };
 	}
 };
 </script>

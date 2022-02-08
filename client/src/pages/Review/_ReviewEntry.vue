@@ -27,7 +27,7 @@ export default {
 		cCheckbox
 	},
 	setup () {
-		const { document, readDocuments, clearStore, deleteDocuments } = useData( "reviews" );
+		const { document, readDocuments, clearStore } = useData( "reviews" );
 		const route = useRoute();
 		const notification = inject( "notification" );
 		const router = useRouter();
@@ -46,25 +46,28 @@ export default {
 			}
 		];
 
-		const editReview = id => modal({ "name": "cModalReview", "id": document.value._id });
+		const editReview = () => modal({ "name": "cModalReview", "id": document.value._id });
 
 		const deleteReiew = id => {
-			modal({ "name": "cModalConfirm", "id": id });
+			modal({ "name": "cModalConfirm", id });
 		};
 
 		const closeDetail = () => {
-			router.push({
-				"name": "ReviewsOverview",
-			});
+			router.push(
+				{
+					"name": "ReviewsOverview"
+				}
+			);
 		};
 
 		const exportReview = () => {
-			let flag = true;
+			let flag;
+			flag = true;
 			flag = flag && document.value.completedAt;
-			document.value.categories.forEach(category => {
+			document.value.categories.forEach( category => {
 				flag = flag && category.completedAt;
 			});
-			if(flag) console.log("Download start!!!");
+			if ( flag ) console.debug( "Download start!!!" );
 			else {
 				notification({
 					"type": "error",
@@ -75,9 +78,11 @@ export default {
 		};
 
 		const saveAndExit = () => {
-			router.push({
-				"name": "ReviewsOverview",
-			});
+			router.push(
+				{
+					"name": "ReviewsOverview"
+				}
+			);
 		};
 
 		onMounted( () => readDocuments( route.params.id ) );
