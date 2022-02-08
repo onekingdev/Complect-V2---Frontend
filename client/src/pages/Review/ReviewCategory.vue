@@ -1,11 +1,11 @@
 <template lang="pug">
 detail-container
 	template(#header)
-		c-field.category-title(type="text" placeholder="Enter category name" v-model="reviewCategory.title" fullwidth transparent)
+		c-field.category-title(type="text" placeholder="Enter category name" v-model="category.title" fullwidth transparent)
 	template(#controls)
 		c-button(title="Delete" @click="deleteCategory()")
 	template(#content)
-		.category-container(v-for="(topic, i) in reviewCategory.content" :key="i")
+		.category-container(v-for="(topic, i) in category.content" :key="i")
 			.topic-container
 				.col-8
 					c-textarea(placeholder="Add Topic" v-model="topic.topicContent")
@@ -13,7 +13,7 @@ detail-container
 					c-dropdown.right(title="Actions")
 						c-button(title="Add Items" type="transparent" @click="addItem(topic)")
 						c-button(title="New Task" type="transparent" @click="newTask()")
-						c-button(title="Delete" type="transparent" @click="deleteTopic(reviewCategory.content, i)")
+						c-button(title="Delete" type="transparent" @click="deleteTopic(category.content, i)")
 			.item-container(v-for="(item, j) in topic.items" :key="j")
 				.item
 					.col-1
@@ -39,7 +39,7 @@ detail-container
 </template>
 
 <script>
-import { ref, computed, inject } from "vue";
+import { computed, inject } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import useData from "~/store/Data.js";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
@@ -60,11 +60,11 @@ export default {
 		const router = useRouter();
 		const route = useRoute();
 
-		const reviewCategory = computed( () => props.reviewCategory );
-		const btnTitle = computed( () => reviewCategory.value.completedAt ? "Mark as Incomplete" : "Mark as Complete" );
+		const category = computed( () => props.reviewCategory );
+		const btnTitle = computed( () => category.value.completedAt ? "Mark as Incomplete" : "Mark as Complete" );
 
 		const addTopic = () => {
-			reviewCategory.value.content.push({ "topicContent": "", "items": [] });
+			category.value.content.push({ "topicContent": "", "items": [] });
 		};
 
 		const addItem = topic => {
@@ -112,7 +112,7 @@ export default {
 		const updateCategory = async () => {
 			try {
 				const catId = route.params.catId;
-				document.value.categories[catId] = reviewCategory.value;
+				document.value.categories[catId] = category.value;
 				await updateDocument( document.value._id, document.value );
 				notification({
 					"type": "success",
@@ -130,7 +130,7 @@ export default {
 		};
 
 		const completeCategory = async () => {
-			const timestamp = reviewCategory.value.completedAt ? null : Date.now();
+			const timestamp = category.value.completedAt ? null : Date.now();
 			const catId = route.params.catId;
 			document.value.categories[catId].completedAt = timestamp;
 			try {
@@ -153,7 +153,7 @@ export default {
 
 		return {
 			btnTitle,
-			reviewCategory,
+			category,
 			deleteCategory,
 			addTopic,
 			addItem,

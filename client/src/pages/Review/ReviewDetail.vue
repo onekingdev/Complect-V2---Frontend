@@ -33,7 +33,10 @@ vertical-detail
 					c-button(title="Add Entry" iconL="circle_plus" @click="addRegulatoryChange()")
 				.sub-item-container
 					.sub-title Key Employees Interviewed
-					p Regulators interview employees to uncover potential discrepancies in a firm's policies and procedures and their day-to-day practicies. It's important to interview those employees responsible for certain key tasks or have access to sensitive client in order to hear about their day-to-day activities in their own words.
+					p
+						| Regulators interview employees to uncover potential discrepancies in a firm's policies and procedures and their day-to-day practicies.
+						| It's important to interview those employees responsible for certain key tasks or have access to sensitive client in order to hear about their
+						| day-to-day activities in their own words.
 					.employee-label
 						.label Employee Name
 						.label Title/Role
@@ -53,7 +56,7 @@ vertical-detail
 
 
 <script>
-import { ref, computed, onMounted, inject } from "vue";
+import { ref, computed, inject } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import useData from "~/store/Data.js";
 import VerticalDetail from "~/components/Containers/VerticalDetail.vue";
@@ -67,15 +70,10 @@ export default {
 		const isGeneral = ref( true );
 		const isButton = ref( true );
 		const categoryName = ref( "" );
-		const reviewCategory = ref( {} );
+		const reviewCategory = ref({});
 		const catId = ref( null );
 
 		const btnTitle = computed( () => document.value.completedAt ? "Mark as Incomplete" : "Mark as Complete" );
-
-		const dateRange = ref({
-			"start": null,
-			"end": null
-		});
 
 		const selectGeneral = () => {
 			isGeneral.value = true;
@@ -141,9 +139,7 @@ export default {
 
 		const deleteEmployeesInterviewed = ( employeesInterviewed, index ) => employeesInterviewed.splice( index, 1 );
 
-		const toggleCategory = () => {
-			isButton.value = !isButton.value;
-		};
+		const toggleCategory = () => isButton.value = !isButton.value;
 
 		const createCategory = async () => {
 			isButton.value = !isButton.value;
@@ -168,7 +164,6 @@ export default {
 
 		return {
 			document,
-			dateRange,
 			isGeneral,
 			catId,
 			isButton,

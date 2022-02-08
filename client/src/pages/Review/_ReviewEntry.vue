@@ -48,17 +48,9 @@ export default {
 
 		const editReview = () => modal({ "name": "cModalReview", "id": document.value._id });
 
-		const deleteReiew = id => {
-			modal({ "name": "cModalConfirm", id });
-		};
+		const deleteReiew = id => modal({ "name": "cModalConfirm", id });
 
-		const closeDetail = () => {
-			router.push(
-				{
-					"name": "ReviewsOverview"
-				}
-			);
-		};
+		const closeDetail = () => router.push({ "name": "ReviewsOverview" });
 
 		const exportReview = () => {
 			let flag;
@@ -77,13 +69,7 @@ export default {
 			}
 		};
 
-		const saveAndExit = () => {
-			router.push(
-				{
-					"name": "ReviewsOverview"
-				}
-			);
-		};
+		const saveAndExit = () => router.push({ "name": "ReviewsOverview" });
 
 		onMounted( () => readDocuments( route.params.id ) );
 		onUnmounted( () => clearStore() );
