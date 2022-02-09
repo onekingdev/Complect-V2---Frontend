@@ -297,4 +297,34 @@ export default {
 	.end-buttons
 		display: flex
 		gap: 0.75em
+	.topic-text, .item-text
+		:deep(.field-body)
+			resize: none
+			overflow: hidden
+			font-weight: 500
+			border: 1px solid transparent
+			box-shadow: 0 0 0
+			min-height: 60px
+			transition: all .2s ease-in
+			&:hover
+				border: 1px solid #dee2e6
+	.topic-text
+		:deep(.field-body)
+			font-size: 18px
+	.item-text
+		:deep(.field-body)
+			font-size: 16px
+	.finding
+		:deep(.field-body)
+			resize: none
+			height: 60px
+			overflow: hidden
+			color: #303132
+			font-weight: 400
+			box-shadow: 0 0 0
+			border: 1px solid #ced4da
+			&:focus
+				color: #495057
+				border-color: #80dbff
+
 </style>
