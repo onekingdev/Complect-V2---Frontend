@@ -35,7 +35,7 @@ export default {
 		const toggleDeleteModal = id => {
 			isDeleteVisible.value = !isDeleteVisible.value;
 			clickedId = id;
-		}
+		};
 
 		const handleClickEdit = id => modal({ "name": "cModalReview", id });
 
@@ -55,7 +55,7 @@ export default {
 					"message": "Internal review has not been deleted. Please try again."
 				});
 			}
-		}
+		};
 
 		const handleClickDuplicate = async id => {
 			const index = documents.value.findIndex( doc => doc._id === id );

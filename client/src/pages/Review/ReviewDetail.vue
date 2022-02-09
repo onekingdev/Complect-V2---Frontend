@@ -144,6 +144,7 @@ export default {
 
 		const createCategory = async () => {
 			state.value.isButton = !state.value.isButton;
+			state.value.categoryName = "";
 			document.value.categories.push({ "title": state.value.categoryName, "content": [], "completedAt": null });
 			try {
 				await updateDocument( document.value._id, document.value );
@@ -152,7 +153,6 @@ export default {
 					"title": "Success",
 					"message": "Category has been added."
 				});
-				state.value.categoryName = "";
 			} catch ( error ) {
 				console.error( error );
 				notification({

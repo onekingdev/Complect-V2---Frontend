@@ -74,7 +74,7 @@ export default {
 					"message": "Internal review has not been deleted. Please try again."
 				});
 			}
-		}
+		};
 
 		const closeDetail = () => router.push({ "name": "ReviewsOverview" });
 

@@ -37,9 +37,9 @@ detail-container
 					.item-checkboxes
 						.reviews-checkbox
 							.checkbox.checkbox-true(:class="{ checked: item.flag }" @click="selectTrueCheck(item)")
-								icon.icon-r(name="check" color="white")
+								icon.icon-r(name="check" size="tiny" color="white")
 							.checkbox.checkbox-false(:class="{ checked: !item.flag }" @click="selectFalseCheck(item)")
-								icon.icon-r(name="close")
+								icon.icon-r(name="close" size="tiny")
 					.item-text
 						c-textarea(placeholder="New Item" v-model="item.itemContent")
 					.item-action
@@ -118,7 +118,7 @@ export default {
 				"title": "Success",
 				"message": "Topic has been deleted."
 			});
-		}
+		};
 
 		const deleteItem = ( itemArr, index ) => {
 			itemArr.splice( index, 1 );
@@ -127,7 +127,7 @@ export default {
 				"title": "Success",
 				"message": "Item has been deleted."
 			});
-		}
+		};
 
 		const deleteFinding = ( findingArr, index ) => {
 			findingArr.splice( index, 1 );
@@ -136,7 +136,7 @@ export default {
 				"title": "Success",
 				"message": "Finding has been deleted."
 			});
-		}
+		};
 
 		const deleteCategory = async () => {
 			try {
@@ -264,7 +264,7 @@ export default {
 					cursor: pointer
 					background-color: white
 					color: black !important
-					padding: 0.1em 0.75em
+					padding: 0.1em 1em
 					border: 1px solid #dee2e6
 					border-radius: 3px
 					svg
