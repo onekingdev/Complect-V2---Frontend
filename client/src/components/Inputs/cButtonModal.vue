@@ -1,6 +1,6 @@
 <template lang="pug">
 .c-button-modal
-	c-button(:title="title" :type="type" @click="toggleModal()")
+	c-button(:title="title" :type="type" :iconL="icon" @click="toggleModal()")
 	c-modal(:title="modalTitle" v-model="isModalVisible" :wide="wide")
 		template(#content v-if="$slots.content")
 			slot(name="content")

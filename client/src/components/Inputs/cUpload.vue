@@ -75,7 +75,6 @@ export default {
 			object-fit: cover
 			transition: transform var(--fx-duration-regular, .25s) ease-in-out
 	.controls
-		margin-left: 10px
 		input[type="file"]
 			display: none
 

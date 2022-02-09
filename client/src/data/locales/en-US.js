@@ -35,8 +35,6 @@ export default {
 
 		// states
 		"draft": "Draft",
-		"archived": "Archived",
-		"published": "Published",
 		"inProgress": "In Progress",
 		"complete": "Complete",
 		"available": "Available",

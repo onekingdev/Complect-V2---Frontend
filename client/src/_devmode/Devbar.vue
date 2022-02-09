@@ -6,7 +6,7 @@
 
 <script>
 // import useApi from "~/core/api.js";
-import UseData from "~/store/Data.js"
+import useData from "~/store/Data.js"
 import { appState } from "~/store/appState"
 import { generatedData } from "~/_devmode/generator/generator.js";
 export default {

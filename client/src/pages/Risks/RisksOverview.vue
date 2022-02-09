@@ -5,18 +5,17 @@ c-table(v-bind="{columns, documents}" searchable)
 
 <script>
 import { onMounted, onUnmounted } from "vue";
-import UseData from "~/store/Data.js";
+import useData from "~/store/Data.js";
 import cBanner from "~/components/Misc/cBanner.vue";
 
 export default {
 	"components": { cBanner },
 	setup () {
-		// const { documents, readDocuments, deleteDocuments, clearStore } = UseData( "risks" );
-		const risks = new UseData( "risks" );
+		const { documents, readDocuments, deleteDocuments, clearStore } = useData( "risks" );
 
 		const handleClickEdit = id => console.debug( "Edit", id );
 		const handleClickDuplicate = id => console.debug( "Duplicate", id );
-		const handleClickDelete = id => risks.deleteDocuments( id );
+		const handleClickDelete = id => deleteDocuments( id );
 
 		const columns = [
 			{
@@ -65,13 +64,13 @@ export default {
 			}
 		];
 
-		onMounted( () => risks.readDocuments() );
-		onUnmounted( () => risks.clearStore() );
+		onMounted( () => readDocuments() );
+		onUnmounted( () => clearStore() );
 
 
 		return {
 			columns,
-			"documents": risks.getDocuments()
+			documents
 		};
 	}
 };

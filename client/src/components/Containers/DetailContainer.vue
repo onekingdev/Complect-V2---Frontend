@@ -1,13 +1,13 @@
 <template lang="pug">
-.card-container.card-style
+.detail-container.card-style
 	.card-header(v-if="title || $slots['header'] || $slots['controls']")
 		.card-title(v-if="title") {{ $locale(title) }}
 		.header-content(v-if="$slots['header']")
 			slot(name="header")
 		slot(v-if="$slots['controls']" name="controls")
-	.card-sub-header.grid-6(v-if="$slots['sub-header']")
+	.card-sub-header(v-if="$slots['sub-header']")
 		slot(name="sub-header")
-	.card-content.grid-6(v-if="$slots.content")
+	.card-content(v-if="$slots.content")
 		slot(name="content")
 	.card-footer(v-if="$slots.footer")
 		slot(name="footer")
@@ -28,26 +28,28 @@ export default {
 
 
 <style lang="stylus" scoped>
-.card-container
+.detail-container
+	padding: 1.25em 1.875em
 	width: 100%
 	display: flex
 	flex-direction: column
 	.card-header
-		padding: 1em
+		padding-bottom: 1.25em
 		line-height: 1
 		display: flex
 		gap: 0.5em
 		align-items: center
 		font-size: 1em
 		.card-title, .header-content
-			font-size: 1.2em
-			margin-right: auto
-	.card-content, .card-sub-header, .card-footer
-		border-top: 1px solid var(--c-border)
-		padding: 1.5em
+			flex: 1
+			font-size: 1.25em
+	.card-content, .card-sub-header
+		border-top: 0.0625em solid var(--c-border)
+	.card-console
+		padding: 1.25em 0
 	.card-footer
+		padding: 1.25em 0
 		display: flex
 		gap: 1em
-		justify-content: flex-end
-		padding: 1em
+		justify-content: space-between
 </style>
