@@ -26,7 +26,7 @@ c-modal(title="Delete Policy" v-model="isDeleteVisible")
 
 
 <script>
-import { onMounted, onUnmounted, ref, inject, computed, watch } from "vue";
+import { onMounted, onUnmounted, ref, inject, computed } from "vue";
 import UseData from "~/store/Data.js";
 import cBanner from "~/components/Misc/cBanner.vue";
 import cModal from "~/components/Misc/cModal.vue";
