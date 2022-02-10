@@ -177,7 +177,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Category has not been updated.. Please try again."
+					"message": "Category has not been updated. Please try again."
 				});
 			}
 		};
