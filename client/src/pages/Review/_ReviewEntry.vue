@@ -48,7 +48,7 @@ export default {
 		cModal
 	},
 	setup () {
-		const { document, documentJson, readDocuments, deleteDocuments, clearStore } = useData( "reviews" );
+		const { document, documentJson, readDocuments, updateDocument, deleteDocuments, clearStore } = useData( "reviews" );
 		const route = useRoute();
 		const notification = inject( "notification" );
 		const router = useRouter();
