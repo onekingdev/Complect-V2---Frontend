@@ -90,9 +90,8 @@ export default {
 		};
 
 		const closeDetail = () => {
-			if (documentJson.value === JSON.stringify(document.value)) {
-				router.push({ "name": "ReviewsOverview" });
-			} else isDeleteVisible.value = !isDeleteVisible.value;
+			if ( documentJson.value === JSON.stringify( document.value ) ) router.push({ "name": "ReviewsOverview" });
+			else isDeleteVisible.value = !isDeleteVisible.value;
 		};
 
 		const handleUnsavedClick = () => {
