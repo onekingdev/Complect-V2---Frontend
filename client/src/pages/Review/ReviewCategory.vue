@@ -16,9 +16,9 @@ detail-container
 	template(#content)
 		.category-container(v-for="(topic, i) in category.content" :key="i")
 			.topic-container.grid-12
-				.topic-text.col-9
+				.topic-text
 					c-textarea(placeholder="Add Topic" v-model="topic.topicContent")
-				.topic-action.col-3
+				.topic-action
 					c-dropdown.right(title="Actions")
 						c-button(title="Add Items" type="transparent" @click="addItem(topic)")
 						c-button(title="New Task" type="transparent" @click="newTask()")
@@ -55,23 +55,35 @@ detail-container
 											b Do you want to continue?
 								template(#footer)
 									c-button(title="Confirm" type="primary" @click="deleteItem(topic.items, j)")
-				.finding(v-for="(finding, k) in item.finding" :key="k")
+				.finding.grid-12(v-for="(finding, k) in item.finding" :key="k")
+					.finding-empty
 					c-textarea(label="Finding" v-model="finding.findingContent")
-					c-button-modal(type="transparent" icon="close" modalTitle="Delete Item")
-						template(#content)
-							.col-1
-								icon(name="error" size="huge")
-							.col-5
-								p This will remove the topic from this internal review and all of its associated content.
-								p
-									b Do you want to continue?
-						template(#footer)
-							c-button(title="Confirm" type="primary" @click="deleteFinding(item.finding, k)")
+					.finding-delete
+						c-button-modal(type="transparent" icon="close" modalTitle="Delete Finding")
+							template(#content)
+								.col-1
+									icon(name="error" size="huge")
+								.col-5
+									p This will remove the finding from this internal review.
+									p
+										b Do you want to continue?
+							template(#footer)
+								c-button(title="Confirm" type="primary" @click="deleteFinding(item.finding, k)")
 	template(#footer)
 		c-button(title="Add Topic" iconL="circle_plus" @click="addTopic()")
 		.end-buttons
 			c-button(title="Save" @click="updateCategory()")
-			c-button(:title="btnTitle" type="primary" @click="completeCategory()")
+			//- c-button(:title="btnTitle" type="primary" @click="completeCategory()")
+			c-button-modal(:title="btnTitle" type="primary" :modalTitle="completeModalTitle")
+				template(#content)
+					.col-1
+						icon(name="success" size="huge")
+					.col-5
+						p {{ category.completedAt ? "This will mark the category as incomplete and your progress will be updated." : "This will mark the category as complete and your progress will be updated." }}
+						p
+							b Do you want to continue?
+				template(#footer)
+					c-button(title="Confirm" type="primary" @click="completeCategory()")
 </template>
 
 <script>
@@ -98,6 +110,7 @@ export default {
 
 		const category = computed( () => props.reviewCategory );
 		const btnTitle = computed( () => category.value.completedAt ? "Mark as Incomplete" : "Mark as Complete" );
+		const completeModalTitle = computed( () => category.value.completedAt ? "Incomplete Category" : "Complete Category" );
 
 		const addTopic = () => category.value.content.push({ "topicContent": "", "items": [] });
 
@@ -191,20 +204,21 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": `Review has been marked as ${timestamp ? "complete" : "incomplete"}.`
+					"message": `Category has been marked as ${timestamp ? "complete" : "incomplete"}.`
 				});
 			} catch ( error ) {
 				console.error( error );
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": `Review has not been marked as ${timestamp ? "complete" : "incomplete"}. Please try again.`
+					"message": `Category has not been marked as ${timestamp ? "complete" : "incomplete"}. Please try again.`
 				});
 			}
 		};
 
 		return {
 			btnTitle,
+			completeModalTitle,
 			category,
 			deleteCategory,
 			addTopic,
@@ -237,18 +251,15 @@ export default {
 			margin-bottom: 1em
 			.item
 				.item-checkboxes
-					@media (min-width: 992px)
-						grid-column: span 2
+					grid-column: span 2
 					@media (min-width: 1200px)
 						grid-column: span 1
 				.item-text
-					@media (min-width: 992px)
-						grid-column: span 7
+					grid-column: span 7
 					@media (min-width: 1200px)
 						grid-column: span 9
 				.item-action
-					@media (min-width: 992px)
-						grid-column: span 3
+					grid-column: span 3
 					@media (min-width: 1200px)
 						grid-column: span 2
 					.c-dropdown
@@ -258,8 +269,8 @@ export default {
 							min-width: 8em
 			.reviews-checkbox
 				display: flex
-				justify-content: space-between
 				font-size: 0.8em
+				gap: 0.75em
 				.checkbox
 					cursor: pointer
 					background-color: white
@@ -285,15 +296,41 @@ export default {
 						svg
 							fill: white
 		.finding
-			display: flex
-			justify-content: center
-			align-items: center
-			gap: 0.75em
-			width: 75%
-			margin: auto
+			:deep(.field-body)
+				resize: none
+				height: 60px
+				overflow: hidden
+				color: #303132
+				font-weight: 400
+				box-shadow: 0 0 0
+				border: 1px solid #ced4da
+				&:focus
+					color: #495057
+					border-color: #80dbff
+			.finding-empty
+				grid-column: span 2
+				min-width: 66px
+				@media (min-width: 1200px)
+					grid-column: span 1
+					min-width: 80px
+			.c-textarea
+				grid-column: span 7
+				@media (min-width: 1200px)
+					grid-column: span 9
+			.finding-delete
+				display: flex
+				align-items: center
+				grid-column: span 3
+				@media (min-width: 1200px)
+					grid-column: span 2
 			.c-button-modal
 				top: 7px;
 				position: relative;
+				:deep(.c-button)
+					padding: 0
+				:deep(svg)
+					font-size: 0.75em
+					fill: #212529
 	.end-buttons
 		display: flex
 		gap: 0.75em
@@ -309,22 +346,17 @@ export default {
 			&:hover
 				border: 1px solid #dee2e6
 	.topic-text
+		grid-column: span 9
+		@media (min-width: 1200px)
+			grid-column: span 10
 		:deep(.field-body)
 			font-size: 18px
+	.topic-action
+		grid-column: span 3
+		@media (min-width: 1200px)
+			grid-column: span 2
 	.item-text
 		:deep(.field-body)
 			font-size: 16px
-	.finding
-		:deep(.field-body)
-			resize: none
-			height: 60px
-			overflow: hidden
-			color: #303132
-			font-weight: 400
-			box-shadow: 0 0 0
-			border: 1px solid #ced4da
-			&:focus
-				color: #495057
-				border-color: #80dbff
 
 </style>

@@ -29,7 +29,16 @@ vertical-detail
 					.regulatory-entry(v-for="(regulatoryChange, i) in document.regulatoryChanges" :key="i")
 						c-textarea(label="Change" placeholder="Describe the change" v-model="regulatoryChange.change")
 						c-textarea(label="Response" placeholder="Describe the response" v-model="regulatoryChange.response")
-						icon.icon-r(name="close" @click="deleteRegulatoryChange(document.regulatoryChanges, i)")
+						c-button-modal(type="transparent" icon="close" modalTitle="Delete Item")
+							template(#content)
+								.col-1
+									icon(name="error" size="huge")
+								.col-5
+									p This entry will be removed from the internal review.
+									p
+										b Do you want to continue?
+							template(#footer)
+								c-button(title="Confirm" type="primary" @click="deleteRegulatoryChange(document.regulatoryChanges, i)")
 					c-button(title="Add Entry" iconL="circle_plus" @click="addRegulatoryChange()")
 				.sub-item-container
 					.sub-title Key Employees Interviewed
@@ -49,8 +58,20 @@ vertical-detail
 						icon.icon-r(name="close" @click="deleteEmployeesInterviewed(document.employeesInterviewed, j)")
 					c-button(title="Add Entry" iconL="circle_plus" @click="addEmployeesInterviewed()")
 			template(#footer)
-				c-button(title="Save" @click="updateReview()")
-				c-button(:title="btnTitle" type="primary" @click="completeReview()")
+				.empty
+				.buttons
+					c-button(title="Save" @click="updateReview()")
+					//- c-button(:title="btnTitle" type="primary" @click="completeReview()")
+					c-button-modal(:title="btnTitle" type="primary" :modalTitle="completeModalTitle")
+						template(#content)
+							.col-1
+								icon(name="success" size="huge")
+							.col-5
+								p {{ document.completedAt ? "This will mark the category as incomplete and your progress will be updated." : "This will mark the category as complete and your progress will be updated."}}
+								p
+									b Do you want to continue?
+						template(#footer)
+							c-button(title="Confirm" type="primary" @click="completeReview()")
 		router-view(v-else v-model:reviewCategory="reviewCategory")
 </template>
 
@@ -76,6 +97,7 @@ export default {
 		});
 
 		const btnTitle = computed( () => document.value.completedAt ? "Mark as Incomplete" : "Mark as Complete" );
+		const completeModalTitle = computed( () => document.value.completedAt ? "Incomplete Category" : "Complete Category" );
 
 		const selectGeneral = () => {
 			state.value.isGeneral = true;
@@ -101,14 +123,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Internal review has been saved"
+					"message": "Category has been updated."
 				});
 			} catch ( error ) {
 				console.error( error );
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Internal review has not been saved. Please try again."
+					"message": "Category has not been updated. Please try again."
 				});
 			}
 		};
@@ -120,14 +142,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": `Review has been marked as ${timestamp ? "complete" : "incomplete"}.`
+					"message": `Category has been marked as ${timestamp ? "complete" : "incomplete"}.`
 				});
 			} catch ( error ) {
 				console.error( error );
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": `Review has not been marked as ${timestamp ? "complete" : "incomplete"}. Please try again.`
+					"message": `Category has not been marked as ${timestamp ? "complete" : "incomplete"}. Please try again.`
 				});
 			}
 		};
@@ -136,7 +158,14 @@ export default {
 
 		const addEmployeesInterviewed = () => document.value.employeesInterviewed.push({ "name": "", "role": "", "department": "" });
 
-		const deleteRegulatoryChange = ( regulatoryChange, index ) => regulatoryChange.splice( index, 1 );
+		const deleteRegulatoryChange = ( regulatoryChange, index ) => {
+			regulatoryChange.splice( index, 1 );
+			notification({
+				"type": "success",
+				"title": "Success",
+				"message": "Entry has been deleted."
+			});
+		};
 
 		const deleteEmployeesInterviewed = ( employeesInterviewed, index ) => employeesInterviewed.splice( index, 1 );
 
@@ -144,14 +173,21 @@ export default {
 
 		const createCategory = async () => {
 			state.value.isButton = !state.value.isButton;
-			state.value.categoryName = "";
 			document.value.categories.push({ "title": state.value.categoryName, "content": [], "completedAt": null });
+			state.value.categoryName = "";
 			try {
-				await updateDocument( document.value._id, document.value );
+				await updateDocument( document.value._id, { "categories": document.value.categories } );
 				notification({
 					"type": "success",
 					"title": "Success",
 					"message": "Category has been added."
+				});
+				state.value.isGeneral = false;
+				state.value.catId = document.value.categories.length - 1;
+				reviewCategory.value = document.value.categories[state.value.catId];
+				router.push({
+					"name": "ReviewCategory",
+					"params": { "catId": state.value.catId }
 				});
 			} catch ( error ) {
 				console.error( error );
@@ -177,6 +213,7 @@ export default {
 			deleteEmployeesInterviewed,
 			selectCategory,
 			btnTitle,
+			completeModalTitle,
 			toggleCategory
 		};
 	}
@@ -230,9 +267,21 @@ export default {
 			padding-left: 1em
 	.regulatory-entry
 		display: flex
-		gap: 2em
+		align-items: center
+		margin-left: -15px
+		.c-textarea
+			padding: 0 15px
+		.c-button-modal
+			position: relative
+			top: 8px
+			cursor: pointer
+			:deep(.c-button)
+				padding: 0
+			:deep(svg)
+				font-size: 0.75em
+				fill: #212529
 		.icon
-			top: 4.425	em
+			top: 4.425em
 			position: relative
 			font-size: 0.75em
 	.employee-label, .employee-entry
@@ -251,8 +300,13 @@ export default {
 		margin-bottom: 1em
 		.icon
 			font-size: 0.75em
+			fill: #212529
+			cursor: pointer
 	.c-button
 		margin-top: 1em
+.buttons
+	display: flex
+	gap: 0.75em
 
 </style>
 

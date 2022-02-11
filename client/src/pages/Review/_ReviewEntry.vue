@@ -121,7 +121,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Internal review has been saved"
+					"message": "Internal review has been saved."
 				});
 				router.push({ "name": "ReviewsOverview" });
 			} catch ( error ) {
