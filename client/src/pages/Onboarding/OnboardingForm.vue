@@ -93,6 +93,8 @@ import cPlans from "~/components/Misc/cPlans.vue";
 import { industries, subIndustries, jurisdictions, timezones } from "~/data/static.js";
 import { plans } from "~/data/plans.js";
 
+import { filterSubIndustries } from '~/core/utils.js'
+
 export default {
 	"components": {
 		cFormWizard,
@@ -155,18 +157,7 @@ export default {
 
 		const goToCheckout = () => router.push({ "name": "OnboardingCheckout" });
 
-		const filteredSubIndustries = computed( () => {
-			// return subindustriesBusiness.map(sub => sub.value > 1 && sub.value < 2)
-
-			const sub = [];
-			if ( !form.value.industries ) return sub;
-			form.value.industries.forEach( industry => {
-				subIndustries[userType].forEach( subInd => {
-					if ( subInd.value >= industry && subInd.value < industry + 1 ) sub.push( subInd );
-				});
-			});
-			return sub;
-		});
+		const filteredSubIndustries = computed( () => filterSubIndustries(form.value.industries, subIndustries, userType));
 
 		return {
 			userType,

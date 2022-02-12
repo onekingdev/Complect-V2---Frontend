@@ -5,11 +5,13 @@ const profile = ref( null );
 
 export default function useProfile () {
 	const saveForm = ( original, update ) => {
-		Object.keys( update ).forEach( key => original[key] = update[key]);
+		Object.keys( update ).forEach( key => original.value[key] = update[key] );
 	};
 
 	const setProfile = data => profile.value = data;
-	const updateProfile = profileUpdate => saveForm( profile, profileUpdate );
+	const updateProfile = profileUpdate => {
+		saveForm( profile, profileUpdate );
+	}
 
 	return {
 		profile,

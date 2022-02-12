@@ -1,3 +1,5 @@
+import { industries } from "../data/static";
+
 // return random number
 const randomNumber = ( minimum = 0, maximum = 100 ) => Math.round( Math.random() * ( maximum - minimum ) + minimum );
 
@@ -64,4 +66,15 @@ const removeSensitiveData = ( object, keys ) => {
 	});
 };
 
-export { randomNumber, randomId, randomMongoId, sortArrayByKey, formatDate, calcRiskLevel, calcExpandDirections, removeSensitiveData };
+const filterSubIndustries = (industries, subIndustries, userType) => {
+	const sub = [];
+	if ( !industries ) return sub;
+	industries.forEach( industry => {
+		subIndustries[userType].forEach( subInd => {
+			if ( subInd.value >= industry && subInd.value < industry + 1 ) sub.push( subInd );
+		});
+	});
+	return sub;
+};
+
+export { randomNumber, randomId, randomMongoId, sortArrayByKey, formatDate, calcRiskLevel, calcExpandDirections, removeSensitiveData, filterSubIndustries };
