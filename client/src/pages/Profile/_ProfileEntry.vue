@@ -41,7 +41,7 @@ import { ref, reactive, computed, inject } from "vue";
 import cSelect from "~/components/Inputs/cSelect.vue";
 import cUpload from "~/components/Inputs/cUpload.vue";
 import useProfile from "~/store/Profile.js";
-import { industries, subIndustries, jurisdictions, timezones } from "~/data/static.js";
+import { industries, jurisdictions, timezones } from "~/data/static.js";
 import { filterSubIndustries } from '~/core/utils.js';
 
 const EMPTY_MY_PROFILE = {
@@ -91,7 +91,7 @@ export default {
 			updateProfile( update )
 		};
 
-		const filteredSubIndustries = computed( () => filterSubIndustries(profile.value.industries, subIndustries, "business"));
+		const filteredSubIndustries = computed( () => filterSubIndustries(profile.value.industries, "business"));
 
 		return {
 			avatar,

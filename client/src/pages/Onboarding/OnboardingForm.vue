@@ -90,7 +90,7 @@ import cDropzone from "~/components/Inputs/cDropzone.vue";
 import cSwitcher from "~/components/Inputs/cSwitcher.vue";
 import cPlans from "~/components/Misc/cPlans.vue";
 
-import { industries, subIndustries, jurisdictions, timezones } from "~/data/static.js";
+import { industries, jurisdictions, timezones } from "~/data/static.js";
 import { plans } from "~/data/plans.js";
 
 import { filterSubIndustries } from '~/core/utils.js'
@@ -157,7 +157,7 @@ export default {
 
 		const goToCheckout = () => router.push({ "name": "OnboardingCheckout" });
 
-		const filteredSubIndustries = computed( () => filterSubIndustries(form.value.industries, subIndustries, userType));
+		const filteredSubIndustries = computed( () => filterSubIndustries(form.value.industries, userType));
 
 		return {
 			userType,
