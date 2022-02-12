@@ -1,5 +1,3 @@
-import { industries } from "../data/static";
-
 // return random number
 const randomNumber = ( minimum = 0, maximum = 100 ) => Math.round( Math.random() * ( maximum - minimum ) + minimum );
 
