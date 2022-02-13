@@ -66,7 +66,7 @@ const removeSensitiveData = ( object, keys ) => {
 	});
 };
 
-const filterSubIndustries = (industries, userType) => {
+const filterSubIndustries = ( industries, userType ) => {
 	const sub = [];
 	if ( !industries ) return sub;
 	industries.forEach( industry => {

@@ -93,7 +93,7 @@ import cPlans from "~/components/Misc/cPlans.vue";
 import { industries, jurisdictions, timezones } from "~/data/static.js";
 import { plans } from "~/data/plans.js";
 
-import { filterSubIndustries } from '~/core/utils.js'
+import { filterSubIndustries } from "~/core/utils.js";
 
 export default {
 	"components": {
@@ -157,7 +157,7 @@ export default {
 
 		const goToCheckout = () => router.push({ "name": "OnboardingCheckout" });
 
-		const filteredSubIndustries = computed( () => filterSubIndustries(form.value.industries, userType));
+		const filteredSubIndustries = computed( () => filterSubIndustries( form.value.industries, userType ) );
 
 		return {
 			userType,
