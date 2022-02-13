@@ -56,7 +56,7 @@ export default {
 					"title": "Error",
 					"message": "Policy Setting has not been updated. Please try again."
 				});
-			} 
+			}
 		};
 
 		onMounted( () => policySetting.readDocuments() );

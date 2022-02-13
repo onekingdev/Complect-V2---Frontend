@@ -4,7 +4,7 @@ card-container(title="Policy Details")
 		c-field( label="Name" placeholder="Name" size="small" v-model="policyDetail.title")
 		label
 			.field-label Description
-			Editor.field-body(v-model="policyDetail.description" :init="{ height: 300, plugins: [ 'advlist autolink lists link image charmap print preview anchor' ], toolbar: 'bullist numlist outdent indent | removeformat | help', extraPlugins: 'autogrow' }")
+			Editor.field-body(v-model="policyDetail.description" :init="{ height: 300, plugins: [ 'advlist autolink lists link image charmap print preview anchor' ], toolbar: 'bullist numlist outdent indent | removeformat | help'}")
 	template(#content v-else)
 		c-field( label="Name" placeholder="Name" size="small" v-model="policyDetail.title" disabled)
 		label
