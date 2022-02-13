@@ -1,41 +1,31 @@
 <template lang="pug">
-card-container(title="Risk Details")
-	template(#controls)
-		c-button(title="Edit" type="primary")
+card-container(title="Version History" v-if="policyDetail")
 	template(#content)
-		definition-list(:data="riskDetails")
-
-card-container(title="Controls")
-	template(#controls)
-		c-button-modal(title="New Control" modalTitle="Select Control" type="primary")
-			template(#content)
-				c-table(v-bind="{columns: controlsColumns, documents: controlsDocuments}")
-			template(#footer)
-				c-button(title="Add" type="primary" @click="addControl()")
-
-	template(#content)
-		c-table(v-bind="{columns: controlsColumns, documents: controlsDocuments}")
+		c-label.border-bottom(v-for="history in policyDetail.history")
+			p {{ history.version }}
+			p {{ history.publishedBy }}
+			p Last updated {{ formatDate(history.lastUpdated) }}
+			c-button.download-button(title="Export")
 </template>
-
-
 <script>
-import { computed, inject } from "vue";
-import UseData from "~/store/Data.js";
+import { computed } from "vue";
 import definitionList from "~/components/Misc/DefinitionList.vue";
+import cLabel from "~/components/Misc/cLabel.vue";
+import { formatDate } from "~/core/utils";
 export default {
-	"components": { definitionList },
-	setup () {
-		const risks = new UseData( "risks" );
-		const locale = inject( "locale" );
+	"components": { definitionList, cLabel },
+	"props": {
+		"policyDetails": {
+			"type": Object,
+			"required": true,
+			"default": {}
+		}
+	},
+	setup ( props ) {
+		// const { document } = UseData( "policies" );
 		const handleClickDelete = id => console.debug( id );
 		const addControl = () => console.debug( "Add" );
-
-		const riskDetails = computed( () => ({
-			"title": risks.getDocument().value.title,
-			"impact": locale( `risk${risks.getDocument().value.impact}` ),
-			"likelihood": locale( `risk${risks.getDocument().value.likelihood}` )
-		}) );
-
+		const policyDetail = computed( () => props.policyDetails || {});
 		const controlsColumns = [
 			{
 				"title": "Policy",
@@ -82,10 +72,22 @@ export default {
 		return {
 			handleClickDelete,
 			addControl,
-			riskDetails,
 			controlsColumns,
-			controlsDocuments
+			controlsDocuments,
+			policyDetail,
+			formatDate
 		};
 	}
 };
 </script>
+<style lang="stylus" scoped>
+.border-bottom
+	padding: 1rem
+	border-bottom: 1px solid #ddd
+	position: relative
+	.download-button
+		position: absolute;
+		top: 2rem;
+		right: 1rem;
+</style>
+

@@ -36,7 +36,7 @@ page-container(section="Projects" :title="document.title" owner="Company Name" t
 <script>
 import { onMounted, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
 import cCheckbox from "~/components/Inputs/cCheckbox.vue";
 export default {
@@ -45,7 +45,7 @@ export default {
 		cCheckbox
 	},
 	setup () {
-		const { document, readDocuments, clearStore, updateDocument, deleteDocuments } = useData( "projects" );
+		const projects = new UseData( "projects" );
 		const route = useRoute();
 		const router = useRouter();
 
@@ -71,22 +71,22 @@ export default {
 		const updateProject = () => {};
 
 		const markAsComplete = () => {
-			updateDocument( document.value._id, {
+			projects.updateDocument( projects.getDocument().value._id, {
 				"status": "complete",
 				"completed": true
 			});
 			closeProject();
 		};
 		const deleteProject = () => {
-			deleteDocuments( document.value._id );
+			projects.deleteDocuments( projects.getDocument().value._id );
 			closeProject();
 		};
 
-		onMounted( () => readDocuments( route.params.id ) );
-		onUnmounted( () => clearStore() );
+		onMounted( () => projects.readDocuments( route.params.id ) );
+		onUnmounted( () => projects.clearStore() );
 
 		return {
-			document,
+			"document": projects.getDocument(),
 			tabs,
 			markAsComplete,
 			closeProject,
