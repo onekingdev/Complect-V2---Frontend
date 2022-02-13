@@ -19,7 +19,7 @@ page-container(title="Risk Register")
 import { ref, computed, inject } from "vue";
 import { useRouter } from "vue-router";
 import { calcRiskLevel } from "~/core/utils.js";
-import UseData from "~/store/Data.js";
+import useData from "~/store/Data.js";
 import cSelect from "~/components/Inputs/cSelect.vue";
 import cLabel from "~/components/Misc/cLabel.vue";
 import cBadge from "~/components/Misc/cBadge.vue";
@@ -28,7 +28,7 @@ export default {
 	setup () {
 		const notification = inject( "notification" );
 		const router = useRouter();
-		const risks = new UseData( "risks" );
+		const { createDocuments } = useData( "risks" );
 
 		const options = [
 			{ "title": "Low", "value": 0 }, { "title": "Medium", "value": 1 }, { "title": "High", "value": 2 }
@@ -44,7 +44,7 @@ export default {
 
 		const createRisk = async () => {
 			newRisk.value.riskLevel = newRiskLevel.value;
-			const riskId = await risks.createDocuments([newRisk.value]);
+			const riskId = await createDocuments([newRisk.value]);
 			notification({
 				"type": "success",
 				"title": "Risk Cteated"

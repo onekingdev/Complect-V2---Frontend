@@ -18,12 +18,12 @@ vertical-tabs
 
 
 <script>
-import UseData from "~/store/Data.js";
+import useData from "~/store/Data.js";
 import VerticalTabs from "~/components/Containers/VerticalTabs.vue";
 export default {
 	"components": { VerticalTabs },
 	setup () {
-		const reviews = new UseData( "reviews" );
+		const { document } = useData( "reviews" );
 		const categories = [{
 			"id": 1,
 			"title": "General",
@@ -32,7 +32,7 @@ export default {
 
 		const addCategory = () => console.debug( "Add new Category" );
 		return {
-			"document": reviews.getDocument(),
+			document,
 			categories,
 			addCategory
 		};

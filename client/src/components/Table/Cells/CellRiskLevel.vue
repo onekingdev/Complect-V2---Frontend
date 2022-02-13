@@ -10,7 +10,7 @@ export default {
 	"components": { cBadge },
 	"props": {
 		"data": {
-			"type": Number,
+			"type": String,
 			"required": true
 		}
 	}
