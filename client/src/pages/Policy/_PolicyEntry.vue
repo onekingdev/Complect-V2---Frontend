@@ -38,7 +38,7 @@ menu-container(:type="menuType")
 				router-link.link-item(v-for="(tab, index) in archivetabs" :key="index" :to="{name: tab.routeName}") {{tab.title}}
 				c-dropdown.action-button(title="Actions" type="transparent")
 					c-button(title="Unarchive" type="transparent"  @click="toggleUnarchivePolicy()")
-					c-button-modal(title="Delete" type="transparent"  modalTitle="Delete Policy")
+					c-button-modal(title="Delete1" type="transparent"  modalTitle="Delete Policy")
 						template(#content)
 							.col-1
 								icon(name="error" size="huge")
