@@ -118,7 +118,7 @@ export default {
 		};
 
 		onMounted( () => {
-			if ( !props.modelValue && props.modelValue !== 0 ) return;
+			if ( !props.modelValue ) return;
 			selectedItems.value = props.modelValue;
 			selectedObjects.value = valuesToObjects( props.modelValue );
 		});

@@ -10,13 +10,13 @@ c-table(v-bind="{columns, documents}")
 
 <script>
 import { onMounted, onUnmounted, inject } from "vue";
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 import { useRouter } from "vue-router";
 import cBanner from "~/components/Misc/cBanner.vue";
 export default {
 	"components": { cBanner },
 	setup () {
-		const { documents, readDocuments, createDocuments, deleteDocuments, clearStore } = useData( "reviews" );
+		const reviews = new UseData( "reviews" );
 		const router = useRouter();
 		const notification = inject( "notification" );
 
@@ -28,15 +28,15 @@ export default {
 		};
 
 		const handleClickDuplicate = async id => {
-			const index = documents.value.findIndex( doc => doc._id === id );
-			await createDocuments([documents.value[index]]);
+			const index = reviews.getDocuments().value.findIndex( doc => doc._id === id );
+			await reviews.createDocuments([reviews.getDocuments().value[index]]);
 			notification({
 				"type": "success",
 				"title": "Internal review has been duplicated."
 			});
 		};
 
-		const handleClickDelete = id => deleteDocuments( id );
+		const handleClickDelete = id => reviews.deleteDocuments( id );
 
 		const columns = [
 			{
@@ -88,12 +88,12 @@ export default {
 			}
 		];
 
-		onMounted( () => readDocuments() );
-		onUnmounted( () => clearStore() );
+		onMounted( () => reviews.readDocuments() );
+		onUnmounted( () => reviews.clearStore() );
 
 		return {
 			columns,
-			documents
+			"documents": reviews.getDocuments()
 		};
 	}
 };
