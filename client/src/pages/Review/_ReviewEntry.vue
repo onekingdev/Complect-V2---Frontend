@@ -14,7 +14,7 @@ page-container(section="Internal Review" :title="document.title" type="document"
 <script>
 import { onMounted, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import UseData from "~/store/Data.js";
+import useData from "~/store/Data.js";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
 import cCheckbox from "~/components/Inputs/cCheckbox.vue";
 export default {
@@ -23,7 +23,7 @@ export default {
 		cCheckbox
 	},
 	setup () {
-		const reviews = new UseData( "reviews" );
+		const { document, readDocuments, clearStore, deleteDocuments } = useData( "reviews" );
 		const route = useRoute();
 		const router = useRouter();
 
@@ -46,16 +46,16 @@ export default {
 
 
 		const deleteProject = () => {
-			reviews.deleteDocuments( reviews.getDocument().value._id );
+			deleteDocuments( document.value._id );
 			closeReview();
 		};
 
-		onMounted( () => reviews.readDocuments( route.params.id ) );
-		onUnmounted( () => reviews.clearStore() );
+		onMounted( () => readDocuments( route.params.id ) );
+		onUnmounted( () => clearStore() );
 
 		return {
 			tabs,
-			"document": reviews.getDocument(),
+			document,
 			closeReview,
 			updateProject,
 			deleteProject
