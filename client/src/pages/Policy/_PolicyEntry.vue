@@ -24,7 +24,6 @@ menu-container(:type="menuType")
 				router-link.link-item(v-for="(tab, index) in tabs" :key="index" :to="{name: tab.routeName}") {{tab.title}}
 				c-dropdown.action-button(title="Actions" type="transparent")
 					c-button(title="Archive" type="transparent" @click="toggleArchivePolicy()")
-					c-button(title="Unarchive" type="transparent"  @click="toggleUnarchivePolicy()" v-if="policyDetails.status == 'archived'")
 					c-button-modal(title="Delete" type="transparent"  modalTitle="Delete Policy")
 						template(#content)
 							.col-1
@@ -38,6 +37,7 @@ menu-container(:type="menuType")
 			template(#tabs  v-if="policyDetails.status == 'archived'")
 				router-link.link-item(v-for="(tab, index) in archivetabs" :key="index" :to="{name: tab.routeName}") {{tab.title}}
 				c-dropdown.action-button(title="Actions" type="transparent")
+					c-button(title="Test" type="transparent"  @click="toggleUnarchivePolicy()")
 					c-button(title="Unarchive" type="transparent"  @click="toggleUnarchivePolicy()")
 					c-button-modal(title="Delete1" type="transparent"  modalTitle="Delete Policy")
 						template(#content)
