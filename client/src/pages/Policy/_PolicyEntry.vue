@@ -274,7 +274,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "New Policy has been Created."
+					"message": "New policy has been created."
 				});
 				router.push({
 					"name": "PolicyDetail",
