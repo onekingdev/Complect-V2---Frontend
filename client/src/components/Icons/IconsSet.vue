@@ -326,11 +326,6 @@
 				<path d="M31.93 38.36H19.07a3.21 3.21 0 0 1-3.21-3.22V22.3a3.21 3.21 0 0 1 3.21-3.22h12.86a3.21 3.21 0 0 1 3.21 3.22v12.85a3.21 3.21 0 0 1-3.21 3.22Z"/>
 			</symbol>
 
-			<!-- menu-hamberger -->
-			<symbol id="icon_hamberger" viewBox="0 0 16 11">
-				<path xmlns="http://www.w3.org/2000/svg" d="M0 11H16V9.16652H0V11ZM0 6.41652H16V4.58348H0V6.41652ZM0 0V1.83348H16V0H0Z" fill="#343741"/>
-			</symbol>
-
 
 		</defs>
 	</svg>

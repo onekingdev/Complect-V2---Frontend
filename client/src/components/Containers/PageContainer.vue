@@ -4,7 +4,6 @@
 		.container-title
 			.page-collection(v-if="section") {{ $locale(section) }}
 			.page-name(v-if="title")
-				icon.c-icon(v-if="hasHamberger" name="hamberger" @click="hasHamberger.action()")
 				c-badge(v-if="badge" :icon="badge.icon" :title="badge.title")
 				.title {{ title }}
 			.page-owner(v-if="owner") {{ owner }}
@@ -49,11 +48,8 @@ export default {
 		"owner": {
 			"type": String,
 			"default": ""
-		},
-		"hasHamberger": {
-			"type": Object,
-			"default": ""
 		}
+
 	}
 };
 </script>
@@ -83,9 +79,6 @@ export default {
 					flex: 0 1
 					margin-right: 0.5em
 					font-size: 0.5em
-					margin-left: 1rem
-				.c-icon
-					margin-left: 1rem
 		.container-controls
 			padding: 2em
 			.controls
@@ -101,6 +94,7 @@ export default {
 			align-items: center
 			.tabs
 				flex-shrink: 1
+				overflow: scroll
 				display: flex
 				gap: 2em
 				padding: 1em 2em 0
@@ -127,16 +121,11 @@ export default {
 	&.documents
 		.container-content
 			background: var(--c-bg-z2)
+
 	&.document
 		.container-header
 			background: var(--c-bg-z2)
 			border-bottom: 1px solid var(--c-border)
 			.container-sections
 				border-top: 1px solid var(--c-border)
-	&.full-width
-		width: 100%
-		.tabs
-			width: 100%
-		.container-content
-			background: var(--c-bg-z1)
 </style>

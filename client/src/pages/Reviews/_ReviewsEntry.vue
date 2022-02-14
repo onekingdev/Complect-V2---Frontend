@@ -16,12 +16,12 @@ page-container(title="Internal Reviews")
 <script>
 import { ref, inject } from "vue";
 import { useRouter } from "vue-router";
-import UseData from "~/store/Data.js";
+import useData from "~/store/Data.js";
 export default {
 	setup () {
 		const notification = inject( "notification" );
 		const router = useRouter();
-		const reviews = new UseData( "reviews" );
+		const { createDocuments } = useData( "reviews" );
 
 		const newReview = ref({
 			"title": "",
@@ -39,7 +39,7 @@ export default {
 		});
 
 		const createReview = async () => {
-			const reviewId = await reviews.createDocuments([newReview.value]);
+			const reviewId = await createDocuments([newReview.value]);
 			notification({
 				"type": "success",
 				"title": "Review Created"

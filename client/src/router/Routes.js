@@ -43,12 +43,6 @@ const _PoliciesEntry = () => import( "~/pages/Policies/_PoliciesEntry.vue" );
 const PoliciesOverview = () => import( "~/pages/Policies/PoliciesOverview.vue" );
 const PoliciesArchive = () => import( "~/pages/Policies/PoliciesArchive.vue" );
 const PoliciesSetup = () => import( "~/pages/Policies/PoliciesSetup.vue" );
-// policy
-const _PolicyEntry = () => import( "~/pages/Policy/_PolicyEntry.vue" );
-const PolicyDetail = () => import( "~/pages/Policy/PolicyDetail.vue" );
-const PolicyRisks = () => import( "~/pages/Policy/PolicyRisks.vue" );
-const PolicyTasks = () => import( "~/pages/Policy/PolicyTasks.vue" );
-const PolicyHistory = () => import( "~/pages/Policy/PolicyHistory.vue" );
 
 
 // reviews
@@ -81,8 +75,10 @@ const SettingsSecurity = () => import( "~/pages/Settings/SettingsSecurity.vue" )
 const SettingsSubscriptions = () => import( "~/pages/Settings/SettingsSubscriptions.vue" );
 const SettingsBilling = () => import( "~/pages/Settings/SettingsBilling.vue" );
 
-
+// Profiles
 const _ProfileEntry = () => import( "~/pages/Profile/_ProfileEntry.vue" );
+const ProfileAbout = () => import( "~/pages/Profile/ProfileAbout.vue" );
+const ProfileSettings = () => import( "~/pages/Profile/ProfileSettings.vue" );
 import { devRoutes } from "~/_devmode/Routes.js";
 
 // ––––––––––––––– Routes ––––––––––––––– //
@@ -225,37 +221,6 @@ const routes = [
 						]
 					},
 					{
-						"path": "policy/:id",
-						"component": _PolicyEntry,
-						"meta": {
-							"title": "Policy",
-							"sidebar": false
-						},
-						"children": [
-							{
-								"path": "",
-								"name": "PolicyDetail",
-								"component": PolicyDetail,
-								"meta": { "title": "Policy Detail" }
-							}, {
-								"path": "risks",
-								"name": "PolicyRisks",
-								"component": PolicyRisks,
-								"meta": { "title": "Policy Risks" }
-							}, {
-								"path": "tasks",
-								"name": "PolicyTasks",
-								"component": PolicyTasks,
-								"meta": { "title": "Policy Tasks" }
-							}, {
-								"path": "history",
-								"name": "PolicyHistory",
-								"component": PolicyHistory,
-								"meta": { "title": "Policy History" }
-							}
-						]
-					},
-					{
 						"path": "internal_reviews",
 						"component": _ReviewsEntry,
 						"children": [{
@@ -329,7 +294,21 @@ const routes = [
 						"meta": {
 							"title": "Profile",
 							"sidebar": false
-						}
+						},
+						"children": [
+							{
+								"path": "",
+								"meta": { "title": "Profile - About" },
+								"name": "ProfileAbout",
+								"component": ProfileAbout
+							},
+							{
+								"path": "",
+								"meta": { "title": "Profile - Settings" },
+								"name": "ProfileSettings",
+								"component": ProfileSettings
+							},
+						]
 					},
 					{
 						"path": "settings",

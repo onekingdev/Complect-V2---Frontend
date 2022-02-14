@@ -26,7 +26,7 @@ const authServer = async ({ path, data }) => {
 
 export default function useAuth () {
 	const router = useRouter();
-	const { profile, setProfile } = useProfile();
+	const { profile, setProfile, updateProfile } = useProfile();
 
 
 	const registration = async data => {
@@ -40,6 +40,7 @@ export default function useAuth () {
 		const userType = profile.value.type;
 		const result = await authServer({ "path": "onboarding", "data": { "type": userType, "_id": userId, form } });
 		if ( !result.ok ) throw result.message;
+		updateProfile( form );
 		// router.push({ "name": "Dashboard" });
 	};
 

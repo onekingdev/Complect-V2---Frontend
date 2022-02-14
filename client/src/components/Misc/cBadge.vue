@@ -39,12 +39,6 @@ export default {
 	&.draft
 		color: #797b7e
 		background: #f6f6f8
-	&.archived
-		color: #ce1938
-		background: #fddee3
-	&.published
-		color: #1bb380
-		background: #d5fbef
 	&.inprogress
 		color: #2180c2
 		background: #ecf4ff
