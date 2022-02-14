@@ -48,13 +48,13 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Policy Setting Updated Successfully"
+					"message": "Setting has been updated."
 				});
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Policy Setting has not been updated. Please try again."
+					"message": "Setting has not been updated. Please try again."
 				});
 			}
 		};
