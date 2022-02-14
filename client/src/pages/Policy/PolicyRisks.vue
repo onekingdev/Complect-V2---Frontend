@@ -192,7 +192,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "New Risk has been Created"
+					"message": "Risk has been created."
 				});
 				toggleNewRisk();
 			} catch ( error ) {
@@ -211,7 +211,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "New Risk has been Created"
+					"message": "Risk has been created."
 				});
 				isRiskEditVisible.value = !isRiskEditVisible.value;
 			} catch ( error ) {
