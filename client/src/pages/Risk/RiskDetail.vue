@@ -52,7 +52,6 @@ import cLabel from "~/components/Misc/cLabel.vue";
 import cBadge from "~/components/Misc/cBadge.vue";
 import useProfile from "~/store/Profile.js";
 import cModal from "~/components/Misc/cModal.vue";
-import { useRouter } from "vue-router";
 export default {
 	"components": { definitionList, cSelect, cLabel, cBadge, cModal },
 	// eslint-disable-next-line
@@ -61,7 +60,6 @@ export default {
 		const notification = inject( "notification" );
 		const locale = inject( "locale" );
 		const clickId = ref( "" );
-		const router = useRouter();
 
 		const { profile } = useProfile();
 		const isDeleteVisible = ref( false );
@@ -123,10 +121,6 @@ export default {
 				});
 				isEditRiskVisible.value = !isEditRiskVisible.value;
 				await readDocuments( document.value._id );
-				// router.push({
-				// 	"name": "RiskDetail",
-				// 	"params": { "id": document.value._id }
-				// });
 			} catch {
 				notification({
 					"type": "error",
