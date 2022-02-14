@@ -1,155 +1,29 @@
 <template lang="pug">
-c-dropdown-table(v-bind="{columns, controlColumns, documents}" searchable)
-c-modal(title="Edit Risk" v-model="isEditVisible")
-	template(#content)
-		c-field(label="Risk Name" v-model="riskForm.title" required)
-		c-select.col-3(label="Impact" :data="options" v-model="riskForm.impact")
-		c-select.col-3(label="Likelihood" :data="options" v-model="riskForm.likelihood")
-		c-label.col-2(label="Risk Level")
-			c-badge(icon="warning-light" :title="`risk${newRiskLevel}`")
-	template(#footer)
-		c-button(title="Save" type="primary" @click="editRisk()")
-c-modal(title="Delete Risk" v-model="isDeleteVisible")
-	template(#content)
-		.col-1
-			icon(name="error" size="huge")
-		.col-5
-			p This risk will be deleted from the Risk Register and all policy controls will be unlinked.
-			p
-				b Do you want to continue?
-	template(#footer)
-		c-button(title="Delete" type="primary" @click="deleteRisk()")
-c-modal(title="Unlink Policy" v-model="isUnlinkVisible")
-	template(#content)
-		.col-1
-			icon(name="error" size="huge")
-		.col-5
-			p This policy will be removed as a control for this risk. This will also remove the risk from the policy s associated Risks tab.
-			p
-				b Do you want to continue?
-	template(#footer)
-		c-button(title="Unlink" type="primary" @click="unlinkPolicy()")
+c-table(v-bind="{columns, documents}" searchable)
 </template>
 
 
 <script>
-import { onMounted, onUnmounted, ref, inject, computed } from "vue";
-import useData from "~/store/Data.js";
-import { calcRiskLevel } from "~/core/utils.js";
+import { onMounted, onUnmounted } from "vue";
+import UseData from "~/store/Data.js";
 import cBanner from "~/components/Misc/cBanner.vue";
-import { useRouter } from "vue-router";
-import cModal from "~/components/Misc/cModal.vue";
-import useProfile from "~/store/Profile.js";
-import cSelect from "~/components/Inputs/cSelect.vue";
-import cBadge from "~/components/Misc/cBadge.vue";
-import cLabel from "~/components/Misc/cLabel.vue";
 
 export default {
-	"components": { cBanner, cModal, cSelect, cLabel, cBadge },
-	// eslint-disable-next-line
+	"components": { cBanner },
 	setup () {
-		const { document, documents, readDocuments, deleteDocuments, clearStore, updateDocument } = useData( "risks" );
-		const router = useRouter();
-		const notification = inject( "notification" );
-		const { profile } = useProfile();
-		const isEditVisible = ref( false );
-		const isDeleteVisible = ref( false );
-		const isUnlinkVisible = ref( false );
-		const clickId = ref({});
-		const options = [
-			{ "title": "Low", "value": 0 }, { "title": "Medium", "value": 1 }, { "title": "High", "value": 2 }
-		];
-		const riskForm = ref({ });
-		const newRiskLevel = computed( () => calcRiskLevel( riskForm.value.impact, riskForm.value.likelihood ) );
-		const handleClickEdit = async id => {
-			clickId.value.riskId = id;
-			await readDocuments( id );
-			riskForm.value = document.value;
-			isEditVisible.value = !isEditVisible.value;
-		};
-		const handleClickDelete = id => {
-			clickId.value.riskId = id;
-			isDeleteVisible.value = !isDeleteVisible.value;
-		};
-		const handleUnlinkPolicy = ( id, controlId ) => {
-			clickId.value.riskId = id;
-			clickId.value.policyId = controlId;
-			isUnlinkVisible.value = !isUnlinkVisible.value;
-		};
-		const unlinkPolicy = async () => {
-			try {
-				const riskId = clickId.value.riskId;
-				const policyId = clickId.value.policyId;
-				// await policies.deleteDocuments( policyId );
-				await readDocuments( riskId );
-				const controls = document.value.controls.filter( doc => doc._id !== policyId );
-				await updateDocument( document.value._id, { controls });
-				isUnlinkVisible.value = !isUnlinkVisible.value;
-				notification({
-					"type": "success",
-					"title": "Success",
-					"message": "Control has been removed."
-				});
-				await readDocuments( document.value._id );
-			} catch ( error ) {
-				console.error( error );
-				notification({
-					"type": "error",
-					"title": "Error",
-					"message": "Control has not been removed. Please try again."
-				});
-			}
-		};
-		const editRisk = async () => {
-			try {
-				riskForm.value.riskLevel = newRiskLevel.value;
-				riskForm.value.creator = `${profile.value.firstName} ${profile.value.lastName}`;
-				const riskId = await updateDocument( clickId.value.riskId, riskForm.value );
-				notification({
-					"type": "success",
-					"title": "Success",
-					"message": "Risk has been updated."
-				});
-				router.push({
-					"name": "RiskDetail",
-					"params": { "id": riskId[0] }
-				});
-			} catch {
-				notification({
-					"type": "error",
-					"title": "Error",
-					"message": "Risk has not been updated. Please try again."
-				});
-			}
-		};
-		const deleteRisk = async () => {
-			try {
-				await deleteDocuments( clickId.value.riskId );
-				notification({
-					"type": "success",
-					"title": "Success",
-					"message": "Risk has been deleted."
-				});
-				isDeleteVisible.value = !isDeleteVisible.value;
-			} catch ( error ) {
-				notification({
-					"type": "error",
-					"title": "Error",
-					"message": "Risk has not been deleted. Please try again."
-				});
-			}
-		};
+		// const { documents, readDocuments, deleteDocuments, clearStore } = UseData( "risks" );
+		const risks = new UseData( "risks" );
+
+		const handleClickEdit = id => console.debug( "Edit", id );
+		const handleClickDuplicate = id => console.debug( "Duplicate", id );
+		const handleClickDelete = id => risks.deleteDocuments( id );
 
 		const columns = [
 			{
 				"title": "Name",
 				"key": "title",
 				"cell": "CellTitle",
-				"width": "50%",
-				"meta": {
-					"link": "RiskDetail",
-					"expandable": true
-				}
+				"meta": { "link": "RiskDetail" }
 			},
 			{
 				"title": "Impact",
@@ -181,74 +55,24 @@ export default {
 				"align": "right"
 			},
 			{
-				"title": "Risk Creator",
-				"key": "creator",
-				"cell": "CellText",
-				"meta": { "locale": false }
-			},
-			{
 				"unsortable": true,
 				"cell": "CellDropdown",
 				"meta": {
 					"actions": [
-						{ "title": "Edit", "action": handleClickEdit }, { "title": "Delete", "action": handleClickDelete }
+						{ "title": "Edit", "action": handleClickEdit }, { "title": "Duplicate", "action": handleClickDuplicate }, { "title": "Delete", "action": handleClickDelete }
 					]
 				}
 			}
 		];
-		const controlColumns = ref([
-			{
-				"title": "Name",
-				"key": "title",
-				"cell": "CellTitle",
-				"width": "50%",
-				"meta": {
-					// "link": "PolicyDetail",
-					"icon": "policy"
-				}
-			},
-			{
-				"title": "Impact",
-				"key": "none",
-				"cell": "CellText",
-				"meta": { "locale": false }
-			},
-			{
-				"title": "Likelihood",
-				"key": "none",
-				"cell": "CellText",
-				"meta": { "locale": false }
-			},
-			{
-				"title": "Risk Level",
-				"key": "none",
-				"cell": "CellText",
-				"meta": { "locale": false }
-			},
-			{
-				"title": "Date Created",
-				"key": "none",
-				"cell": "CellText",
-				"meta": { "locale": false }
-			},
-			{
-				"title": "Risk Creator",
-				"key": "none",
-				"cell": "CellText",
-				"meta": { "locale": false }
-			},
-			{
-				"unsortable": true,
-				"cell": "CellDropdown",
-				"meta": { "actions": [{ "title": "Unlink", "action": handleUnlinkPolicy }] }
-			}
-		]);
 
-		onMounted( () => readDocuments() );
-		onUnmounted( () => clearStore() );
+		onMounted( () => risks.readDocuments() );
+		onUnmounted( () => risks.clearStore() );
 
 
-		return { columns, documents, isEditVisible, isDeleteVisible, editRisk, deleteRisk, riskForm, options, newRiskLevel, controlColumns, unlinkPolicy, isUnlinkVisible };
+		return {
+			columns,
+			"documents": risks.getDocuments()
+		};
 	}
 };
 </script>
