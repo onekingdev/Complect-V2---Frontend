@@ -5,10 +5,10 @@ c-table(v-bind="{columns, documents, filters}")
 
 <script>
 import { onMounted, onUnmounted } from "vue";
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 export default {
 	setup () {
-		const { documents, readDocuments, clearStore } = useData( "projects" );
+		const projects = new UseData( "projects" );
 
 		const columns = [
 			{
@@ -90,12 +90,12 @@ export default {
 			]
 		}];
 
-		onMounted( () => readDocuments() );
-		onUnmounted( () => clearStore() );
+		onMounted( () => projects.readDocuments() );
+		onUnmounted( () => projects.clearStore() );
 
 		return {
 			columns,
-			documents,
+			"documents": projects.getDocuments(),
 			filters
 		};
 	}
