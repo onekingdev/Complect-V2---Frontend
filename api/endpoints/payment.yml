@@ -27,30 +27,30 @@ paymentMethod:
     - {Ref: BaseLibsLambdaLayer}
     - {Ref: PaymentLibsLambdaLayer}
     
-# stripeCustomer:
-#   name: complect-api-stripe-customer
-#   handler: src/functions/payment.customer
-#   description: End point for Stripe Customer
-#   tags:
-#     website: Complect App
-#     type: API
-#     subtype: Dev
-#   events:
-#     - http:
-#         path: payment/customer/{businessIdCustomer}
-#         method: post
-#         cors: true
-#     - http:
-#         path: payment/customer/{businessIdCustomer}
-#         method: put
-#         cors: true
-#     - http:
-#         path: payment/customer/{businessIdCustomer}
-#         method: get
-#         cors: true
-#   layers:
-#     - {Ref: BaseLibsLambdaLayer}
-#     - {Ref: PaymentLibsLambdaLayer}
+stripeCustomer:
+  name: complect-api-stripe-customer
+  handler: src/functions/payment.customer
+  description: End point for Stripe Customer
+  tags:
+    website: Complect App
+    type: API
+    subtype: Dev
+  events:
+    - http:
+        path: payment/customer/{linkAccountIdCustomer}
+        method: post
+        cors: true
+    - http:
+        path: payment/customer/{linkAccountIdCustomer}
+        method: put
+        cors: true
+    - http:
+        path: payment/customer/{linkAccountIdCustomer}
+        method: get
+        cors: true
+  layers:
+    - {Ref: BaseLibsLambdaLayer}
+    - {Ref: PaymentLibsLambdaLayer}
 
 # paymentSubscription:
 #   name: complect-api-payment-subscription
