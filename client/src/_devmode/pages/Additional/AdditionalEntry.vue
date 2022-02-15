@@ -29,6 +29,9 @@ export default {
 			}, {
 				name: "devAdditionalChat",
 				title: "Chat"
+			}, {
+				name: "devAdditionalPagination",
+				title: "Pagination"
 			}]
 		};
 	}

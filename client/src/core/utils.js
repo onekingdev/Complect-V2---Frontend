@@ -1,4 +1,3 @@
-import { subIndustries } from "~/data/static.js";
 // return random number
 const randomNumber = ( minimum = 0, maximum = 100 ) => Math.round( Math.random() * ( maximum - minimum ) + minimum );
 
@@ -26,6 +25,13 @@ const sortArrayByKey = ( array, key, asc ) => {
 	}
 	if ( type === "number" ) array.sort( ( a, b ) => ( asc ? a[key] : b[key]) - ( asc ? b[key] : a[key]) ); // sort numbers asc/desc
 	if ( type === "object" ) array.sort( ( a, b ) => ( asc ? b[key].length : a[key].length ) - ( asc ? a[key].length : b[key].length ) ); // sort arays by length (asc - from biggest to smallest)
+};
+
+const splitArrayToChunks = ( array, size = 10 ) => {
+	if ( !array.length ) return [];
+	const result = [];
+	while ( array.length ) result.push( array.splice( 0, size ) );
+	return result;
 };
 
 
@@ -65,15 +71,4 @@ const removeSensitiveData = ( object, keys ) => {
 	});
 };
 
-const filterSubIndustries = ( industries, userType ) => {
-	const sub = [];
-	if ( !industries ) return sub;
-	industries.forEach( industry => {
-		subIndustries[userType].forEach( subInd => {
-			if ( subInd.value >= industry && subInd.value < industry + 1 ) sub.push( subInd );
-		});
-	});
-	return sub;
-};
-
-export { randomNumber, randomId, randomMongoId, sortArrayByKey, formatDate, calcRiskLevel, calcExpandDirections, removeSensitiveData, filterSubIndustries };
+export { randomNumber, randomId, randomMongoId, sortArrayByKey, splitArrayToChunks, formatDate, calcRiskLevel, calcExpandDirections, removeSensitiveData };

@@ -37,7 +37,7 @@ export default {
 		const { document } = useData( "projects" );
 
 		const projectDetails = computed( () => ({
-			"title": document.value.title,
+			"title": document.value.name,
 			"startsAt": formatDate( document.value.startsAt ),
 			"endsAt": formatDate( document.value.endsAt ),
 			"description": document.value.description

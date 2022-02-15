@@ -75,10 +75,8 @@ const SettingsSecurity = () => import( "~/pages/Settings/SettingsSecurity.vue" )
 const SettingsSubscriptions = () => import( "~/pages/Settings/SettingsSubscriptions.vue" );
 const SettingsBilling = () => import( "~/pages/Settings/SettingsBilling.vue" );
 
-// profiles
+
 const _ProfileEntry = () => import( "~/pages/Profile/_ProfileEntry.vue" );
-const ProfileAbout = () => import( "~/pages/Profile/ProfileAbout.vue" );
-const ProfileSettings = () => import( "~/pages/Profile/ProfileSettings.vue" );
 import { devRoutes } from "~/_devmode/Routes.js";
 
 // ––––––––––––––– Routes ––––––––––––––– //
@@ -294,19 +292,7 @@ const routes = [
 						"meta": {
 							"title": "Profile",
 							"sidebar": false
-						},
-						"children": [
-							{
-								"path": "",
-								"name": "ProfileAbout",
-								"component": ProfileAbout
-							}, {
-								"path": "settings",
-								"meta": { "title": "Profile - Settings" },
-								"name": "ProfileSettings",
-								"component": ProfileSettings
-							}
-						]
+						}
 					},
 					{
 						"path": "settings",

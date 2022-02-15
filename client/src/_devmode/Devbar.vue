@@ -1,56 +1,34 @@
 <template lang="pug">
-.bar.devbar
-	c-button(title="Generate" type="primary" @click="generateData()")
+.bar.devbar(v-if="currentPage === '/tasks'")
+	c-button(title="Generate" @click="generateDocuments")
+	c-button(title="Remove All" @click="removeDocuments")
 </template>
 
 
 <script>
-// import useApi from "~/core/api.js";
-import useData from "~/store/Data.js"
-import { appState } from "~/store/appState"
-import { generatedData } from "~/_devmode/generator/generator.js";
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+import useData from "~/store/Data.js";
+import { randomTasks } from "~/_devmode/generator/components/documents/tasks.js";
 export default {
 	setup () {
-		const databaseName = "dev";
-		
-		// post collections to API
-		const postCollections = async ( databaseName, collections ) => {
-			try {
-				const collectionsNames = Object.keys( collections );
-				for ( const collectionName of collectionsNames ) {
-					const result = await useApi({
-						method: "post",
-						databaseName,
-						collectionName,
-						newDocuments: collections[collectionName]
-					});
-					if ( !result.ok ) throw new Error( `Data not saved: ${collectionName}` );
-				}
-				return "Saved";
-			} catch ( error ) {
-				console.error( error );
-			}
-		};
-
-		const generateData = async () => {
-			const collections = await generatedData();
-			await postCollections(collections);
-			// console.log(collections)
-		};
-
-		return { generateData, appState };
+		const { createDocuments, deleteDocuments } = useData( "tasks" );
+		const route = useRoute();
+		const currentPage = computed( () => route.path );
+		const generateDocuments = async () => await createDocuments( randomTasks({ "q": 17 }) );
+		const removeDocuments = async () => await deleteDocuments();
+		return { generateDocuments, removeDocuments, currentPage };
 	}
 };
 </script>
 
+
 <style lang="stylus" scoped>
 .bar.devbar
-	font-size: 1rem
-	color: #fff
-	padding: 1em
-	background: #16171e
-	border-top: 1px solid #222
+	font-size: 0.7em
+	background: #111
+	width: 100%
 	display: flex
 	gap: 1em
-	align-items: center
+	padding: 1em
 </style>

@@ -1,5 +1,5 @@
 <template lang="pug">
-page-container(section="Projects" :title="document.title" owner="Company Name" type="document")
+page-container(section="Projects" :title="document.name" owner="Company Name" type="document")
 	template(#add-controls)
 		c-checkbox(label="Show on Calendar")
 
@@ -21,7 +21,7 @@ page-container(section="Projects" :title="document.title" owner="Company Name" t
 		c-dropdown(title="Actions")
 			c-button-modal(title="Edit" modalTitle="Edit Project" type="transparent")
 				template(#content)
-					c-field(label="Project Name" v-model="document.title" required)
+					c-field(label="Project Name" v-model="document.name" required)
 					c-field.col-3(label="Start Date" type="date" v-model="document.startsAt" required)
 					c-field.col-3(label="End Date" type="date" v-model="document.endsAt" required)
 					c-field(label="Description" v-model="document.description")

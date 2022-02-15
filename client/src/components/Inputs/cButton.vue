@@ -21,7 +21,9 @@ export default {
 			"required": false
 		},
 		"title": {
-			"type": String,
+			"type": [
+				Number, String
+			],
 			"default": "",
 			"required": false
 		},

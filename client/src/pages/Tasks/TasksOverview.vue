@@ -16,30 +16,35 @@ export default {
 		const columns = [
 			{
 				"title": "Name",
-				"key": "title",
-				"cell": "CellTask"
+				"key": "name",
+				"cell": "CellTask",
+				"unsortable": true
 			},
 			{
 				"title": "Linked",
 				"key": "linked",
-				"cell": "CellLinked"
+				"cell": "CellLinked",
+				"unsortable": true
 			},
 			{
 				"title": "Assignee",
 				"key": "assigned",
-				"cell": "CellAssigned"
+				"cell": "CellAssigned",
+				"unsortable": true
 			},
 			{
 				"title": "Start Date",
 				"key": "startsAt",
 				"cell": "CellDate",
-				"align": "right"
+				"align": "right",
+				"unsortable": true
 			},
 			{
 				"title": "End Date",
 				"key": "endsAt",
 				"cell": "CellDate",
 				"align": "right",
+				"unsortable": true,
 				"meta": { "overdueWarning": true }
 			},
 			{
