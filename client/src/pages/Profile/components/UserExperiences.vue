@@ -1,5 +1,6 @@
 <template lang="pug">
 div
+  h3 Experience
   div.experiences(v-for="(item, index) in userExperiences" :key="index")
     div.experiences-item
       div.title

@@ -27,7 +27,6 @@ section.grid-6
 			.skill(v-for="(skill, index) in profile.skills" :key="index") {{ skill }}
 		section.grid-6(v-if="!isBusiness")
 			.divider
-			h3 Experience
 			user-experiences
 	template(v-if="isBusiness")
 		.divider
