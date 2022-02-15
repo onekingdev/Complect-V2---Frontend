@@ -20,7 +20,7 @@ paymentMethod:
         method: get
         cors: true
     - http:
-        path: payment/method/{paymentIdDelete}
+        path: payment/method/{linkAccountId}/{paymentId}
         method: delete
         cors: true
   layers:
