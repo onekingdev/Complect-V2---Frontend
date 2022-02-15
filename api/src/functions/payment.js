@@ -35,13 +35,13 @@ exports.method = async event => {
 exports.customer = async event => {
 	try {
 		const request = await JSON.parse( event.body );
-		const { businessIdCustomer } = event.pathParameters;
+		const { linkAccountIdCustomer } = event.pathParameters;
 		const stripePayment = new StripePayment();
 		let paymentData;
 		const methods = {
-			PUT: () => stripePayment.updateCustomerDetail( businessIdCustomer, request ),
-			POST: () => stripePayment.createCustomer( businessIdCustomer ),
-			GET: () => stripePayment.getCustomerById( businessIdCustomer )
+			PUT: () => stripePayment.updateCustomerDetail( linkAccountIdCustomer, request ),
+			POST: () => stripePayment.createCustomer( linkAccountIdCustomer ),
+			GET: () => stripePayment.getCustomerById( linkAccountIdCustomer )
 		};
 
 		paymentData = await methods[event.httpMethod]();
@@ -105,13 +105,13 @@ exports.bank = async event => {
 exports.subscription = async event => {
 	try {
 		const request = await JSON.parse( event.body );
-		const { businessIdSub, subId } = event.pathParameters;
+		const { linkAccountIdSub, subId } = event.pathParameters;
 		const stripePayment = new StripePayment();
 		let paymentData;
 		const methods = {
-			POST: () => stripePayment.subscribePayment( businessIdSub, request.planId, request.cardId ),
-			GET: () => stripePayment.getSubscriptions( businessIdSub ),
-			DELETE: () => stripePayment.cancelSubscribe( businessIdSub, subId )
+			POST: () => stripePayment.subscribePayment( linkAccountIdSub, request.planId, request.cardId ),
+			GET: () => stripePayment.getSubscriptions( linkAccountIdSub ),
+			DELETE: () => stripePayment.cancelSubscribe( linkAccountIdSub, subId )
 		};
 
 		paymentData = await methods[event.httpMethod]();
@@ -132,13 +132,13 @@ exports.subscription = async event => {
 exports.seat = async event => {
 	try {
 		const request = await JSON.parse( event.body );
-		const { businessIdSub, subId } = event.pathParameters;
+		const { linkAccountIdSeat, seatSubId } = event.pathParameters;
 		const stripePayment = new StripePayment();
 		let paymentData;
 		const methods = {
-			POST: () => stripePayment.createSeats( businessIdSub, request.planId, request.cardId, request.quantity ),
-			GET: () => stripePayment.getSeats( businessIdSub ),
-			DELETE: () => stripePayment.deleteSeat( subId )
+			POST: () => stripePayment.createSeats( linkAccountIdSeat, request.planId, request.cardId, request.quantity ),
+			GET: () => stripePayment.getSeats( linkAccountIdSeat ),
+			DELETE: () => stripePayment.deleteSeat( seatSubId )
 		};
 
 		paymentData = await methods[event.httpMethod]();
