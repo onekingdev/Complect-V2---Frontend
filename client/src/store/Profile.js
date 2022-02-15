@@ -2,6 +2,7 @@ import { ref } from "vue";
 
 
 const profile = ref( null );
+const linkaccount = ref( null );
 
 export default function useProfile () {
 	const saveForm = ( original, update ) => {
@@ -10,10 +11,13 @@ export default function useProfile () {
 
 	const setProfile = data => profile.value = data;
 	const updateProfile = profileUpdate => saveForm( profile, profileUpdate );
+	const setLinkAccount = data => linkaccount.value = data;
 
 	return {
 		profile,
+		linkaccount,
 		setProfile,
-		updateProfile
+		updateProfile,
+		setLinkAccount
 	};
 }

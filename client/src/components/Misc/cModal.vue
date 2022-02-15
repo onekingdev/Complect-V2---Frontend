@@ -75,6 +75,8 @@ export default {
 	width: 30em
 	background: var(--c-bg-z2, #fff)
 	border-radius: 0.3em
+	&.middle
+		width: 60%
 	&.wide
 		width: 80%
 

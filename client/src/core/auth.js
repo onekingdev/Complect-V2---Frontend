@@ -2,6 +2,7 @@ import { useRouter } from "vue-router";
 import { appState, setUserIdState } from "~/store/appState";
 import useProfile from "~/store/Profile";
 import { randomMongoId } from "~/core/utils.js";
+import useData from "~/store/Data.js";
 
 
 const authServer = async ({ path, data }) => {
@@ -26,7 +27,7 @@ const authServer = async ({ path, data }) => {
 
 export default function useAuth () {
 	const router = useRouter();
-	const { profile, setProfile } = useProfile();
+	const { profile, setProfile, linkaccount, setLinkAccount } = useProfile();
 
 
 	const registration = async data => {
@@ -52,6 +53,15 @@ export default function useAuth () {
 		const result = await authServer({ "path": "otp", "data": { email, otp } });
 		if ( !result.ok ) throw result.message;
 		const userProfile = result.data.profile;
+		if ( result.data.profile.businessId ) {
+			const { document, readDocuments } = useData( "business" );
+			await readDocuments( result.data.profile.businessId );
+			setLinkAccount( document.value );
+		} else if ( result.data.profile.specialistId ) {
+			const { document, readDocuments } = useData( "specialist" );
+			await readDocuments( result.data.profile.specialistId );
+			setLinkAccount( document.value );
+		}
 		setProfile( userProfile );
 		setUserIdState( userProfile._id );
 		sessionStorage.removeItem( "email" );
@@ -74,12 +84,22 @@ export default function useAuth () {
 		const result = await authServer({ "path": "profile", "data": { "_id": userId } });
 		if ( !result.ok ) throw result.message;
 		profile.value = result.data;
+		if ( result.data.businessId ) {
+			const { document, readDocuments } = useData( "business" );
+			await readDocuments( result.data.businessId );
+			linkaccount.value = document.value;
+		} else if ( result.data.specialistId ) {
+			const { document, readDocuments } = useData( "specialist" );
+			await readDocuments( result.data.specialistId );
+			linkaccount.value = document.value;
+		}
 	};
 
 	const signOut = async () => {
 		setUserIdState( "" );
 		await router.push({ "name": "AuthSignIn" });
 		profile.value = {};
+		linkaccount.value = {};
 	};
 
 	return {
