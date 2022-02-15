@@ -79,13 +79,11 @@ exports.updatePosition = async event => {
 	try {
 		const data = await readDocuments({ collection: "policies" });
 		const documents = await JSON.parse( event.body );
-		data.sort( (pol1, pol2) => pol1.order - pol2.order );
+		data.sort( ( pol1, pol2 ) => pol1.order - pol2.order );
 		let oldIndex, newIndex;
-		for( let i = 0; i < data.length; i++ ) {
-			if( data[i]._id == documents.oldId )
-				oldIndex = i;
-			if( data[i]._id == documents.newId )
-				oldIndex = i;
+		for ( let i = 0; i < data.length; i++ ) {
+			if ( data[i]._id === documents.oldId ) oldIndex = i;
+			if ( data[i]._id === documents.newId ) oldIndex = i;
 		}
 
 		if ( oldIndex > newIndex ) {
@@ -102,7 +100,6 @@ exports.updatePosition = async event => {
 				_id: data[oldIndex]._id,
 				documents: { order: data[newIndex].order }
 			});
-			policies.updateDocument( allPolicies.value[oldIndex]._id, { "order": allPolicies.value[newIndex].order });
 		} else {
 			updateDocument({
 				collection: "policies",
