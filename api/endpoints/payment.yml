@@ -8,15 +8,15 @@ paymentMethod:
     subtype: Dev
   events:
     - http:
-        path: payment/method/{businessId}
+        path: payment/method/{linkAccountId}
         method: post
         cors: true
     - http:
-        path: payment/method/{businessId}/{paymentId}
+        path: payment/method/{linkAccountId}/{paymentId}
         method: get
         cors: true
     - http:
-        path: payment/method/{businessId}
+        path: payment/method/{linkAccountId}
         method: get
         cors: true
     - http:
