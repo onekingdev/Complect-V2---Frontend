@@ -30,7 +30,7 @@ module.exports = {
 			bsonType: "string",
 			description: "must be a string and is required"
 		},
-    isPresent: {
+		isPresent: {
 			bsonType: "bool",
 			description: "must be a boolean"
 		}
