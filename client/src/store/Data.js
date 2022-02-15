@@ -1,22 +1,14 @@
-import { ref, inject } from "vue";
+import { ref } from "vue";
 import _clonedeep from "lodash.clonedeep";
 import { randomMongoId } from "~/core/utils.js";
 import { createDocumentsInCloudDb, readDocumentsFromCloudDb, updateDocumentInCloudDb, deleteDocumentsFromCloudDb } from "~/core/api.js";
 
-const notification = inject( "notification" );
-export default class UseData {
-	constructor ( collectionName ) {
-		this.collectionName = collectionName;
-		this.document = ref({});
-		this.documents = ref([]);
-	}
-	getDocument () {
-		return this.document;
-	}
-	getDocuments () {
-		return this.documents;
-	}
-	async createDocuments ( newDocuments ) {
+const document = ref({});
+const documents = ref([]);
+
+
+export default function useData ( collectionName ) {
+	const createDocuments = async newDocuments => {
 		let copy;
 		try {
 			const ids = [];
@@ -26,78 +18,99 @@ export default class UseData {
 				ids.push( _id );
 				newDocument._id = _id; // set _id to new Document
 				newDocument.created = Date.now(); // set created time
-				this.documents.value.push( newDocument );
+				documents.value.push( newDocument );
 			});
-			await createDocumentsInCloudDb( this.collectionName, copy ); // save to MongoDB
+			await createDocumentsInCloudDb( collectionName, copy ); // save to MongoDB
 			return ids;
 		} catch ( error ) {
 			console.error( error );
-			notification( error );
 			return null;
 		} finally {
 			copy = null;
 		}
-	}
-	async readDocuments ( documentsId, query ) {
+	};
+
+
+	const readDocuments = async documentsId => {
 		try {
 			if ( documentsId ) {
-				const doc = await readDocumentsFromCloudDb( this.collectionName, documentsId, query );
-				this.document.value = doc.data;
+				const doc = await readDocumentsFromCloudDb( collectionName, documentsId );
+				document.value = doc.data;
 			} else {
-				const docs = await readDocumentsFromCloudDb( this.collectionName, "", query );
-				this.documents.value = docs.data;
+				const docs = await readDocumentsFromCloudDb( collectionName );
+				documents.value = docs.data;
 			}
 		} catch ( error ) {
-			notification( error );
+			console.error( error );
 		}
-	}
-	async updateDocument ( documentId, patch ) {
+	};
+
+
+	const updateDocument = async ( documentId, patch ) => {
 		let backup;
 		let index;
 		try {
-			index = this.documents.value.findIndex( doc => doc._id === documentId );
-			backup = _clonedeep( this.documents.value[index]);
-			this.documents.value[index] = { ...backup, ...patch };
-			this.documents.value[index].updated = Date.now(); // set updated timestamp
-			const apiAnswer = await updateDocumentInCloudDb( this.collectionName, patch, documentId );
+			index = documents.value.findIndex( doc => doc._id === documentId );
+			backup = _clonedeep( documents.value[index]);
+			documents.value[index] = { ...backup, ...patch };
+			documents.value[index].updated = Date.now(); // set updated timestamp
+			const apiAnswer = await updateDocumentInCloudDb( collectionName, patch, documentId );
 			if ( !apiAnswer.ok ) throw new Error( apiAnswer.message );
 		} catch ( error ) {
-			notification( error );
+			console.error( error.message );
 			// roll back store changes, if api error
-			this.documents.value[index] = { ...backup }; // eslint-disable-line require-atomic-updates
+			documents.value[index] = { ...backup }; // eslint-disable-line require-atomic-updates
 		} finally {
 			backup = null;
 		}
-	}
-	async deleteDocuments ( documentId ) {
+	};
+
+
+	const deleteDocuments = async documentId => {
 		let backup;
 		let index;
 		try {
 			if ( documentId ) {
-				index = this.documents.value.findIndex( doc => doc._id === documentId );
-				backup = _clonedeep( this.documents.value[index]);
-				this.documents.value.splice( index, 1 );
+				index = documents.value.findIndex( doc => doc._id === documentId );
+				backup = _clonedeep( documents.value[index]);
+				documents.value.splice( index, 1 );
 			} else {
-				backup = _clonedeep( this.documents.value );
-				this.documents.value = [];
+				backup = _clonedeep( documents.value );
+				documents.value = [];
 			}
-			const apiAnswer = await deleteDocumentsFromCloudDb( this.collectionName, documentId );
+			const apiAnswer = await deleteDocumentsFromCloudDb( collectionName, documentId );
 			if ( !apiAnswer.ok ) throw new Error( apiAnswer.message );
 		} catch ( error ) {
-			notification( error );
+			console.error( error );
 			// roll back store changes, if api error
-			if ( documentId ) this.documents.value.splice( index, 0, backup );
-			else this.documents.value = backup; // eslint-disable-line require-atomic-updates
+			if ( documentId ) documents.value.splice( index, 0, backup );
+			else documents.value = backup; // eslint-disable-line require-atomic-updates
 		} finally {
 			backup = null;
 		}
-	}
-	clearStore () {
-		this.documents.value = [];
-		this.document.value = {};
-	}
+	};
+
+
+	const clearStore = () => {
+		documents.value = [];
+		document.value = {};
+	};
+
 	// _devmode
-	devModePushToStore ( data ) {
-		this.documents.value = data;
-	}
+	const devModePushToStore = data => {
+		documents.value = data;
+	};
+	// -------------------- //
+
+
+	return {
+		document,
+		documents,
+		createDocuments,
+		readDocuments,
+		updateDocument,
+		deleteDocuments,
+		clearStore,
+		devModePushToStore
+	};
 }
