@@ -109,18 +109,3 @@ profile:
         path: auth/profile
         method: post
         cors: true
-addUser:
-  name: ${opt:stage, 'dev'}-api--add-user
-  handler: src/functions/auth.addUser
-  description: Add User API endpoints
-  tags:
-    website: Complect App
-    type: API
-    subtype: Auth
-  layers:
-    - {Ref: BaseLibsLambdaLayer}
-  events:
-    - http:
-        path: auth/add-user/{businessId}
-        method: post
-        cors: true

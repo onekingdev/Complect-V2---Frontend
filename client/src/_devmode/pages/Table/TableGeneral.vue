@@ -22,7 +22,7 @@ export default {
 	setup() {
 		const documents = ref([])
 		const columnsSet = [
-			{ title: "Name", value: "name" },
+			{ title: "Title", value: "title" },
 			{ title: "Collaborators", value: "collaborators" },
 			{ title: "Tasks", value: "tasks" },
 			{ title: "Cost", value: "fixedBudget" },
@@ -31,7 +31,7 @@ export default {
 			{ title: "End Date", value: "endsAt" },
 			{ title: "Dropdown", value: "dropdown" },
 		]
-		const visibleColumns = ref(["name", "status", "fixedBudget", "startsAt", "dropdown"])
+		const visibleColumns = ref(["title", "status", "fixedBudget", "startsAt", "dropdown"])
 
 		
 		const handleClickEdit = id => console.debug( "Edit", id );
@@ -46,7 +46,7 @@ export default {
 				documents.value.push({
 					"completed":  randomBool(),
 					"_id": randomMongoId(),
-					"name": randomTitles({w: [1, 10]})[0],
+					"title": randomTitles({w: [1, 10]})[0],
 					"linked": randomTitles({w: [1, 10]})[0],
 					"progres": 1,
 					"assignee": [],
@@ -67,7 +67,7 @@ export default {
 		const allColumns = [
 			{
 				"title": "Name",
-				"key": "name",
+				"key": "title",
 				"cell": "CellTitle",
 				"meta": {
 					"link": "ProjectDetail",

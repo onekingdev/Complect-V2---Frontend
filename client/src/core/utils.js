@@ -27,13 +27,6 @@ const sortArrayByKey = ( array, key, asc ) => {
 	if ( type === "object" ) array.sort( ( a, b ) => ( asc ? b[key].length : a[key].length ) - ( asc ? a[key].length : b[key].length ) ); // sort arays by length (asc - from biggest to smallest)
 };
 
-const splitArrayToChunks = ( array, size = 10 ) => {
-	if ( !array.length ) return [];
-	const result = [];
-	while ( array.length ) result.push( array.splice( 0, size ) );
-	return result;
-};
-
 
 const formatDate = date => {
 	const options = {
@@ -71,4 +64,4 @@ const removeSensitiveData = ( object, keys ) => {
 	});
 };
 
-export { randomNumber, randomId, randomMongoId, sortArrayByKey, splitArrayToChunks, formatDate, calcRiskLevel, calcExpandDirections, removeSensitiveData };
+export { randomNumber, randomId, randomMongoId, sortArrayByKey, formatDate, calcRiskLevel, calcExpandDirections, removeSensitiveData };

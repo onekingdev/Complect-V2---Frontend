@@ -13,6 +13,6 @@ pdfprint:
     - {Ref: PdfLibsLambdaLayer}
   events:
     - http:
-        path: pdf
+        path: /pdf
         method: post
         cors: true

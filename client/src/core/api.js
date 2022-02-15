@@ -1,14 +1,18 @@
-const endpoint = ( collectionName, documentId ) => {
+const endpoint = ( collectionName, documentId, query ) => {
 	let base;
 	const API_URI = import.meta.env.VITE_API_URI;
 	base = `${API_URI}/data/${collectionName}`;
 	if ( documentId ) base += `/${documentId}`;
+	if ( query ) {
+		const queryString = Object.keys( query ).map( key => `${key}=${query[key]}` ).join( "&" );
+		base += `?${queryString}`;
+	}
 	return base;
 };
 
-const api = async ({ method, collectionName, newDocuments, documentId }) => {
+const api = async ({ method, collectionName, newDocuments, documentId, query }) => {
 	try {
-		const apiUrl = endpoint( collectionName, documentId );
+		const apiUrl = endpoint( collectionName, documentId, query );
 		const options = {
 			method,
 			"mode": "cors",
@@ -32,8 +36,8 @@ const createDocumentsInCloudDb = async ( collectionName, newDocuments ) => {
 	return result;
 };
 
-const readDocumentsFromCloudDb = async ( collectionName, documentId ) => {
-	const result = await api({ "method": "GET", collectionName, documentId });
+const readDocumentsFromCloudDb = async ( collectionName, documentId, query ) => {
+	const result = await api({ "method": "GET", collectionName, documentId, query });
 	return result;
 };
 

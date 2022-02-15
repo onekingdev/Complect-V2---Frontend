@@ -4,7 +4,7 @@ page-container(title="Projects")
 		c-button(title="Post Job" @click="postJob()")
 		c-button-modal(title="New Project" modalTitle="New Project" type="primary")
 			template(#content)
-				c-field(label="Project Name" v-model="newProject.name" required)
+				c-field(label="Project Name" v-model="newProject.title" required)
 				c-field.col-3(label="Start Date" type="date" v-model="newProject.startsAt" required)
 				c-field.col-3(label="End Date" type="date" v-model="newProject.endsAt" required)
 				c-field(label="Description" v-model="newProject.description")
@@ -43,7 +43,7 @@ export default {
 		const postJob = () => router.push({ "name": "ProjectPost" });
 
 		const newProject = ref({
-			"name": "",
+			"title": "",
 			"startsAt": Date.now(),
 			"endsAt": Date.now() + 864e5,
 			"description": "",

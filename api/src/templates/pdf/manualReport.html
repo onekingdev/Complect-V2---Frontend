@@ -982,9 +982,6 @@
 	  .break-page {
 		page-break-after: always;
 	  }
-	  table {
-		  page-break-before: always;
-	  }
 
 	  @media print {
         .page-header {
@@ -1000,9 +997,6 @@
             padding: 10pt;
             margin: 10pt 0;
         }
-		table {
-			page-break-before: always;
-		}
         
       }
       #pageHeader {
@@ -1015,38 +1009,38 @@
 	<meta charset="UTF-8">
   </head>
   <body>
+	<div id="pageHeader" class="container page-header pt-3" style="text-align: center;">
+		<h3 style="font-weight: 700;">{{ policy_name }}</h3>
+        <p style="margin-top: 50px; padding-bottom: 20px; border-bottom: 1px solid black;">
+            <small>Last Updated: {{ policy_date }}</small>
+        </p>
+	</div>
     <div class="container break-page first-page pt-4" style="text-align: center; position: relative; background-color: white; z-index: 99999;">
 		<img src="https://www.freepnglogos.com/uploads/camera-logo-png/photography-camera-logos-3.png" style="width: 30%; margin-top: 300px;">
 		<h1><big><strong>Compliance Manual</strong></big></h1>
-		<h3 style="margin-top: 100px;">Last Updated: {{ business.modifiedAt }}</h3>
+		<h3 style="margin-top: 100px;">Last Updated: {{ policy_date }}</h3>
         <p style="margin-top: 200px;">
 			{{#if address1 includeZero=true}}
-            {{ business.address1 }}<br/>
+            {{ address1 }}<br/>
 			{{/if}}
 			{{#if address2 includeZero=true}}
-            {{ business.address2 }}<br/>
+            {{ address2 }}<br/>
 			{{/if}}
 			{{#if phonenumber includeZero=true}}
-            {{ business.phonenumber }}<br/>
+            {{ phonenumber }}<br/>
 			{{/if}}
 			{{#if email includeZero=true}}
-            {{ business.email }}
+            {{ email }}
 			{{/if}}
         </p>
 	</div>
-	{{#each policies as policy }}
     <table>
         <thead><tr><td>
-            <div class="container pt-3" style="text-align: center;">
-				<h3 style="font-weight: 700;">{{ policy.name }}</h3>
-				<p style="margin-top: 50px; padding-bottom: 20px; border-bottom: 1px solid black;">
-					<small>Last Updated: {{ policy.modifiedAt }}</small>
-				</p>
-			</div>
+            <div class="header-space">&nbsp;</div>
         </td></tr></thead>
         <tbody><tr><td>
                 <div class="container break-page">
-                    <p>{{ policy.description }}</p>
+                    <p>{{ policy_content }}</p>
                 </div>
         </td></tr></tbody>
     </table>

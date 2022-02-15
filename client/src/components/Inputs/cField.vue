@@ -1,5 +1,5 @@
 <template lang="pug">
-c-label.c-input.c-field(:class="{fullwidth, disabled}" v-bind="{label, required}")
+c-label.c-input.c-field(:class="{fullwidth, disabled, transparent}" v-bind="{label, required}")
 	.field-body
 		icon(v-if="iconL || icon" :name="iconL || type")
 		component.field-input(
@@ -75,6 +75,7 @@ export default {
 		"multiselect": Boolean,
 		"required": Boolean,
 		"fullwidth": Boolean,
+		"transparent": Boolean,
 		"disabled": Boolean
 	},
 	"emits": ["update:modelValue"],
@@ -125,6 +126,10 @@ export default {
 			&::placeholder
 				color: #999
 				font-size: 0.9em
+	&.transparent
+		.field-body
+			box-shadow: 0 0 0 0
+			padding: 0
 	// &:focus-within
 	// 	.field-body
 	// 		box-shadow: 0 0 0 0.15rem #4499f0

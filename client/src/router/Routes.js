@@ -74,8 +74,6 @@ const SettingsRoles = () => import( "~/pages/Settings/SettingsRoles.vue" );
 const SettingsSecurity = () => import( "~/pages/Settings/SettingsSecurity.vue" );
 const SettingsSubscriptions = () => import( "~/pages/Settings/SettingsSubscriptions.vue" );
 const SettingsBilling = () => import( "~/pages/Settings/SettingsBilling.vue" );
-const SettingsBillingPlan = () => import( "~/pages/Settings/SettingsBillingPlan.vue" );
-const SettingsClientBilling = () => import( "~/pages/Settings/SettingsClientBilling.vue" );
 
 
 const _ProfileEntry = () => import( "~/pages/Profile/_ProfileEntry.vue" );
@@ -239,7 +237,7 @@ const routes = [
 						},
 						"children": [
 							{
-								"path": "",
+								"path": "details",
 								"name": "ReviewDetail",
 								"component": ReviewDetail,
 								"meta": { "title": "Review Detail" },
@@ -293,24 +291,6 @@ const routes = [
 						"component": _ProfileEntry,
 						"meta": {
 							"title": "Profile",
-							"sidebar": false
-						}
-					},
-					{
-						"path": "billplan",
-						"name": "BillingPlan",
-						"component": SettingsBillingPlan,
-						"meta": {
-							"title": "Plan",
-							"sidebar": false
-						}
-					},
-					{
-						"path": "clientbill",
-						"name": "ClientBill",
-						"component": SettingsClientBilling,
-						"meta": {
-							"title": "Plan",
 							"sidebar": false
 						}
 					},

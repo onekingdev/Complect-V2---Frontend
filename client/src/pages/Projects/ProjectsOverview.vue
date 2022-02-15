@@ -13,7 +13,7 @@ export default {
 		const columns = [
 			{
 				"title": "Name",
-				"key": "name",
+				"key": "title",
 				"cell": "CellTitle",
 				"meta": { "link": "ProjectDetail" }
 			},

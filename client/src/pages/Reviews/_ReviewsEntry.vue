@@ -1,59 +1,21 @@
 <template lang="pug">
 page-container(title="Internal Reviews")
 	template(#controls)
-		c-button-modal(title="New Review" modalTitle="New Review" type="primary")
-			template(#content)
-				c-field(label="Review Name" v-model="newReview.title" required)
-				c-field.col-3(label="Start Date" type="date" v-model="newReview.startsAt" required)
-				c-field.col-3(label="End Date" type="date" v-model="newReview.endsAt" required)
-			template(#footer)
-				c-button(title="Create" type="primary" @click="createReview()")
+		c-button(title="New Review" type="primary" @click="createReview()")
 	template(#content)
 		router-view
 </template>
 
-
 <script>
-import { ref, inject } from "vue";
-import { useRouter } from "vue-router";
-import useData from "~/store/Data.js";
+import { inject } from "vue";
+
 export default {
 	setup () {
-		const notification = inject( "notification" );
-		const router = useRouter();
-		const { createDocuments } = useData( "reviews" );
+		const modal = inject( "modal" );
 
-		const newReview = ref({
-			"title": "",
-			"dateCreated": Date.now(),
-			"lastModified": Date.now(),
-			"startsAt": Date.now(),
-			"endsAt": Date.now() + 864e5,
-			"reviewPeriod": Date.now(),
-			"endDate": Date.now(),
-			"finding": 0,
-			"progress": {
-				"current": 0,
-				"max": 0
-			}
-		});
+		const createReview = () => modal({ "name": "cModalReview" });
 
-		const createReview = async () => {
-			const reviewId = await createDocuments([newReview.value]);
-			notification({
-				"type": "success",
-				"title": "Review Created"
-			});
-			router.push({
-				"name": "ReviewDetail",
-				"params": { "id": reviewId[0] }
-			});
-		};
-
-		return {
-			newReview,
-			createReview
-		};
+		return { createReview };
 	}
 };
 </script>
