@@ -173,12 +173,10 @@ export default {
 				state.value.isGeneral = false;
 				state.value.catId = document.value.categories.length - 1;
 				reviewCategory.value = document.value.categories[state.value.catId];
-				router.push(
-					{
-						"name": "ReviewCategory",
-						"params": { "catId": state.value.catId }
-					}
-				);
+				router.push({
+					"name": "ReviewCategory",
+					"params": { "catId": state.value.catId }
+				});
 			} catch ( error ) {
 				console.error( error );
 				notification({
@@ -188,24 +186,7 @@ export default {
 				});
 			}
 		};
-
-		return {
-			document,
-			state,
-			reviewCategory,
-			createCategory,
-			selectGeneral,
-			addRegulatoryChange,
-			addEmployeesInterviewed,
-			updateReview,
-			completeReview,
-			deleteRegulatoryChange,
-			deleteEmployeesInterviewed,
-			selectCategory,
-			btnTitle,
-			completeModalTitle,
-			toggleCategory
-		};
+		return { document, state, reviewCategory, createCategory, selectGeneral, addRegulatoryChange, addEmployeesInterviewed, updateReview, completeReview, deleteRegulatoryChange, deleteEmployeesInterviewed, selectCategory, btnTitle, completeModalTitle, toggleCategory };
 	}
 };
 </script>

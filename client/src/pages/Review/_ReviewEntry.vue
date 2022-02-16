@@ -118,7 +118,7 @@ export default {
 					"url": "pdf",
 					"newData": pdfData
 				});
-				// window.location.href = pdfLink;
+				window.location.href = pdfLink;
 			} else {
 				notification({
 					"type": "error",

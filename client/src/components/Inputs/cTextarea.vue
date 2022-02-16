@@ -47,21 +47,21 @@ export default {
 		"required": Boolean
 	},
 	"emits": ["update:modelValue"],
-	setup (props) {
+	setup ( props ) {
 		const root = ref( null );
 
-		function resize( ele ) {
+		const resize = ele => {
 			ele.target.style.height = "auto";
-			ele.target.style.height = `${this.scrollHeight}px`;
+			ele.target.style.height = `${ele.target.scrollHeight}px`;
 		}
 
-		const setResizeListeners = ( target ) => {
+		const setResizeListeners = target => {
 			target.style.height = `${target.scrollHeight}px`;
 			target.addEventListener( "input", resize );
 		};
 
 		onMounted( () => {
-			if( props.autosize ) setResizeListeners( root.value );
+			if ( props.autosize ) setResizeListeners( root.value );
 		});
 
 		return { root };

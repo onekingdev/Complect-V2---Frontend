@@ -78,7 +78,7 @@ export default {
 				if ( selectedId.value ) {
 					const index = documents.value.findIndex( doc => doc._id === selectedId.value );
 
-					const duplicate = _clonedeep(documents.value[index]);
+					const duplicate = _clonedeep( documents.value[index] );
 					form.value.categories = duplicate.categories;
 
 					reviewId = await createDocuments([form.value]);
