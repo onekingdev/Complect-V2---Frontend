@@ -48,25 +48,23 @@ export default {
 	},
 	"emits": ["update:modelValue"],
 	setup (props) {
-		const root = ref(null);
+		const root = ref( null );
 
-		function resize() {
-			this.style.height = "auto";
-			this.style.height = `${this.scrollHeight}px`;
+		function resize( ele ) {
+			ele.target.style.height = "auto";
+			ele.target.style.height = `${this.scrollHeight}px`;
 		}
 
-		const setResizeListeners = (target) => {
+		const setResizeListeners = ( target ) => {
 			target.style.height = `${target.scrollHeight}px`;
-			target.addEventListener("input", resize);
+			target.addEventListener( "input", resize );
 		};
 
 		onMounted( () => {
-			if(props.autosize) setResizeListeners(root.value);
+			if( props.autosize ) setResizeListeners( root.value );
 		});
 
-		return {
-			root
-		};
+		return { root };
 	}
 };
 </script>

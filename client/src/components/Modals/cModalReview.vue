@@ -9,6 +9,7 @@ card-container.c-modal-task(:title="title" ref="modalWindow")
 			c-field.col-3(label="Review Period Start Date" type="date" v-model="form.startsAt" required)
 			c-field.col-3(label="Review Period End Date" type="date" v-model="form.endsAt" required)
 	template(#footer)
+		c-button(title="Cancel" type="link" @click="closeModal()")
 		c-button(:title="btnTitle" type="primary" @click="saveReview()")
 </template>
 
@@ -42,8 +43,7 @@ export default {
 		const router = useRouter();
 
 		const modalWindow = ref( null );
-		const selectedId = ref( "620476595d22fb5de5239953" );
-		// const items = ref([]);
+		const selectedId = ref( null );
 		const form = ref({
 			"title": "",
 			"dateCreated": Date.now(),
@@ -65,7 +65,7 @@ export default {
 		});
 
 		const isNewTask = computed( () => !props.id );
-		const title = computed( () => props.id ? "Edit Internal Review Modal" : "New Internal Review Modal" );
+		const title = computed( () => props.id ? "Edit Internal Review" : "New Internal Review" );
 		const btnTitle = computed( () => props.id ? "Save" : "Create" );
 
 		const closeModal = () => deleteModal( props.modalId );
@@ -77,9 +77,11 @@ export default {
 
 				if ( selectedId.value ) {
 					const index = documents.value.findIndex( doc => doc._id === selectedId.value );
-					const copy = _clonedeep([documents.value[index]]);
-					const duplicate = { ...form.value, ...copy };
-					reviewId = await createDocuments([duplicate]);
+
+					const duplicate = _clonedeep(documents.value[index]);
+					form.value.categories = duplicate.categories;
+
+					reviewId = await createDocuments([form.value]);
 				} else reviewId = await createDocuments([form.value]);
 
 				notification({

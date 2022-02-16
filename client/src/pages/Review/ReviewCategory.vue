@@ -36,9 +36,9 @@ detail-container
 				.item.grid-12
 					.item-checkboxes
 						.reviews-checkbox
-							.checkbox.checkbox-true(:class="{ checked: item.flag }" @click="selectTrueCheck(item)")
+							.checkbox.checkbox-true(:class="{ checked: item.flag }" @click="selectCheck(item, true)")
 								icon.icon-r(name="check_simple" size="tiny")
-							.checkbox.checkbox-false(:class="{ checked: !item.flag }" @click="selectFalseCheck(item)")
+							.checkbox.checkbox-false(:class="{ checked: !item.flag }" @click="selectCheck(item, false)")
 								icon.icon-r(name="close" size="tiny")
 					.item-text
 						c-textarea(placeholder="New Item" v-model="item.itemContent" autosize)
@@ -120,9 +120,9 @@ export default {
 
 		const newTask = () => modal({ "name": "cModalTask" });
 
-		const selectTrueCheck = item => item.flag = true;
+		const selectCheck = ( item, flag ) => item.flag = flag;
 
-		const selectFalseCheck = item => item.flag = false;
+		// const selectFalseCheck = item => item.flag = false;
 
 		const deleteTopic = ( topicArr, index ) => {
 			topicArr.splice( index, 1 );
@@ -228,8 +228,7 @@ export default {
 			addLogFinding,
 			deleteItem,
 			updateCategory,
-			selectTrueCheck,
-			selectFalseCheck,
+			selectCheck,
 			deleteFinding,
 			completeCategory
 		};
@@ -240,6 +239,10 @@ export default {
 <style lang="stylus" scoped>
 	.category-title
 		font-size: 1em
+		:deep(.field-body)
+			margin-right: 4em
+		:deep(input)
+			text-overflow: ellipsis
 	.category-container
 		padding: 1.25em 0
 		border-bottom: 1px solid #dcdee4

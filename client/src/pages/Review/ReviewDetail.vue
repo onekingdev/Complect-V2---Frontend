@@ -88,17 +88,14 @@ export default {
 		const notification = inject( "notification" );
 		const router = useRouter();
 		const reviewCategory = ref({});
-
 		const state = ref({
 			"isGeneral": true,
 			"isButton": true,
 			"categoryName": "",
 			"catId": null
 		});
-
 		const btnTitle = computed( () => document.value.completedAt ? "Mark as Incomplete" : "Mark as Complete" );
 		const completeModalTitle = computed( () => document.value.completedAt ? "Incomplete Category" : "Complete Category" );
-
 		const selectGeneral = () => {
 			state.value.isGeneral = true;
 			router.push({
@@ -106,7 +103,6 @@ export default {
 				"params": { "id": document.value._id }
 			});
 		};
-
 		const selectCategory = id => {
 			state.value.isGeneral = false;
 			state.value.catId = id;
@@ -116,7 +112,6 @@ export default {
 				"params": { "catId": id }
 			});
 		};
-
 		const updateReview = async () => {
 			try {
 				await updateDocument( document.value._id, document.value );
@@ -134,7 +129,6 @@ export default {
 				});
 			}
 		};
-
 		const completeReview = async () => {
 			const timestamp = document.value.completedAt ? null : Date.now();
 			try {
@@ -153,11 +147,8 @@ export default {
 				});
 			}
 		};
-
 		const addRegulatoryChange = () => document.value.regulatoryChanges.push({ "change": "", "response": "" });
-
 		const addEmployeesInterviewed = () => document.value.employeesInterviewed.push({ "name": "", "role": "", "department": "" });
-
 		const deleteRegulatoryChange = ( regulatoryChange, index ) => {
 			regulatoryChange.splice( index, 1 );
 			notification({
@@ -166,17 +157,14 @@ export default {
 				"message": "Entry has been deleted."
 			});
 		};
-
 		const deleteEmployeesInterviewed = ( employeesInterviewed, index ) => employeesInterviewed.splice( index, 1 );
-
 		const toggleCategory = () => state.value.isButton = !state.value.isButton;
-
 		const createCategory = async () => {
 			state.value.isButton = !state.value.isButton;
 			document.value.categories.push({ "title": state.value.categoryName, "content": [], "completedAt": null });
 			state.value.categoryName = "";
 			try {
-				await updateDocument( document.value._id, { "categories": document.value.categories } );
+				await updateDocument( document.value._id, { "categories": document.value.categories });
 				notification({
 					"type": "success",
 					"title": "Success",
@@ -185,10 +173,12 @@ export default {
 				state.value.isGeneral = false;
 				state.value.catId = document.value.categories.length - 1;
 				reviewCategory.value = document.value.categories[state.value.catId];
-				router.push({
-					"name": "ReviewCategory",
-					"params": { "catId": state.value.catId }
-				});
+				router.push(
+					{
+						"name": "ReviewCategory",
+						"params": { "catId": state.value.catId }
+					}
+				);
 			} catch ( error ) {
 				console.error( error );
 				notification({

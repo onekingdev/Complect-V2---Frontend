@@ -45,10 +45,10 @@ export default function useData ( collectionName ) {
 				let item;
 				documents.value.forEach( element => {
 					item = {
-						title: element.title,
-						value: element._id
-					}
-					items.value.push(item);
+						"title": element.title,
+						"value": element._id
+					};
+					items.value.push( item );
 				});
 			}
 		} catch ( error ) {

@@ -118,7 +118,6 @@ export default {
 					"url": "pdf",
 					"newData": pdfData
 				});
-				console.log(pdfData, pdfLink);
 				// window.location.href = pdfLink;
 			} else {
 				notification({
