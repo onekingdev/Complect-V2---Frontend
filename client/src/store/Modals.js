@@ -8,7 +8,8 @@ export default function useModals () {
 		modals.unshift({
 			"modalId": randomId(),
 			"name": options.name,
-			"id": options.id
+			"id": options.id,
+			...options
 		});
 	};
 

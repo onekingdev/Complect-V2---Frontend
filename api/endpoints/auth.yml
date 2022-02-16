@@ -94,6 +94,22 @@ onboarding:
         method: post
         cors: true
 
+updateSecurity:
+  name: ${opt:stage, 'dev'}-api--auth-updateSecurity
+  handler: src/functions/auth.updateSecurity
+  description: Update Security API endpoints
+  tags:
+    website: Complect App
+    type: API
+    subtype: Auth
+  layers:
+    - {Ref: BaseLibsLambdaLayer}
+  events:
+    - http:
+        path: auth/update-security
+        method: post
+        cors: true
+
 profile:
   name: ${opt:stage, 'dev'}-api--auth-profile
   handler: src/functions/auth.profile

@@ -21,12 +21,12 @@ const generateOtp = async email => {
 		documents: { otp },
 		options: { upsert: true }
 	});
-	await sendEmail({
-		template: "otp",
-		email,
-		subject: "OTP",
-		data: { otp }
-	});
+	// await sendEmail({
+	// 	template: "otp",
+	// 	email,
+	// 	subject: "OTP",
+	// 	data: { otp }
+	// });
 	devStageLog( `OTP is: ${otp}` ); // print otp number to console at dev stage
 };
 
@@ -38,6 +38,15 @@ const emailInUse = async email => {
 	});
 	return Boolean( users.length );
 };
+
+const noticeChangeSecurity = async (email, infor) => {
+	await sendEmail({
+		template: infor.template,
+		email,
+		subject: infor.subject,
+		data: infor.data
+	});
+}
 
 // const checkPassword = async ( plain, hash ) => {
 // 	const match = await compareHash( plain, hash );
@@ -229,3 +238,51 @@ exports.profile = async event => {
 		});
 	}
 };
+
+exports.updateSecurity = async event => {
+	try {
+		const request = await JSON.parse( event.body ); // parse request data
+		const isEmailType = request.type === "email"
+		const isPasswordType = 	request.type === "password"
+		const requiredFields = isEmailType ? ["email"] : ["oldPassword", "newPassword"]
+		
+		if ( !checkFields( request, ["_id", "type", ...requiredFields]) ) throw { internalCode: 10500 }; // check fields
+		
+		const newEmail = request.email
+		const user = await readDocuments({
+			collection: "users",
+			_id: request._id,
+			include: ["email", "password"]
+		});
+
+		const formerEmail = user.email
+		const updateData = {}
+		
+		if (isEmailType) {
+			if (await emailInUse( newEmail ))throw { internalCode: 40504 };
+			updateData.email = newEmail
+		}
+			
+		if ( isPasswordType ) {
+			if (request.oldPassword !== user.password) throw { internalCode: 40503 };
+			updateData.password = request.newPassword
+		}
+
+		await updateDocument({
+			collection: "users",
+			_id: request._id,
+			documents: updateData
+		});
+
+		// if (isEmailType) noticeChangeSecurity(formerEmail, {template: "emailChange", subject: "Login Email Has Been Changed.", data: { formerEmail }})
+		// if (isPasswordType) noticeChangeSecurity(formerEmail, {template: "passwordChange", subject: "Password Has Been Changed.", data: {}})
+		
+		return response({ httpCode: 200 });
+	} catch ( error ) {
+		return response({
+			httpCode: 406,
+			internalCode: error.internalCode,
+			message: error.message || codes[error.internalCode]
+		});
+	}
+}
