@@ -21,12 +21,12 @@ const generateOtp = async email => {
 		documents: { otp },
 		options: { upsert: true }
 	});
-	// await sendEmail({
-	// 	template: "otp",
-	// 	email,
-	// 	subject: "OTP",
-	// 	data: { otp }
-	// });
+	await sendEmail({
+		template: "otp",
+		email,
+		subject: "OTP",
+		data: { otp }
+	});
 	devStageLog( `OTP is: ${otp}` ); // print otp number to console at dev stage
 };
 
