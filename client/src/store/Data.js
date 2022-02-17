@@ -5,7 +5,6 @@ import { createDocumentsInCloudDb, readDocumentsFromCloudDb, updateDocumentInClo
 
 const document = ref({});
 const documents = ref([]);
-const items = ref([]);
 const documentJson = ref();
 
 
@@ -42,14 +41,6 @@ export default function useData ( collectionName ) {
 			} else {
 				const docs = await readDocumentsFromCloudDb( collectionName );
 				documents.value = docs.data;
-				let item;
-				documents.value.forEach( element => {
-					item = {
-						"title": element.title,
-						"value": element._id
-					};
-					items.value.push( item );
-				});
 			}
 		} catch ( error ) {
 			console.error( error );
@@ -118,7 +109,6 @@ export default function useData ( collectionName ) {
 	return {
 		document,
 		documents,
-		items,
 		documentJson,
 		createDocuments,
 		readDocuments,

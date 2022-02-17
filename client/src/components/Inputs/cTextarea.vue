@@ -53,7 +53,7 @@ export default {
 		const resize = ele => {
 			ele.target.style.height = "auto";
 			ele.target.style.height = `${ele.target.scrollHeight}px`;
-		}
+		};
 
 		const setResizeListeners = target => {
 			target.style.height = `${target.scrollHeight}px`;

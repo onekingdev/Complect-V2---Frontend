@@ -1,10 +1,10 @@
 <template lang="pug">
-card-container.c-modal-task(:title="title" ref="modalWindow")
+card-container.c-modal-review(:title="title" ref="modalWindow")
 	template(#controls)
 		c-button(type="icon" iconL="close" size="small" @click="closeModal()")
 	template(#content)
 		.grid-6
-			c-select(v-if="isNewTask" label="Template" v-model="selectedId" :data="items")
+			c-select(v-if="isNewReview && items.length" label="Template" v-model="selectedId" :data="items")
 			c-field(label="Review Name" v-model="form.title" required)
 			c-field.col-3(label="Review Period Start Date" type="date" v-model="form.startsAt" required)
 			c-field.col-3(label="Review Period End Date" type="date" v-model="form.endsAt" required)
@@ -37,13 +37,14 @@ export default {
 		}
 	},
 	setup ( props ) {
-		const { items, document, documents, readDocuments, createDocuments, updateDocument } = useData( "reviews" );
+		const { document, documents, readDocuments, createDocuments, updateDocument } = useData( "reviews" );
 		const { deleteModal } = useModals();
 		const notification = inject( "notification" );
 		const router = useRouter();
 
 		const modalWindow = ref( null );
 		const selectedId = ref( null );
+		const items = ref([]);
 		const form = ref({
 			"title": "",
 			"dateCreated": Date.now(),
@@ -64,7 +65,7 @@ export default {
 			}
 		});
 
-		const isNewTask = computed( () => !props.id );
+		const isNewReview = computed( () => !props.id );
 		const title = computed( () => props.id ? "Edit Internal Review" : "New Internal Review" );
 		const btnTitle = computed( () => props.id ? "Save" : "Create" );
 
@@ -77,8 +78,7 @@ export default {
 
 				if ( selectedId.value ) {
 					const index = documents.value.findIndex( doc => doc._id === selectedId.value );
-
-					const duplicate = _clonedeep( documents.value[index] );
+					const duplicate = _clonedeep( documents.value[index]);
 					form.value.categories = duplicate.categories;
 
 					reviewId = await createDocuments([form.value]);
@@ -107,6 +107,8 @@ export default {
 		const updateReview = async () => {
 			try {
 				await updateDocument( form.value._id, form.value );
+				const index = documents.value.findIndex( doc => doc._id === form.value._id );
+				getProgress( documents.value[index] );
 				notification({
 					"type": "success",
 					"title": "Success",
@@ -133,25 +135,52 @@ export default {
 			}
 		};
 
-		const getData = async () => {
-			await readDocuments( props.id );
-			form.value = document.value;
+		const getProgress = review => {
+			let max, current = 0, finding = 0;
+			max = review.categories.length + 1;
+			if ( review.completedAt ) current++;
+			review.categories.forEach( category => {
+				if ( category.completedAt ) current++;
+				category.content.forEach( topic => {
+					topic.items.forEach( item => {
+						finding += item.finding.length;
+					});
+				});
+			});
+			review.progress = {
+				"max": max,
+				"current": current
+			};
+			review.finding = finding;
 		};
 
+		onMounted( async () => {
+			if ( props.id ) {
+				await readDocuments( props.id );
+				form.value = document.value;
+			} else {
+				await readDocuments();
+				documents.value.forEach( review => {
+					const item = {
+						"title": review.title,
+						"value": review._id
+					};
+					items.value.push( item );
 
-		onMounted( () => {
-			if ( props.id ) getData();
+					getProgress( review );
+				});
+			}
 		});
 		onUnmounted( () => form.value = {});
 
-		return { modalWindow, closeModal, title, btnTitle, selectedId, form, documents, items, isNewTask, saveReview };
+		return { modalWindow, closeModal, title, btnTitle, selectedId, form, documents, items, isNewReview, saveReview };
 	}
 };
 </script>
 
 
 <style lang="stylus" scoped>
-.c-modal-task
+.c-modal-review
 	.delete-button
 		margin-right: auto
 	.completed

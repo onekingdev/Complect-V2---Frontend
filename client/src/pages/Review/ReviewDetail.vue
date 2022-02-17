@@ -2,17 +2,17 @@
 vertical-detail
 	template(#list)
 		.category(@click="selectGeneral()")
-			.title(:class="{ active: state.isGeneral }") General
+			.title(:class="{ active: isGeneral }") General
 			icon.icon-r(name="check" v-if="!document.completedAt")
 			icon.icon-r(name="success" v-else)
 		.category(v-for="(category, index) in document.categories" :key="index" @click="selectCategory(index)")
-			.title(:class="{ active: index == state.catId && !state.isGeneral }") {{ category.title }}
+			.title(:class="{ active: index == catId && !isGeneral }") {{ category.title }}
 			icon.icon-r(name="check" v-if="!category.completedAt")
 			icon.icon-r(name="success" v-else)
 		c-button.new-category(v-if="state.isButton" title="New Category" iconL="circle_plus" @click="toggleCategory()")
 		c-field(v-else type="text" @change="createCategory()" v-model="state.categoryName" fullwidth wide)
 	template(#content)
-		detail-container.detail-container(v-if="state.isGeneral" title="General")
+		detail-container.detail-container(v-if="isGeneral" title="General")
 			template(#content)
 				.sub-item-container
 					.sub-title Review Period
@@ -88,24 +88,24 @@ export default {
 		const notification = inject( "notification" );
 		const router = useRouter();
 		const reviewCategory = ref({});
+		const isGeneral = ref( true );
+		const catId = ref( null );
 		const state = ref({
-			"isGeneral": true,
 			"isButton": true,
-			"categoryName": "",
-			"catId": null
+			"categoryName": ""
 		});
 		const btnTitle = computed( () => document.value.completedAt ? "Mark as Incomplete" : "Mark as Complete" );
 		const completeModalTitle = computed( () => document.value.completedAt ? "Incomplete Category" : "Complete Category" );
 		const selectGeneral = () => {
-			state.value.isGeneral = true;
+			isGeneral.value = true;
 			router.push({
 				"name": "ReviewDetail",
 				"params": { "id": document.value._id }
 			});
 		};
 		const selectCategory = id => {
-			state.value.isGeneral = false;
-			state.value.catId = id;
+			isGeneral.value = false;
+			catId.value = id;
 			reviewCategory.value = document.value.categories[id];
 			router.push({
 				"name": "ReviewCategory",
@@ -170,12 +170,12 @@ export default {
 					"title": "Success",
 					"message": "Category has been added."
 				});
-				state.value.isGeneral = false;
-				state.value.catId = document.value.categories.length - 1;
-				reviewCategory.value = document.value.categories[state.value.catId];
+				isGeneral.value = false;
+				catId.value = document.value.categories.length - 1;
+				reviewCategory.value = document.value.categories[catId.value];
 				router.push({
 					"name": "ReviewCategory",
-					"params": { "catId": state.value.catId }
+					"params": { "catId": catId.value }
 				});
 			} catch ( error ) {
 				console.error( error );
@@ -186,7 +186,11 @@ export default {
 				});
 			}
 		};
-		return { document, state, reviewCategory, createCategory, selectGeneral, addRegulatoryChange, addEmployeesInterviewed, updateReview, completeReview, deleteRegulatoryChange, deleteEmployeesInterviewed, selectCategory, btnTitle, completeModalTitle, toggleCategory };
+		return {
+			document, state, reviewCategory, createCategory, selectGeneral, isGeneral, catId,
+			addRegulatoryChange, addEmployeesInterviewed, updateReview, completeReview,
+			deleteRegulatoryChange, deleteEmployeesInterviewed, selectCategory, btnTitle, completeModalTitle, toggleCategory
+		};
 	}
 };
 </script>

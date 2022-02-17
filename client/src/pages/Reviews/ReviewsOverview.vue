@@ -120,7 +120,32 @@ export default {
 			}
 		];
 
-		onMounted( () => readDocuments() );
+		const getProgress = review => {
+			let max, current = 0, finding = 0;
+			max = review.categories.length + 1;
+			if ( review.completedAt ) current++;
+			review.categories.forEach( category => {
+				if ( category.completedAt ) current++;
+				category.content.forEach( topic => {
+					topic.items.forEach( item => {
+						finding += item.finding.length;
+					});
+				});
+			});
+			review.progress = {
+				"max": max,
+				"current": current
+			};
+			review.finding = finding;
+		};
+
+		onMounted( async () => {
+			await readDocuments();
+			documents.value.forEach( review => {
+				getProgress( review );
+			});
+		});
+
 		onUnmounted( () => clearStore() );
 
 		return {

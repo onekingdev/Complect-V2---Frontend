@@ -122,8 +122,6 @@ export default {
 
 		const selectCheck = ( item, flag ) => item.flag = flag;
 
-		// const selectFalseCheck = item => item.flag = false;
-
 		const deleteTopic = ( topicArr, index ) => {
 			topicArr.splice( index, 1 );
 			notification({
