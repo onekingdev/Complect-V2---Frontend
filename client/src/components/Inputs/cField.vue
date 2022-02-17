@@ -11,7 +11,7 @@ c-label.c-input.c-field(:class="{fullwidth, disabled}" v-bind="{label, required}
 			@updateValue="updateModelValue")
 		icon(v-if="iconR" :name="iconR")
 	.field-info.error(v-if="errors && errors.length")
-		p.error(v-for="(error, index) in errors" :key="index") {{error}}
+		p(v-for="(error, index) in errors" :key="index") {{error}}
 	//- .field-info(v-if="info") {{ info }}
 </template>
 
