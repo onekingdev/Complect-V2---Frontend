@@ -107,7 +107,7 @@ export default {
 			isGeneral.value = false;
 			catId.value = id;
 			reviewCategory.value = document.value.categories[id];
-			router.push({ "name": "ReviewCategory", "params": { "catId": id }});
+			router.push({ "name": "ReviewCategory", "params": { "catId": id } });
 		};
 		const updateReview = async () => {
 			try {
