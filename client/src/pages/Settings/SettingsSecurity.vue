@@ -1,7 +1,6 @@
 <template lang="pug">
 card-container(title="Security")
 	template(#content)
-		div {{ form }}
 		div.grid-6
 			h3 Change Email
 			c-field.current-email(label="Current Email" v-model="profile.email" disabled)
@@ -16,6 +15,7 @@ card-container(title="Security")
 			c-field(label="New Password" type="password" v-model="form.newPassword" required)
 			div.min-password Minimum 6 characters
 			c-field(label="Confirm Password" type="password" v-model="form.confirmPassword" required)
+			.errors(v-if="errors.confirmPassword") {{ errors.confirmPassword }}
 			.actions
 				c-button(title="Cancel" type="link" @click="clearData()")
 				c-button(title="Save" type="primary" @click="update('Password')")
@@ -30,7 +30,7 @@ card-container(title="Security")
 
 
 <script>
-import { ref, inject } from "vue";
+import { ref, inject, computed } from "vue";
 import useProfile from "~/store/Profile.js";
 import useAuth from "~/core/auth.js";
 
@@ -46,8 +46,21 @@ export default {
 			form.value = {};
 		};
 
+		const resetErrors = () => errors.value = {};
+		const hasErrors = computed( () => Object.keys( errors.value ).length > 0 );
+
+		const validatePasswordChange = () => {
+			if ( form.value.newPassword !== form.value.confirmPassword ) errors.value.confirmPassword = "Please make sure your passwords match.";
+		};
+
 		const update = async type => {
+			resetErrors();
+
 			const isUpdateEmail = type === "Email";
+			if ( !isUpdateEmail ) validatePasswordChange();
+
+			if ( hasErrors.value ) return;
+
 			const emailData = { "email": form.value.newEmail, "type": "email" };
 			const passwordData = { "oldPassword": form.value.oldPassword, "newPassword": form.value.newPassword, "type": "password" };
 			const data = isUpdateEmail ? emailData : passwordData;
@@ -57,7 +70,7 @@ export default {
 				if ( isUpdateEmail ) profile.value.email = form.value.newEmail;
 
 				clearData();
-				errors.value = {};
+				resetErrors();
 
 				notification({
 					"title": "Success",
