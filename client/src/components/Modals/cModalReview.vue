@@ -77,22 +77,14 @@ export default {
 					form.value.categories = duplicate.categories;
 					reviewId = await createDocuments([form.value]);
 				} else reviewId = await createDocuments([form.value]);
-				notification({
-					"type": "success",
-					"title": "Success",
-					"message": "Internal review has been created"
-				});
+				notification({ "type": "success", "title": "Success", "message": "Internal review has been created" });
 				router.push({
 					"name": "ReviewDetail",
 					"params": { "id": reviewId[0] }
 				});
 			} catch ( error ) {
 				console.error( error );
-				notification({
-					"type": "error",
-					"title": "Error",
-					"message": "Internal review has not been created. Please try again."
-				});
+				notification({ "type": "error", "title": "Error", "message": "Internal review has not been created. Please try again." });
 			}
 		};
 		const getProgress = review => {
@@ -117,18 +109,10 @@ export default {
 				await updateDocument( form.value._id, form.value );
 				const index = documents.value.findIndex( doc => doc._id === form.value._id );
 				getProgress( documents.value[index]);
-				notification({
-					"type": "success",
-					"title": "Success",
-					"message": "Internal review has been updated."
-				});
+				notification({ "type": "success", "title": "Success", "message": "Internal review has been updated." });
 			} catch ( error ) {
 				console.error( error );
-				notification({
-					"type": "error",
-					"title": "Error",
-					"message": "Internal review has not been updated. Please try again."
-				});
+				notification({ "type": "error", "title": "Error", "message": "Internal review has not been updated. Please try again." });
 			}
 		};
 		const saveReview = async () => {

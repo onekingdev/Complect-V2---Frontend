@@ -107,26 +107,15 @@ export default {
 			isGeneral.value = false;
 			catId.value = id;
 			reviewCategory.value = document.value.categories[id];
-			router.push({
-				"name": "ReviewCategory",
-				"params": { "catId": id }
-			});
+			router.push({ "name": "ReviewCategory", "params": { "catId": id }});
 		};
 		const updateReview = async () => {
 			try {
 				await updateDocument( document.value._id, document.value );
-				notification({
-					"type": "success",
-					"title": "Success",
-					"message": "Category has been updated."
-				});
+				notification({ "type": "success", "title": "Success", "message": "Category has been updated." });
 			} catch ( error ) {
 				console.error( error );
-				notification({
-					"type": "error",
-					"title": "Error",
-					"message": "Category has not been updated. Please try again."
-				});
+				notification({ "type": "error", "title": "Error", "message": "Category has not been updated. Please try again." });
 			}
 		};
 		const completeReview = async () => {
@@ -151,11 +140,7 @@ export default {
 		const addEmployeesInterviewed = () => document.value.employeesInterviewed.push({ "name": "", "role": "", "department": "" });
 		const deleteRegulatoryChange = ( regulatoryChange, index ) => {
 			regulatoryChange.splice( index, 1 );
-			notification({
-				"type": "success",
-				"title": "Success",
-				"message": "Entry has been deleted."
-			});
+			notification({ "type": "success", "title": "Success", "message": "Entry has been deleted." });
 		};
 		const deleteEmployeesInterviewed = ( employeesInterviewed, index ) => employeesInterviewed.splice( index, 1 );
 		const toggleCategory = () => state.value.isButton = !state.value.isButton;
@@ -165,11 +150,7 @@ export default {
 			state.value.categoryName = "";
 			try {
 				await updateDocument( document.value._id, { "categories": document.value.categories });
-				notification({
-					"type": "success",
-					"title": "Success",
-					"message": "Category has been added."
-				});
+				notification({ "type": "success", "title": "Success", "message": "Category has been added." });
 				isGeneral.value = false;
 				catId.value = document.value.categories.length - 1;
 				reviewCategory.value = document.value.categories[catId.value];
@@ -179,11 +160,7 @@ export default {
 				});
 			} catch ( error ) {
 				console.error( error );
-				notification({
-					"type": "error",
-					"title": "Error",
-					"message": "Category has not been added. Please try again."
-				});
+				notification({ "type": "error", "title": "Error", "message": "Category has not been added. Please try again." });
 			}
 		};
 		return {
