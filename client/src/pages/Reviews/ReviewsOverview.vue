@@ -115,11 +115,10 @@ export default {
 			}
 		];
 		const getProgress = review => {
-			const max;
 			let current, finding;
 			current = 0;
 			finding = 0;
-			max = review.categories.length + 1;
+			const max = review.categories.length + 1;
 			if ( review.completedAt ) current += 1;
 			review.categories.forEach( category => {
 				if ( category.completedAt ) current += 1;
