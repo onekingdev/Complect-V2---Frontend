@@ -3,7 +3,7 @@ card-container(title="Security")
 	template(#content)
 		div.grid-6
 			h3 Change Email
-			c-field(label="Current Email" v-model="profile.email" required disabled)
+			c-field.current-email(label="Current Email" v-model="profile.email" disabled)
 			.new-email
 				c-field.new-email-input(label="New Email" v-model="form.newEmail" required)
 				.actions
@@ -91,6 +91,9 @@ export default {
 :deep(.c-button.delete-btn)
 	width: 5em
 	color: #f00
+:deep(.c-field.current-email)
+	.field-body
+		background: #e9ecef
 .new-email
 	display: flex
 	.new-email-input
