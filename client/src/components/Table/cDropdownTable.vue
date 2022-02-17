@@ -1,5 +1,5 @@
 <template lang="pug">
-.c-table
+.c-dropdown-table
 	.controls(v-if="searchable || filters.length || $slots.actions")
 		c-field.search-input(v-if="searchable" type="search" iconL="search" placeholder="Search..." v-model="searchQuery")
 		.actions(v-if="filters.length")
@@ -19,18 +19,34 @@
 							.title(v-if="column.title") {{ column.title }}
 							c-button(v-if="!column.unsortable" type="icon" iconR="sort" @click="sortDocuments(column.key)")
 			tbody(v-if="filteredDocuments.length")
-				tr(v-for="document in filteredDocuments" :key="document._id")
-					td(v-for="(column, index) in columns" :key="index")
-						//- temp suspense solution
-						Suspense
-							component.cell(
-								:is="getTableCell(column.cell)"
-								:class="[column.align]"
-								:key="column.key"
-								:meta="column.meta"
-								:id="document._id"
-								:data="document[column.key]"
-								:isChecked="document.isChecked")
+				template(v-for="document in filteredDocuments" :key="document._id")
+					tr
+						td(v-for="(column, index) in columns" :key="index")
+							//- temp suspense solution
+							Suspense
+								component.cell(
+									:is="getTableCell(column.cell)"
+									:class="[column.align]"
+									:key="column.key"
+									:meta="column.meta"
+									:id="document._id"
+									:controlLength="document.controls?.length"
+									:data="document[column.key]"
+									:showSub="document.showSub"
+									:hideShow="() => document.showSub = !document.showSub")
+					template(v-if="document.showSub")
+						tr(v-for="control in document.controls" :key="control._id")
+							td(v-for="(column, index) in controlColumns" :key="index" :class="{'expandable-title': column.cell === 'CellTitle'}")
+								//- temp suspense solution
+								Suspense
+									component.cell(
+										:is="getTableCell(column.cell)"
+										:class="[column.align]"
+										:key="column.key"
+										:meta="column.meta"
+										:id="document._id"
+										:controlId="control._id"
+										:data="document[column.key]")
 
 		icon(v-if="!filteredDocuments.length" name="empty-state")
 </template>
@@ -43,6 +59,10 @@ export default {
 	"components": { "cDropdown": defineAsyncComponent( () => import( "~/components/Inputs/cDropdown.vue" ) ) },
 	"props": {
 		"columns": {
+			"type": Array,
+			"required": true
+		},
+		"controlColumns": {
 			"type": Array,
 			"required": true
 		},
@@ -77,7 +97,8 @@ export default {
 			let documents;
 			try {
 				documents = props.documents;
-				documents.map( document => document.isChecked = false );
+				documents.map( document => document.showSub = false );
+
 				// filters (filter and mutate documents array)
 				const activeFiltersKeys = Object.keys( activeFilters.value ); // get filters (filter = dropdown element)
 				if ( activeFiltersKeys.length ) { // if active filters exist
@@ -92,7 +113,7 @@ export default {
 				// search Query
 				if ( !searchQuery.value ) return documents;
 				const query = String( searchQuery.value.toLowerCase().trim() );
-				documents = documents.filter( document => document.name.toLowerCase().includes( query ) );
+				documents = documents.filter( document => document.title.toLowerCase().includes( query ) );
 				return documents;
 			} catch ( error ) {
 				console.error( error );
@@ -106,7 +127,6 @@ export default {
 			sortAsc.value[key] = !sortAsc.value[key];
 			sortArrayByKey( props.documents, key, sortAsc.value[key]);
 		};
-
 
 		return {
 			getTableCell,
@@ -123,7 +143,7 @@ export default {
 
 
 <style lang="stylus" scoped>
-.c-table
+.c-dropdown-table
 	width: 100%
 	min-width: 0
 	.controls
@@ -140,7 +160,7 @@ export default {
 			align-items: center
 			gap: 1em
 
-.c-table table
+.c-dropdown-table table
 	font-size: 0.85em
 	width: 100%
 	tr
@@ -148,6 +168,8 @@ export default {
 		height: 4em
 		th, td
 			white-space: nowrap
+		.expandable-title
+			padding-left: 50px
 	.cell
 		display: flex
 		justify-content: flex-start

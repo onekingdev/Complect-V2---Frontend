@@ -8,7 +8,6 @@ import Modals from "./plugins/modals";
 
 import PageContainer from "~/components/Containers/PageContainer.vue";
 import CardContainer from "~/components/Containers/CardContainer.vue";
-import DetailContainer from "~/components/Containers/DetailContainer.vue";
 
 import cIcon from "~/components/Icons/cIcon.vue";
 import cField from "~/components/Inputs/cField.vue";
@@ -18,6 +17,7 @@ import cButton from "~/components/Inputs/cButton.vue";
 import cButtonModal from "~/components/Inputs/cButtonModal.vue";
 import cNotification from "~/components/Misc/cNotification.vue";
 import cTable from "~/components/Table/cTable.vue";
+import cDropdownTable from "~/components/Table/cDropdownTable.vue";
 
 import "./assets/styles/index.styl";
 
@@ -31,7 +31,6 @@ app
 	.use( Notifications )
 	.use( Modals )
 	.component( "CardContainer", CardContainer )
-	.component( "DetailContainer", DetailContainer )
 	.component( "PageContainer", PageContainer )
 	.component( "Icon", cIcon )
 	.component( "cButton", cButton )
@@ -41,4 +40,5 @@ app
 	.component( "cCheckbox", cCheckbox )
 	.component( "cNotification", cNotification )
 	.component( "cTable", cTable )
+	.component( "cDropdownTable", cDropdownTable )
 	.mount( "#app" );
