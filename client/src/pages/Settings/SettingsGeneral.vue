@@ -10,7 +10,7 @@ card-container(title="General")
 			c-field(label="City" v-model="profile.city")
 			c-field(label="Phone Number" v-model="profile.tel")
 	template(#footer)
-		c-button(title="Cancel" type="link")
+		c-button(title="Cancel" type="link" @click="clearData()")
 		c-button(title="Save" type="primary" @click="saveInformation()")
 </template>
 
@@ -20,31 +20,33 @@ import { inject } from "vue";
 import cSelect from "~/components/Inputs/cSelect.vue";
 import { timezones, countries } from "~/data/static.js";
 
-import useProfile  from "~/store/Profile.js";
+import useProfile from "~/store/Profile.js";
 import useAuth from "~/core/auth.js";
 
-const BASE_DATA = {
+const INIT_FORM = {
 	"timezone": "",
 	"country": "",
 	"state": "",
 	"city": "",
 	"tel": ""
-}
+};
 
 export default {
 	"components": { cSelect },
 	setup () {
-		const { profile } = useProfile();
+		const { profile, updateProfile } = useProfile();
 		const { onboarding } = useAuth();
-		const notification = inject('notification')
+		const notification = inject( "notification" );
+
+		const clearData = () => updateProfile( INIT_FORM );
 
 		const saveInformation = async () => {
-			const newData = {}
-			
-			Object.keys(BASE_DATA).forEach( field => {
+			const newData = {};
+
+			Object.keys( BASE_DATA ).forEach( field => {
 				newData[field] = profile.value[field];
 			});
-			
+
 			try {
 				await onboarding( newData );
 				notification({
@@ -59,12 +61,13 @@ export default {
 				});
 				console.error( error );
 			}
-		}
+		};
 
 		return {
 			profile,
 			countries,
 			timezones,
+			clearData,
 			saveInformation
 		};
 	}

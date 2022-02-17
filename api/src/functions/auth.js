@@ -39,14 +39,19 @@ const emailInUse = async email => {
 	return Boolean( users.length );
 };
 
-const noticeChangeSecurity = async (email, infor) => {
+const emailChangeAuthInfor = async ( type, email ) => {
+	const isUpdateEmail = type === "email";
+	const template = isUpdateEmail ? "userUpdateEmail" : "userUpdatePassword";
+	const subject = isUpdateEmail ? "Login Email Has Been Changed." : "Password Has Been Changed.";
+	const data = isUpdateEmail ? { formerEmail: email } : {};
+
 	await sendEmail({
-		template: infor.template,
+		template,
 		email,
-		subject: infor.subject,
-		data: infor.data
+		subject,
+		data
 	});
-}
+};
 
 // const checkPassword = async ( plain, hash ) => {
 // 	const match = await compareHash( plain, hash );
@@ -239,33 +244,30 @@ exports.profile = async event => {
 	}
 };
 
-exports.updateSecurity = async event => {
+exports.updateAuthInfor = async event => {
 	try {
 		const request = await JSON.parse( event.body ); // parse request data
-		const isEmailType = request.type === "email"
-		const isPasswordType = 	request.type === "password"
-		const requiredFields = isEmailType ? ["email"] : ["oldPassword", "newPassword"]
-		
+		const isEmailType = request.type === "email";
+		const requiredFields = isEmailType ? ["email"] : ["oldPassword", "newPassword"];
+
 		if ( !checkFields( request, ["_id", "type", ...requiredFields]) ) throw { internalCode: 10500 }; // check fields
-		
-		const newEmail = request.email
+
+		const newEmail = request.email;
 		const user = await readDocuments({
 			collection: "users",
 			_id: request._id,
 			include: ["email", "password"]
 		});
 
-		const formerEmail = user.email
-		const updateData = {}
-		
-		if (isEmailType) {
-			if (await emailInUse( newEmail ))throw { internalCode: 40504 };
-			updateData.email = newEmail
-		}
-			
-		if ( isPasswordType ) {
-			if (request.oldPassword !== user.password) throw { internalCode: 40503 };
-			updateData.password = request.newPassword
+		const userEmail = user.email;
+		const updateData = {};
+
+		if ( isEmailType ) {
+			if ( await emailInUse( newEmail ) ) throw { internalCode: 40504 };
+			updateData.email = newEmail;
+		} else {
+			if ( request.oldPassword !== user.password ) throw { internalCode: 40503 };
+			updateData.password = request.newPassword;
 		}
 
 		await updateDocument({
@@ -274,9 +276,8 @@ exports.updateSecurity = async event => {
 			documents: updateData
 		});
 
-		// if (isEmailType) noticeChangeSecurity(formerEmail, {template: "emailChange", subject: "Login Email Has Been Changed.", data: { formerEmail }})
-		// if (isPasswordType) noticeChangeSecurity(formerEmail, {template: "passwordChange", subject: "Password Has Been Changed.", data: {}})
-		
+		emailChangeAuthInfor( request.type, userEmail );
+
 		return response({ httpCode: 200 });
 	} catch ( error ) {
 		return response({
@@ -285,4 +286,4 @@ exports.updateSecurity = async event => {
 			message: error.message || codes[error.internalCode]
 		});
 	}
-}
+};

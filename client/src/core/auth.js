@@ -83,12 +83,11 @@ export default function useAuth () {
 		profile.value = {};
 	};
 
-	const updateSecurity = async (data) => {
+	const updateAuthenticationInfor = async payload => {
 		const userId = appState.value.userId;
-		console.log(data)
-		const result = await authServer({ "path": "update-security", "data": { "_id": userId, ...data } });
+		const result = await authServer({ "path": "update-auth-infor", "data": { "_id": userId, ...payload } });
 		if ( !result.ok ) throw result.message;
-	}
+	};
 
 	return {
 		restoreSession,
@@ -99,7 +98,7 @@ export default function useAuth () {
 		verification,
 		newOtp,
 		reset,
-		updateSecurity
+		updateAuthenticationInfor
 	};
 }
 
