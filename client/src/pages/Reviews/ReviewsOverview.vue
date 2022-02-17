@@ -31,14 +31,11 @@ export default {
 		const modal = inject( "modal" );
 		const isDeleteVisible = ref( false );
 		let clickedId;
-
 		const toggleDeleteModal = id => {
 			isDeleteVisible.value = !isDeleteVisible.value;
 			clickedId = id;
 		};
-
 		const handleClickEdit = id => modal({ "name": "cModalReview", id });
-
 		const handleClickDelete = async () => {
 			try {
 				await deleteDocuments( clickedId );
@@ -56,7 +53,6 @@ export default {
 				});
 			}
 		};
-
 		const handleClickDuplicate = async id => {
 			const index = documents.value.findIndex( doc => doc._id === id );
 			try {
@@ -75,7 +71,6 @@ export default {
 				});
 			}
 		};
-
 		const columns = [
 			{
 				"title": "Name",
@@ -119,35 +114,31 @@ export default {
 				}
 			}
 		];
-
 		const getProgress = review => {
-			let max, current = 0, finding = 0;
+			const max;
+			let current, finding;
+			current = 0;
+			finding = 0;
 			max = review.categories.length + 1;
-			if ( review.completedAt ) current++;
+			if ( review.completedAt ) current += 1;
 			review.categories.forEach( category => {
-				if ( category.completedAt ) current++;
+				if ( category.completedAt ) current += 1;
 				category.content.forEach( topic => {
 					topic.items.forEach( item => {
 						finding += item.finding.length;
 					});
 				});
 			});
-			review.progress = {
-				"max": max,
-				"current": current
-			};
+			review.progress = { max, current };
 			review.finding = finding;
 		};
-
 		onMounted( async () => {
 			await readDocuments();
 			documents.value.forEach( review => {
 				getProgress( review );
 			});
 		});
-
 		onUnmounted( () => clearStore() );
-
 		return {
 			columns,
 			documents,

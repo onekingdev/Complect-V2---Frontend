@@ -41,7 +41,6 @@ export default {
 		const { deleteModal } = useModals();
 		const notification = inject( "notification" );
 		const router = useRouter();
-
 		const modalWindow = ref( null );
 		const selectedId = ref( null );
 		const items = ref([]);
@@ -64,32 +63,25 @@ export default {
 				"max": 0
 			}
 		});
-
 		const isNewReview = computed( () => !props.id );
 		const title = computed( () => props.id ? "Edit Internal Review" : "New Internal Review" );
 		const btnTitle = computed( () => props.id ? "Save" : "Create" );
-
 		const closeModal = () => deleteModal( props.modalId );
 		onClickOutside( modalWindow, () => closeModal() );
-
 		const createReview = async () => {
 			try {
 				let reviewId;
-
 				if ( selectedId.value ) {
 					const index = documents.value.findIndex( doc => doc._id === selectedId.value );
 					const duplicate = _clonedeep( documents.value[index]);
 					form.value.categories = duplicate.categories;
-
 					reviewId = await createDocuments([form.value]);
 				} else reviewId = await createDocuments([form.value]);
-
 				notification({
 					"type": "success",
 					"title": "Success",
 					"message": "Internal review has been created"
 				});
-
 				router.push({
 					"name": "ReviewDetail",
 					"params": { "id": reviewId[0] }
@@ -103,12 +95,29 @@ export default {
 				});
 			}
 		};
-
+		const getProgress = review => {
+			const max;
+			let current, finding;
+			current = 0;
+			finding = 0;
+			max = review.categories.length + 1;
+			if ( review.completedAt ) current += 1;
+			review.categories.forEach( category => {
+				if ( category.completedAt ) current += 1;
+				category.content.forEach( topic => {
+					topic.items.forEach( item => {
+						finding += item.finding.length;
+					});
+				});
+			});
+			review.progress = { max, current };
+			review.finding = finding;
+		};
 		const updateReview = async () => {
 			try {
 				await updateDocument( form.value._id, form.value );
 				const index = documents.value.findIndex( doc => doc._id === form.value._id );
-				getProgress( documents.value[index] );
+				getProgress( documents.value[index]);
 				notification({
 					"type": "success",
 					"title": "Success",
@@ -123,7 +132,6 @@ export default {
 				});
 			}
 		};
-
 		const saveReview = async () => {
 			try {
 				if ( !props.id ) await createReview();
@@ -134,26 +142,6 @@ export default {
 				closeModal();
 			}
 		};
-
-		const getProgress = review => {
-			let max, current = 0, finding = 0;
-			max = review.categories.length + 1;
-			if ( review.completedAt ) current++;
-			review.categories.forEach( category => {
-				if ( category.completedAt ) current++;
-				category.content.forEach( topic => {
-					topic.items.forEach( item => {
-						finding += item.finding.length;
-					});
-				});
-			});
-			review.progress = {
-				"max": max,
-				"current": current
-			};
-			review.finding = finding;
-		};
-
 		onMounted( async () => {
 			if ( props.id ) {
 				await readDocuments( props.id );
@@ -172,7 +160,6 @@ export default {
 			}
 		});
 		onUnmounted( () => form.value = {});
-
 		return { modalWindow, closeModal, title, btnTitle, selectedId, form, documents, items, isNewReview, saveReview };
 	}
 };

@@ -187,9 +187,23 @@ export default {
 			}
 		};
 		return {
-			document, state, reviewCategory, createCategory, selectGeneral, isGeneral, catId,
-			addRegulatoryChange, addEmployeesInterviewed, updateReview, completeReview,
-			deleteRegulatoryChange, deleteEmployeesInterviewed, selectCategory, btnTitle, completeModalTitle, toggleCategory
+			document,
+			state,
+			reviewCategory,
+			createCategory,
+			selectGeneral,
+			isGeneral,
+			catId,
+			addRegulatoryChange,
+			addEmployeesInterviewed,
+			updateReview,
+			completeReview,
+			deleteRegulatoryChange,
+			deleteEmployeesInterviewed,
+			selectCategory,
+			btnTitle,
+			completeModalTitle,
+			toggleCategory
 		};
 	}
 };
