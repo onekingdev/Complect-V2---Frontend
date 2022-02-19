@@ -118,7 +118,7 @@ export default {
 		};
 
 		onMounted( () => {
-			if ( !props.modelValue && props.modelValue !== 0 ) return;
+			if ( !props.modelValue ) return;
 			selectedItems.value = props.modelValue;
 			selectedObjects.value = valuesToObjects( props.modelValue );
 		});
@@ -199,7 +199,6 @@ export default {
 		display: flex
 		flex-direction: column
 		color: #ccc
-		overflow: scroll
 		background: #fff
 		box-shadow: 0 0 0 1px var(--c-border)
 		transition: max-height .25s ease-in-out, box-shadow .25s

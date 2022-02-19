@@ -14,7 +14,7 @@
 		.name {{profile.firstName}} {{profile.lastName}}
 		icon(name="chevron-down")
 		.dropdown-menu(v-if="userDropDownExpanded")
-			router-link(v-if="!simpleTopBar" :to="{name: 'ProfileAbout'}") {{$locale("Profile")}}
+			router-link(v-if="!simpleTopBar" :to="{name: 'Profile'}") {{$locale("Profile")}}
 			a(@click="signOut()") {{$locale("Sign Out")}}
 </template>
 

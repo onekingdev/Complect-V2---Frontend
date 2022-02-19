@@ -64,6 +64,11 @@ const _RiskEntry = () => import( "~/pages/Risk/_RiskEntry.vue" );
 const RiskDetail = () => import( "~/pages/Risk/RiskDetail.vue" );
 
 
+// records
+const _RecordsEntry = () => import( "~/pages/Records/_RecordsEntry.vue" );
+const RecordsOverview = () => import( "~/pages/Records/RecordsOverview.vue" );
+
+
 // settings
 const _SettingsEntry = () => import( "~/pages/Settings/_SettingsEntry.vue" );
 const SettingsGeneral = () => import( "~/pages/Settings/SettingsGeneral.vue" );
@@ -75,10 +80,8 @@ const SettingsSecurity = () => import( "~/pages/Settings/SettingsSecurity.vue" )
 const SettingsSubscriptions = () => import( "~/pages/Settings/SettingsSubscriptions.vue" );
 const SettingsBilling = () => import( "~/pages/Settings/SettingsBilling.vue" );
 
-// profiles
+
 const _ProfileEntry = () => import( "~/pages/Profile/_ProfileEntry.vue" );
-const ProfileAbout = () => import( "~/pages/Profile/ProfileAbout.vue" );
-const ProfileSettings = () => import( "~/pages/Profile/ProfileSettings.vue" );
 import { devRoutes } from "~/_devmode/Routes.js";
 
 // ––––––––––––––– Routes ––––––––––––––– //
@@ -239,7 +242,7 @@ const routes = [
 						},
 						"children": [
 							{
-								"path": "",
+								"path": "details",
 								"name": "ReviewDetail",
 								"component": ReviewDetail,
 								"meta": { "title": "Review Detail" },
@@ -288,25 +291,23 @@ const routes = [
 						}]
 					},
 					{
+						"path": "records",
+						"component": _RecordsEntry,
+						"children": [{
+							"path": "",
+							"name": "RecordsOverview",
+							"component": RecordsOverview,
+							"meta": { "title": "Records" }
+						}]
+					},
+					{
 						"path": "profile",
 						"name": "Profile",
 						"component": _ProfileEntry,
 						"meta": {
 							"title": "Profile",
 							"sidebar": false
-						},
-						"children": [
-							{
-								"path": "",
-								"name": "ProfileAbout",
-								"component": ProfileAbout
-							}, {
-								"path": "settings",
-								"meta": { "title": "Profile - Settings" },
-								"name": "ProfileSettings",
-								"component": ProfileSettings
-							}
-						]
+						}
 					},
 					{
 						"path": "settings",

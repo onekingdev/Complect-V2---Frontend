@@ -1,0 +1,64 @@
+<template lang="pug">
+.cell-record
+	icon(:name="icon_name" size="regular")
+	.title(@click="openSubFiles()") {{data}}
+</template>
+
+
+<script>
+import { computed } from "vue";
+import useData from "~/store/Data.js";
+export default {
+	"props": {
+		"id": {
+			"type": String,
+			"required": true
+		},
+		"data": {
+			"type": String,
+			"required": true
+		},
+		"document": {
+			"type": Object,
+			"required": true
+		}
+	},
+	"emits": ["cellEvent"],
+	setup ( props, { emit } ) {
+		const { documents } = useData( "records" );
+
+		const icon_name = computed( () => props.document.status );
+
+		const openSubFiles = () => {
+			const index = documents.value.findIndex( item => item._id === props.id );
+			if ( documents.value[index].status === "folder" ) {
+				emit( "cellEvent", props.id );
+			} else console.log("open pdf file!");
+		};
+
+		return {
+			openSubFiles,
+			icon_name,
+		};
+	}
+};
+</script>
+
+
+<style lang="stylus" scoped>
+.cell-record
+	max-width: 20em
+	align-items: flex-end
+	gap: 0.3em
+	.c-checkbox
+		margin-right: 0.5em
+	.title
+		color: var(--c-link)
+		cursor: pointer
+		&.completed
+			text-decoration: line-through
+	a
+		overflow: hidden
+		text-overflow: ellipsis
+		white-space: nowrap
+</style>

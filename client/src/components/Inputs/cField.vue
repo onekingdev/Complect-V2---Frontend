@@ -1,5 +1,5 @@
 <template lang="pug">
-c-label.c-input.c-field(:class="{fullwidth, disabled}" v-bind="{label, required}")
+c-label.c-input.c-field(:class="{fullwidth, disabled, transparent}" v-bind="{label, required}")
 	.field-body
 		icon(v-if="iconL || icon" :name="iconL || type")
 		component.field-input(
@@ -10,8 +10,6 @@ c-label.c-input.c-field(:class="{fullwidth, disabled}" v-bind="{label, required}
 			:value="modelValue"
 			@updateValue="updateModelValue")
 		icon(v-if="iconR" :name="iconR")
-	.field-info.error(v-if="errors && errors.length")
-		p(v-for="(error, index) in errors" :key="index") {{error}}
 	//- .field-info(v-if="info") {{ info }}
 </template>
 
@@ -55,10 +53,6 @@ export default {
 			"type": String,
 			"default": ""
 		},
-		"errors": {
-			"type": Array,
-			"default": () => []
-		},
 		"info": {
 			"type": String,
 			"default": ""
@@ -81,6 +75,7 @@ export default {
 		"multiselect": Boolean,
 		"required": Boolean,
 		"fullwidth": Boolean,
+		"transparent": Boolean,
 		"disabled": Boolean
 	},
 	"emits": ["update:modelValue"],
@@ -131,6 +126,10 @@ export default {
 			&::placeholder
 				color: #999
 				font-size: 0.9em
+	&.transparent
+		.field-body
+			box-shadow: 0 0 0 0
+			padding: 0
 	// &:focus-within
 	// 	.field-body
 	// 		box-shadow: 0 0 0 0.15rem #4499f0
@@ -139,8 +138,6 @@ export default {
 	.field-info
 		font-size: 0.7em
 		margin-top: 0.3em
-		&.error
-			color: red
 	&.disabled
 		pointer-events: none
 </style>
