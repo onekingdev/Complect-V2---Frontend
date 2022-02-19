@@ -6,14 +6,18 @@ c-table(v-bind="{columns, documents: users}" searchable)
 
 
 <script>
-import { computed } from "vue";
+import { ref } from "vue";
 import SettingsUsersActions from "~/components/Helpers/SettingsUsersActions.vue";
 import useData from "~/store/Data.js";
 export default {
 	"components": { SettingsUsersActions },
 	setup () {
-		const { documents } = useData( "users" );
-		const users = computed( () => documents.value.filter( document => !document.disabled ) );
+		// const { documents } = useData( "team_members" );
+		// const users = computed( () => documents.value.filter( document => !document.disabled ) );
+
+		const users = ref([])
+
+		// console.log(documents.value)
 
 		const columns = [
 			{
