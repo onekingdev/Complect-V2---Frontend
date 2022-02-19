@@ -3,8 +3,8 @@ card-container(title="General")
 	template(#content)
 		form.form-container
 			h3 Location
-			//- c-select(label="Time Zone" :data="timezones" v-model="profile.timezone" required searchable)
-			c-select(label="Country" :data="countries" v-model="profile.country" required searchable)
+			c-select(label="Time Zone" :data="timezones" v-model="profile.timezone" required searchable)
+			c-select(label="Country" :data="countries" v-model="profile.country" searchable)
 			c-field(label="State" v-model.trim="profile.state")
 			c-field(label="City" v-model.trim="profile.city")
 			c-field(label="Phone Number" type="number" v-model="profile.tel")
