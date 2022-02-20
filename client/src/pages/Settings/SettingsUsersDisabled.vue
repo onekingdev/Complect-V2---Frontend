@@ -4,7 +4,7 @@ c-table(v-bind="{columns, documents: users}" searchable)
 		settings-users-actions
 c-modal(title="Reactivate User" v-model="isReactiveUserVisible")
 	template(#content)
-		p
+		p.text-small
 			| You are reactivating the user's account on Complect. All of the user's historical information was retained,
 			| so all user activity will be available to the user again. Reactivating this user will also require an available seat.
 	template(#footer)
@@ -35,6 +35,7 @@ export default {
 			users.value = documents.value.filter( item => item.disabled ).map( item => ({
 				"user": { "firstName": item.firstName, "lastName": item.lastName },
 				"reason": { "id": item._id, "disabledReason": item.disabledReason, "disabledReasonInfor": item.disabledReasonInfor },
+				"name": `${item.firstName} ${item.lastName} ${item.email}`,
 				...item
 			}) );
 		};
@@ -122,7 +123,7 @@ export default {
 				"cell": "CellDropdown",
 				"meta": {
 					"actions": [
-						{ "title": "Edit", "action": handleEditUser }, { "title": "Enable", "action": handleEnableUser }, { "title": "Delete", "action": handleDeleteUser }
+						{ "title": "Edit", "action": handleEditUser }, { "title": "Reactivate", "action": handleEnableUser }, { "title": "Delete", "action": handleDeleteUser }
 					]
 				}
 			}
@@ -139,3 +140,9 @@ export default {
 	}
 };
 </script>
+
+
+<style lang="styl" scoped>
+.text-small
+	font-size: 0.85em;
+</style>

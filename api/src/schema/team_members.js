@@ -58,6 +58,10 @@ module.exports = {
 			bsonType: "int",
 			description: "must be an number"
 		},
+		userId: {
+			bsonType: "string",
+			description: "must be a string"
+		},
 		createdAt: {
 			bsonType: "int",
 			description: "must be a number"

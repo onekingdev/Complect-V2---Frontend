@@ -1,7 +1,7 @@
 <template lang="pug">
 c-table(v-bind="{columns, documents: users}" searchable)
 	template(#actions)
-		settings-users-actions(:show-export="false" @update-user="getData")
+		settings-users-actions(@update-user="getData")
 </template>
 
 
@@ -21,6 +21,8 @@ export default {
 			await readDocuments();
 			users.value = documents.value.filter( item => !item.disabled ).map( item => ({
 				"user": { "firstName": item.firstName, "lastName": item.lastName },
+				"name": `${item.firstName} ${item.lastName} ${item.email}`,
+				"status": item.userId ? "active" : "pending",
 				...item
 			}) );
 		};
@@ -29,6 +31,7 @@ export default {
 
 		const handleEditUser = id => modal({ "name": "cModalTeamMember", id, callBack });
 		const handleDisableUser = id => modal({ "name": "cModalTeamMember", id, "modalType": "disabled", callBack });
+		const handleReinvite = id => console.debug( id );
 
 		const columns = [
 			{
@@ -47,6 +50,11 @@ export default {
 				"cell": "CellAccessPerson"
 			},
 			{
+				"title": "Status",
+				"key": "status",
+				"cell": "CellStatus"
+			},
+			{
 				"title": "Start Date",
 				"key": "startDate",
 				"cell": "CellDate"
@@ -56,7 +64,7 @@ export default {
 				"cell": "CellDropdown",
 				"meta": {
 					"actions": [
-						{ "title": "Edit", "action": handleEditUser }, { "title": "Disable", "action": handleDisableUser }
+						{ "title": "Edit", "action": handleEditUser }, { "title": "Disable", "action": handleDisableUser }, { "title": "Re-invite", "action": handleReinvite }
 					]
 				}
 			}

@@ -201,4 +201,5 @@ export default {
 .warning
 	position: relative;
 	top: 1em;
+	left: 1em;
 </style>
