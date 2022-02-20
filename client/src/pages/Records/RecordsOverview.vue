@@ -4,6 +4,7 @@
 	span.separator(v-if="selectedFolder._id") &nbsp;/&nbsp;
 	span.tab(v-if="selectedFolder._id" @click="goToFolder()") {{ selectedFolder.title }}
 .actions
+	input(v-show="false" type="file" @change="onChange()" ref="fileInput")
 	c-button(title="Upload" type="primary" @click="UploadRecord()")
 	c-button(title="New Folder" type="default" @click="createNewFolder()")
 c-table(v-bind="{columns, documents}" @cellEvent="folderSelect")
@@ -11,36 +12,53 @@ c-table(v-bind="{columns, documents}" @cellEvent="folderSelect")
 
 
 <script>
-import { ref, onMounted } from "vue"
+import { ref, inject, onMounted } from "vue";
 import useData from "~/store/Data.js";
+import cModalRecord from "~/components/Modals/cModalRecord.vue";
+import cModalDelete from "~/components/Modals/cModalDelete.vue";
 export default {
+	"components": { cModalDelete, cModalRecord },
 	setup () {
-		const { document, documents, createDocuments, readDocuments } = useData( "records" );
-		const selectedFolder = ref({});
+		const { document, documents, readDocuments } = useData( "records" );
+		const modal = inject( "modal" );
+		const selectedFolder = ref( {} );
+		const fileInput = ref( null );
 
-		const handleClickEdit = () => {
-			console.log("Edit record!");
-		};
 		const handleClickDownload = () => console.log("Download record!");
 		const handleClickMoveTo = () => console.log("Moveto record!");
-		const toggleDeleteModal = () => console.log("Delete record!");
+
+		const UploadRecord = () => fileInput.value.click();
+		const onChange = () => { const file = fileInput.value.files[0]; }
+		const createNewFolder = () => modal({ "name": "cModalRecord", "folderId": selectedFolder.value._id });
+		const handleClickEdit = id => modal({ "name": "cModalRecord", id });
+		const handleClickDelete = id => {
+			const index = documents.value.findIndex( item => item._id === id );
+			const title = documents.value[index].status === "folder" ? "Folder" : "File";
+			modal({
+				"name": "cModalDelete",
+				id,
+				"title": title,
+				"description": `Removing this ${documents.value[index].status} will delete any progress and tasks associated with the ${documents.value[index].status}.`,
+				"collection": "records"
+			});
+		};
 
 		const folderSelect = id => {
 			const index = documents.value.findIndex( item => item._id === id );
 			selectedFolder.value = documents.value[index];
-			readDocuments("", {"folderId" : selectedFolder.value._id});
+			readDocuments( "", { "folderId" : selectedFolder.value._id });
 		};
 
 		const goToHome = () => {
-			readDocuments("", {"folderId" : "root"});
+			readDocuments( "", { "folderId" : "root" });
 			selectedFolder.value = {};
 		};
 
 		const goToFolder = () => {
-			readDocuments("", {"folderId" : selectedFolder.value.folderId});
+			readDocuments( "", { "folderId" : selectedFolder.value.folderId });
 			if ( selectedFolder.value.folderId === "root" ) selectedFolder.value = {};
 			else {
-				readDocuments(selectedFolder.value.folderId);
+				readDocuments( selectedFolder.value.folderId );
 				selectedFolder.value = document.value;
 			}
 		};
@@ -75,18 +93,22 @@ export default {
 				"width": "35px",
 				"meta": {
 					"actions": [
-						{ "title": "Edit", "action": handleClickEdit }, { "title": "Download", "action": handleClickDownload }, { "title": "Move to", "action": handleClickMoveTo }, { "title": "Delete", "action": toggleDeleteModal }
+						{ "title": "Edit", "action": handleClickEdit }, { "title": "Download", "action": handleClickDownload }, { "title": "Move to", "action": handleClickMoveTo }, { "title": "Delete", "action": handleClickDelete }
 					]
 				}
 			}
 		];
 
 		onMounted( async () => {
-			await readDocuments("", {"folderId" : "root"});
+			await readDocuments( "", { "folderId" : "root" });
 		});
 
 		return {
 			documents,
+			UploadRecord,
+			fileInput,
+			createNewFolder,
+			onChange,
 			selectedFolder,
 			goToHome,
 			goToFolder,

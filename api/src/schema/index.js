@@ -7,6 +7,7 @@ const jobs = require( "./jobs" );
 const policies = require( "./policies" );
 const reviews = require( "./reviews" );
 const risks = require( "./risks" );
+const user_experiences = require( "./user_experiences" );
 
 
 module.exports = {
@@ -18,5 +19,6 @@ module.exports = {
 	jobs,
 	policies,
 	reviews,
-	risks
+	risks,
+	user_experiences
 };
