@@ -40,6 +40,7 @@ export default {
 	.bar.sidebar
 		z-index: 2
 		max-height: 100%
+		overflow-y: scroll
 		overflow-x: hidden
 		+ main
 			grid-column: span 1
@@ -50,7 +51,7 @@ export default {
 		background: var(--c-bg-z1)
 		z-index: 1
 		max-height: 100%
-		overflow-y: auto
+		overflow-y: scroll
 		overflow-x: hidden
 		grid-column: span 2
 </style>

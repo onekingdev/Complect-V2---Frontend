@@ -8,11 +8,9 @@ const requestGuard = async event => {
 	try {
 		const { collection, _id } = event.pathParameters;
 		const documents = await JSON.parse( event.body );
-		const query = event.queryStringParameters;
 		return {
 			collection,
 			_id,
-			query,
 			documents
 		};
 	} catch ( error ) {

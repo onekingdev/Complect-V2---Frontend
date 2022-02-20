@@ -64,11 +64,6 @@ const _RiskEntry = () => import( "~/pages/Risk/_RiskEntry.vue" );
 const RiskDetail = () => import( "~/pages/Risk/RiskDetail.vue" );
 
 
-// records
-const _RecordsEntry = () => import( "~/pages/Records/_RecordsEntry.vue" );
-const RecordsOverview = () => import( "~/pages/Records/RecordsOverview.vue" );
-
-
 // settings
 const _SettingsEntry = () => import( "~/pages/Settings/_SettingsEntry.vue" );
 const SettingsGeneral = () => import( "~/pages/Settings/SettingsGeneral.vue" );
@@ -244,7 +239,7 @@ const routes = [
 						},
 						"children": [
 							{
-								"path": "details",
+								"path": "",
 								"name": "ReviewDetail",
 								"component": ReviewDetail,
 								"meta": { "title": "Review Detail" },
@@ -290,16 +285,6 @@ const routes = [
 							"name": "RiskDetail",
 							"component": RiskDetail,
 							"meta": { "title": "Risk Detail" }
-						}]
-					},
-					{
-						"path": "records",
-						"component": _RecordsEntry,
-						"children": [{
-							"path": "",
-							"name": "RecordsOverview",
-							"component": RecordsOverview,
-							"meta": { "title": "Records" }
 						}]
 					},
 					{

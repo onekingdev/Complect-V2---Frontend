@@ -29,10 +29,8 @@
 								:key="column.key"
 								:meta="column.meta"
 								:id="document._id"
-								:document="document"
 								:data="document[column.key]"
-								:isChecked="document.isChecked"
-								@cellEvent="cellEvent")
+								:isChecked="document.isChecked")
 
 		icon(v-if="!filteredDocuments.length" name="empty-state")
 </template>
@@ -58,8 +56,7 @@ export default {
 		},
 		"searchable": Boolean
 	},
-	"emits": ["cellEvent"],
-	setup ( props, { emit } ) {
+	setup ( props ) {
 		// filter and Search Documents
 		const searchQuery = ref( "" );
 		const activeFilters = ref({});
@@ -110,10 +107,6 @@ export default {
 			sortArrayByKey( props.documents, key, sortAsc.value[key]);
 		};
 
-		const cellEvent = id => {
-			emit( "cellEvent", id );
-		}
-
 
 		return {
 			getTableCell,
@@ -122,8 +115,7 @@ export default {
 			filteredDocuments,
 			activateFilter,
 			activeFilters,
-			selectedFilterTitle,
-			cellEvent
+			selectedFilterTitle
 		};
 	}
 };
