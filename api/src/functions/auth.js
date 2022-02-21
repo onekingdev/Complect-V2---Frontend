@@ -39,6 +39,20 @@ const emailInUse = async email => {
 	return Boolean( users.length );
 };
 
+const emailChangeAuthInfor = async ( type, email ) => {
+	const isUpdateEmail = type === "email";
+	const template = isUpdateEmail ? "userUpdateEmail" : "userUpdatePassword";
+	const subject = isUpdateEmail ? "Login Email Has Been Changed." : "Password Has Been Changed.";
+	const data = isUpdateEmail ? { formerEmail: email } : {};
+
+	await sendEmail({
+		template,
+		email,
+		subject,
+		data
+	});
+};
+
 // const checkPassword = async ( plain, hash ) => {
 // 	const match = await compareHash( plain, hash );
 // 	if ( !match ) throw { internalCode: 40503 };
@@ -230,58 +244,41 @@ exports.profile = async event => {
 	}
 };
 
-// eslint-disable-next-line
-exports.addUser = async event => {
+exports.updateAuthInfor = async event => {
 	try {
-		const { businessId } = event.pathParameters;
+		const request = await JSON.parse( event.body ); // parse request data
+		const isEmailType = request.type === "email";
+		const requiredFields = isEmailType ? ["newEmail"] : ["password", "newPassword"];
 
-		const profile = await JSON.parse( event.body ); // parse request data
-		if ( !checkFields( profile, ["type", "firstName", "lastName", "email", "role"]) ) throw { internalCode: 10500 }; // check fields
-		if ( await emailInUse( profile.email ) ) throw { internalCode: 40504 };
+		if ( !checkFields( request, ["_id", "type", ...requiredFields]) ) throw { internalCode: 10500 }; // check fields
 
-		const business = await readDocuments({
-			collection: "business",
-			_id: businessId
-		});
-		if ( !business || business.length === 0 ) throw { internalCode: 40502 };
-
-		const currentPlanId = business.currentPlan?.planId;
-		const plan = await readDocuments({
-			collection: "plans",
-			_id: currentPlanId
-		});
-		const seats = await readDocuments({
-			collection: "seats",
-			query: { businessId }
-		});
-		const businessUsers = await readDocuments({
+		const newEmail = request.newEmail;
+		const user = await readDocuments({
 			collection: "users",
-			query: { businessId }
+			_id: request._id,
+			include: ["email", "password"]
 		});
 
-		if ( businessUsers.length >= ( plan.seatCount + business.seatQty ? business.seatQty : 0 ) ) throw { internalCode: 10500 };
-		// eslint-disable-next-line curly
-		else if ( businessUsers.length >= plan.seatCount ) {
-			// eslint-disable-next-line max-depth
-			for ( let i = 0; i < seats.length; i++ ) if ( !seats[i].userId ) {
-				profile.seatId = seats[i].id;
-				break;
-			}
+		const userEmail = user.email;
+		const updateData = {};
+
+		if ( isEmailType ) {
+			if ( await emailInUse( newEmail ) ) throw { internalCode: 40504 };
+			updateData.email = newEmail;
+		} else {
+			if ( request.password !== user.password ) throw { internalCode: 40503 };
+			updateData.password = request.newPassword;
 		}
 
-		profile.new = false; // mark profile as new (didn't start onboarding process)
-		profile.businessId = businessId;
-
-		await createDocuments({
+		await updateDocument({
 			collection: "users",
-			documents: [profile]
-		}); // create document with user data
-		await generateOtp( profile.email );
-		return response({
-			httpCode: 200,
-			internalCode: 40000,
-			message: codes[40000]
+			_id: request._id,
+			documents: updateData
 		});
+
+		emailChangeAuthInfor( request.type, userEmail );
+
+		return response({ httpCode: 200 });
 	} catch ( error ) {
 		return response({
 			httpCode: 406,

@@ -47,25 +47,5 @@ const deleteDocumentsFromCloudDb = async ( collectionName, documentId ) => {
 	return result;
 };
 
-const manualApi = async ({ method, url, newData }) => {
-	try {
-		const API_URI = import.meta.env.VITE_API_URI;
-		const apiUrl = `${API_URI}/${url}`;
-		const options = {
-			method,
-			"mode": "cors",
-			"cache": "no-cache",
-			"headers": { "Content-Type": "application/json;charset=utf-8" },
-			"body": JSON.stringify( newData )
-		};
-		const serverAnswer = await fetch( apiUrl, options );
-		const parsedServerAnswer = await serverAnswer.json();
-		if ( !parsedServerAnswer.ok ) throw new Error( serverAnswer.message );
-		return parsedServerAnswer;
-	} catch ( error ) {
-		console.error( error );
-		return { "error": error.message };
-	}
-};
 
-export { createDocumentsInCloudDb, readDocumentsFromCloudDb, updateDocumentInCloudDb, deleteDocumentsFromCloudDb, manualApi };
+export { createDocumentsInCloudDb, readDocumentsFromCloudDb, updateDocumentInCloudDb, deleteDocumentsFromCloudDb };

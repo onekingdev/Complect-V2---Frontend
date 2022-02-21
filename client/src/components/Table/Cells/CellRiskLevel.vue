@@ -1,5 +1,5 @@
 <template lang="pug">
-.cell-risk-level(v-if="data")
+.cell-risk-level(v-if="data || data === 0")
 	c-badge(:title="`risk${data}`" icon="warning-light")
 </template>
 

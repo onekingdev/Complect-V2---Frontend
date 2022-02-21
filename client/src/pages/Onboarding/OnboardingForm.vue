@@ -1,5 +1,5 @@
 <template lang="pug">
-.onboarding-form
+.onboarding-form.medium-card
 	card-container(title="Set Up Your Account")
 		template(#content)
 			//- Business
@@ -61,7 +61,7 @@
 						.inputs
 							c-field(label="Enter your hourly rate" type="number" placeholder="Hourly rate" v-model="form.rate")
 					section
-						.header Whats your experience?
+						.header What's your experience?
 						.itro Select one that best matches your level of your expertise.
 						.inputs
 							c-radio-cards(id="experience" :data="formOptions.experience" v-model="form.experience")
@@ -89,12 +89,11 @@ import cSelect from "~/components/Inputs/cSelect.vue";
 import cDropzone from "~/components/Inputs/cDropzone.vue";
 import cSwitcher from "~/components/Inputs/cSwitcher.vue";
 import cPlans from "~/components/Misc/cPlans.vue";
-import { manualApi } from "~/core/api.js";
-import useData from "~/store/Data.js";
-import useAuth from "~/core/auth.js";
 
-import { industries, subIndustries, jurisdictions, timezones } from "~/data/static.js";
+import { industries, jurisdictions, timezones } from "~/data/static.js";
 import { plans } from "~/data/plans.js";
+
+import { filterSubIndustries } from "~/core/utils.js";
 
 export default {
 	"components": {
@@ -122,7 +121,6 @@ export default {
 		const router = useRouter();
 		const { profile } = useProfile();
 		const userType = profile.value.type;
-		const { onboarding } = useAuth();
 		const { form } = useForm( "onboarding", baseForm[userType]);
 
 		const wizardSteps = {
@@ -157,52 +155,9 @@ export default {
 			]
 		};
 
-		const goToCheckout = async () => {
-			try {
-				if ( userType === "business" ) {
-					form.value.email = profile.value.email;
-					const { createDocuments } = useData( "business" );
-					const ids = await createDocuments([form.value]);
-					await manualApi({
-						"method": "post",
-						"url": `payment/customer/${ids[0]}`,
-						"newData": {}
-					});
-					await onboarding({ "businessId": ids[0] });
-					// eslint-disable-next-line require-atomic-updates
-					form.value.businessId = ids[0];
-				} else {
-					const { createDocuments } = useData( "specialist" );
-					form.value.email = profile.value.email;
-					form.value.company = `${profile.value.firstName} ${profile.value.lastName}`;
-					const ids = await createDocuments([form.value]);
-					await manualApi({
-						"method": "post",
-						"url": `payment/customer/${ids[0]}`,
-						"newData": {}
-					});
-					await onboarding({ "specialistId": ids[0] });
-					// eslint-disable-next-line require-atomic-updates
-					form.value.specialistId = ids[0];
-				}
-				router.push({ "name": "OnboardingCheckout" });
-			} catch ( error ) {
-				console.debug( error );
-			}
-		};
+		const goToCheckout = () => router.push({ "name": "OnboardingCheckout" });
 
-		const filteredSubIndustries = computed( () => {
-			// return subindustriesBusiness.map(sub => sub.value > 1 && sub.value < 2)
-
-			const sub = [];
-			if ( !form.value.industries ) return sub;
-			form.value.industries.forEach( industry => {
-				subIndustries[userType].forEach( subInd => {
-					if ( subInd.value >= industry && subInd.value < industry + 1 ) sub.push( subInd );
-				});
-			});
-			return sub;
-		});
+		const filteredSubIndustries = computed( () => filterSubIndustries( form.value.industries, userType ) );
 
 		return {
 			userType,
@@ -224,7 +179,6 @@ export default {
 
 <style lang="stylus" scoped>
 .onboarding-form
-	padding: 2em
 	.m-container
 		max-width: 30em
 	.plan-header

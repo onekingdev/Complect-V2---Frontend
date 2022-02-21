@@ -19,6 +19,8 @@
 				c-checkbox.item(v-for="(item, index) in filteredData" :key="index" :label="item.title" :value="item.value" v-model="selectedItems" multiple)
 			template(v-else)
 				.item(v-for="(item, index) in filteredData" :key="index" @click="selectItem(item)") {{item.title}}
+	.field-info.error(v-if="errors && errors.length")
+		p(v-for="(error, index) in errors" :key="index") {{error}}
 </template>
 
 
@@ -46,6 +48,10 @@ export default {
 		"data": {
 			"type": Array,
 			"required": true
+		},
+		"errors": {
+			"type": Array,
+			"default": () => []
 		},
 		"disabled": Boolean,
 		"multiple": Boolean,
@@ -118,7 +124,7 @@ export default {
 		};
 
 		onMounted( () => {
-			if ( !props.modelValue ) return;
+			if ( !props.modelValue && props.modelValue !== 0 ) return;
 			selectedItems.value = props.modelValue;
 			selectedObjects.value = valuesToObjects( props.modelValue );
 		});
