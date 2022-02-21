@@ -1,6 +1,6 @@
 <template lang="pug">
 c-dropdown(iconR="more" type="transparent")
-	c-button(v-for="(item, index) in meta.actions" :key="index" :title="item.title" @click="item.action(id, controlId)" type="transparent" )
+	c-button(v-for="(item, index) in meta.actions" :key="index" :title="item.title" @click="item.action(id)" type="transparent" )
 </template>
 
 
@@ -12,10 +12,6 @@ export default {
 		"id": {
 			"type": String,
 			"required": true
-		},
-		"controlId": {
-			"type": String,
-			"default": ""
 		},
 		"meta": {
 			"type": Object,

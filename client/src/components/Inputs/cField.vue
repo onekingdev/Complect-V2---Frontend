@@ -10,8 +10,6 @@ c-label.c-input.c-field(:class="{fullwidth, disabled}" v-bind="{label, required}
 			:value="modelValue"
 			@updateValue="updateModelValue")
 		icon(v-if="iconR" :name="iconR")
-	.field-info.error(v-if="errors && errors.length")
-		p(v-for="(error, index) in errors" :key="index") {{error}}
 	//- .field-info(v-if="info") {{ info }}
 </template>
 
@@ -54,10 +52,6 @@ export default {
 		"iconR": {
 			"type": String,
 			"default": ""
-		},
-		"errors": {
-			"type": Array,
-			"default": () => []
 		},
 		"info": {
 			"type": String,
@@ -139,8 +133,6 @@ export default {
 	.field-info
 		font-size: 0.7em
 		margin-top: 0.3em
-		&.error
-			color: red
 	&.disabled
 		pointer-events: none
 </style>

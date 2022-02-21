@@ -23,14 +23,12 @@ import useData from "~/store/Data.js";
 import cSelect from "~/components/Inputs/cSelect.vue";
 import cLabel from "~/components/Misc/cLabel.vue";
 import cBadge from "~/components/Misc/cBadge.vue";
-import useProfile from "~/store/Profile.js";
 export default {
 	"components": { cSelect, cLabel, cBadge },
 	setup () {
 		const notification = inject( "notification" );
 		const router = useRouter();
 		const { createDocuments } = useData( "risks" );
-		const { profile } = useProfile();
 
 		const options = [
 			{ "title": "Low", "value": 0 }, { "title": "Medium", "value": 1 }, { "title": "High", "value": 2 }
@@ -45,47 +43,16 @@ export default {
 		const newRiskLevel = computed( () => calcRiskLevel( newRisk.value.impact, newRisk.value.likelihood ) );
 
 		const createRisk = async () => {
-			try {
-				newRisk.value.riskLevel = newRiskLevel.value;
-				newRisk.value.creator = `${profile.value.firstName} ${profile.value.lastName}`;
-				newRisk.value.controls = [
-					{
-						"_id": "2342343",
-						"title": "Policy1",
-						"dateCreated": Date.now(),
-						"lastModified": Date.now(),
-						"status": "draft"
-					}, {
-						"_id": "23423433434",
-						"title": "Policy2",
-						"dateCreated": Date.now(),
-						"lastModified": Date.now(),
-						"status": "published"
-					}, {
-						"_id": "234234234213",
-						"title": "Policy3",
-						"dateCreated": Date.now(),
-						"lastModified": Date.now(),
-						"status": "draft"
-					}
-				];
-				const riskId = await createDocuments([newRisk.value]);
-				notification({
-					"type": "success",
-					"title": "Success",
-					"message": "Risk has been created."
-				});
-				router.push({
-					"name": "RiskDetail",
-					"params": { "id": riskId[0] }
-				});
-			} catch ( error ) {
-				notification({
-					"type": "error",
-					"title": "Error",
-					"message": "Risk has not been created. Plese try again."
-				});
-			}
+			newRisk.value.riskLevel = newRiskLevel.value;
+			const riskId = await createDocuments([newRisk.value]);
+			notification({
+				"type": "success",
+				"title": "Risk Cteated"
+			});
+			router.push({
+				"name": "RiskDetail",
+				"params": { "id": riskId[0] }
+			});
 		};
 
 		return {

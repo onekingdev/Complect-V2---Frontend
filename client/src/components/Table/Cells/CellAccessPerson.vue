@@ -10,7 +10,4 @@ export default { "props": { "data": Boolean } };
 
 
 <style lang="stylus" scoped>
-.cell-access-person
-	position: relative;
-	left: 2.7em;
 </style>

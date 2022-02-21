@@ -7,7 +7,7 @@ const { readDocuments } = require( "../helpers/crud" );
 
 exports.pdfprint = async event => {
 	try {
-		const { collection, template, _id } = JSON.parse( event.body );
+		const { collection, template, _id, version, business_id } = JSON.parse( event.body );
 
 
 		const pdfDoc = new PDFDoc();
@@ -15,7 +15,18 @@ exports.pdfprint = async event => {
 			collection,
 			_id
 		});
-		await pdfDoc.createPDF( template, data );
+		let printdata;
+		if ( template === "policyReport" ) printdata = data.history.find( history => history.version === version );
+		else if ( template === "manualReport" ) {
+			const business = readDocuments({
+				collection: "business",
+				_id: business_id
+			});
+			printdata.policies = data;
+			printdata.business = business;
+		} else if ( template === "internalReport" ) printdata = data;
+
+		await pdfDoc.createPDF( template, printdata );
 
 		const fileName = `${randomName( 8 )}.pdf`;
 		const res = await pdfDoc.uploadToS3( fileName );
