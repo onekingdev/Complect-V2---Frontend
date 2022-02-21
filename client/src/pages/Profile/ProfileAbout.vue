@@ -1,9 +1,6 @@
 <template lang="pug">
 section.grid-6
 	h3.semibold My Profile
-	div {{ profile }}
-	div {{ filteredSubIndustries }}
-	div {{ profile.subIndustries }}
 	c-upload(:class="{'col-2': !isBusiness, 'col-full': isBusiness}" v-model="avatar")
 	c-checkbox.availability.col-4(v-if="!isBusiness" label="Availability" type="toggle" v-model="profile.availability")
 	c-field.col-3(label="First Name" type="text" placeholder="First Name" :errors="errors.firstName" required v-model="profile.firstName")
