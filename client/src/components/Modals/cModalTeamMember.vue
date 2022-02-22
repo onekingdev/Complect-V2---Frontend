@@ -110,7 +110,6 @@ export default {
 		}
 	},
 	setup ( props ) {
-		const modal = inject( "modal" );
 		const notification = inject( "notification" );
 		const { deleteModal } = useModals();
 		const { document, readDocuments, updateDocument } = useData( "team_members" );
