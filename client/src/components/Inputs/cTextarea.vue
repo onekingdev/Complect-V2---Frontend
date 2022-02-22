@@ -3,6 +3,7 @@ label.c-input.c-textarea(:class="{fullwidth}")
 	.field-label(v-if="label") {{ label }}
 		span.required(v-if="required") *
 	textarea.field-body(
+		ref="root"
 		:placeholder="placeholder"
 		:required="required"
 		:tabIndex="tabIndex"
@@ -12,6 +13,7 @@ label.c-input.c-textarea(:class="{fullwidth}")
 
 
 <script>
+import { onMounted, ref } from "vue";
 export default {
 	"props": {
 		"label": {
@@ -38,9 +40,32 @@ export default {
 			"type": Boolean,
 			"default": true
 		},
+		"autosize": {
+			"type": Boolean,
+			"default": false
+		},
 		"required": Boolean
 	},
-	"emits": ["update:modelValue"]
+	"emits": ["update:modelValue"],
+	setup ( props ) {
+		const root = ref( null );
+
+		const resize = ele => {
+			ele.target.style.height = "auto";
+			ele.target.style.height = `${ele.target.scrollHeight}px`;
+		};
+
+		const setResizeListeners = target => {
+			target.style.height = `${target.scrollHeight}px`;
+			target.addEventListener( "input", resize );
+		};
+
+		onMounted( () => {
+			if ( props.autosize ) setResizeListeners( root.value );
+		});
+
+		return { root };
+	}
 };
 </script>
 
@@ -70,8 +95,6 @@ export default {
 		line-height: 1.3
 		min-height: 5em
 		resize: vertical
-		max-height: 4em
-		overflow-y: scroll
 		&::placeholder
 			color: #999
 			font-size: 0.9em

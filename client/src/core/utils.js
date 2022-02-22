@@ -1,12 +1,4 @@
 import { subIndustries } from "~/data/static.js";
-import useVuelidate from "@vuelidate/core";
-
-const MESSAGE_VALIDATORS = {
-	"required": "Required field",
-	"sameAsNewPassword": "Password does not match",
-	"dateValidate": "Required field"
-};
-
 // return random number
 const randomNumber = ( minimum = 0, maximum = 100 ) => Math.round( Math.random() * ( maximum - minimum ) + minimum );
 
@@ -91,19 +83,4 @@ const filterSubIndustries = ( industries, userType ) => {
 	return sub;
 };
 
-const validates = async ( rules, data ) => {
-	const errors = {};
-	const vueValidate = useVuelidate( rules, data );
-	await vueValidate.value.$validate();
-
-	if ( vueValidate.value.$errors ) {
-		vueValidate.value.$errors.forEach( item => {
-			const message = MESSAGE_VALIDATORS[item.$validator] ? MESSAGE_VALIDATORS[item.$validator] : item.$message;
-			errors[item.$property] = [message];
-		});
-	}
-
-	return errors;
-};
-
-export { randomNumber, randomId, randomMongoId, sortArrayByKey, splitArrayToChunks, formatDate, calcRiskLevel, calcExpandDirections, removeSensitiveData, filterSubIndustries, validates };
+export { randomNumber, randomId, randomMongoId, sortArrayByKey, splitArrayToChunks, formatDate, calcRiskLevel, calcExpandDirections, removeSensitiveData, filterSubIndustries };

@@ -8,9 +8,11 @@ const requestGuard = async event => {
 	try {
 		const { collection, _id } = event.pathParameters;
 		const documents = await JSON.parse( event.body );
+		const query = event.queryStringParameters;
 		return {
 			collection,
 			_id,
+			query,
 			documents
 		};
 	} catch ( error ) {
@@ -27,6 +29,7 @@ const response = ({ httpCode, internalCode, message, data }) => {
 		message,
 		data
 	};
+	console.log(body);
 	return {
 		statusCode: httpCode,
 		headers: {

@@ -21,12 +21,12 @@ const generateOtp = async email => {
 		documents: { otp },
 		options: { upsert: true }
 	});
-	await sendEmail({
-		template: "otp",
-		email,
-		subject: "OTP",
-		data: { otp }
-	});
+	// await sendEmail({
+	// 	template: "otp",
+	// 	email,
+	// 	subject: "OTP",
+	// 	data: { otp }
+	// });
 	devStageLog( `OTP is: ${otp}` ); // print otp number to console at dev stage
 };
 
@@ -37,20 +37,6 @@ const emailInUse = async email => {
 		query: { email }
 	});
 	return Boolean( users.length );
-};
-
-const emailChangeAuthInfor = async ( type, email ) => {
-	const isUpdateEmail = type === "email";
-	const template = isUpdateEmail ? "userUpdateEmail" : "userUpdatePassword";
-	const subject = isUpdateEmail ? "Login Email Has Been Changed." : "Password Has Been Changed.";
-	const data = isUpdateEmail ? { formerEmail: email } : {};
-
-	await sendEmail({
-		template,
-		email,
-		subject,
-		data
-	});
 };
 
 // const checkPassword = async ( plain, hash ) => {
@@ -235,50 +221,6 @@ exports.profile = async event => {
 			httpCode: 200,
 			data: userProfile
 		});
-	} catch ( error ) {
-		return response({
-			httpCode: 406,
-			internalCode: error.internalCode,
-			message: error.message || codes[error.internalCode]
-		});
-	}
-};
-
-exports.updateAuthInfor = async event => {
-	try {
-		const request = await JSON.parse( event.body ); // parse request data
-		const isEmailType = request.type === "email";
-		const requiredFields = isEmailType ? ["newEmail"] : ["password", "newPassword"];
-
-		if ( !checkFields( request, ["_id", "type", ...requiredFields]) ) throw { internalCode: 10500 }; // check fields
-
-		const newEmail = request.newEmail;
-		const user = await readDocuments({
-			collection: "users",
-			_id: request._id,
-			include: ["email", "password"]
-		});
-
-		const userEmail = user.email;
-		const updateData = {};
-
-		if ( isEmailType ) {
-			if ( await emailInUse( newEmail ) ) throw { internalCode: 40504 };
-			updateData.email = newEmail;
-		} else {
-			if ( request.password !== user.password ) throw { internalCode: 40503 };
-			updateData.password = request.newPassword;
-		}
-
-		await updateDocument({
-			collection: "users",
-			_id: request._id,
-			documents: updateData
-		});
-
-		emailChangeAuthInfor( request.type, userEmail );
-
-		return response({ httpCode: 200 });
 	} catch ( error ) {
 		return response({
 			httpCode: 406,

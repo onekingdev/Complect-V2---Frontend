@@ -4,10 +4,10 @@ card-container(:title="modalTitle" ref="modalWindow")
 		c-button(type="icon" iconL="close" size="small" @click="closeModal()")
 	template(#content)
 		.grid-6
-			c-field(label="Title" :errors="errors.title" v-model="form.title" required)
-			c-field(label="Employer" :errors="errors.employer" v-model="form.employer" required)
-			c-field.col-3(label="Start Date" type="date" :errors="errors.startsAt" v-model="form.startsAt" required)
-			c-field.col-3(label="End Date" type="date" v-model="form.endsAt" required)
+			c-field(label="Title" v-model="form.title" required)
+			c-field(label="Employer" v-model="form.employer")
+			c-field.col-3(label="Start Date" type="date" v-model="form.startsAt" required)
+			c-field.col-3(label="Due Date" type="date" v-model="form.endsAt")
 			div.col-3
 			c-checkbox.col-3(label="Present" v-model="form.isPresent")
 			c-textarea(label="Description" v-model="form.description")
@@ -23,9 +23,6 @@ import useModals from "~/store/Modals.js";
 import useData from "~/store/Data.js";
 import useProfile from "~/store/Profile.js";
 import { onClickOutside } from "@vueuse/core";
-import { validates } from "~/core/utils.js";
-import { required } from "@vuelidate/validators";
-import { requireDate } from "~/core/customValidates.js";
 
 export default {
 	"props": {
@@ -50,20 +47,10 @@ export default {
 		const action = props.id ? "updated" : "added";
 		const modalWindow = ref( null );
 		const form = ref({ "isPresent": false, "userId": profile.value._id });
-		const errors = ref({});
-
-		const rules = {
-			"title": { required },
-			"employer": { required },
-			"startsAt": { "required": requireDate }
-		};
 
 		const closeModal = () => deleteModal( props.modalId );
 
 		const saveUserExperience = async () => {
-			errors.value = await validates( rules, form.value );
-			if ( Object.keys( errors.value ).length > 0 ) return;
-
 			try {
 				if ( props.id ) await updateDocument( form.value._id, form.value );
 				else await createDocuments([form.value]);
@@ -99,7 +86,7 @@ export default {
 
 		onUnmounted( () => form.value = {});
 
-		return { errors, modalWindow, modalTitle, btnTitle, form, closeModal, saveUserExperience };
+		return { modalWindow, modalTitle, btnTitle, form, closeModal, saveUserExperience };
 	}
 };
 </script>

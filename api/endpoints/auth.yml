@@ -94,22 +94,6 @@ onboarding:
         method: post
         cors: true
 
-updateAuthInfor:
-  name: ${opt:stage, 'dev'}-api--auth-updateAuthInfor
-  handler: src/functions/auth.updateAuthInfor
-  description: Update Authentication Infor API endpoints
-  tags:
-    website: Complect App
-    type: API
-    subtype: Auth
-  layers:
-    - {Ref: BaseLibsLambdaLayer}
-  events:
-    - http:
-        path: auth/update-auth-infor
-        method: post
-        cors: true
-
 profile:
   name: ${opt:stage, 'dev'}-api--auth-profile
   handler: src/functions/auth.profile
