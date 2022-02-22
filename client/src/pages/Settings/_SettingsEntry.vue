@@ -63,6 +63,4 @@ export default {
 <style lang="stylus" scoped>
 .page
 	padding: 2em
-	:deep(.container-content)
-		overflow: revert;
 </style>

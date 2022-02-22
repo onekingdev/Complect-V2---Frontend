@@ -1,30 +1,27 @@
 <template lang="pug">
-page-container(title="Risk Register")
-	template(#controls)
-		c-button-modal(title="New Risk" modalTitle="New Risk" type="primary")
+market-container
+	template(#filter title="Filters")
+		card-container
 			template(#content)
-				c-field(label="Risk Name" v-model="newRisk.title" required)
-				c-select.col-3(label="Impact" :data="options" v-model="newRisk.impact")
-				c-select.col-3(label="Likelihood" :data="options" v-model="newRisk.likelihood")
-				c-label.col-2(label="Risk Level")
-					c-badge(icon="warning-light" :title="`risk${newRiskLevel}`")
-			template(#footer)
-				c-button(title="Create" type="primary" @click="createRisk()")
+				h2 Test
 	template(#content)
-		router-view
+		card-container(title="Browse Jobs")
+			template(#content)
+				h1 Test
 </template>
 
 
 <script>
 import { ref, computed, inject } from "vue";
 import { useRouter } from "vue-router";
+import MarketContainer from "~/components/Containers/MarketContainer.vue";
 import { calcRiskLevel } from "~/core/utils.js";
 import useData from "~/store/Data.js";
 import cSelect from "~/components/Inputs/cSelect.vue";
 import cLabel from "~/components/Misc/cLabel.vue";
 import cBadge from "~/components/Misc/cBadge.vue";
 export default {
-	"components": { cSelect, cLabel, cBadge },
+	"components": { cSelect, cLabel, cBadge, MarketContainer },
 	setup () {
 		const notification = inject( "notification" );
 		const router = useRouter();

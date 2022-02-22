@@ -17,7 +17,6 @@
 					th(v-for="(column, index) in columns" :key="index" v-bind:width="[column.width]")
 						.cell.column-title(:class="[column.align]")
 							.title(v-if="column.title") {{ column.title }}
-							icon(v-if="column.icon" :name="column.icon.name" :size="column.icon.size" @click="column.icon.handleClick()")
 							c-button(v-if="!column.unsortable" type="icon" iconR="sort" @click="sortDocuments(column.key)")
 			tbody(v-if="filteredDocuments.length")
 				tr(v-for="document in filteredDocuments" :key="document._id")
@@ -30,8 +29,7 @@
 								:key="column.key"
 								:meta="column.meta"
 								:id="document._id"
-								:data="document[column.key]"
-								:isChecked="document.isChecked")
+								:data="document[column.key]")
 
 		icon(v-if="!filteredDocuments.length" name="empty-state")
 </template>
@@ -78,7 +76,7 @@ export default {
 			let documents;
 			try {
 				documents = props.documents;
-				documents.map( document => document.isChecked = false );
+
 				// filters (filter and mutate documents array)
 				const activeFiltersKeys = Object.keys( activeFilters.value ); // get filters (filter = dropdown element)
 				if ( activeFiltersKeys.length ) { // if active filters exist

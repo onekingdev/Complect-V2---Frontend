@@ -63,6 +63,9 @@ const RisksOverview = () => import( "~/pages/Risks/RisksOverview.vue" );
 const _RiskEntry = () => import( "~/pages/Risk/_RiskEntry.vue" );
 const RiskDetail = () => import( "~/pages/Risk/RiskDetail.vue" );
 
+// jobs
+const _JobEntry = () => import( "~/pages/Job/_JobEntry.vue" );
+
 
 // settings
 const _SettingsEntry = () => import( "~/pages/Settings/_SettingsEntry.vue" );
@@ -75,10 +78,8 @@ const SettingsSecurity = () => import( "~/pages/Settings/SettingsSecurity.vue" )
 const SettingsSubscriptions = () => import( "~/pages/Settings/SettingsSubscriptions.vue" );
 const SettingsBilling = () => import( "~/pages/Settings/SettingsBilling.vue" );
 
-// profiles
+
 const _ProfileEntry = () => import( "~/pages/Profile/_ProfileEntry.vue" );
-const ProfileAbout = () => import( "~/pages/Profile/ProfileAbout.vue" );
-const ProfileSettings = () => import( "~/pages/Profile/ProfileSettings.vue" );
 import { devRoutes } from "~/_devmode/Routes.js";
 
 // ––––––––––––––– Routes ––––––––––––––– //
@@ -288,25 +289,21 @@ const routes = [
 						}]
 					},
 					{
+						"path": "jobs",
+						"component": _JobEntry,
+						"meta": {
+							"title": "Jobs",
+							"sidebar": false
+						}
+					},
+					{
 						"path": "profile",
 						"name": "Profile",
 						"component": _ProfileEntry,
 						"meta": {
 							"title": "Profile",
 							"sidebar": false
-						},
-						"children": [
-							{
-								"path": "",
-								"name": "ProfileAbout",
-								"component": ProfileAbout
-							}, {
-								"path": "settings",
-								"meta": { "title": "Profile - Settings" },
-								"name": "ProfileSettings",
-								"component": ProfileSettings
-							}
-						]
+						}
 					},
 					{
 						"path": "settings",
