@@ -29,8 +29,5 @@
     "serverless-iam-roles-per-function": "3.2.0",
     "serverless-offline": "8.3.1",
     "serverless-prune-plugin": "1.6.1"
-  },
-  "dependencies": {
-    "lambda-multipart-parser": "^1.0.1"
   }
 }

@@ -22,7 +22,7 @@ exports.pdfprint = async event => {
 
 		response({
 			httpCode: 200,
-			data: res
+			message: res
 		});
 	} catch ( error ) {
 		return response({

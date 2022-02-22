@@ -8,5 +8,8 @@ module.exports = {
 	40501: "Incorrect OTP",
 	40502: "Incorrect email",
 	40503: "Incorrect password",
-	40504: "Email already in use"
+	40504: "Email already in use",
+
+	// team Member
+	40001: "Member created"
 };

@@ -1,6 +1,8 @@
 <template lang="pug">
 label
-	.item-label(v-if="label") {{ label }}:
+	.item-label(v-if="label")
+		| {{ label }}
+		icon(v-if="iconR" :name="iconR.name" @click="iconR.handleClick()") :
 		span.required(v-if="required") *
 	slot
 </template>
@@ -12,6 +14,10 @@ export default {
 		"label": {
 			"type": String,
 			"default": ""
+		},
+		"iconR": {
+			"type": Object,
+			"default": () => {}
 		},
 		"required": Boolean
 	}

@@ -32,6 +32,9 @@ svg.icon
 	&.small
 		width: 0.8em
 		height: 0.8em
+	&.medium
+		width: 1.2em
+		height: 1.2em
 	&.big
 		width: 1.5em
 		height: 1.5em
