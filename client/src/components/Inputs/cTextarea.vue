@@ -70,6 +70,8 @@ export default {
 		line-height: 1.3
 		min-height: 5em
 		resize: vertical
+		max-height: 4em
+		overflow-y: scroll
 		&::placeholder
 			color: #999
 			font-size: 0.9em

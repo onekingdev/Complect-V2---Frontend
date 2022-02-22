@@ -1,5 +1,5 @@
 <template lang="pug">
-.onboarding-form
+.onboarding-form.medium-card
 	card-container(title="Set Up Your Account")
 		template(#content)
 			//- Business
@@ -90,8 +90,10 @@ import cDropzone from "~/components/Inputs/cDropzone.vue";
 import cSwitcher from "~/components/Inputs/cSwitcher.vue";
 import cPlans from "~/components/Misc/cPlans.vue";
 
-import { industries, subIndustries, jurisdictions, timezones } from "~/data/static.js";
+import { industries, jurisdictions, timezones } from "~/data/static.js";
 import { plans } from "~/data/plans.js";
+
+import { filterSubIndustries } from "~/core/utils.js";
 
 export default {
 	"components": {
@@ -155,18 +157,7 @@ export default {
 
 		const goToCheckout = () => router.push({ "name": "OnboardingCheckout" });
 
-		const filteredSubIndustries = computed( () => {
-			// return subindustriesBusiness.map(sub => sub.value > 1 && sub.value < 2)
-
-			const sub = [];
-			if ( !form.value.industries ) return sub;
-			form.value.industries.forEach( industry => {
-				subIndustries[userType].forEach( subInd => {
-					if ( subInd.value >= industry && subInd.value < industry + 1 ) sub.push( subInd );
-				});
-			});
-			return sub;
-		});
+		const filteredSubIndustries = computed( () => filterSubIndustries( form.value.industries, userType ) );
 
 		return {
 			userType,
@@ -188,7 +179,6 @@ export default {
 
 <style lang="stylus" scoped>
 .onboarding-form
-	padding: 2em
 	.m-container
 		max-width: 30em
 	.plan-header

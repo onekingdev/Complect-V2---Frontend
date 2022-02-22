@@ -14,7 +14,7 @@
 		.name {{profile.firstName}} {{profile.lastName}}
 		icon(name="chevron-down")
 		.dropdown-menu(v-if="userDropDownExpanded")
-			router-link(v-if="!simpleTopBar" :to="{name: 'Profile'}") {{$locale("Profile")}}
+			router-link(v-if="!simpleTopBar" :to="{name: 'ProfileAbout'}") {{$locale("Profile")}}
 			a(@click="signOut()") {{$locale("Sign Out")}}
 </template>
 
@@ -114,7 +114,6 @@ export default {
 			margin-right: 0.7em
 			flex-shrink: 0
 		.name
-			max-width: 7em
 			white-space: nowrap
 			overflow: hidden
 			text-overflow: ellipsis
