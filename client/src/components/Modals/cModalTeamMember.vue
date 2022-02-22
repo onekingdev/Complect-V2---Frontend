@@ -124,12 +124,6 @@ export default {
 			"disabled": false
 		});
 
-		const roleIcon = {
-			"name": "info",
-			"handleClick": () => modal({ "name": "cModalRuleInfor" })
-		};
-
-
 		const { createUser, toggleDisable } = teamMember();
 
 		const closeModal = () => deleteModal( props.modalId );
@@ -184,7 +178,6 @@ export default {
 		onUnmounted( () => form.value = {});
 
 		return {
-			roleIcon,
 			errors,
 			isDisableModal,
 			disabledReasons,

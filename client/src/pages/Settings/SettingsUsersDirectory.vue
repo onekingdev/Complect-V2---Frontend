@@ -38,9 +38,7 @@ export default {
 			return user.status === "pending";
 		};
 
-		const handleClickRoleInfor = () => {
-			modal({ "name": "cModalRuleInfor" });
-		};
+		const handleClickRoleInfor = () => modal({ "name": "cModalRoleInfor" });
 
 		const columns = [
 			{
