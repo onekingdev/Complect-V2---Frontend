@@ -70,40 +70,36 @@ const sidebarHomeNavigation = [
 	}
 ];
 
-const sidebarDocumentsNavigation = [
-	{
-		"title": "Files",
-		"icon": "document",
-		"links": [
-			{
-				"title": "Book and Records",
-				"view": "RecordsOverview"
-			}, {
-				"title": "Exam Management",
-				"view": "ReviewsOverview"
-			}
-		]
-	}
-];
+const sidebarDocumentsNavigation = [{
+	"title": "Files",
+	"icon": "document",
+	"links": [
+		{
+			"title": "Book and Records",
+			"view": "RecordsOverview"
+		}, {
+			"title": "Exam Management",
+			"view": "ReviewsOverview"
+		}
+	]
+}];
 
-const sidebarReportsNavigation = [
-	{
-		"title": "Reports",
-		"icon": "document",
-		"links": [
-			{
-				"title": "Organization",
-				"view": "OrganizationOverview"
-			}, {
-				"title": "Risks",
-				"view": "RecordsOverview"
-			}, {
-				"title": "Financials",
-				"view": "RecordsOverview"
-			}
-		]
-	}
-];
+const sidebarReportsNavigation = [{
+	"title": "Reports",
+	"icon": "document",
+	"links": [
+		{
+			"title": "Organization",
+			"view": "OrganizationOverview"
+		}, {
+			"title": "Risks",
+			"view": "RecordsOverview"
+		}, {
+			"title": "Financials",
+			"view": "RecordsOverview"
+		}
+	]
+}];
 
 
 const _devModeNavigation = {
