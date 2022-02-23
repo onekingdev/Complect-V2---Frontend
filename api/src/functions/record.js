@@ -96,7 +96,7 @@ exports.moveToDirs = async () => {
 
 		if ( records.length ) {
 			if ( records.length === 1 ) files = [];
-			for ( const i in records ) {
+			if ( records.length ) for ( const i in records ) {
 				const name = "";
 				const status = records[i].status;
 				const title = records[i].title;
