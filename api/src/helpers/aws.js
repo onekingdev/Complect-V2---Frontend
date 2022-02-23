@@ -59,8 +59,8 @@ const awsZipDownload = async ( files, zipName ) => {
 	// ))).catch(_err => { throw new Error(_err) } );
 
 	const list = [];
-	if( files.length )
-		for ( const i in files ) {
+	if ( files.length )
+		for ( let i = 0; i < files.length; i++ ) {
 			let filestream, item;
 			if ( files[i].key === "" ) item = {
 				content: "",
