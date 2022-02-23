@@ -94,25 +94,23 @@ exports.moveToDirs = async () => {
 			query
 		});
 
-		if ( records.length ) {
-			if ( records.length === 1 ) files = [];
-			else for ( let i = 0; i < records.length; i++ ) {
-				const name = "";
-				const status = records[i].status;
-				const title = records[i].title;
-				const value = records[i]._id;
-				const key = "";
-				files.push({
-					key,
-					name,
-					status,
-					title,
-					value
-				});
-				const id = records[i]._id.toString();
-				await getChildren( id, id, "folder" );
-			}
-		} else files = [];
+		if ( records.length === 1 || !records.length ) files = [];
+		else for ( let i; i < records.length; i++ ) {
+			const name = "";
+			const status = records[i].status;
+			const title = records[i].title;
+			const value = records[i]._id;
+			const key = "";
+			files.push({
+				key,
+				name,
+				status,
+				title,
+				value
+			});
+			const id = records[i]._id.toString();
+			await getChildren( id, id, "folder" );
+		}
 
 		return response({
 			httpCode: 200,
