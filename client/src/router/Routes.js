@@ -68,6 +68,10 @@ const RiskDetail = () => import( "~/pages/Risk/RiskDetail.vue" );
 const _RecordsEntry = () => import( "~/pages/Records/_RecordsEntry.vue" );
 const RecordsOverview = () => import( "~/pages/Records/RecordsOverview.vue" );
 
+// organization
+const _OrganizationEntry = () => import( "~/pages/Organization/_OrganizationEntry.vue" );
+const OrganizationOverview = () => import( "~/pages/Organization/OrganizationOverview.vue" );
+
 
 // settings
 const _SettingsEntry = () => import( "~/pages/Settings/_SettingsEntry.vue" );
@@ -299,7 +303,17 @@ const routes = [
 							"path": "",
 							"name": "RecordsOverview",
 							"component": RecordsOverview,
-							"meta": { "title": "Records" }
+							"meta": { "title": "Records", "tab": "Documents" }
+						}]
+					},
+					{
+						"path": "organization",
+						"component": _OrganizationEntry,
+						"children": [{
+							"path": "",
+							"name": "OrganizationOverview",
+							"component": OrganizationOverview,
+							"meta": { "title": "Organization", "tab": "Reports" }
 						}]
 					},
 					{

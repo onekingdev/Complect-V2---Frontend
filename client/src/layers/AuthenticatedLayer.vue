@@ -41,6 +41,8 @@ export default {
 		z-index: 2
 		max-height: 100%
 		overflow-x: hidden
+		&:not(.sidebar-collapsed)
+			min-width: 16.4em
 		+ main
 			grid-column: span 1
 	.bar.devbar
