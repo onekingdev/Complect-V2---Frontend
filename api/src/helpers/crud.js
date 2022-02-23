@@ -59,10 +59,31 @@ const deleteDocuments = async ({ collection, _id, query }) => {
 	}
 };
 
+const aggregateDocuments = async ({ collection, _id, startWith, connectFromField, connectToField, as }) => {
+	try {
+		const useCollection = await getCollection( collection );
+		return await useCollection.aggregate([
+			{ $match: { _id: ObjectID( _id )} },
+			{
+				$graphLookup: {
+					from: collection,
+					startWith: startWith,
+					connectFromField: connectFromField,
+					connectToField: connectToField,
+					as: as
+				}
+			}
+		]).toArray();
+	} catch ( error ) {
+		console.error( error );
+		throw error;
+	}
+};
 
 module.exports = {
 	createDocuments,
 	readDocuments,
 	updateDocument,
-	deleteDocuments
+	deleteDocuments,
+	aggregateDocuments
 };

@@ -1,5 +1,5 @@
 <template lang="pug">
-.onboarding-form.medium-card
+.onboarding-form
 	card-container(title="Set Up Your Account")
 		template(#content)
 			//- Business
@@ -179,6 +179,7 @@ export default {
 
 <style lang="stylus" scoped>
 .onboarding-form
+	padding: 2em
 	.m-container
 		max-width: 30em
 	.plan-header

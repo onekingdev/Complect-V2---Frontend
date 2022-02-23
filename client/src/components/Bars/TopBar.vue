@@ -114,6 +114,7 @@ export default {
 			margin-right: 0.7em
 			flex-shrink: 0
 		.name
+			max-width: 7em
 			white-space: nowrap
 			overflow: hidden
 			text-overflow: ellipsis
