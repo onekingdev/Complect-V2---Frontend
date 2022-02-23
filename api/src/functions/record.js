@@ -6,10 +6,27 @@ const { response } = require( "../helpers/utils" );
 
 const collection = "records";
 
-let files = [];
+let files;
+files = [];
+
+const getDir = async ( current_id, current_status, current_title, current_folderId, origin_id ) => {
+	if ( current_id === origin_id ) return "";
+	let dir;
+	dir = current_title;
+	const record = await readDocuments({
+		collection,
+		_id: current_folderId
+	});
+	const cr_title = await getDir( record._id.toString(), record.status, record.title, record.folderId, origin_id );
+	dir = current_status === "file" ? cr_title : `${cr_title}${dir}/`;
+	return dir;
+};
 
 const getChildren = async ( _id, origin_id, fStatus ) => {
-	const query = fStatus ? { folderId: _id, status: fStatus } : { folderId: _id };
+	const query = fStatus ? {
+		folderId: _id,
+		status: fStatus
+	} : { folderId: _id };
 	const records = await readDocuments({
 		collection,
 		query
@@ -31,19 +48,6 @@ const getChildren = async ( _id, origin_id, fStatus ) => {
 			});
 			await getChildren( records[i]._id.toString(), origin_id, fStatus );
 		}
-};
-
-const getDir = async ( current_id, current_status, current_title, current_folderId, origin_id ) => {
-	if ( current_id === origin_id ) return "";
-	let dir;
-	dir = current_title;
-	const record = await readDocuments({
-		collection,
-		_id: current_folderId
-	});
-	const cr_title = await getDir(record._id.toString(), record.status, record.title, record.folderId, origin_id);
-	dir = current_status === "file" ? cr_title : `${cr_title}${dir}/`;
-	return dir;
 };
 
 exports.zipDownload = async event => {
@@ -69,9 +73,7 @@ exports.zipDownload = async event => {
 		}
 		return response({
 			httpCode: 200,
-			data: {
-				location
-			}
+			data: { location }
 		});
 	} catch ( error ) {
 		return response({
@@ -93,24 +95,22 @@ exports.moveToDirs = async () => {
 			query
 		});
 		if ( records.length === 1 || !records.length ) files = [];
-		else
-			for ( const i in records ) {
-				const name = "";
-				const status = records[i].status;
-				const title = records[i].title;
-				const value = records[i]._id;
-				const key = "";
-				files.push({
-					key,
-					name,
-					status,
-					title,
-					value
-				});
-				let id;
-				id = records[i]._id.toString();
-				await getChildren( id, id, "folder" );
-			}
+		else for ( const i in records ) {
+			const name = "";
+			const status = records[i].status;
+			const title = records[i].title;
+			const value = records[i]._id;
+			const key = "";
+			files.push({
+				key,
+				name,
+				status,
+				title,
+				value
+			});
+			const id = records[i]._id.toString();
+			await getChildren( id, id, "folder" );
+		}
 
 		return response({
 			httpCode: 200,
