@@ -93,9 +93,10 @@ exports.moveToDirs = async () => {
 			collection,
 			query
 		});
-		if ( records.length === 1 || !records.length ) files = [];
-		else
-			if ( records.length ) for ( const i in records ) {
+
+		if ( records.length ) {
+			if ( records.length === 1 ) files = [];
+			for ( const i in records ) {
 				const name = "";
 				const status = records[i].status;
 				const title = records[i].title;
@@ -111,6 +112,7 @@ exports.moveToDirs = async () => {
 				const id = records[i]._id.toString();
 				await getChildren( id, id, "folder" );
 			}
+		} else files = [];
 
 		return response({
 			httpCode: 200,
