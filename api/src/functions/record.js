@@ -36,7 +36,7 @@ const getChildren = async ( _id, origin_id, fStatus ) => {
 const getDir = async ( current_id, current_status, current_title, current_folderId, origin_id ) => {
 	if ( current_id === origin_id ) return "";
 	let dir;
-	let = current_title;
+	let dir = current_title;
 	const record = await readDocuments({
 		collection,
 		_id: current_folderId
