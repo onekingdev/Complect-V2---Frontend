@@ -60,20 +60,20 @@ const awsZipDownload = async ( files, zipName ) => {
 
 	const list = [];
 	if ( files.length )	for ( let i = 0; i < files.length; i++ ) {
-			let filestream, item;
-			if ( files[i].key === "" ) item = {
-				content: "",
+		let filestream, item;
+		if ( files[i].key === "" ) item = {
+			content: "",
+			name: files[i].name
+		};
+		else {
+			filestream = await getFileStream( files[i].key );
+			item = {
+				content: filestream.Body,
 				name: files[i].name
 			};
-			else {
-				filestream = await getFileStream( files[i].key );
-				item = {
-					content: filestream.Body,
-					name: files[i].name
-				};
-			}
-			list.push( item );
 		}
+		list.push( item );
+	}
 
 	return await new Promise( ( resolve, reject ) => {
 		const myStream = streamTo( AWS_BUCKET_NAME, zipName, data => {
