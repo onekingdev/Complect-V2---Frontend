@@ -31,23 +31,22 @@ const getChildren = async ( _id, origin_id, fStatus ) => {
 		collection,
 		query
 	});
-	if ( records.length )
-		for ( let i = 0; i < records.length; i++ ) {
-			const recordDir = await getDir( records[i]._id.toString(), records[i].status, records[i].title, records[i].folderId, origin_id );
-			const name = records[i].status === "file" ? `${recordDir}${records[i].title}` : recordDir;
-			const key = records[i].status === "file" ? records[i].key : "";
-			const status = records[i].status;
-			const title = records[i].title;
-			const value = records[i]._id;
-			files.push({
-				key,
-				name,
-				status,
-				title,
-				value
-			});
-			await getChildren( records[i]._id.toString(), origin_id, fStatus );
-		}
+	if ( records.length )	for ( let i = 0; i < records.length; i++ ) {
+		const recordDir = await getDir( records[i]._id.toString(), records[i].status, records[i].title, records[i].folderId, origin_id );
+		const name = records[i].status === "file" ? `${recordDir}${records[i].title}` : recordDir;
+		const key = records[i].status === "file" ? records[i].key : "";
+		const status = records[i].status;
+		const title = records[i].title;
+		const value = records[i]._id;
+		files.push({
+			key,
+			name,
+			status,
+			title,
+			value
+		});
+		await getChildren( records[i]._id.toString(), origin_id, fStatus );
+	}
 };
 
 exports.zipDownload = async event => {
@@ -95,22 +94,23 @@ exports.moveToDirs = async () => {
 			query
 		});
 		if ( records.length === 1 || !records.length ) files = [];
-		else for ( const i in records ) {
-			const name = "";
-			const status = records[i].status;
-			const title = records[i].title;
-			const value = records[i]._id;
-			const key = "";
-			files.push({
-				key,
-				name,
-				status,
-				title,
-				value
-			});
-			const id = records[i]._id.toString();
-			await getChildren( id, id, "folder" );
-		}
+		else
+			if ( records.length ) for ( const i in records ) {
+				const name = "";
+				const status = records[i].status;
+				const title = records[i].title;
+				const value = records[i]._id;
+				const key = "";
+				files.push({
+					key,
+					name,
+					status,
+					title,
+					value
+				});
+				const id = records[i]._id.toString();
+				await getChildren( id, id, "folder" );
+			}
 
 		return response({
 			httpCode: 200,
