@@ -58,8 +58,7 @@ const awsZipDownload = async ( files, zipName ) => {
 	// 	}
 	// ))).catch(_err => { throw new Error(_err) } );
 
-	let list;
-	list = [];
+	const list = [];
 
 	for ( const i in files ) {
 		let filestream, item;
@@ -69,18 +68,19 @@ const awsZipDownload = async ( files, zipName ) => {
 		};
 		else {
 			filestream = await getFileStream( files[i].key );
-			item = { content: filestream.Body, name: files[i].name };
+			item = {
+				content: filestream.Body,
+				name: files[i].name
+			};
 		}
 		list.push( item );
 	}
 
 	return await new Promise( ( resolve, reject ) => {
-		let myStream;
-		myStream = streamTo( AWS_BUCKET_NAME, zipName, data => {
+		const myStream = streamTo( AWS_BUCKET_NAME, zipName, data => {
 			resolve( data );
 		});
-		let archive;
-		archive = archiver( "zip" );
+		const archive = archiver( "zip" );
 		archive.on( "error", err => {
 			throw new Error( err );
 		});

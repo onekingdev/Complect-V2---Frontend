@@ -9,11 +9,7 @@ page-container(title="Books and Records")
 <script>
 
 export default {
-	setup () {
-
-		return { };
-
-	}
+	setup () { return { }; }
 };
 </script>
 
