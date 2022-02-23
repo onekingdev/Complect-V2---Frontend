@@ -8,7 +8,6 @@ card-container.c-modal-review(:title="title" ref="modalWindow")
 			c-field(label="Review Name" v-model="form.title" required)
 			c-field.col-3(label="Review Period Start Date" type="date" v-model="form.startsAt" required)
 			c-field.col-3(label="Review Period End Date" type="date" v-model="form.endsAt" required)
-			.div(v-if="v$.title.$invalid") {{ v$.title.$silentErrors[0].$message }}
 	template(#footer)
 		c-button(title="Cancel" type="link" @click="closeModal()")
 		c-button(:title="btnTitle" type="primary" @click="saveReview()")
@@ -23,8 +22,6 @@ import useData from "~/store/Data.js";
 import { onClickOutside } from "@vueuse/core";
 import cSelect from "~/components/Inputs/cSelect.vue";
 import _clonedeep from "lodash.clonedeep";
-import useValidate from "@vuelidate/core";
-import { required } from "@vuelidate/validators";
 
 export default {
 	"components": { cSelect },
@@ -66,14 +63,6 @@ export default {
 				"max": 0
 			}
 		});
-
-		const rules = computed( () => {
-			return {
-				"title": { required }
-			}
-		});
-
-		const v$ = useValidate( rules, form )
 
 		const isNewReview = computed( () => !props.id );
 		const title = computed( () => props.id ? "Edit Internal Review" : "New Internal Review" );
@@ -155,7 +144,7 @@ export default {
 			}
 		});
 		onUnmounted( () => form.value = {});
-		return { modalWindow, closeModal, title, btnTitle, selectedId, form, documents, items, isNewReview, saveReview, v$ };
+		return { modalWindow, closeModal, title, btnTitle, selectedId, form, documents, items, isNewReview, saveReview };
 	}
 };
 </script>

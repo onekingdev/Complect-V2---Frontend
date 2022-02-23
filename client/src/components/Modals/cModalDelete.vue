@@ -67,22 +67,6 @@ export default {
 			closeModal();
 		});
 
-		const handleClickDelete = () => {
-			if ( props.ownerId ) {
-				if ( props.ownerId === profile.value._id ) {
-					deleteItem();
-				} else {
-					notification({
-						"type": "error",
-						"title": "Error",
-						"message": "Only the owner of a document or folder may permanently delete it."
-					});
-				}
-			} else {
-				deleteItem();
-			};
-		};
-
 		const deleteItem = async () => {
 			try {
 				await deleteDocuments( props.id );
@@ -101,6 +85,19 @@ export default {
 			} finally {
 				closeModal();
 			}
+		};
+
+		const handleClickDelete = () => {
+			if ( props.ownerId ) {
+				if ( props.ownerId === profile.value._id ) deleteItem();
+				else {
+					notification({
+						"type": "error",
+						"title": "Error",
+						"message": "Only the owner of a document or folder may permanently delete it."
+					});
+				}
+			} else deleteItem();
 		};
 
 		return { modalTitle, modalWindow, closeModal, handleClickDelete };

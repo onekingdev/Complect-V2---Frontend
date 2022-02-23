@@ -25,13 +25,13 @@ export default {
 		const { profile } = useProfile();
 		const notification = inject( "notification" );
 		const modal = inject( "modal" );
-		const selectedFolder = ref( {} );
+		const selectedFolder = ref({});
 		const fileInput = ref( null );
 		const loading = ref( false );
 		const handleClickDownload = async id => {
 			try {
 				const res = await manualApi({ "method": "GET", "url": `records/zipDownload/${id}` });
-				window.open( res.location,  "_blank" );
+				window.open( res.location, "_blank" );
 			} catch ( error ) {
 				loading.value = false;
 				console.error( error );
@@ -62,11 +62,11 @@ export default {
 					"dateCreated": Date.now(),
 					"lastModified": Date.now(),
 					"link": uploadRes.Location,
-					"folderId": folderId,
+					folderId,
 					"key": uploadRes.key
 				});
 				await createDocuments([newFile.value]);
-				if ( selectedFolder.value._id ) await updateDocument(selectedFolder.value._id, { "size": selectedFolder.value.size + file.size });
+				if ( selectedFolder.value._id ) await updateDocument( selectedFolder.value._id, { "size": selectedFolder.value.size + file.size });
 				loading.value = false;
 				readDocuments( "", { folderId });
 				notification({ "type": "success", "title": "Success", "message": "File has been uploaded.." });
@@ -78,26 +78,26 @@ export default {
 		};
 		const createNewFolder = () => {
 			const folderId = selectedFolder.value._id ? selectedFolder.value._id : "root";
-			modal({ "name": "cModalRecord", "folderId": folderId, "folderKey": selectedFolder.value._id ? selectedFolder.value.key : "" });
+			modal({ "name": "cModalRecord", folderId, "folderKey": selectedFolder.value._id ? selectedFolder.value.key : "" });
 		};
 		const handleClickEdit = id => modal({ "name": "cModalRecord", id, "folderKey": selectedFolder.value._id ? selectedFolder.value.key : "" });
 		const handleClickDelete = id => {
 			const index = documents.value.findIndex( item => item._id === id );
 			const title = documents.value[index].status === "folder" ? "Folder" : "File";
 			const description = `Removing this ${documents.value[index].status} will delete any progress and tasks associated with the ${documents.value[index].status}.`;
-			modal({ "name": "cModalDelete", id, "title": title, description, "collection": "records", "ownerId": documents.value[index].ownerId });
+			modal({ "name": "cModalDelete", id, title, description, "collection": "records", "ownerId": documents.value[index].ownerId });
 		};
 		const folderSelect = id => {
 			const index = documents.value.findIndex( item => item._id === id );
 			selectedFolder.value = documents.value[index];
-			readDocuments( "", { "folderId" : selectedFolder.value._id });
+			readDocuments( "", { "folderId": selectedFolder.value._id });
 		};
 		const goToHome = () => {
-			readDocuments( "", { "folderId" : "root" });
+			readDocuments( "", { "folderId": "root" });
 			selectedFolder.value = {};
 		};
 		const goToFolder = () => {
-			readDocuments( "", { "folderId" : selectedFolder.value.folderId });
+			readDocuments( "", { "folderId": selectedFolder.value.folderId });
 			if ( selectedFolder.value.folderId === "root" ) selectedFolder.value = {};
 			else {
 				readDocuments( selectedFolder.value.folderId );
@@ -105,29 +105,10 @@ export default {
 			}
 		};
 		const columns = [
-			{
-				"title": "Name",
-				"key": "title",
-				"cell": "CellRecords",
-				"width": "55%",
-			},
-			{
-				"title": "Owner",
-				"key": "owner",
-				"cell": "CellDefault",
-			},
-			{
-				"title": "Size",
-				"key": "size",
-				"cell": "CellSize",
-				"align": "right"
-			},
-			{
-				"title": "Last Modified",
-				"key": "lastModified",
-				"cell": "CellDate",
-				"align": "right"
-			},
+			{ "title": "Name", "key": "title", "cell": "CellRecords", "width": "55%" },
+			{ "title": "Owner", "key": "owner", "cell": "CellDefault" },
+			{ "title": "Size", "key": "size", "cell": "CellSize", "align": "right" },
+			{ "title": "Last Modified", "key": "lastModified", "cell": "CellDate", "align": "right" },
 			{
 				"unsortable": true,
 				"cell": "CellDropdown",
@@ -140,7 +121,7 @@ export default {
 			}
 		];
 		onMounted( async () => {
-			await readDocuments( "", { "folderId" : "root" });
+			await readDocuments( "", { "folderId": "root" });
 		});
 		return {
 			documents,

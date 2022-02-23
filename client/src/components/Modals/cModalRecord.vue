@@ -43,7 +43,7 @@ export default {
 	setup ( props ) {
 		const notification = inject( "notification" );
 		const modalWindow = ref( null );
-		const { document, readDocuments, createDocuments, updateDocument, deleteDocuments } = useData( "records" );
+		const { document, readDocuments, createDocuments, updateDocument } = useData( "records" );
 		const { profile } = useProfile();
 		const { deleteModal } = useModals();
 		const modalTitle = ref( "" );
@@ -61,13 +61,13 @@ export default {
 		});
 
 		const closeModal = () => deleteModal( props.modalId );
-		onClickOutside( modalWindow, () => { closeModal(); });
+		onClickOutside( modalWindow, () => closeModal() );
 
 		const createRecord = async () => {
 			try {
 				if ( form.value.status === "folder" ) form.value.key = `${props.folderKey}${form.value.title}/`;
 				await createDocuments([form.value]);
-				readDocuments( "", { "folderId" : props.folderId });
+				readDocuments( "", { "folderId": props.folderId });
 				notification({
 					"type": "success",
 					"title": "Success",

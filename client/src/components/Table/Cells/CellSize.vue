@@ -11,7 +11,7 @@ export default {
 			"type": Number,
 			"default": 0,
 			"required": false
-		},
+		}
 	},
 	setup ( props ) {
 		const size = ref( null );
@@ -23,7 +23,7 @@ export default {
 			else size.value = "huge";
 		});
 
-		return { size }
+		return { size };
 	}
 };
 </script>

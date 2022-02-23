@@ -5,7 +5,7 @@ const PDFDoc = require( "../modules/PDFDoc" );
 const { response, randomName } = require( "../helpers/utils" );
 const { readDocuments } = require( "../helpers/crud" );
 const { uploadFile } = require( "../helpers/aws" );
-const parser = require('lambda-multipart-parser');
+const parser = require( 'lambda-multipart-parser' );
 
 exports.pdfprint = async event => {
 	try {
@@ -34,10 +34,10 @@ exports.pdfprint = async event => {
 
 exports.upload = async event => {
 	try {
-		const result = await parser.parse(event);
+		const result = await parser.parse( event );
 		const collection = result.collection;
-		const extension = result.files[0].contentType.split("/").pop();
-		const fileName = collection == "records" ? `records/${result.folderId}/${randomName( 8 )}.${extension}` : `${collection}/${randomName( 8 )}.${extension}`;
+		const extension = result.files[0].contentType.split( "/" ).pop();
+		const fileName = collection === "records" ? `records/${result.folderId}/${randomName( 8 )}.${extension}` : `${collection}/${randomName( 8 )}.${extension}`;
 		const data = await uploadFile( result.files[0], fileName );
 		return response({
 			httpCode: 200,

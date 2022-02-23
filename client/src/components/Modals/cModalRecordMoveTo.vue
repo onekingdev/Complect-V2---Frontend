@@ -53,8 +53,8 @@ export default {
 
 		const MoveToRecord = async () => {
 			try {
-				await updateDocument( props.id, { "folderId": selectedId.value } );
-				readDocuments( "", { "folderId" : props.folderId });
+				await updateDocument( props.id, { "folderId": selectedId.value });
+				readDocuments( "", { "folderId": props.folderId });
 				notification({
 					"type": "success",
 					"title": "Success",
@@ -73,11 +73,14 @@ export default {
 		};
 
 		const getDirectories = async () => {
-			const res = await manualApi({ "method": "GET", "url": `records/movetoDirs` });
+			const res = await manualApi({ "method": "GET", "url": "records/movetoDirs" });
 			if ( res.dirs.length ) items.value = [{ "value": "root", "title": ".root", "name": "" }];
-			items.value = [ ...items.value, ...res.dirs ];
-			items.value.forEach(item => {
-				for( let i = 0 ; i < item.name.split("/").length - 1 ; i++ ) item.title = "-- " + item.title;
+			items.value = [
+				...items.value,
+				...res.dirs
+			];
+			items.value.forEach( item => {
+				for ( let i = 0; i < item.name.split( "/" ).length - 1; i++ ) item.title = `-- ${item.title}`;
 			});
 		};
 

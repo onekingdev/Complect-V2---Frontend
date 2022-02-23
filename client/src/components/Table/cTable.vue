@@ -59,7 +59,7 @@ export default {
 		"searchable": Boolean
 	},
 	"emits": ["cellEvent"],
-	setup ( props, { emit } ) {
+	setup ( props, { emit }) {
 		// filter and Search Documents
 		const searchQuery = ref( "" );
 		const activeFilters = ref({});
@@ -112,7 +112,7 @@ export default {
 
 		const cellEvent = id => {
 			emit( "cellEvent", id );
-		}
+		};
 
 
 		return {

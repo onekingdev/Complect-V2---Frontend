@@ -1,6 +1,6 @@
 <template lang="pug">
 .cell-record
-	icon(:name="icon_name" size="big")
+	icon(:name="iconName" size="big")
 	.title(@click="openSubFiles()") {{data}}
 </template>
 
@@ -24,21 +24,20 @@ export default {
 		}
 	},
 	"emits": ["cellEvent"],
-	setup ( props, { emit } ) {
+	setup ( props, { emit }) {
 		const { documents } = useData( "records" );
 
-		const icon_name = computed( () => props.document.status );
+		const iconName = computed( () => props.document.status );
 
 		const openSubFiles = () => {
 			const index = documents.value.findIndex( item => item._id === props.id );
-			if ( documents.value[index].status === "folder" ) {
-				emit( "cellEvent", props.id );
-			} else window.open( documents.value[index].link, "_blank" );
+			if ( documents.value[index].status === "folder" ) emit( "cellEvent", props.id );
+			else window.open( documents.value[index].link, "_blank" );
 		};
 
 		return {
 			openSubFiles,
-			icon_name,
+			iconName
 		};
 	}
 };
