@@ -6,10 +6,3 @@ page-container(title="Books and Records")
 		router-view
 </template>
 
-<script>
-
-export default {
-	setup () { return { }; }
-};
-</script>
-
