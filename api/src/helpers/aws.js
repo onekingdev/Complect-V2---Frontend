@@ -41,14 +41,14 @@ const getFileStream = async fileKey => {
 };
 
 const streamTo = ( _bucket, _key, callback ) => {
-	let pass = new stream.PassThrough();
+	const pass = new stream.PassThrough();
 	awsS3.upload({
 		Bucket: _bucket,
 		Key: `records/zip/${_key}`,
 		Body: pass
 	})
-	.promise()
-	.then( data => callback( data.Location ) );
+		.promise()
+		.then( data => callback( data.Location ) );
 	return pass;
 };
 
@@ -58,23 +58,32 @@ const awsZipDownload = async ( files, zipName ) => {
 	// 	}
 	// ))).catch(_err => { throw new Error(_err) } );
 
-	let list = [];
+	let list;
+	list = [];
 
-	for ( let i in files ) {
+	for ( const i in files ) {
 		let filestream, item;
-		if ( files[i].key !== "" ) {
+		if ( files[i].key === "" ) item = {
+			content: "",
+			name: files[i].name
+		};
+		else {
 			filestream = await getFileStream( files[i].key );
 			item = { content: filestream.Body, name: files[i].name };
-		} else item = { content: "", name: files[i].name }
+		}
 		list.push( item );
 	}
 
-	return await new Promise(( resolve, reject ) => {
-		let myStream = streamTo( AWS_BUCKET_NAME, zipName, data => {
+	return await new Promise( ( resolve, reject ) => {
+		let myStream;
+		myStream = streamTo( AWS_BUCKET_NAME, zipName, data => {
 			resolve( data );
 		});
-		let archive = archiver( "zip" );
-		archive.on( "error", err => { throw new Error(err); });
+		let archive;
+		archive = archiver( "zip" );
+		archive.on( "error", err => {
+			throw new Error( err );
+		});
 		myStream.on( "error", reject );
 		archive.pipe( myStream );
 		list.forEach( itm => {
@@ -82,9 +91,9 @@ const awsZipDownload = async ( files, zipName ) => {
 		});
 		archive.finalize();
 	})
-	.catch( _err => {
-		throw new Error(_err);
-	});
+		.catch( _err => {
+			throw new Error( _err );
+		});
 };
 
 module.exports = {

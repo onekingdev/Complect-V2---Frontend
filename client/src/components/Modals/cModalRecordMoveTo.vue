@@ -76,8 +76,7 @@ export default {
 			const res = await manualApi({ "method": "GET", "url": "records/movetoDirs" });
 			if ( res.dirs.length ) items.value = [{ "value": "root", "title": ".root", "name": "" }];
 			items.value = [
-				...items.value,
-				...res.dirs
+				...items.value, ...res.dirs
 			];
 			items.value.forEach( item => {
 				for ( let i = 0; i < item.name.split( "/" ).length - 1; i++ ) item.title = `-- ${item.title}`;

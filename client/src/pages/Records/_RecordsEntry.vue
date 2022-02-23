@@ -11,11 +11,8 @@ page-container(title="Books and Records")
 export default {
 	setup () {
 
-		// const downloadRecord = () => console.log("download record!");
+		return { };
 
-		return {
-			// downloadRecord
-		};
 	}
 };
 </script>

@@ -5,7 +5,7 @@ const PDFDoc = require( "../modules/PDFDoc" );
 const { response, randomName } = require( "../helpers/utils" );
 const { readDocuments } = require( "../helpers/crud" );
 const { uploadFile } = require( "../helpers/aws" );
-const parser = require( 'lambda-multipart-parser' );
+const parser = require( "lambda-multipart-parser" );
 
 exports.pdfprint = async event => {
 	try {
