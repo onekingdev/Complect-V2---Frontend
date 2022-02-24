@@ -36,6 +36,31 @@ const sidebarNavigation = [
 	}
 ];
 
+const reportNavigationSpecialist = [{
+	"title": "REPORTS",
+	"icon": "document",
+	"links": [{
+		"title": "Financials",
+		"view": "ReportFinancials"
+	}]
+}];
+
+const reportNavigation = [{
+	"title": "REPORTS",
+	"icon": "document",
+	"links": [
+		{
+			"title": "Organization",
+			"view": "ReportOrganizations"
+		}, {
+			"title": "Risks",
+			"view": "ReportRisks"
+		}, {
+			"title": "Financials",
+			"view": "ReportFinancials"
+		}
+	]
+}];
 
 const _devModeNavigation = {
 	"title": "Components",
@@ -63,6 +88,8 @@ if ( import.meta.env.VITE_STAGE === "dev" ) sidebarNavigation.push( _devModeNavi
 export default function useNavigation () {
 	return {
 		topbarNavigation,
-		sidebarNavigation
+		sidebarNavigation,
+		reportNavigation,
+		reportNavigationSpecialist
 	};
 }

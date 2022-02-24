@@ -2,7 +2,7 @@
 .bar.sidebar.flex-column-container(v-if="renderSidebar" :class="{'sidebar-collapsed': appState.collapsedSidebar}")
 	.section-scrolled
 		nav.menu
-			.menu-section(v-for="(section, index) in sidebarNavigation" :key="index" :class="{'section-collapsed': appState.collapsedSections[index]}")
+			.menu-section(v-for="(section, index) in sideBarMenus" :key="index" :class="{'section-collapsed': appState.collapsedSections[index]}")
 				.header-item(@click="collapseSidebarSections(index)")
 					icon(v-if="section.icon" :name="section.icon")
 					.title {{$locale(section.title)}}
@@ -29,9 +29,15 @@ import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { appState, collapseSidebar, collapseSidebarSections } from "~/store/appState.js";
 import useNavigation from "~/store/Navigation";
+import useProfile from "~/store/Profile.js";
+
+const REPORT_ROUTES = [
+	"ReportOrganizations", "ReportRisks", "ReportFinancials"
+];
+
 export default {
 	setup () {
-		const { sidebarNavigation } = useNavigation();
+		const { sidebarNavigation, reportNavigation, reportNavigationSpecialist } = useNavigation();
 		const route = useRoute();
 
 		// render sidebar, depend on route meta (true by default)
@@ -40,9 +46,20 @@ export default {
 			return true;
 		});
 
+		const { profile } = useProfile();
+		const userType = profile.value.type;
+
+		const sideBarMenus = computed( () => {
+			if ( REPORT_ROUTES.includes( route.name ) ) {
+				if ( userType === "specialist" ) return reportNavigationSpecialist;
+				return reportNavigation;
+			}
+			return sidebarNavigation;
+		});
+
 		return {
 			appState,
-			sidebarNavigation,
+			sideBarMenus,
 			renderSidebar,
 			collapseSidebar,
 			collapseSidebarSections

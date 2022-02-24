@@ -34,16 +34,15 @@ export default {
 	display: flex
 	align-items: center
 	justify-content: center
-	text-transform: capitalize
 	svg
 		margin-right: 0.5em
-	&.draft, &.pending
+	&.draft
 		color: #797b7e
 		background: #f6f6f8
 	&.inprogress
 		color: #2180c2
 		background: #ecf4ff
-	&.complete, &.available, &.active
+	&.complete, &.available
 		color: #1bb380
 		background: #d5fbef
 	&.risk0
