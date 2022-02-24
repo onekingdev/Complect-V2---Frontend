@@ -8,9 +8,8 @@
 					section
 						.header Do you have a CRD number?
 						.intro The CRD number will be used to auto-populate information about your business
-						.inputs.grid-6
+						.inputs
 							c-radios(id="crd" :data="radioOptions" v-model="form.crd")
-							c-select.col-3(id="crdValue" :data="crdOptions" v-if="form.crd" v-model="form.crdValue")
 				template(#step2)
 					c-field(label="Company Name" type="text" placeholder="Company Name" required v-model="form.company")
 					c-field.col-3(label="AUM" type="text" placeholder="AUM" v-model="form.aum")
@@ -79,7 +78,7 @@
 
 
 <script>
-import { computed, onMounted, onUnmounted, watch } from "vue";
+import { computed } from "vue";
 import { useRouter } from "vue-router";
 import useProfile from "~/store/Profile.js";
 import useForm from "~/store/Form.js";
@@ -93,7 +92,6 @@ import cPlans from "~/components/Misc/cPlans.vue";
 
 import { industries, jurisdictions, timezones } from "~/data/static.js";
 import { plans } from "~/data/plans.js";
-import useData from "~/store/Data.js";
 
 import { filterSubIndustries } from "~/core/utils.js";
 
@@ -124,7 +122,6 @@ export default {
 		const { profile } = useProfile();
 		const userType = profile.value.type;
 		const { form } = useForm( "onboarding", baseForm[userType]);
-		const { readDocuments, clearStore, documents } = useData( "potential_businesses" );
 
 		const wizardSteps = {
 			"business": [
@@ -161,50 +158,6 @@ export default {
 		const goToCheckout = () => router.push({ "name": "OnboardingCheckout" });
 
 		const filteredSubIndustries = computed( () => filterSubIndustries( form.value.industries, userType ) );
-		const crdOptions = computed( () => {
-			const crdValues = documents.value;
-			let returnObj;
-			returnObj = [{ "title": "Nothing", "value": JSON.stringify({}) }];
-			if ( !crdValues ) return returnObj;
-			returnObj = [];
-			for ( let i = 0; i < crdValues.length; i++ ) {
-				const crdValue = {
-					"title": crdValues[i].crd_number,
-					"value": JSON.stringify({
-						"business_name": crdValues[i].business_name,
-						"website": crdValues[i].website,
-						"contact_phone": crdValues[i].contact_phone,
-						"address_1": crdValues[i].address_1,
-						"apartment": crdValues[i].apartment,
-						"city": crdValues[i].city,
-						"state": crdValues[i].state,
-						"zipcode": crdValues[i].zipcode,
-						"client_account_cnt": crdValues[i].client_account_cnt,
-						"aum": crdValues[i].aum
-					})
-				};
-				returnObj.push( crdValue );
-			}
-			return returnObj;
-		});
-
-		onMounted( () => readDocuments() );
-		onUnmounted( () => clearStore() );
-
-		watch( () => form.value.crdValue, () => {
-			if ( !form.value.crdValue ) return;
-			const crdValues = JSON.parse( form.value.crdValue );
-			form.value.company = crdValues.business_name;
-			form.value.website = crdValues.website;
-			form.value.aum = crdValues.aum;
-			form.value.accounts = crdValues.client_account_cnt;
-			form.value.tel = crdValues.contact_phone;
-			form.value.address = crdValues.address_1;
-			form.value.apt = crdValues.apartment;
-			form.value.city = crdValues.city;
-			form.value.state = crdValues.state;
-			form.value.zip = crdValues.zipcode;
-		}, { "deep": true });
 
 		return {
 			userType,
@@ -217,8 +170,7 @@ export default {
 			jurisdictions,
 			timezones,
 			plans,
-			goToCheckout,
-			crdOptions
+			goToCheckout
 		};
 	}
 };
