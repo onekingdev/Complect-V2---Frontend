@@ -1,5 +1,5 @@
 <template lang="pug">
-card-container(title="Payments")
+card-container(:title="paymentTitle")
 	template(#content)
 		.payments
 			.payments-item
@@ -14,12 +14,12 @@ card-container(title="Payments")
 			.payments-item
 				p.title Total (All Time)
 				h3.amount $0
-card-container.budget(title="Annual Budget")
+card-container.budget(:title="chartTitle")
 	template(#controls)
 		.dropdowns-container
-			c-dropdown(title="Edit" wide type="primary")
+			c-dropdown(title="Edit" wide)
 				.container
-					c-field(type="number" placeholder="Annual budget")
+					c-field(type="number" :placeholder="placeholder")
 				.container.butotns-container
 					c-button(title="Save" type="primary")
 	template(#content)
@@ -30,19 +30,29 @@ card-container.budget(title="Annual Budget")
 <script>
 import VueApexCharts from "vue3-apexcharts";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
-
+import useProfile from "~/store/Profile.js";
 export default {
 	"components": { cDropdown, VueApexCharts },
 	setup () {
+		const { profile } = useProfile();
+		const userType = profile.value.type;
+		const isSpecialist = userType === "specialist";
+		const paymentTitle = isSpecialist ? "Earnings" : "Payments";
+		const categories = isSpecialist ? [
+			"Earnings", "Goal"
+		] : [
+			"Spent", "Annual Budget"
+		];
+		const chartTitle = isSpecialist ? "Annual Earnings" : "Annual Budget";
+		const placeholder = isSpecialist ? "Annual goal" : "Annual budget";
+
 		const options = {
 			"chart": {
 				"id": "anual-chart",
 				"toolbar": { "show": false }
 			},
 			"xaxis": {
-				"categories": [
-					"Spent", "Annual Budget"
-				],
+				categories,
 				"labels": {
 					"style": {
 						"fontSize": "12px",
@@ -104,7 +114,7 @@ export default {
 			]
 		}];
 
-		return { options, series };
+		return { placeholder, chartTitle, paymentTitle, options, series };
 	}
 };
 </script>
@@ -128,7 +138,7 @@ export default {
 	margin: 1.5em 0
 .container
 	display: flex;
-	justify-content: space-between;
+	justify-content: flex-end;
 	gap: 1em;
 	padding: 0.5em 1em;
 </style>

@@ -29,6 +29,7 @@ import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { appState, collapseSidebar, collapseSidebarSections } from "~/store/appState.js";
 import useNavigation from "~/store/Navigation";
+import useProfile from "~/store/Profile.js";
 
 const REPORT_ROUTES = [
 	"ReportOrganizations", "ReportRisks", "ReportFinancials"
@@ -36,7 +37,7 @@ const REPORT_ROUTES = [
 
 export default {
 	setup () {
-		const { sidebarNavigation, reportNavigation } = useNavigation();
+		const { sidebarNavigation, reportNavigation, reportNavigationSpecialist } = useNavigation();
 		const route = useRoute();
 
 		// render sidebar, depend on route meta (true by default)
@@ -45,8 +46,14 @@ export default {
 			return true;
 		});
 
+		const { profile } = useProfile();
+		const userType = profile.value.type;
+
 		const sideBarMenus = computed( () => {
-			if ( REPORT_ROUTES.includes( route.name ) ) return reportNavigation;
+			if ( REPORT_ROUTES.includes( route.name ) ) {
+				if ( userType === "specialist" ) return reportNavigationSpecialist;
+				return reportNavigation;
+			}
 			return sidebarNavigation;
 		});
 

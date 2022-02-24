@@ -36,6 +36,15 @@ const sidebarNavigation = [
 	}
 ];
 
+const reportNavigationSpecialist = [{
+	"title": "REPORTS",
+	"icon": "document",
+	"links": [{
+		"title": "Financials",
+		"view": "ReportFinancials"
+	}]
+}];
+
 const reportNavigation = [{
 	"title": "REPORTS",
 	"icon": "document",
@@ -80,6 +89,7 @@ export default function useNavigation () {
 	return {
 		topbarNavigation,
 		sidebarNavigation,
-		reportNavigation
+		reportNavigation,
+		reportNavigationSpecialist
 	};
 }
