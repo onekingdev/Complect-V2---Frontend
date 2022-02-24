@@ -26,9 +26,4 @@ const useAppPagesGuard = ( to, from, next ) => {
 };
 
 
-const businessPagesGuard = ( to, from, next ) => {
-	if ( profile.value.type === "business" ) next();
-	else next({ "name": "ErrorLayer" });
-};
-
-export { useAuthGuard, useOnboardingGuard, useAppPagesGuard, businessPagesGuard };
+export { useAuthGuard, useOnboardingGuard, useAppPagesGuard };
