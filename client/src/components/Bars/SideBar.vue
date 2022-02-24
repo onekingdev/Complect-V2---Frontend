@@ -31,23 +31,13 @@ import { appState, collapseSidebar, collapseSidebarSections } from "~/store/appS
 import useNavigation from "~/store/Navigation";
 export default {
 	setup () {
-		const { sidebarHomeNavigation, sidebarDocumentsNavigation, sidebarReportsNavigation } = useNavigation();
+		const { sidebarNavigation } = useNavigation();
 		const route = useRoute();
 
+		// render sidebar, depend on route meta (true by default)
 		const renderSidebar = computed( () => {
 			if ( "sidebar" in route.meta ) return route.meta.sidebar; // check in sidebar key persist in meta object
 			return true;
-		});
-
-		const sidebarNavigation = computed( () => {
-			switch ( route.meta.tab ) {
-				case "Documents":
-					return sidebarDocumentsNavigation;
-				case "Reports":
-					return sidebarReportsNavigation;
-				default:
-					return sidebarHomeNavigation;
-			}
 		});
 
 		return {
