@@ -3,7 +3,9 @@
 	icon(name="logo" @click="toDashboard()")
 	.navigation(v-if="!simpleTopBar")
 		.menu
-			a(v-for="(tab, index) in tabs" :key="index" :class="{ active: activedTopbar == tab.title }" @click="goToRoute(tab.routeName)") {{ $locale(tab.title) }}
+			a.active Home
+			a Documents
+			router-link(to="/reports/organizations") Reports
 		.buttons
 			c-button(title="Find an Expert" type="accent")
 			c-button(iconL="bell" type="transparent")
@@ -36,43 +38,20 @@ export default {
 		const toggleUserDropDown = () => userDropDownExpanded.value = !userDropDownExpanded.value;
 		onClickOutside( userDropDown, () => userDropDownExpanded.value = false );
 
-		const tabs = [
-			{
-				"title": "Home",
-				"routeName": "Dashboard"
-			}, {
-				"title": "Documents",
-				"routeName": "RecordsOverview"
-			}, {
-				"title": "Reports",
-				"routeName": "OrganizationOverview"
-			}
-		];
-
-		const goToRoute = routeName => router.push({ "name": routeName });
-
 		// render topbar style, depend on route meta
 		const simpleTopBar = computed( () => {
 			if ( "topbar" in route.meta && route.meta.topbar === "simple" ) return true;
 			return false;
 		});
 
-		const activedTopbar = computed( () => {
-			if ( "tab" in route.meta ) return route.meta.tab;
-			return "Home";
-		});
-
 		const toDashboard = () => simpleTopBar.value ? router.push({ "name": "Dashboard" }) : router.push({ "name": "OnboardingForm" });
 
 		return {
 			signOut,
-			tabs,
-			goToRoute,
 			profile,
 			userDropDown,
 			userDropDownExpanded,
 			toggleUserDropDown,
-			activedTopbar,
 			simpleTopBar,
 			toDashboard
 		};
@@ -105,7 +84,6 @@ export default {
 			@media (max-width: 800px)
 				display: none
 			a
-				cursor: pointer
 				color: var(--c-text)
 				+ a
 					margin-left: 2em
