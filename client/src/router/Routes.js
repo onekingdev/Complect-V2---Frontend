@@ -1,5 +1,5 @@
 import { createWebHistory, createRouter } from "vue-router";
-import { useAuthGuard, useOnboardingGuard, useAppPagesGuard, businessPagesGuard } from "./Guards.js";
+import { useAuthGuard, useOnboardingGuard, useAppPagesGuard } from "./Guards.js";
 
 // layers
 const ErrorLayer = () => import( "~/layers/ErrorLayer.vue" );
@@ -79,13 +79,6 @@ const SettingsBilling = () => import( "~/pages/Settings/SettingsBilling.vue" );
 const _ProfileEntry = () => import( "~/pages/Profile/_ProfileEntry.vue" );
 const ProfileAbout = () => import( "~/pages/Profile/ProfileAbout.vue" );
 const ProfileSettings = () => import( "~/pages/Profile/ProfileSettings.vue" );
-
-// report
-const ReportEntry = () => import( "~/pages/Reports/ReportEntry.vue" );
-const ReportOrganizations = () => import( "~/pages/Reports/ReportOrganizations.vue" );
-const ReportRisks = () => import( "~/pages/Reports/ReportRisks.vue" );
-const ReportFinancials = () => import( "~/pages/Reports/ReportFinancials.vue" );
-
 import { devRoutes } from "~/_devmode/Routes.js";
 
 // ––––––––––––––– Routes ––––––––––––––– //
@@ -312,32 +305,6 @@ const routes = [
 								"meta": { "title": "Profile - Settings" },
 								"name": "ProfileSettings",
 								"component": ProfileSettings
-							}
-						]
-					},
-					{
-						"path": "reports",
-						"name": "Report",
-						"component": ReportEntry,
-						"meta": {
-							"title": "Report",
-							"sidebar": true
-						},
-						"children": [
-							{
-								"path": "organizations",
-								"name": "ReportOrganizations",
-								"component": ReportOrganizations,
-								"beforeEnter": businessPagesGuard
-							}, {
-								"path": "risks",
-								"name": "ReportRisks",
-								"component": ReportRisks,
-								"beforeEnter": businessPagesGuard
-							}, {
-								"path": "financials",
-								"name": "ReportFinancials",
-								"component": ReportFinancials
 							}
 						]
 					},
