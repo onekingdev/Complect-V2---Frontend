@@ -41,9 +41,7 @@ export default {
 		const notification = inject( "notification" );
 		const errors = ref({});
 
-		const rules = {
-			"timezone": { required }
-		}
+		const rules = { "timezone": { required } };
 
 		const clearData = () => updateProfile( INIT_FORM );
 

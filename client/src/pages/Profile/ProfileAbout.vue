@@ -172,7 +172,7 @@ export default {
 		const userType = profile.value.type;
 		const errors = ref({});
 
-		const form = ref({...profile.value});
+		const form = ref({ ...profile.value });
 		form.value.crd = profile.value.crd === false ? "" : profile.value.crd;
 
 		// computed
@@ -199,7 +199,7 @@ export default {
 
 			try {
 				await onboarding( newData );
-				updateProfile(newData);
+				updateProfile( newData );
 				notification({
 					"title": "Success",
 					"message": "Information has been saved."

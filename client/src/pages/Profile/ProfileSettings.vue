@@ -39,12 +39,10 @@ export default {
 		const { onboarding } = useAuth();
 		const notification = inject( "notification" );
 		const { profile, updateProfile } = useProfile();
-		const form = ref({ ...profile.value })
+		const form = ref({ ...profile.value });
 		const errors = ref({});
 
-		const rules = {
-			"rate": { required }
-		}
+		const rules = { "rate": { required } };
 
 		const saveInformation = async () => {
 			errors.value = await validates( rules, form.value );
@@ -58,7 +56,7 @@ export default {
 
 			try {
 				await onboarding( data );
-				updateProfile(data);
+				updateProfile( data );
 				notification({
 					"title": "Success",
 					"message": "Information has been saved."

@@ -99,7 +99,8 @@ const validates = async ( rules, data ) => {
 	if ( vueValidate.value.$errors ) {
 		vueValidate.value.$errors.forEach( item => {
 			const message = MESSAGE_VALIDATORS[item.$validator] ? MESSAGE_VALIDATORS[item.$validator] : item.$message;
-			errors[item.$property] = [message];
+			if ( !errors[item.$property]) errors[item.$property] = [];
+			errors[item.$property].push( message );
 		});
 	}
 

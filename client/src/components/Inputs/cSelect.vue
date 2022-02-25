@@ -135,12 +135,12 @@ export default {
 		});
 
 		watch( () => props.modelValue, newValue => {
-			if (props.multiple) {
+			if ( props.multiple ) {
 				selectedObjects.value = valuesToObjects( newValue );
 				selectedItems.value = newValue;
 			}
 
-			 if ( !props.multiple && !newValue ) selectedObjects.value = "";
+			if ( !props.multiple && !newValue ) selectedObjects.value = "";
 		});
 
 		return {
