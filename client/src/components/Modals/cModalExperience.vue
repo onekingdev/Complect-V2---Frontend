@@ -4,10 +4,10 @@ card-container(:title="modalTitle" ref="modalWindow")
 		c-button(type="icon" iconL="close" size="small" @click="closeModal()")
 	template(#content)
 		.grid-6
-			c-field(label="Title" v-model="form.title" required)
-			c-field(label="Employer" v-model="form.employer")
-			c-field.col-3(label="Start Date" type="date" v-model="form.startsAt" required)
-			c-field.col-3(label="Due Date" type="date" v-model="form.endsAt")
+			c-field(label="Title" :errors="errors.title" v-model="form.title" required)
+			c-field(label="Employer" :errors="errors.employer" v-model="form.employer" required)
+			c-field.col-3(label="Start Date" type="date" :errors="errors.startsAt" v-model="form.startsAt" required)
+			c-field.col-3(label="End Date" type="date" :errors="errors.endsAt" v-model="form.endsAt" required)
 			div.col-3
 			c-checkbox.col-3(label="Present" v-model="form.isPresent")
 			c-textarea(label="Description" v-model="form.description")
@@ -18,11 +18,24 @@ card-container(:title="modalTitle" ref="modalWindow")
 
 
 <script>
-import { ref, onMounted, onUnmounted, inject } from "vue";
+import { ref, onMounted, onUnmounted, inject, watch } from "vue";
 import useModals from "~/store/Modals.js";
 import useData from "~/store/Data.js";
 import useProfile from "~/store/Profile.js";
 import { onClickOutside } from "@vueuse/core";
+import { validates } from "~/core/utils.js";
+import { required, helpers } from "@vuelidate/validators";
+import { requireDate } from "~/core/customValidates.js";
+
+const requireEndAt = ( endsAt, siblings ) => {
+	if ( siblings.isPresent ) return !endsAt;
+	return endsAt;
+};
+
+const endsAtGreaterStartAt = ( endsAt, siblings ) => {
+	if ( endsAt ) return endsAt >= siblings.startsAt;
+	return siblings.isPresent;
+};
 
 export default {
 	"props": {
@@ -47,10 +60,21 @@ export default {
 		const action = props.id ? "updated" : "added";
 		const modalWindow = ref( null );
 		const form = ref({ "isPresent": false, "userId": profile.value._id });
+		const errors = ref({});
+
+		const rules = {
+			"title": { required },
+			"employer": { required },
+			"startsAt": { "required": requireDate },
+			"endsAt": { "required": requireEndAt, "endsAtGreaterStartAt": helpers.withMessage( "Date must not occur before start date", endsAtGreaterStartAt ) }
+		};
 
 		const closeModal = () => deleteModal( props.modalId );
 
 		const saveUserExperience = async () => {
+			errors.value = await validates( rules, form.value );
+			if ( Object.keys( errors.value ).length > 0 ) return;
+
 			try {
 				if ( props.id ) await updateDocument( form.value._id, form.value );
 				else await createDocuments([form.value]);
@@ -80,13 +104,17 @@ export default {
 			form.value = document.value;
 		};
 
+		watch( () => form.value, newValue => {
+			if ( newValue.isPresent ) form.value.endsAt = "";
+		}, { "deep": true });
+
 		onMounted( () => {
 			if ( props.id ) getData();
 		});
 
 		onUnmounted( () => form.value = {});
 
-		return { modalWindow, modalTitle, btnTitle, form, closeModal, saveUserExperience };
+		return { errors, modalWindow, modalTitle, btnTitle, form, closeModal, saveUserExperience };
 	}
 };
 </script>

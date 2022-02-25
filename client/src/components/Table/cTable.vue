@@ -17,6 +17,7 @@
 					th(v-for="(column, index) in columns" :key="index" v-bind:width="[column.width]")
 						.cell.column-title(:class="[column.align]")
 							.title(v-if="column.title") {{ column.title }}
+							icon(v-if="column.icon" :name="column.icon.name" :size="column.icon.size" @click="column.icon.handleClick()")
 							c-button(v-if="!column.unsortable" type="icon" iconR="sort" @click="sortDocuments(column.key)")
 			tbody(v-if="filteredDocuments.length")
 				tr(v-for="document in filteredDocuments" :key="document._id")
@@ -29,8 +30,10 @@
 								:key="column.key"
 								:meta="column.meta"
 								:id="document._id"
+								:document="document"
 								:data="document[column.key]"
-								:isChecked="document.isChecked")
+								:isChecked="document.isChecked"
+								@cellEvent="cellEvent")
 
 		icon(v-if="!filteredDocuments.length" name="empty-state")
 </template>
@@ -56,7 +59,8 @@ export default {
 		},
 		"searchable": Boolean
 	},
-	setup ( props ) {
+	"emits": ["cellEvent"],
+	setup ( props, { emit }) {
 		// filter and Search Documents
 		const searchQuery = ref( "" );
 		const activeFilters = ref({});
@@ -107,6 +111,10 @@ export default {
 			sortArrayByKey( props.documents, key, sortAsc.value[key]);
 		};
 
+		const cellEvent = id => {
+			emit( "cellEvent", id );
+		};
+
 
 		return {
 			getTableCell,
@@ -115,7 +123,8 @@ export default {
 			filteredDocuments,
 			activateFilter,
 			activeFilters,
-			selectedFilterTitle
+			selectedFilterTitle,
+			cellEvent
 		};
 	}
 };

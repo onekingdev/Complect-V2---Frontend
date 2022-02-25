@@ -29,15 +29,30 @@ import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { appState, collapseSidebar, collapseSidebarSections } from "~/store/appState.js";
 import useNavigation from "~/store/Navigation";
+import useProfile from "~/store/Profile.js";
+
 export default {
 	setup () {
-		const { sidebarNavigation } = useNavigation();
+		const { sidebarHomeNavigation, sidebarDocumentsNavigation, sidebarReportsNavigation, sidebarReportsSpecialistNavigation } = useNavigation();
+		const { profile } = useProfile();
 		const route = useRoute();
+		const userType = profile.value.type;
 
-		// render sidebar, depend on route meta (true by default)
 		const renderSidebar = computed( () => {
 			if ( "sidebar" in route.meta ) return route.meta.sidebar; // check in sidebar key persist in meta object
 			return true;
+		});
+
+		const sidebarNavigation = computed( () => {
+			switch ( route.meta.tab ) {
+				case "Documents":
+					return sidebarDocumentsNavigation;
+				case "Reports":
+					if ( userType === "specialist" ) return sidebarReportsSpecialistNavigation;
+					return sidebarReportsNavigation;
+				default:
+					return sidebarHomeNavigation;
+			}
 		});
 
 		return {

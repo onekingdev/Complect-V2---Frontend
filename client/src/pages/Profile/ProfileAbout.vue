@@ -1,54 +1,54 @@
 <template lang="pug">
 section.grid-6
-	h3 My Profile
+	h3.semibold My Profile
 	c-upload(:class="{'col-2': !isBusiness, 'col-full': isBusiness}" v-model="avatar")
-	c-checkbox.col-4(v-if="!isBusiness" label="Availability" type="toggle" v-model="profile.availability")
-	c-field.col-3(label="First Name" type="text" placeholder="First Name" required v-model="profile.firstName")
-	c-field.col-3(label="Last Name" type="text" placeholder="Last Name" required v-model="profile.lastName")
+	c-checkbox.availability.col-4(v-if="!isBusiness" label="Availability" type="toggle" v-model="form.availability")
+	c-field.col-3(label="First Name" type="text" placeholder="First Name" :errors="errors.firstName" required v-model="form.firstName")
+	c-field.col-3(label="Last Name" type="text" placeholder="Last Name" :errors="errors.lastName" required v-model="form.lastName")
 	template(v-if="!isBusiness")
-		c-textarea.col-full(label="Description" placeholder="Description" v-model="profile.description" required)
-		c-select.col-3(label="Jurisdiction" placeholder="Select Jurisdiction" :data="jurisdictions" v-model="profile.jurisdictions" required searchable multiple)
-		c-select.col-3(label="Industry" placeholder="Select Industry" :data="industries" v-model="profile.industries" required searchable multiple)
-		c-select.col-3(label="Sub-Industry" placeholder="Sub-Industry" :data="filteredSubIndustries" v-model="profile.subIndustries" required searchable multiple)
-		c-select.col-3(label="Time Zone" placeholder="Select Time Zone" :data="timezones" v-model="profile.timezone" required)
+		c-textarea.col-full(label="Description" placeholder="Description" v-model="form.description")
+		c-select.col-3(label="Jurisdiction" placeholder="Select Jurisdiction" :errors="errors.jurisdictions" :data="jurisdictions" v-model="form.jurisdictions" required searchable multiple)
+		c-select.col-3(label="Industry" placeholder="Select Industry" :errors="errors.industries" :data="industries" v-model="form.industries" required searchable multiple)
+		c-select.col-3(label="Sub-Industry" placeholder="Sub-Industry" :data="filteredSubIndustries" v-model="form.subIndustries" searchable multiple)
+		c-select.col-3(label="Former Regulator" placeholder="Search or add a tag" :data="[]" searchable multiple)
 	.controls
 		c-button(type="link" title="Cancel" @click="restoreInformation('my-profile')")
 		c-button(type="primary" title="Save" @click="saveInformation('my-profile')")
 	template(v-if="!isBusiness")
 		.divider
-		h3.col-5 Skills
+		h3.semibold.col-5 Skills
 		div.col-1
-			c-button-modal.edit-skills(title="Edit Skills" modalTitle="Edit Skills" type="primary")
+			c-button-modal.edit-skills(title="Edit Skills" modalTitle="Edit Skills")
 				template(#content)
 					c-select.col-full(label="Skills" placeholder="Search or add a tag" :data="skills" searchable multiple)
 				template(#footer)
 					c-button(title="Save" type="primary")
 		section
-			.skill(v-for="(skill, index) in profile.skills" :key="index") {{ skill }}
+			.skill(v-for="(skill, index) in form.skills" :key="index") {{ skill }}
 		section.grid-6(v-if="!isBusiness")
 			.divider
 			user-experiences
 	template(v-if="isBusiness")
 		.divider
 		section.grid-6
-			h3 Company Details
+			h3.semibold Company Details
 			c-upload(class="col-full" v-model="companyImg")
-			c-field.col-3(label="Company Name" type="text" placeholder="Company Name" required v-model="profile.company")
-			c-field.col-3(label="CRD Number" type="text" placeholder="CRD Number" required v-model="profile.crd")
-			c-field.col-3(label="AUM" type="text" placeholder="AUM" required v-model="profile.aum")
-			c-field.col-3(label="Number of Accounts" type="text" placeholder="Number of Accounts" required v-model="profile.accounts")
-			c-select.col-3(label="Industry" placeholder="Select Industry" :data="industries" v-model="profile.industries" required searchable multiple)
-			c-select.col-3(label="Sub-Industry" placeholder="Sub-Industry" :data="filteredSubIndustries" v-model="profile.subIndustries" required searchable multiple)
-			c-select.col-3(label="Jurisdiction" placeholder="Select Jurisdiction" :data="jurisdictions" v-model="profile.jurisdictions" required searchable multiple)
-			c-select.col-3(label="Time Zone" placeholder="Select Time Zone" :data="timezones" v-model="profile.timezone" required)
-			c-field.col-3(label="Phone Number" type="text" placeholder="Phone Number" v-model="profile.tel")
-			c-field.col-3(label="Company Website" type="text" placeholder="Company Website" v-model="profile.website")
+			c-field.col-3(label="Company Name" type="text" placeholder="Company Name" :errors="errors.company" required v-model="form.company")
+			c-field.col-3(label="CRD Number" type="text" placeholder="CRD Number" v-model="form.crd")
+			c-field.col-3(label="AUM" type="text" placeholder="AUM" v-model="form.aum")
+			c-field.col-3(label="Number of Accounts" type="number" placeholder="Number of Accounts" v-model="form.accounts")
+			c-select.col-3(label="Industry" placeholder="Select Industry" :data="industries" :errors="errors.industries" v-model="form.industries" required searchable multiple)
+			c-select.col-3(label="Sub-Industry" placeholder="Sub-Industry" :data="filteredSubIndustries" v-model="form.subIndustries" searchable multiple)
+			c-select.col-3(label="Jurisdiction" placeholder="Select Jurisdiction" :data="jurisdictions" :errors="errors.jurisdictions"  v-model="form.jurisdictions" required searchable multiple)
+			c-select.col-3(label="Time Zone" placeholder="Select Time Zone" :data="timezones" :errors="errors.timezone" v-model="form.timezone" required)
+			c-field.col-3(label="Phone Number" type="text" placeholder="Phone Number" v-model="form.tel")
+			c-field.col-3(label="Company Website" type="text" placeholder="Company Website" v-model="form.website")
 			.divider
-			c-field.col-5(label="Business Address" type="text" placeholder="Business Address" required v-model="profile.address")
-			c-field.col-1(label="Apt/Unit:" type="text" placeholder="Apt/Unit:" v-model="profile.apt")
-			c-field.col-2(label="City" type="text" placeholder="City" required v-model="profile.city")
-			c-field.col-2(label="State" type="text" placeholder="State" required v-model="profile.state")
-			c-field.col-2(label="Zip Code" type="number" placeholder="Zip Code" required v-model="profile.zip")
+			c-field.col-5(label="Business Address" type="text" placeholder="Business Address" :errors="errors.address" required v-model="form.address")
+			c-field.col-1(label="Apt/Unit:" type="text" placeholder="Apt/Unit:" v-model="form.apt")
+			c-field.col-2(label="City" type="text" placeholder="City" :errors="errors.city" required v-model="form.city")
+			c-field.col-2(label="State" type="text" placeholder="State" :errors="errors.state" required v-model="form.state")
+			c-field.col-2(label="Zip Code" type="number" placeholder="Zip Code" :errors="errors.zip" required v-model="form.zip")
 			.controls
 				c-button(type="link" title="Cancel" @click="restoreInformation('company')")
 				c-button(type="primary" title="Save" @click="saveInformation('company')")
@@ -64,7 +64,9 @@ import useProfile from "~/store/Profile.js";
 import useAuth from "~/core/auth.js";
 
 import { industries, jurisdictions, timezones } from "~/data/static.js";
-import { filterSubIndustries } from "~/core/utils.js";
+import { filterSubIndustries, validates } from "~/core/utils.js";
+import { maxLength, required } from "@vuelidate/validators";
+import { requireForArray } from "~/core/customValidates.js";
 
 
 const COMMON_FIELDS = {
@@ -90,7 +92,7 @@ const COMPANY = {
 	...COMMON_FIELDS,
 	"company": "",
 	"crd": "",
-	"accounts": "",
+	"accounts": null,
 	"aum": "",
 	"tel": "",
 	"website": "",
@@ -98,7 +100,7 @@ const COMPANY = {
 	"apt": "",
 	"city": "",
 	"state": "",
-	"zip": ""
+	"zip": null
 };
 
 const tabs = [
@@ -115,6 +117,44 @@ const skills = [
 	{ "title": "HTML", "value": "html" }, { "title": "CSS", "value": "css" }, { "title": "Javascript", "value": "js" }
 ];
 
+const validateRules = () => {
+	const basicProfile = {
+		"firstName": { required, "maxLength": maxLength( 100 ) },
+		"lastName": { required, "maxLength": maxLength( 100 ) }
+	};
+
+	const industriesRules = {
+		"jurisdictions": { "required": requireForArray },
+		"industries": { "required": requireForArray },
+		"timezone": { "required": requireForArray }
+	};
+
+	const specialistRules = {
+		...basicProfile,
+		...industriesRules
+	};
+
+	const companyRules = {
+		...industriesRules,
+		"company": { required, "maxLength": maxLength( 255 ) },
+		"address": { required, "maxLength": maxLength( 255 ) },
+		"city": { required, "maxLength": maxLength( 255 ) },
+		"state": { required, "maxLength": maxLength( 255 ) },
+		"zip": { required, "maxLength": maxLength( 20 ) }
+	};
+
+	return { basicProfile, specialistRules, companyRules };
+};
+
+const getValidateRules = ( isBusiness, section ) => {
+	const { basicProfile, specialistRules, companyRules } = validateRules();
+	if ( isBusiness && section === "my-profile" ) return basicProfile;
+	if ( section === "company" ) return companyRules;
+	if ( !isBusiness ) return specialistRules;
+
+	return {};
+};
+
 export default {
 	"components": {
 		UserExperiences,
@@ -128,30 +168,38 @@ export default {
 		const avatar = ref( "" );
 		const companyImg = ref( "" );
 		const { onboarding } = useAuth();
-		const { profile, updateProfile } = useProfile();
+		const { profile, updateProfile, saveForm } = useProfile();
 		const userType = profile.value.type;
-		profile.value.crd = profile.value.crd === false ? "" : profile.value.crd;
+		const errors = ref({});
+
+		const form = ref({ ...profile.value });
+		form.value.crd = profile.value.crd === false ? "" : profile.value.crd;
 
 		// computed
-		const filteredSubIndustries = computed( () => filterSubIndustries( profile.value.industries, "business" ) );
+		const filteredSubIndustries = computed( () => filterSubIndustries( form.value.industries, userType ) );
 		const isBusiness = computed( () => userType === "business" );
 		const profileObject = isBusiness.value ? MY_PROFILE : SPECIALIST_PROFILE;
 
 		// function
 		const restoreInformation = section => {
-			if ( section === "my-profile" ) updateProfile( profileObject );
-			if ( section === "company" ) updateProfile( COMPANY );
+			if ( section === "my-profile" ) saveForm( form, profileObject );
+			if ( section === "company" ) saveForm( form, COMPANY );
 		};
 
 		const saveInformation = async section => {
 			const fieldChanges = section === "my-profile" ? Object.keys( profileObject ) : Object.keys( COMPANY );
 			const newData = {};
 			fieldChanges.forEach( field => {
-				newData[field] = profile.value[field];
+				newData[field] = form.value[field];
 			});
+
+			const rules = getValidateRules( isBusiness.value, section );
+			errors.value = await validates( rules, newData );
+			if ( Object.keys( errors.value ).length > 0 ) return;
 
 			try {
 				await onboarding( newData );
+				updateProfile( newData );
 				notification({
 					"title": "Success",
 					"message": "Information has been saved."
@@ -167,7 +215,9 @@ export default {
 		};
 
 		return {
+			form,
 			tabs,
+			errors,
 			skills,
 			userType,
 			avatar,
@@ -204,6 +254,9 @@ export default {
 		.c-button
 			width: 10em
 			float: right
+	.availability
+		position: relative;
+		top: -3em;
 	.skill
 		display: inline-block;
 		text-align: center;

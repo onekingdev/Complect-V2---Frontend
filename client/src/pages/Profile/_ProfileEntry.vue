@@ -1,5 +1,5 @@
 <template lang="pug">
-.page
+.page.medium-card
 	card-container(title="Profile")
 		template(#content)
 			horizontal-tabs(:class="userType")
@@ -40,7 +40,6 @@ export default {
 
 <style lang="stylus" scoped>
 .page
-	padding: 2em
 	:deep(.horizontal-tabs-container.business)
 		.container-tabs
 			display: none;
