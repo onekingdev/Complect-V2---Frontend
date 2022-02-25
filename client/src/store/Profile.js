@@ -1,5 +1,6 @@
 import { ref } from "vue";
 
+
 const profile = ref( null );
 
 export default function useProfile () {
@@ -13,8 +14,6 @@ export default function useProfile () {
 	return {
 		profile,
 		setProfile,
-		updateProfile,
-		saveForm
+		updateProfile
 	};
 }
-

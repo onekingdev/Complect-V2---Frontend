@@ -5,7 +5,6 @@ import { createDocumentsInCloudDb, readDocumentsFromCloudDb, updateDocumentInClo
 
 const document = ref({});
 const documents = ref([]);
-const documentJson = ref();
 
 
 export default function useData ( collectionName ) {
@@ -37,7 +36,6 @@ export default function useData ( collectionName ) {
 			if ( documentsId ) {
 				const doc = await readDocumentsFromCloudDb( collectionName, documentsId );
 				document.value = doc.data;
-				documentJson.value = JSON.stringify( document.value );
 			} else {
 				const docs = await readDocumentsFromCloudDb( collectionName );
 				documents.value = docs.data;
@@ -58,7 +56,6 @@ export default function useData ( collectionName ) {
 			documents.value[index].updated = Date.now(); // set updated timestamp
 			const apiAnswer = await updateDocumentInCloudDb( collectionName, patch, documentId );
 			if ( !apiAnswer.ok ) throw new Error( apiAnswer.message );
-			readDocuments( documentId );
 		} catch ( error ) {
 			console.error( error.message );
 			// roll back store changes, if api error
@@ -109,7 +106,6 @@ export default function useData ( collectionName ) {
 	return {
 		document,
 		documents,
-		documentJson,
 		createDocuments,
 		readDocuments,
 		updateDocument,

@@ -10,7 +10,7 @@ card-container(:title="modalTitle" ref="modalWindow")
 				div.description {{ description }}
 				div.description.confirm Do you want to continue?
 	template(#footer)
-		c-button(title="Cancel" type="link" @click="closeModal()")
+		c-button(title="Cancel" @click="closeModal()")
 		c-button(title="Confirm" type="primary" @click="deleteItem()")
 </template>
 

@@ -239,7 +239,7 @@ const routes = [
 						},
 						"children": [
 							{
-								"path": "details",
+								"path": "",
 								"name": "ReviewDetail",
 								"component": ReviewDetail,
 								"meta": { "title": "Review Detail" },

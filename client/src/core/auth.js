@@ -83,12 +83,6 @@ export default function useAuth () {
 		profile.value = {};
 	};
 
-	const updateAuthenticationInfor = async payload => {
-		const userId = appState.value.userId;
-		const result = await authServer({ "path": "update-auth-infor", "data": { "_id": userId, ...payload } });
-		if ( !result.ok ) throw result.message;
-	};
-
 	return {
 		restoreSession,
 		signOut,
@@ -97,8 +91,7 @@ export default function useAuth () {
 		authentication,
 		verification,
 		newOtp,
-		reset,
-		updateAuthenticationInfor
+		reset
 	};
 }
 

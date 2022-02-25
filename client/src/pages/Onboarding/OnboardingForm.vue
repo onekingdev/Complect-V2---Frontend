@@ -1,5 +1,5 @@
 <template lang="pug">
-.onboarding-form.medium-card
+.onboarding-form
 	card-container(title="Set Up Your Account")
 		template(#content)
 			//- Business
@@ -8,8 +8,9 @@
 					section
 						.header Do you have a CRD number?
 						.intro The CRD number will be used to auto-populate information about your business
-						.inputs
+						.inputs.grid-6
 							c-radios(id="crd" :data="radioOptions" v-model="form.crd")
+							c-field.col-3(id="crdValue" v-if="form.crd" v-model="form.crdValue")
 				template(#step2)
 					c-field(label="Company Name" type="text" placeholder="Company Name" required v-model="form.company")
 					c-field.col-3(label="AUM" type="text" placeholder="AUM" v-model="form.aum")
@@ -78,7 +79,7 @@
 
 
 <script>
-import { computed } from "vue";
+import { computed, onMounted, onUnmounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import useProfile from "~/store/Profile.js";
 import useForm from "~/store/Form.js";
@@ -92,6 +93,7 @@ import cPlans from "~/components/Misc/cPlans.vue";
 
 import { industries, jurisdictions, timezones } from "~/data/static.js";
 import { plans } from "~/data/plans.js";
+import useData from "~/store/Data.js";
 
 import { filterSubIndustries } from "~/core/utils.js";
 
@@ -122,6 +124,7 @@ export default {
 		const { profile } = useProfile();
 		const userType = profile.value.type;
 		const { form } = useForm( "onboarding", baseForm[userType]);
+		const { readDocuments, clearStore, documents } = useData( "potential_businesses" );
 
 		const wizardSteps = {
 			"business": [
@@ -159,6 +162,40 @@ export default {
 
 		const filteredSubIndustries = computed( () => filterSubIndustries( form.value.industries, userType ) );
 
+		const resetValues = () => {
+			form.value.company = "";
+			form.value.website = "";
+			form.value.aum = "";
+			form.value.accounts = "";
+			form.value.tel = "";
+			form.value.address = "";
+			form.value.apt = "";
+			form.value.city = "";
+			form.value.state = "";
+			form.value.zip = "";
+		};
+
+		onMounted( () => readDocuments() );
+		onUnmounted( () => clearStore() );
+
+		// eslint-disable-next-line max-statements
+		watch( () => form.value.crdValue, () => {
+			if ( !form.value.crdValue ) return;
+			const crdValues = documents.value.find( doc => doc.crd_number === form.value.crdValue );
+			resetValues();
+			if ( !crdValues ) return;
+			form.value.company = crdValues.business_name;
+			form.value.website = crdValues.website;
+			form.value.aum = crdValues.aum;
+			form.value.accounts = crdValues.client_account_cnt;
+			form.value.tel = crdValues.contact_phone;
+			form.value.address = crdValues.address_1;
+			form.value.apt = crdValues.apartment;
+			form.value.city = crdValues.city;
+			form.value.state = crdValues.state;
+			form.value.zip = crdValues.zipcode;
+		}, { "deep": true });
+
 		return {
 			userType,
 			radioOptions,
@@ -179,6 +216,7 @@ export default {
 
 <style lang="stylus" scoped>
 .onboarding-form
+	padding: 2em
 	.m-container
 		max-width: 30em
 	.plan-header

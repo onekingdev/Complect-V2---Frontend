@@ -1,26 +1,24 @@
 <template lang="pug">
 section.grid-6
   h3 Your Hourly Rate
-  c-field.col-full(label="Hourly Rate" type="number" placeholder="Hourly Rate" :errors="errors.rate" v-model="form.rate" required)
+  c-field.col-full(label="Hourly Rate" type="number" placeholder="Hourly Rate" v-model="profile.rate" required)
   div.perhour Per hour
   .divider
   h3 Experience Level
-  c-radio-cards(id="experience" :data="experienceOptions" v-model="form.experience")
+  c-radio-cards(id="experience" :data="experienceOptions" v-model="profile.experience")
   .divider
   h3 Name Settings
-  c-radios(id="regulator" :data="radioOptions" v-model="form.showFullName")
+  c-radios(id="regulator" :data="radioOptions" v-model="profile.showFullName")
   .controls
     c-button(type="primary" title="Save" @click="saveInformation('company')")
 </template>
 
 <script>
-import { ref, inject } from "vue";
+import { inject } from "vue";
 import cRadioCards from "~/components/Inputs/cRadioCards.vue";
 import cRadios from "~/components/Inputs/cRadios.vue";
 import useAuth from "~/core/auth.js";
 import useProfile from "~/store/Profile.js";
-import { validates } from "~/core/utils.js";
-import { required } from "@vuelidate/validators";
 
 export default {
 	"components": {
@@ -38,25 +36,17 @@ export default {
 
 		const { onboarding } = useAuth();
 		const notification = inject( "notification" );
-		const { profile, updateProfile } = useProfile();
-		const form = ref({ ...profile.value });
-		const errors = ref({});
-
-		const rules = { "rate": { required } };
+		const { profile } = useProfile();
 
 		const saveInformation = async () => {
-			errors.value = await validates( rules, form.value );
-			if ( Object.keys( errors.value ).length > 0 ) return;
-
 			const data = {
-				"rate": form.value.rate,
-				"experience": form.value.experience,
-				"showFullName": form.value.showFullName
+				"rate": profile.value.rate,
+				"experience": profile.value.experience,
+				"showFullName": profile.value.showFullName
 			};
 
 			try {
 				await onboarding( data );
-				updateProfile( data );
 				notification({
 					"title": "Success",
 					"message": "Information has been saved."
@@ -72,8 +62,7 @@ export default {
 		};
 
 		return {
-			errors,
-			form,
+			profile,
 			experienceOptions,
 			radioOptions,
 			saveInformation

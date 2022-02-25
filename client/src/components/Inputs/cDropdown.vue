@@ -115,7 +115,7 @@ export default {
 			top: calc(100% + 0.05em)
 		&.hidden
 			visibility: hidden
-		> :deep(.c-button), :deep(.c-button-modal .c-button)
+		> :deep(.c-button)
 			border-radius: 0
 			width: 100%
 			justify-content: flex-start
