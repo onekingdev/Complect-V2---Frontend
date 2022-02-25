@@ -5,7 +5,7 @@
 		.menu
 			a.active Home
 			a Documents
-			a Reports
+			router-link(:to="reportLink") Reports
 		.buttons
 			c-button(title="Find an Expert" type="accent")
 			c-button(iconL="bell" type="transparent")
@@ -45,8 +45,10 @@ export default {
 		});
 
 		const toDashboard = () => simpleTopBar.value ? router.push({ "name": "Dashboard" }) : router.push({ "name": "OnboardingForm" });
+		const reportLink = profile.value.type === "specialist" ? "/reports/financials" : "/reports/organizations";
 
 		return {
+			reportLink,
 			signOut,
 			profile,
 			userDropDown,
