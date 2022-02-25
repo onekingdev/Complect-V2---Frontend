@@ -63,14 +63,6 @@ const RisksOverview = () => import( "~/pages/Risks/RisksOverview.vue" );
 const _RiskEntry = () => import( "~/pages/Risk/_RiskEntry.vue" );
 const RiskDetail = () => import( "~/pages/Risk/RiskDetail.vue" );
 
-// jobs
-const _JobBoardEntry = () => import( "~/pages/Job/_JobBoardEntry.vue" );
-const JobBoardDetail = () => import( "~/pages/Job/JobBoardDetail.vue" );
-
-// expoert
-const _ExpertListEntry = () => import( "~/pages/Expert/_ExpertListEntry.vue" );
-const ExpertDetail = () => import( "~/pages/Expert/ExpertDetail.vue" );
-
 
 // settings
 const _SettingsEntry = () => import( "~/pages/Settings/_SettingsEntry.vue" );
@@ -247,7 +239,7 @@ const routes = [
 						},
 						"children": [
 							{
-								"path": "",
+								"path": "details",
 								"name": "ReviewDetail",
 								"component": ReviewDetail,
 								"meta": { "title": "Review Detail" },
@@ -294,39 +286,6 @@ const routes = [
 							"component": RiskDetail,
 							"meta": { "title": "Risk Detail" }
 						}]
-					},
-					{
-						"path": "job_board",
-						"name": "JobBoard",
-						"component": _JobBoardEntry,
-						"meta": {
-							"title": "Job Board",
-							"sidebar": false
-						},
-						"children": [{
-							"path": ":id",
-							"name": "JobBoardDetail",
-							"component": JobBoardDetail,
-							"meta": { "title": "Job Board Detail" }
-						}]
-					},
-					{
-						"path": "specialistmarketplace",
-						"name": "ExpertList",
-						"component": _ExpertListEntry,
-						"meta": {
-							"title": "Specialist Market",
-							"sidebar": false
-						}
-					},
-					{
-						"path": "specialist-profile/:id",
-						"name": "ExpertDetail",
-						"component": ExpertDetail,
-						"meta": {
-							"title": "Specialist Profile",
-							"sidebar": false
-						}
 					},
 					{
 						"path": "profile",

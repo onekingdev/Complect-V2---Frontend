@@ -1,15 +1,16 @@
 <template lang="pug">
 div
-  h3 Experience
-  div.experiences(v-for="(item, index) in userExperiences" :key="index")
-    div.experiences-item
-      div.title
-        h3.col-4 {{ item.title }}
-        c-button(title="Delete" @click="confirmDeleteExperience(item._id)")
-        c-button(title="Edit" type="primary" @click="editExperience(item._id)")
-      div.smallText {{ item.employer }} | {{ formatDate(item.startsAt) }} - {{ item.isPresent ? "Present" : formatDate(item.endsAt) }}
-      div.smallText {{ item.description }}
-c-button.btn-new-experience(title="New Experience" iconL="circle_plus" @click="openExperienceModal()")
+	div.heading
+		h3.semibold Experience
+		c-button.btn-new-experience(title="Add Experience" @click="openExperienceModal()")
+	div.experiences(v-for="(item, index) in userExperiences" :key="index")
+		div.experiences-item
+			div.heading
+				h3.col-4.semibold {{ item.title }}
+				c-button(title="Delete" @click="confirmDeleteExperience(item._id)")
+				c-button(title="Edit" type="primary" @click="editExperience(item._id)")
+			div.timeline {{ item.employer }} | {{ formatDate(item.startsAt) }} - {{ item.isPresent ? "Present" : formatDate(item.endsAt) }}
+			div.description {{ item.description }}
 </template>
 <script>
 import { ref, inject, onMounted } from "vue";
@@ -65,19 +66,22 @@ export default {
 
 <style lang="stylus" scoped>
 .btn-new-experience
-  max-width: 12em;
+	max-width: 12em;
 .experiences
-  .experiences-item
-    padding: 1em;
-    margin: 1em 0;
-    border-radius: 0.4em;
-    border: 1px solid var(--c-border, #dcdee4)
-    .title
-      display: flex;
-      .c-button
-        margin: 0 0.5em;
-      h3
-        flex-grow: 1;
-    .smallText
-      font-size: 0.96em;
+	.experiences-item
+		padding: 1em;
+		margin: 1em 0;
+		border-radius: 0.4em;
+		border: 1px solid var(--c-border, #dcdee4)
+		.timeline
+			font-size: 1.25em;
+			margin-bottom: 0.3em;
+		.description
+			font-size: 0.9em;
+.heading
+	display: flex;
+	.c-button
+		margin: 0 0.5em;
+	h3
+		flex-grow: 1;
 </style>

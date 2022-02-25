@@ -8,6 +8,7 @@ import Modals from "./plugins/modals";
 
 import PageContainer from "~/components/Containers/PageContainer.vue";
 import CardContainer from "~/components/Containers/CardContainer.vue";
+import DetailContainer from "~/components/Containers/DetailContainer.vue";
 
 import cIcon from "~/components/Icons/cIcon.vue";
 import cField from "~/components/Inputs/cField.vue";
@@ -31,6 +32,7 @@ app
 	.use( Notifications )
 	.use( Modals )
 	.component( "CardContainer", CardContainer )
+	.component( "DetailContainer", DetailContainer )
 	.component( "PageContainer", PageContainer )
 	.component( "Icon", cIcon )
 	.component( "cButton", cButton )
