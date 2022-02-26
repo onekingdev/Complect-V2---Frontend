@@ -6,6 +6,7 @@
 	vue-google-autocomplete#map(
 		ref="address"
 		class="custom-input"
+		:class="{'errors': errors && errors.length}"
 		v-model="form.address"
 		:placeholder="placeholder"
 		:fields="FIELDS"
@@ -97,6 +98,8 @@ export default {
 	gap: 0.3em;
 	padding: 0.4967em 0.5em;
 	min-height: 2em;
+	&.errors
+		box-shadow: 0 0 0 1px #f00
 	&::placeholder
 		color: #999
 		font-size: 0.9em

@@ -8,6 +8,7 @@
 		:required="required"
 		v-model="selectedObjects"
 		:disabled="disabled"
+		:errors="errors"
 		readonly
 		@click="showDropdownList()")
 
@@ -19,8 +20,6 @@
 				c-checkbox.item(v-for="(item, index) in filteredData" :key="index" :label="item.title" :value="item.value" v-model="selectedItems" multiple)
 			template(v-else)
 				.item(v-for="(item, index) in filteredData" :key="index" @click="selectItem(item)") {{item.title}}
-	.field-info.error(v-if="errors && errors.length")
-		p(v-for="(error, index) in errors" :key="index") {{error}}
 </template>
 
 
