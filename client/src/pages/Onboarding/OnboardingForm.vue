@@ -21,11 +21,11 @@
 					c-field.col-3(label="Phone Number" type="tel" placeholder="Phone Number" v-model="form.tel")
 					c-field.col-3(label="Company Website" type="url" placeholder="Company Website" v-model="form.website")
 					.divider
-					c-field.col-3(label="Business Address" type="address" placeholder="Business Address" v-model="form.address" required)
-					c-field.col-3(label="Apt/Unit" type="text" placeholder="Apt/Unit" v-model="form.apt")
-					c-field.col-3(label="City" type="text" placeholder="City" v-model="form.city")
-					c-field.col-3(label="State" type="text" placeholder="State" v-model="form.state")
-					c-field.col-3(label="Zip code" type="number" placeholder="Zip code" v-model="form.zip")
+					c-address.col-5(label="Business Address" :value="form.address" placeholder="Business Address" @update="updateAddressChange" required)
+					c-field.col-1(label="Apt/Unit" type="text" placeholder="Apt/Unit" v-model="form.apt" required)
+					c-field.col-2(label="City" type="text" placeholder="City" v-model="form.city" required)
+					c-field.col-2(label="State" type="text" placeholder="State" v-model="form.state" required)
+					c-field.col-2(label="Zip code" type="number" placeholder="Zip code" v-model="form.zip" required)
 				template(#step3)
 					.plan-header
 						.title Choose your plan
@@ -89,6 +89,7 @@ import cSelect from "~/components/Inputs/cSelect.vue";
 import cDropzone from "~/components/Inputs/cDropzone.vue";
 import cSwitcher from "~/components/Inputs/cSwitcher.vue";
 import cPlans from "~/components/Misc/cPlans.vue";
+import cAddress from "~/components/Inputs/cAddress.vue";
 
 import { industries, jurisdictions, timezones } from "~/data/static.js";
 import { plans } from "~/data/plans.js";
@@ -99,6 +100,7 @@ export default {
 	"components": {
 		cFormWizard,
 		cRadios,
+		cAddress,
 		cRadioCards,
 		cSelect,
 		cDropzone,
@@ -157,6 +159,14 @@ export default {
 
 		const goToCheckout = () => router.push({ "name": "OnboardingCheckout" });
 
+		const updateAddressChange = data => {
+			const { address, city, state, zip } = data;
+			form.value.address = address;
+			if ( city ) form.value.city = city;
+			if ( state ) form.value.state = state;
+			if ( zip ) form.value.zip = zip;
+		};
+
 		const filteredSubIndustries = computed( () => filterSubIndustries( form.value.industries, userType ) );
 
 		return {
@@ -170,7 +180,8 @@ export default {
 			jurisdictions,
 			timezones,
 			plans,
-			goToCheckout
+			goToCheckout,
+			updateAddressChange
 		};
 	}
 };

@@ -15,7 +15,6 @@ import cField from "~/components/Inputs/cField.vue";
 import cTextarea from "~/components/Inputs/cTextarea.vue";
 import cCheckbox from "~/components/Inputs/cCheckbox.vue";
 import cButton from "~/components/Inputs/cButton.vue";
-import cLoading from "~/components/Inputs/cLoading.vue";
 import cButtonModal from "~/components/Inputs/cButtonModal.vue";
 import cNotification from "~/components/Misc/cNotification.vue";
 import cTable from "~/components/Table/cTable.vue";
@@ -37,7 +36,6 @@ app
 	.component( "PageContainer", PageContainer )
 	.component( "Icon", cIcon )
 	.component( "cButton", cButton )
-	.component( "cLoading", cLoading )
 	.component( "cButtonModal", cButtonModal )
 	.component( "cField", cField )
 	.component( "cTextarea", cTextarea )

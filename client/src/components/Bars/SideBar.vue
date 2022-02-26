@@ -2,7 +2,7 @@
 .bar.sidebar.flex-column-container(v-if="renderSidebar" :class="{'sidebar-collapsed': appState.collapsedSidebar}")
 	.section-scrolled
 		nav.menu
-			.menu-section(v-for="(section, index) in sidebarNavigation" :key="index" :class="{'section-collapsed': appState.collapsedSections[index]}")
+			.menu-section(v-for="(section, index) in sideBarMenus" :key="index" :class="{'section-collapsed': appState.collapsedSections[index]}")
 				.header-item(@click="collapseSidebarSections(index)")
 					icon(v-if="section.icon" :name="section.icon")
 					.title {{$locale(section.title)}}
@@ -31,33 +31,35 @@ import { appState, collapseSidebar, collapseSidebarSections } from "~/store/appS
 import useNavigation from "~/store/Navigation";
 import useProfile from "~/store/Profile.js";
 
+const REPORT_ROUTES = [
+	"ReportOrganizations", "ReportRisks", "ReportFinancials"
+];
+
 export default {
 	setup () {
-		const { sidebarHomeNavigation, sidebarDocumentsNavigation, sidebarReportsNavigation, sidebarReportsSpecialistNavigation } = useNavigation();
-		const { profile } = useProfile();
+		const { sidebarNavigation, reportNavigation, reportNavigationSpecialist } = useNavigation();
 		const route = useRoute();
-		const userType = profile.value.type;
 
+		// render sidebar, depend on route meta (true by default)
 		const renderSidebar = computed( () => {
 			if ( "sidebar" in route.meta ) return route.meta.sidebar; // check in sidebar key persist in meta object
 			return true;
 		});
 
-		const sidebarNavigation = computed( () => {
-			switch ( route.meta.tab ) {
-				case "Documents":
-					return sidebarDocumentsNavigation;
-				case "Reports":
-					if ( userType === "specialist" ) return sidebarReportsSpecialistNavigation;
-					return sidebarReportsNavigation;
-				default:
-					return sidebarHomeNavigation;
+		const { profile } = useProfile();
+		const userType = profile.value.type;
+
+		const sideBarMenus = computed( () => {
+			if ( REPORT_ROUTES.includes( route.name ) ) {
+				if ( userType === "specialist" ) return reportNavigationSpecialist;
+				return reportNavigation;
 			}
+			return sidebarNavigation;
 		});
 
 		return {
 			appState,
-			sidebarNavigation,
+			sideBarMenus,
 			renderSidebar,
 			collapseSidebar,
 			collapseSidebarSections

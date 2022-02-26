@@ -36,56 +36,17 @@ const sidebarNavigation = [
 	}
 ];
 
-const sidebarHomeNavigation = [
-	{
-		"title": "Overview",
-		"icon": "list-outline",
-		"links": [
-			{
-				"title": "Dashboard",
-				"view": "Dashboard"
-			}, {
-				"title": "Tasks",
-				"view": "TasksOverview"
-			}, {
-				"title": "Projects",
-				"view": "ProjectsOverview"
-			}
-		]
-	}, {
-		"title": "Program Management",
-		"icon": "document",
-		"links": [
-			{
-				"title": "Policies and Procedures",
-				"view": "Policies"
-			}, {
-				"title": "Internal Reviews",
-				"view": "ReviewsOverview"
-			}, {
-				"title": "Risk Register",
-				"view": "RisksOverview"
-			}
-		]
-	}
-];
-
-const sidebarDocumentsNavigation = [{
-	"title": "Files",
+const reportNavigationSpecialist = [{
+	"title": "REPORTS",
 	"icon": "document",
-	"links": [
-		{
-			"title": "Book and Records",
-			"view": "RecordsOverview"
-		}, {
-			"title": "Exam Management",
-			"view": "ReviewsOverview"
-		}
-	]
+	"links": [{
+		"title": "Financials",
+		"view": "ReportFinancials"
+	}]
 }];
 
-const sidebarReportsNavigation = [{
-	"title": "Reports",
+const reportNavigation = [{
+	"title": "REPORTS",
 	"icon": "document",
 	"links": [
 		{
@@ -99,15 +60,6 @@ const sidebarReportsNavigation = [{
 			"view": "ReportFinancials"
 		}
 	]
-}];
-
-const sidebarReportsSpecialistNavigation = [{
-	"title": "REPORTS",
-	"icon": "document",
-	"links": [{
-		"title": "Financials",
-		"view": "ReportFinancials"
-	}]
 }];
 
 const _devModeNavigation = {
@@ -131,15 +83,13 @@ const _devModeNavigation = {
 };
 
 // enable Components Navigation section in sidebar menu
-if ( import.meta.env.VITE_STAGE === "dev" ) sidebarHomeNavigation.push( _devModeNavigation );
+if ( import.meta.env.VITE_STAGE === "dev" ) sidebarNavigation.push( _devModeNavigation );
 
 export default function useNavigation () {
 	return {
 		topbarNavigation,
-		sidebarHomeNavigation,
-		sidebarDocumentsNavigation,
-		sidebarReportsNavigation,
-		sidebarReportsSpecialistNavigation,
-		sidebarNavigation
+		sidebarNavigation,
+		reportNavigation,
+		reportNavigationSpecialist
 	};
 }

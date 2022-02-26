@@ -26,6 +26,7 @@
 		"stylus": "0.56.0",
 		"vite": "2.7.6",
 		"vue": "3.2.26",
+		"vue-google-autocomplete": "^1.1.2",
 		"vue-router": "4.0.12",
 		"vue3-apexcharts": "^1.4.1"
 	},

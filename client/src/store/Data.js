@@ -32,14 +32,14 @@ export default function useData ( collectionName ) {
 	};
 
 
-	const readDocuments = async ( documentsId, query ) => {
+	const readDocuments = async documentsId => {
 		try {
 			if ( documentsId ) {
 				const doc = await readDocumentsFromCloudDb( collectionName, documentsId );
 				document.value = doc.data;
 				documentJson.value = JSON.stringify( document.value );
 			} else {
-				const docs = await readDocumentsFromCloudDb( collectionName, "", query );
+				const docs = await readDocumentsFromCloudDb( collectionName );
 				documents.value = docs.data;
 			}
 		} catch ( error ) {
