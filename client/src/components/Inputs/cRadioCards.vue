@@ -8,6 +8,8 @@
 				.title(v-if="option.title") {{option.title}}
 				icon.image(v-if="option.image" :name="option.image")
 				.description(v-if="option.description") {{option.description}}
+.field-info.error(v-if="errors && errors.length")
+	p(v-for="(error, index) in errors" :key="index") {{error}}
 </template>
 
 
@@ -29,6 +31,10 @@ export default {
 		"alignCenter": {
 			"type": Boolean,
 			"default": false
+		},
+		"errors": {
+			"type": Array,
+			"default": () => []
 		}
 	},
 	"emits": ["update:modelValue"],
