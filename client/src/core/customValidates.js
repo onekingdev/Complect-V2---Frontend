@@ -4,4 +4,6 @@ const requireDate = date => date && ( date !== null || date !== undefined );
 
 const numberGreaterThanZero = number => number && number > 0;
 
-export { requireForArray, requireDate, numberGreaterThanZero };
+const sameAsPassword = compareWith => ( value, siblings ) => value === siblings[compareWith];
+
+export { requireForArray, requireDate, numberGreaterThanZero, sameAsPassword };
