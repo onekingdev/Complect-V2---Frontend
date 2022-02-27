@@ -34,7 +34,7 @@ import useForm from "~/store/Form.js";
 import cRadioCards from "~/components/Inputs/cRadioCards.vue";
 import { validates } from "~/core/utils.js";
 import { required, maxLength, email, minLength } from "@vuelidate/validators";
-import { sameAsPassword } from "~/core/customValidates.js";
+import { sameAsWith } from "~/core/customValidates.js";
 
 export default {
 	"components": { cRadioCards },
@@ -65,7 +65,7 @@ export default {
 			"firstName": { required, "maxLength": maxLength( 100 ) },
 			"lastName": { required, "maxLength": maxLength( 100 ) },
 			"password": { required, "minLength": minLength( 6 ) },
-			"password2": { required, "sameAsPassword": sameAsPassword( "password" ) }
+			"password2": { required, "sameAsPassword": sameAsWith( "password" ) }
 		};
 
 		const signUpUser = async () => {
