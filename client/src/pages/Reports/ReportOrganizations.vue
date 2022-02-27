@@ -17,8 +17,10 @@ card-container.container(title="Resignations" type="flex-column")
 </template>
 
 <script>
+// import useData from "~/store/Data.js";
 export default {
 	setup () {
+		// const { documents } = useData( "users" );
 		const users = [{
 			"user": { "firstName": "David", "lastName": "Gill", "email": "example@gmail.com" },
 			"role": "trusted",

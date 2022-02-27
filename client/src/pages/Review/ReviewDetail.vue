@@ -79,12 +79,12 @@ vertical-detail
 <script>
 import { ref, computed, inject } from "vue";
 import { useRouter } from "vue-router";
-import UseData from "~/store/Data.js";
+import useData from "~/store/Data.js";
 import VerticalDetail from "~/components/Containers/VerticalDetail.vue";
 export default {
 	"components": { VerticalDetail },
 	setup () {
-		const reviews = new UseData( "reviews" );
+		const { document, updateDocument } = useData( "reviews" );
 		const notification = inject( "notification" );
 		const router = useRouter();
 		const reviewCategory = ref({});
@@ -94,24 +94,24 @@ export default {
 			"isButton": true,
 			"categoryName": ""
 		});
-		const btnTitle = computed( () => reviews.getDocument().value.completedAt ? "Mark as Incomplete" : "Mark as Complete" );
-		const completeModalTitle = computed( () => reviews.getDocument().value.completedAt ? "Incomplete Category" : "Complete Category" );
+		const btnTitle = computed( () => document.value.completedAt ? "Mark as Incomplete" : "Mark as Complete" );
+		const completeModalTitle = computed( () => document.value.completedAt ? "Incomplete Category" : "Complete Category" );
 		const selectGeneral = () => {
 			isGeneral.value = true;
 			router.push({
 				"name": "ReviewDetail",
-				"params": { "id": reviews.getDocument().value._id }
+				"params": { "id": document.value._id }
 			});
 		};
 		const selectCategory = id => {
 			isGeneral.value = false;
 			catId.value = id;
-			reviewCategory.value = reviews.getDocument().value.categories[id];
+			reviewCategory.value = document.value.categories[id];
 			router.push({ "name": "ReviewCategory", "params": { "catId": id } });
 		};
 		const updateReview = async () => {
 			try {
-				await reviews.updateDocument( reviews.getDocument().value._id, reviews.getDocument().value );
+				await updateDocument( document.value._id, document.value );
 				notification({ "type": "success", "title": "Success", "message": "Category has been updated." });
 			} catch ( error ) {
 				console.error( error );
@@ -119,9 +119,9 @@ export default {
 			}
 		};
 		const completeReview = async () => {
-			const timestamp = reviews.getDocument().value.completedAt ? null : Date.now();
+			const timestamp = document.value.completedAt ? null : Date.now();
 			try {
-				await reviews.updateDocument( reviews.getDocument().value._id, { "completedAt": timestamp });
+				await updateDocument( document.value._id, { "completedAt": timestamp });
 				notification({
 					"type": "success",
 					"title": "Success",
@@ -136,8 +136,8 @@ export default {
 				});
 			}
 		};
-		const addRegulatoryChange = () => reviews.getDocument().value.regulatoryChanges.push({ "change": "", "response": "" });
-		const addEmployeesInterviewed = () => reviews.getDocument().value.employeesInterviewed.push({ "name": "", "role": "", "department": "" });
+		const addRegulatoryChange = () => document.value.regulatoryChanges.push({ "change": "", "response": "" });
+		const addEmployeesInterviewed = () => document.value.employeesInterviewed.push({ "name": "", "role": "", "department": "" });
 		const deleteRegulatoryChange = ( regulatoryChange, index ) => {
 			regulatoryChange.splice( index, 1 );
 			notification({ "type": "success", "title": "Success", "message": "Entry has been deleted." });
@@ -146,14 +146,14 @@ export default {
 		const toggleCategory = () => state.value.isButton = !state.value.isButton;
 		const createCategory = async () => {
 			state.value.isButton = !state.value.isButton;
-			reviews.getDocument().value.categories.push({ "title": state.value.categoryName, "content": [], "completedAt": null });
+			document.value.categories.push({ "title": state.value.categoryName, "content": [], "completedAt": null });
 			state.value.categoryName = "";
 			try {
-				await reviews.updateDocument( reviews.getDocument().value._id, { "categories": reviews.getDocument().value.categories });
+				await updateDocument( document.value._id, { "categories": document.value.categories });
 				notification({ "type": "success", "title": "Success", "message": "Category has been added." });
 				isGeneral.value = false;
-				catId.value = reviews.getDocument().value.categories.length - 1;
-				reviewCategory.value = reviews.getDocument().value.categories[catId.value];
+				catId.value = document.value.categories.length - 1;
+				reviewCategory.value = document.value.categories[catId.value];
 				router.push({
 					"name": "ReviewCategory",
 					"params": { "catId": catId.value }
@@ -164,7 +164,7 @@ export default {
 			}
 		};
 		return {
-			"document": reviews.getDocument(),
+			document,
 			state,
 			reviewCategory,
 			createCategory,

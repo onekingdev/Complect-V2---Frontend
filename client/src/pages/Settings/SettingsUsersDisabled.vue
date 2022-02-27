@@ -14,7 +14,7 @@ c-modal(title="Reactivate User" v-model="isReactiveUserVisible")
 
 <script>
 import { ref, onMounted, inject } from "vue";
-import UseData from "~/store/Data.js";
+import useData from "~/store/Data.js";
 import teamMember from "~/core/teamMember.js";
 import SettingsUsersActions from "~/components/Helpers/SettingsUsersActions.vue";
 import cModal from "~/components/Misc/cModal.vue";
@@ -23,7 +23,7 @@ const COLLECTION_NAME = "team_members";
 export default {
 	"components": { SettingsUsersActions, cModal },
 	setup () {
-		const teamMembers = new UseData( COLLECTION_NAME );
+		const { documents, readDocuments } = useData( COLLECTION_NAME );
 		const modal = inject( "modal" );
 		const notification = inject( "notification" );
 		const users = ref([]);
@@ -31,8 +31,8 @@ export default {
 		const enableUserId = ref( null );
 
 		const getData = async () => {
-			await teamMembers.readDocuments();
-			users.value = teamMembers.getDocuments().value.filter( item => item.disabled ).map( item => ({
+			await readDocuments();
+			users.value = documents.value.filter( item => item.disabled ).map( item => ({
 				"user": { "firstName": item.firstName, "lastName": item.lastName },
 				"reason": { "id": item._id, "disabledReason": item.disabledReason, "disabledReasonInfor": item.disabledReasonInfor },
 				"name": `${item.firstName} ${item.lastName} ${item.email}`,

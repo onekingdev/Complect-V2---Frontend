@@ -29,7 +29,7 @@ card-container(:title="modalTitle" ref="modalWindow")
 import { ref, onMounted, onUnmounted, inject } from "vue";
 import cSelect from "~/components/Inputs/cSelect.vue";
 import useModals from "~/store/Modals.js";
-import UseData from "~/store/Data.js";
+import useData from "~/store/Data.js";
 import teamMember from "~/core/teamMember.js";
 import { onClickOutside } from "@vueuse/core";
 
@@ -112,7 +112,7 @@ export default {
 	setup ( props ) {
 		const notification = inject( "notification" );
 		const { deleteModal } = useModals();
-		const teamMembers = new UseData( "team_members" );
+		const { document, readDocuments, updateDocument } = useData( "team_members" );
 		const isDisableModal = props.modalType === "disabled";
 		const { modalTitle, btnTitle } = modalSetup( isDisableModal, props.id );
 		const errors = ref({});
@@ -128,12 +128,12 @@ export default {
 		const closeModal = () => deleteModal( props.modalId );
 
 		const disableAction = async () => {
-			if ( form.value.disabled ) await teamMembers.updateDocument( form.value._id, form.value );
+			if ( form.value.disabled ) await updateDocument( form.value._id, form.value );
 			else await toggleDisable( form.value );
 		};
 
 		const userAction = async () => {
-			if ( props.id ) await teamMembers.updateDocument( form.value._id, form.value );
+			if ( props.id ) await updateDocument( form.value._id, form.value );
 			else await createUser( form.value );
 		};
 
@@ -166,8 +166,8 @@ export default {
 		});
 
 		const getData = async () => {
-			await teamMembers.readDocuments( props.id );
-			form.value = teamMembers.getDocument().value;
+			await readDocuments( props.id );
+			form.value = document.value;
 		};
 
 		onMounted( () => {

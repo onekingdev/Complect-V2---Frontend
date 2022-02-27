@@ -35,6 +35,5 @@ exports.sendEmail = async emailData => {
 			}
 		}
 	};
-
 	await ses.sendEmail( params ).promise();
 };

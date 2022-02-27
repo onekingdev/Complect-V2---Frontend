@@ -39,6 +39,7 @@ functions:
   # - "${file(endpoints/download.yml)}"
   # - "${file(endpoints/cron.yml)}"
   - "${file(endpoints/_debug.yml)}"
+  - "${file(endpoints/payment.yml)}"
 
 package:
   patterns:
@@ -90,5 +91,10 @@ layers:
   scraperLibs:
     path: layers/scraper
     description: Additional libraries for Scraper
+    compatibleRuntimes:
+      - nodejs14.x
+  paymentLibs:
+    path: layers/payment
+    description: Additional libraries for Payment
     compatibleRuntimes:
       - nodejs14.x

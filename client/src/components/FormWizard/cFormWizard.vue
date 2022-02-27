@@ -15,6 +15,7 @@
 	.controls(v-if="navigation")
 		c-button(v-if="!firstStep" title="Go Back" @click="nextStep(-1)")
 		c-button(v-if="!lastStep" title="Next" type="primary" @click="nextStep(1)")
+		slot(v-if="$slots['controls']" name="controls")
 		//- c-button(v-if="lastStep" title="Submit" type="primary" @click="nextStep(1)")
 </template>
 

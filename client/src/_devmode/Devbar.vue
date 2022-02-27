@@ -8,17 +8,15 @@
 <script>
 import { computed } from "vue";
 import { useRoute } from "vue-router";
-import UseData from "~/store/Data.js";
+import useData from "~/store/Data.js";
 import { randomTasks } from "~/_devmode/generator/components/documents/tasks.js";
 export default {
 	setup () {
-		const tasks = new UseData( "tasks" );
+		const { createDocuments, deleteDocuments } = useData( "tasks" );
 		const route = useRoute();
 		const currentPage = computed( () => route.path );
-		// eslint-disable-next-line no-return-await
-		const generateDocuments = async () => await tasks.createDocuments( randomTasks({ "q": 17 }) );
-		// eslint-disable-next-line no-return-await
-		const removeDocuments = async () => await tasks.deleteDocuments();
+		const generateDocuments = async () => await createDocuments( randomTasks({ "q": 17 }) );
+		const removeDocuments = async () => await deleteDocuments();
 		return { generateDocuments, removeDocuments, currentPage };
 	}
 };

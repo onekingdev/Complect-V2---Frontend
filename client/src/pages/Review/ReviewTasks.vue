@@ -9,15 +9,15 @@
 
 <script>
 import { inject, onMounted } from "vue";
-import UseData from "~/store/Data.js";
+import useData from "~/store/Data.js";
 export default {
 	setup () {
-		const tasks = new UseData( "tasks" );
+		const { documents, readDocuments, deleteDocuments } = useData( "tasks" );
 		const modal = inject( "modal" );
 
 		const openTaskModal = () => modal({ "name": "cModalTask" });
 		const handleClickEdit = id => modal({ "name": "cModalTask", id });
-		const handleClickDelete = id => tasks.deleteDocuments( id );
+		const handleClickDelete = id => deleteDocuments( id );
 
 		const columns = [
 			{
@@ -54,11 +54,11 @@ export default {
 			}
 		];
 
-		onMounted( () => tasks.readDocuments() );
+		onMounted( () => readDocuments() );
 
 		return {
 			columns,
-			"documents": tasks.documents,
+			documents,
 			openTaskModal
 		};
 	}

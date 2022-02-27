@@ -270,7 +270,7 @@ export default {
 	.skill
 		display: inline-block;
 		text-align: center;
-		border: 1px solid #ccc;
+		border: 1px solid var(--c-border)
 		min-width: 2.5em;
 		padding: 0.1em 0.3em;
 		margin-right: 0.5em;
