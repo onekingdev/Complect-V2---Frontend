@@ -19,7 +19,7 @@
 							.title(v-if="column.title") {{ column.title }}
 							icon(v-if="column.icon" :name="column.icon.name" :size="column.icon.size" @click="column.icon.handleClick()")
 							c-button(v-if="!column.unsortable" type="icon" iconR="sort" @click="sortDocuments(column.key)")
-			tbody(v-if="filteredDocuments.length")
+			tbody(v-if="filteredDocuments.length && !isdraggable")
 				tr(v-for="document in filteredDocuments" :key="document._id")
 					td(v-for="(column, index) in columns" :key="index")
 						//- temp suspense solution
@@ -32,13 +32,25 @@
 								:id="document._id"
 								:data="document[column.key]"
 								:isChecked="document.isChecked")
+			draggable.table-tbody(:list="showDocuments" @change="isdraggable.action($event)" v-if="filteredDocuments.length && isdraggable")
+				tr(v-for="document in showDocuments" :key="document._id")
+					td(v-for="(column, index) in columns" :key="index")
+						//- temp suspense solution
+						Suspense
+							component.cell(
+								:is="getTableCell(column.cell)"
+								:class="[column.align]"
+								:key="column.key"
+								:meta="column.meta"
+								:id="document._id"
+								:data="document[column.key]")
 
 		icon(v-if="!filteredDocuments.length" name="empty-state")
 </template>
 
 
 <script>
-import { ref, computed, defineAsyncComponent } from "vue";
+import { ref, computed, defineAsyncComponent, watch } from "vue";
 import { sortArrayByKey } from "~/core/utils.js";
 export default {
 	"components": { "cDropdown": defineAsyncComponent( () => import( "~/components/Inputs/cDropdown.vue" ) ) },
@@ -55,12 +67,17 @@ export default {
 			"type": Array,
 			"default": () => []
 		},
-		"searchable": Boolean
+		"searchable": Boolean,
+		"isdraggable": {
+			"type": Object,
+			"default": false
+		}
 	},
 	setup ( props ) {
 		// filter and Search Documents
 		const searchQuery = ref( "" );
 		const activeFilters = ref({});
+		const showDocuments = ref([]);
 
 		const getTableCell = cell => defineAsyncComponent( () => import( `./Cells/${cell}.vue` ) );
 
@@ -73,7 +90,6 @@ export default {
 		};
 
 		const selectedFilterTitle = filter => filter ? filter.title : "";
-
 		const filteredDocuments = computed( () => {
 			let documents;
 			try {
@@ -107,6 +123,7 @@ export default {
 			sortAsc.value[key] = !sortAsc.value[key];
 			sortArrayByKey( props.documents, key, sortAsc.value[key]);
 		};
+		watch( () => filteredDocuments.value, () => showDocuments.value = filteredDocuments.value, { "deep": true });
 
 
 		return {
@@ -116,7 +133,8 @@ export default {
 			filteredDocuments,
 			activateFilter,
 			activeFilters,
-			selectedFilterTitle
+			selectedFilterTitle,
+			showDocuments
 		};
 	}
 };
@@ -171,7 +189,8 @@ export default {
 			.c-button:hover
 				:deep(svg.icon-sort)
 					fill: #444
-
+	.table-tbody
+		display: table-row-group
 
 svg.icon-empty-state
 	width: 8em

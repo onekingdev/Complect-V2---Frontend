@@ -49,6 +49,7 @@ export default {
 		grid-column: 1/-1
 	main
 		background: var(--c-bg-z1)
+		z-index: 1
 		max-height: 100%
 		overflow-y: scroll
 		overflow-x: hidden

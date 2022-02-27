@@ -20,13 +20,13 @@ c-modal(title="Delete Internal Review" v-model="isDeleteVisible")
 
 <script>
 import { onMounted, onUnmounted, inject, ref } from "vue";
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 import cBanner from "~/components/Misc/cBanner.vue";
 import cModal from "~/components/Misc/cModal.vue";
 export default {
 	"components": { cBanner, cModal },
 	setup () {
-		const { documents, readDocuments, deleteDocuments, createDocuments, clearStore } = useData( "reviews" );
+		const reviews = new UseData( "reviews" );
 		const notification = inject( "notification" );
 		const modal = inject( "modal" );
 		const isDeleteVisible = ref( false );
@@ -38,7 +38,7 @@ export default {
 		const handleClickEdit = id => modal({ "name": "cModalReview", id });
 		const handleClickDelete = async () => {
 			try {
-				await deleteDocuments( clickedId );
+				await reviews.deleteDocuments( clickedId );
 				notification({
 					"type": "success",
 					"title": "Success",
@@ -54,9 +54,9 @@ export default {
 			}
 		};
 		const handleClickDuplicate = async id => {
-			const index = documents.value.findIndex( doc => doc._id === id );
+			const index = reviews.getDocuments().value.findIndex( doc => doc._id === id );
 			try {
-				await createDocuments([documents.value[index]]);
+				await reviews.createDocuments([reviews.getDocuments().value[index]]);
 				notification({
 					"type": "success",
 					"title": "Success",
@@ -132,15 +132,15 @@ export default {
 			review.finding = finding;
 		};
 		onMounted( async () => {
-			await readDocuments();
-			documents.value.forEach( review => {
+			await reviews.readDocuments();
+			reviews.getDocuments().value.forEach( review => {
 				getProgress( review );
 			});
 		});
-		onUnmounted( () => clearStore() );
+		onUnmounted( () => reviews.clearStore() );
 		return {
 			columns,
-			documents,
+			"documents": reviews.getDocuments,
 			isDeleteVisible,
 			handleClickDelete
 		};

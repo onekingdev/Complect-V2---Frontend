@@ -7,8 +7,7 @@
 			a Documents
 			router-link(:to="reportLink") Reports
 		.buttons
-			c-button(title="Find an Expert" type="accent" @click="gotoMarket()" v-if="profile.type == 'business'")
-			c-button(title="Browse Jobs" type="accent" @click="gotoJobs()" v-else)
+			c-button(title="Find an Expert" type="accent")
 			c-button(iconL="bell" type="transparent")
 	.user-block(v-if="profile" @click="toggleUserDropDown()" ref="userDropDown" :class="{expanded: userDropDownExpanded}")
 		c-avatar(:avatar="profile.avatar" :firstName="profile.firstName" :lastName="profile.lastName" size="small")
@@ -46,8 +45,6 @@ export default {
 		});
 
 		const toDashboard = () => simpleTopBar.value ? router.push({ "name": "Dashboard" }) : router.push({ "name": "OnboardingForm" });
-		const gotoMarket = () => router.push({ "name": "ExpertList" });
-		const gotoJobs = () => router.push({ "name": "JobBoard" });
 		const reportLink = profile.value.type === "specialist" ? "/reports/financials" : "/reports/organizations";
 
 		return {
@@ -58,9 +55,7 @@ export default {
 			userDropDownExpanded,
 			toggleUserDropDown,
 			simpleTopBar,
-			toDashboard,
-			gotoMarket,
-			gotoJobs
+			toDashboard
 		};
 	}
 };

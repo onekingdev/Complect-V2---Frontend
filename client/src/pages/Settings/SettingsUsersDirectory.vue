@@ -6,20 +6,21 @@ c-table(v-bind="{columns, documents: users}" searchable)
 
 
 <script>
+
 import { ref, onMounted, inject } from "vue";
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 import SettingsUsersActions from "~/components/Helpers/SettingsUsersActions.vue";
 
 export default {
 	"components": { SettingsUsersActions },
 	setup () {
 		const modal = inject( "modal" );
-		const { documents, readDocuments } = useData( "team_members" );
+		const teamMembers = new UseData( "team_members" );
 		const users = ref([]);
 
 		const getData = async () => {
-			await readDocuments();
-			users.value = documents.value.filter( item => !item.disabled ).map( item => ({
+			await teamMembers.readDocuments();
+			users.value = teamMembers.getDocuments().value.filter( item => !item.disabled ).map( item => ({
 				"user": { "firstName": item.firstName, "lastName": item.lastName, "email": item.email },
 				"name": `${item.firstName} ${item.lastName} ${item.email}`,
 				"status": item.userId ? "active" : "pending",
@@ -81,7 +82,7 @@ export default {
 		onMounted( () => getData() );
 
 		return {
-			documents,
+			"documents": teamMembers.getDocuments(),
 			users,
 			columns,
 			getData

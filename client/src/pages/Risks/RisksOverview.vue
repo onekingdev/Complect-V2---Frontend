@@ -34,7 +34,7 @@ c-modal(title="Unlink Policy" v-model="isUnlinkVisible")
 
 <script>
 import { onMounted, onUnmounted, ref, inject, computed } from "vue";
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 import { calcRiskLevel } from "~/core/utils.js";
 import cBanner from "~/components/Misc/cBanner.vue";
 import { useRouter } from "vue-router";
@@ -48,7 +48,7 @@ export default {
 	"components": { cBanner, cModal, cSelect, cLabel, cBadge },
 	// eslint-disable-next-line
 	setup () {
-		const { document, documents, readDocuments, deleteDocuments, clearStore, updateDocument } = useData( "risks" );
+		const risks = new UseData( "risks" );
 		const router = useRouter();
 		const notification = inject( "notification" );
 		const { profile } = useProfile();
@@ -63,8 +63,8 @@ export default {
 		const newRiskLevel = computed( () => calcRiskLevel( riskForm.value.impact, riskForm.value.likelihood ) );
 		const handleClickEdit = async id => {
 			clickId.value.riskId = id;
-			await readDocuments( id );
-			riskForm.value = document.value;
+			await risks.readDocuments( id );
+			riskForm.value = risks.getDocument().value;
 			isEditVisible.value = !isEditVisible.value;
 		};
 		const handleClickDelete = id => {
@@ -81,16 +81,16 @@ export default {
 				const riskId = clickId.value.riskId;
 				const policyId = clickId.value.policyId;
 				// await policies.deleteDocuments( policyId );
-				await readDocuments( riskId );
-				const controls = document.value.controls.filter( doc => doc._id !== policyId );
-				await updateDocument( document.value._id, { controls });
+				await risks.readDocuments( riskId );
+				const controls = risks.getDocument().value.controls.filter( doc => doc._id !== policyId );
+				await risks.updateDocument( risks.document.value._id, { controls });
 				isUnlinkVisible.value = !isUnlinkVisible.value;
 				notification({
 					"type": "success",
 					"title": "Success",
 					"message": "Control has been removed."
 				});
-				await readDocuments( document.value._id );
+				await risks.readDocuments( risks.document.value._id );
 			} catch ( error ) {
 				console.error( error );
 				notification({
@@ -104,7 +104,7 @@ export default {
 			try {
 				riskForm.value.riskLevel = newRiskLevel.value;
 				riskForm.value.creator = `${profile.value.firstName} ${profile.value.lastName}`;
-				const riskId = await updateDocument( clickId.value.riskId, riskForm.value );
+				const riskId = await risks.updateDocument( clickId.value.riskId, riskForm.value );
 				notification({
 					"type": "success",
 					"title": "Success",
@@ -124,7 +124,7 @@ export default {
 		};
 		const deleteRisk = async () => {
 			try {
-				await deleteDocuments( clickId.value.riskId );
+				await risks.deleteDocuments( clickId.value.riskId );
 				notification({
 					"type": "success",
 					"title": "Success",
@@ -244,11 +244,11 @@ export default {
 			}
 		]);
 
-		onMounted( () => readDocuments() );
-		onUnmounted( () => clearStore() );
+		onMounted( () => risks.readDocuments() );
+		onUnmounted( () => risks.clearStore() );
 
 
-		return { columns, documents, isEditVisible, isDeleteVisible, editRisk, deleteRisk, riskForm, options, newRiskLevel, controlColumns, unlinkPolicy, isUnlinkVisible };
+		return { columns, "documents": risks.getDocuments(), isEditVisible, isDeleteVisible, editRisk, deleteRisk, riskForm, options, newRiskLevel, controlColumns, unlinkPolicy, isUnlinkVisible };
 	}
 };
 </script>

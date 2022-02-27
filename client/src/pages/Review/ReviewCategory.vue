@@ -89,7 +89,7 @@ detail-container
 <script>
 import { computed, inject } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
 export default {
 	"components": { cDropdown	},
@@ -102,7 +102,7 @@ export default {
 	},
 	"emits": ["update:reviewCategory"],
 	setup ( props ) {
-		const { document, updateDocument } = useData( "reviews" );
+		const reviews = new UseData( "reviews" );
 		const modal = inject( "modal" );
 		const notification = inject( "notification" );
 		const router = useRouter();
@@ -152,8 +152,8 @@ export default {
 		const deleteCategory = async () => {
 			try {
 				const catId = route.params.catId;
-				document.value.categories.splice( catId, 1 );
-				await updateDocument( document.value._id, document.value );
+				reviews.getDocument().value.categories.splice( catId, 1 );
+				await reviews.updateDocument( reviews.getDocument().value._id, reviews.getDocument().value );
 				notification({
 					"type": "success",
 					"title": "Success",
@@ -161,7 +161,7 @@ export default {
 				});
 				router.push({
 					"name": "ReviewDetail",
-					"params": { "id": document.value._id }
+					"params": { "id": reviews.getDocument().value._id }
 				});
 			} catch ( error ) {
 				console.error( error );
@@ -176,8 +176,8 @@ export default {
 		const updateCategory = async () => {
 			try {
 				const catId = route.params.catId;
-				document.value.categories[catId] = category.value;
-				await updateDocument( document.value._id, document.value );
+				reviews.getDocument().value.categories[catId] = category.value;
+				await reviews.updateDocument( document.value._id, document.value );
 				notification({
 					"type": "success",
 					"title": "Success",
@@ -196,9 +196,9 @@ export default {
 		const completeCategory = async () => {
 			const timestamp = category.value.completedAt ? null : Date.now();
 			const catId = route.params.catId;
-			document.value.categories[catId].completedAt = timestamp;
+			reviews.getDocument().value.categories[catId].completedAt = timestamp;
 			try {
-				await updateDocument( document.value._id, document.value );
+				await reviews.updateDocument( document.value._id, document.value );
 				notification({
 					"type": "success",
 					"title": "Success",

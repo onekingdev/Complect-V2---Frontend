@@ -31,7 +31,8 @@ import { ref, inject, computed } from "vue";
 import useProfile from "~/store/Profile.js";
 import useAuth from "~/core/auth.js";
 import { validates } from "~/core/utils.js";
-import { required, email, sameAs, minLength } from "@vuelidate/validators";
+import { sameAsWith } from "~/core/customValidates.js";
+import { required, email, minLength } from "@vuelidate/validators";
 
 
 export default {
@@ -52,12 +53,10 @@ export default {
 
 		const validateEmail = { "newEmail": { email, required } };
 
-		const newPassword = computed( () => passwordForm.value.newPassword );
-
 		const validatePasswordChange = {
 			"password": { required },
 			"newPassword": { required, "minLength": minLength( 6 ) },
-			"confirmPassword": { required, "sameAsNewPassword": sameAs( newPassword ) }
+			"confirmPassword": { required, "sameAsPassword": sameAsWith( "newPassword" ) }
 		};
 
 		const update = async type => {

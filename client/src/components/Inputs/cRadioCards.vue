@@ -1,4 +1,6 @@
 <template lang="pug">
+.field-info.error(v-if="errors && errors.length")
+	p(v-for="(error, index) in errors" :key="index") {{error}}
 .c-input.c-radio-card
 	label.radio-card(v-for="(option, index) in data" :title="option.tooltip" :key="index")
 		input(type="radio" :name="`radio_group_${id}`" :checked="checked(option)" @click="update(option)")
@@ -29,6 +31,10 @@ export default {
 		"alignCenter": {
 			"type": Boolean,
 			"default": false
+		},
+		"errors": {
+			"type": Array,
+			"default": () => []
 		}
 	},
 	"emits": ["update:modelValue"],
@@ -48,6 +54,7 @@ export default {
 .c-radio-card
 	display: flex
 	gap: 1.5em
+	margin-top: 0.5em
 	label.radio-card
 		flex: 1 0 0
 		display: flex

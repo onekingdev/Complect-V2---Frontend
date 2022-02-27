@@ -18,7 +18,7 @@ card-container.c-modal-review(:title="title" ref="modalWindow")
 import { ref, computed, onMounted, onUnmounted, inject } from "vue";
 import { useRouter } from "vue-router";
 import useModals from "~/store/Modals.js";
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 import { onClickOutside } from "@vueuse/core";
 import cSelect from "~/components/Inputs/cSelect.vue";
 import _clonedeep from "lodash.clonedeep";
@@ -37,7 +37,7 @@ export default {
 		}
 	},
 	setup ( props ) {
-		const { document, documents, readDocuments, createDocuments, updateDocument } = useData( "reviews" );
+		const reviews = new UseData( "reviews" );
 		const { deleteModal } = useModals();
 		const notification = inject( "notification" );
 		const router = useRouter();
@@ -72,11 +72,11 @@ export default {
 			try {
 				let reviewId;
 				if ( selectedId.value ) {
-					const index = documents.value.findIndex( doc => doc._id === selectedId.value );
-					const duplicate = _clonedeep( documents.value[index]);
+					const index = reviews.getDocuments().value.findIndex( doc => doc._id === selectedId.value );
+					const duplicate = _clonedeep( reviews.getDocuments().value[index]);
 					form.value.categories = duplicate.categories;
-					reviewId = await createDocuments([form.value]);
-				} else reviewId = await createDocuments([form.value]);
+					reviewId = await reviews.createDocuments([form.value]);
+				} else reviewId = await reviews.createDocuments([form.value]);
 				notification({ "type": "success", "title": "Success", "message": "Internal review has been created" });
 				router.push({
 					"name": "ReviewDetail",
@@ -106,9 +106,9 @@ export default {
 		};
 		const updateReview = async () => {
 			try {
-				await updateDocument( form.value._id, form.value );
-				const index = documents.value.findIndex( doc => doc._id === form.value._id );
-				getProgress( documents.value[index]);
+				await reviews.updateDocument( form.value._id, form.value );
+				const index = reviews.getDocuments().value.findIndex( doc => doc._id === form.value._id );
+				getProgress( reviews.getDocuments().value[index]);
 				notification({ "type": "success", "title": "Success", "message": "Internal review has been updated." });
 			} catch ( error ) {
 				console.error( error );
@@ -127,11 +127,11 @@ export default {
 		};
 		onMounted( async () => {
 			if ( props.id ) {
-				await readDocuments( props.id );
-				form.value = document.value;
+				await reviews.readDocuments( props.id );
+				form.value = reviews.getDocument().value;
 			} else {
-				await readDocuments();
-				documents.value.forEach( review => {
+				await reviews.readDocuments();
+				reviews.getDocuments().value.forEach( review => {
 					const item = {
 						"title": review.title,
 						"value": review._id
@@ -143,7 +143,7 @@ export default {
 			}
 		});
 		onUnmounted( () => form.value = {});
-		return { modalWindow, closeModal, title, btnTitle, selectedId, form, documents, items, isNewReview, saveReview };
+		return { modalWindow, closeModal, title, btnTitle, selectedId, form, "documents": reviews.getDocuments(), items, isNewReview, saveReview };
 	}
 };
 </script>

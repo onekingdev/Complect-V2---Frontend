@@ -20,7 +20,7 @@ import cRadios from "~/components/Inputs/cRadios.vue";
 import useAuth from "~/core/auth.js";
 import useProfile from "~/store/Profile.js";
 import { validates } from "~/core/utils.js";
-import { required } from "@vuelidate/validators";
+import { numberGreaterThanZero } from "~/core/customValidates.js";
 
 export default {
 	"components": {
@@ -42,7 +42,7 @@ export default {
 		const form = ref({ ...profile.value });
 		const errors = ref({});
 
-		const rules = { "rate": { required } };
+		const rules = { "rate": { "validateRate": numberGreaterThanZero } };
 
 		const saveInformation = async () => {
 			errors.value = await validates( rules, form.value );

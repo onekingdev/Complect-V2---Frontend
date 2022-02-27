@@ -20,7 +20,7 @@ card-container(:title="modalTitle" ref="modalWindow")
 <script>
 import { ref, onMounted, onUnmounted, inject, watch } from "vue";
 import useModals from "~/store/Modals.js";
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 import useProfile from "~/store/Profile.js";
 import { onClickOutside } from "@vueuse/core";
 import { validates } from "~/core/utils.js";
@@ -53,7 +53,7 @@ export default {
 		const notification = inject( "notification" );
 		const { profile } = useProfile();
 		const { deleteModal } = useModals();
-		const { document, readDocuments, createDocuments, updateDocument } = useData( "user_experiences" );
+		const userExperiences = new UseData( "user_experiences" );
 
 		const modalTitle = props.id ? "Edit Experience" : "Add Experience";
 		const btnTitle = props.id ? "Save" : "Add";
@@ -76,8 +76,8 @@ export default {
 			if ( Object.keys( errors.value ).length > 0 ) return;
 
 			try {
-				if ( props.id ) await updateDocument( form.value._id, form.value );
-				else await createDocuments([form.value]);
+				if ( props.id ) await userExperiences.updateDocument( form.value._id, form.value );
+				else await userExperiences.createDocuments([form.value]);
 
 				notification({
 					"title": "Success",
@@ -100,8 +100,8 @@ export default {
 		});
 
 		const getData = async () => {
-			await readDocuments( props.id );
-			form.value = document.value;
+			await userExperiences.readDocuments( props.id );
+			form.value = userExperiences.getDocument().value;
 		};
 
 		watch( () => form.value, newValue => {

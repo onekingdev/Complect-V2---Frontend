@@ -11,21 +11,21 @@
 						.inputs
 							c-radios(id="crd" :data="radioOptions" v-model="form.crd")
 				template(#step2)
-					c-field(label="Company Name" type="text" placeholder="Company Name" required v-model="form.company")
+					c-field(label="Company Name" type="text" placeholder="Company Name" :errors="errors.company" required v-model="form.company")
 					c-field.col-3(label="AUM" type="text" placeholder="AUM" v-model="form.aum")
 					c-field.col-3(label="Number of Accounts" type="number" placeholder="Number of Accounts" v-model="form.accounts")
-					c-select.col-3(label="Industry" placeholder="Select Industry" :data="industries" v-model="form.industries" searchable multiple required)
+					c-select.col-3(label="Industry" placeholder="Select Industry" :errors="errors.industries" :data="industries" v-model="form.industries" searchable multiple required)
 					c-select.col-3(label="Sub-Industry" placeholder="Select Sub-Industry" :data="filteredSubIndustries" v-model="form.subIndustries" searchable multiple)
-					c-select.col-3(label="Jurisdiction" placeholder="Select Jurisdiction" :data="jurisdictions" v-model="form.jurisdictions" searchable multiple required)
-					c-select.col-3(label="Time Zone" placeholder="Select Time Zone" :data="timezones" v-model="form.timezone" searchable required)
+					c-select.col-3(label="Jurisdiction" placeholder="Select Jurisdiction" :errors="errors.jurisdictions" :data="jurisdictions" v-model="form.jurisdictions" searchable multiple required)
+					c-select.col-3(label="Time Zone" placeholder="Select Time Zone" :errors="errors.timezone" :data="timezones" v-model="form.timezone" searchable required)
 					c-field.col-3(label="Phone Number" type="tel" placeholder="Phone Number" v-model="form.tel")
 					c-field.col-3(label="Company Website" type="url" placeholder="Company Website" v-model="form.website")
 					.divider
-					c-field.col-3(label="Business Address" type="address" placeholder="Business Address" v-model="form.address" required)
-					c-field.col-3(label="Apt/Unit" type="text" placeholder="Apt/Unit" v-model="form.apt")
-					c-field.col-3(label="City" type="text" placeholder="City" v-model="form.city")
-					c-field.col-3(label="State" type="text" placeholder="State" v-model="form.state")
-					c-field.col-3(label="Zip code" type="number" placeholder="Zip code" v-model="form.zip")
+					c-address.col-5(label="Business Address" :errors="errors.address" :value="form.address" placeholder="Business Address" @update="updateAddressChange" required)
+					c-field.col-1(label="Apt/Unit" type="text" placeholder="Apt/Unit" v-model="form.apt")
+					c-field.col-2(label="City" type="text" placeholder="City" :errors="errors.city" v-model="form.city" required)
+					c-field.col-2(label="State" type="text" placeholder="State" :errors="errors.state" v-model="form.state")
+					c-field.col-2(label="Zip code" type="number" placeholder="Zip code" :errors="errors.zip" v-model="form.zip" required)
 				template(#step3)
 					.plan-header
 						.title Choose your plan
@@ -39,12 +39,12 @@
 						.header What jurisdiction does your expertise extend to?
 						.intro Providing your jurisdiction(s) will help find clients within your domain of expertise. Select all that apply.
 						.inputs.grid-6
-							c-select.col-3(label="Jurisdiction" placeholder="Select Jurisdiction" :data="jurisdictions" v-model="form.jurisdictions" searchable multiple required)
-							c-select.col-3(label="Time Zone" placeholder="Select Time Zone" :data="timezones" v-model="form.timezone" searchable required)
+							c-select.col-3(label="Jurisdiction" placeholder="Select Jurisdiction" :errors="errors.jurisdictions" :data="jurisdictions" v-model="form.jurisdictions" searchable multiple required)
+							c-select.col-3(label="Time Zone" placeholder="Select Time Zone" :errors="errors.timezone" :data="timezones" v-model="form.timezone" searchable required)
 					section
 						.header What industries do you serve?
 						.inputs.grid-6
-							c-select.col-3(label="Industry" placeholder="Select Industry" :data="industries" v-model="form.industries" searchable multiple required)
+							c-select.col-3(label="Industry" placeholder="Select Industry" :errors="errors.industries" :data="industries" v-model="form.industries" searchable multiple required)
 							c-select.col-3(label="Sub-Industry" placeholder="Select Sub-Industry" :data="filteredSubIndustries" v-model="form.subIndustries" searchable multiple)
 					section
 						.header Are you a former regulator?
@@ -59,12 +59,12 @@
 					section
 						.header My Rate
 						.inputs
-							c-field(label="Enter your hourly rate" type="number" placeholder="Hourly rate" v-model="form.rate")
+							c-field(label="Enter your hourly rate" type="number" placeholder="Hourly rate" :errors="errors.rate" v-model="form.rate")
 					section
 						.header What's your experience?
 						.itro Select one that best matches your level of your expertise.
 						.inputs
-							c-radio-cards(id="experience" :data="formOptions.experience" v-model="form.experience")
+							c-radio-cards(id="experience" :data="formOptions.experience" :errors="errors.experience" v-model="form.experience")
 					section
 						.header Upload your resume:
 						c-dropzone
@@ -78,7 +78,7 @@
 
 
 <script>
-import { computed } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import useProfile from "~/store/Profile.js";
 import useForm from "~/store/Form.js";
@@ -89,16 +89,55 @@ import cSelect from "~/components/Inputs/cSelect.vue";
 import cDropzone from "~/components/Inputs/cDropzone.vue";
 import cSwitcher from "~/components/Inputs/cSwitcher.vue";
 import cPlans from "~/components/Misc/cPlans.vue";
+import cAddress from "~/components/Inputs/cAddress.vue";
 
 import { industries, jurisdictions, timezones } from "~/data/static.js";
 import { plans } from "~/data/plans.js";
 
-import { filterSubIndustries } from "~/core/utils.js";
+import { filterSubIndustries, validates } from "~/core/utils.js";
+import { required, requiredUnless } from "@vuelidate/validators";
+import { requireForArray, numberGreaterThanZero } from "~/core/customValidates.js";
+
+const radioOptions = [
+	{ "title": "No", "value": false }, { "title": "Yes", "value": true }
+];
+
+const formOptions = {
+	"skills": [
+		{ "title": "HTML", "value": "html" }, { "title": "CSS", "value": "css" }, { "title": "Javascript", "value": "js" }
+	],
+	"experience": [
+		{ "value": 0, "title": "Junior", "description": "Beginner consultant with some industry experience." }, { "value": 1, "title": "Intermediate", "description": "Good experience and solid knowledge of the industry." }, { "value": 2, "title": "Expert", "description": "Deep understanding of industry with varied experience." }
+	],
+	"payments": [
+		{
+			"title": "Billed Annually",
+			"value": true
+		}, {
+			"title": "Billed Monthly",
+			"value": false
+		}
+	]
+};
+
+const baseForm = {
+	"specialist": {
+		"crd": false,
+		"annually": true,
+		"plan": "standard"
+	},
+	"business": {
+		"regulator": false,
+		"annually": true,
+		"plan": "starter"
+	}
+};
 
 export default {
 	"components": {
 		cFormWizard,
 		cRadios,
+		cAddress,
 		cRadioCards,
 		cSelect,
 		cDropzone,
@@ -106,60 +145,90 @@ export default {
 		cPlans
 	},
 	setup () {
-		const baseForm = {
-			"specialist": {
-				"crd": false,
-				"annually": true,
-				"plan": "standard"
-			},
-			"business": {
-				"regulator": false,
-				"annually": true,
-				"plan": "starter"
-			}
-		};
 		const router = useRouter();
 		const { profile } = useProfile();
 		const userType = profile.value.type;
 		const { form } = useForm( "onboarding", baseForm[userType]);
+		const errors = ref({});
+
+		const validateInfor = computed( () => ({
+			"specialist": {
+				"1": {
+					"rules": {
+						"jurisdictions": { "required": requireForArray },
+						"industries": { "required": requireForArray },
+						"timezone": { "required": requireForArray }
+					},
+					"data": {
+						"jurisdictions": form.value.jurisdictions,
+						"timezone": form.value.timezone,
+						"industries": form.value.industries
+					}
+				},
+				"2": {
+					"rules": {
+						"rate": { "validateRate": numberGreaterThanZero },
+						"experience": { "required": requiredUnless( form.value.experience >= 0 ) }
+					},
+					"data": {
+						"rate": form.value.rate,
+						"timezone": form.value.experience
+					}
+				}
+			},
+			"business": {
+				"2": {
+					"rules": {
+						"company": { required },
+						"industries": { "required": requireForArray },
+						"jurisdictions": { "required": requireForArray },
+						"timezone": { "required": requireForArray },
+						"address": { required },
+						"city": { required },
+						"zip": { required }
+					},
+					"data": {
+						"company": form.value.company,
+						"industries": form.value.industries,
+						"jurisdictions": form.value.jurisdictions,
+						"timezone": form.value.timezone,
+						"address": form.value.address,
+						"city": form.value.city,
+						"zip": form.value.zip
+					}
+				}
+			}
+		}) );
+
+		const stepValidate = async currentStep => {
+			const step = validateInfor.value[userType][currentStep];
+			errors.value = await validates( step.rules, step.data );
+			return Object.keys( errors.value ).length === 0;
+		};
 
 		const wizardSteps = {
 			"business": [
-				{ "title": "CRD Number" }, { "title": "Company Information" }, { "title": "Choose Plan" }
+				{ "title": "CRD Number" }, { "title": "Company Information", "validates": stepValidate }, { "title": "Choose Plan" }
 			],
 			"specialist": [
-				{ "title": "Background" }, { "title": "Skills and education" }, { "title": "Choose plan" }
-			]
-		};
-
-
-		const radioOptions = [
-			{ "title": "No", "value": false }, { "title": "Yes", "value": true }
-		];
-
-		const formOptions = {
-			"skills": [
-				{ "title": "HTML", "value": "html" }, { "title": "CSS", "value": "css" }, { "title": "Javascript", "value": "js" }
-			],
-			"experience": [
-				{ "value": 0, "title": "Junior", "description": "Beginner consultant with some industry experience." }, { "value": 1, "title": "Intermediate", "description": "Good experience and solid knowledge of the industry." }, { "value": 2, "title": "Expert", "description": "Deep understanding of industry with varied experience." }
-			],
-			"payments": [
-				{
-					"title": "Billed Annually",
-					"value": true
-				}, {
-					"title": "Billed Monthly",
-					"value": false
-				}
+				{ "title": "Background", "validates": stepValidate }, { "title": "Skills and education", "validates": stepValidate }, { "title": "Choose plan" }
 			]
 		};
 
 		const goToCheckout = () => router.push({ "name": "OnboardingCheckout" });
 
+		const updateAddressChange = data => {
+			const { address, city, state, zip } = data;
+			form.value.address = address;
+			if ( city ) form.value.city = city;
+			if ( state ) form.value.state = state;
+			if ( zip ) form.value.zip = zip;
+		};
+
 		const filteredSubIndustries = computed( () => filterSubIndustries( form.value.industries, userType ) );
 
 		return {
+			errors,
 			userType,
 			radioOptions,
 			wizardSteps,
@@ -170,7 +239,8 @@ export default {
 			jurisdictions,
 			timezones,
 			plans,
-			goToCheckout
+			goToCheckout,
+			updateAddressChange
 		};
 	}
 };

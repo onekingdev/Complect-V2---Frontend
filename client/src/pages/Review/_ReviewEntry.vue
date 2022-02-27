@@ -37,7 +37,7 @@ c-modal(title="Confirm Unsaved Changes" v-model="isDeleteVisible")
 <script>
 import { onMounted, onUnmounted, inject, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
 import cModal from "~/components/Misc/cModal.vue";
 import cCheckbox from "~/components/Inputs/cCheckbox.vue";
@@ -49,7 +49,7 @@ export default {
 		cModal
 	},
 	setup () {
-		const { document, documentJson, readDocuments, updateDocument, deleteDocuments, clearStore } = useData( "reviews" );
+		const reviews = new UseData( "reviews" );
 		const route = useRoute();
 		const notification = inject( "notification" );
 		const router = useRouter();
@@ -69,11 +69,11 @@ export default {
 			}
 		];
 
-		const editReview = () => modal({ "name": "cModalReview", "id": document.value._id });
+		const editReview = () => modal({ "name": "cModalReview", "id": reviews.getDocument().value._id });
 
 		const deleteReiew = async () => {
 			try {
-				await deleteDocuments( route.params.id );
+				await reviews.deleteDocuments( route.params.id );
 				notification({
 					"type": "success",
 					"title": "Success",
@@ -91,7 +91,7 @@ export default {
 		};
 
 		const closeDetail = () => {
-			if ( documentJson.value === JSON.stringify( document.value ) ) router.push({ "name": "ReviewsOverview" });
+			if ( reviews.documentJson.value === JSON.stringify( reviews.getDocument().value ) ) router.push({ "name": "ReviewsOverview" });
 			else isDeleteVisible.value = !isDeleteVisible.value;
 		};
 
@@ -102,12 +102,12 @@ export default {
 		const exportReview = async () => {
 			let flag;
 			flag = true;
-			flag = flag && document.value.completedAt;
-			document.value.categories.forEach( category => {
+			flag = flag && reviews.getDocument().value.completedAt;
+			reviews.getDocument().value.categories.forEach( category => {
 				flag = flag && category.completedAt;
 			});
 			if ( flag ) {
-				const reviewId = document.value._id;
+				const reviewId = reviews.getDocument().value._id;
 				const pdfData = {
 					"collection": "reviews",
 					"template": "internalReport",
@@ -130,7 +130,7 @@ export default {
 
 		const saveAndExit = async () => {
 			try {
-				await updateDocument( document.value._id, document.value );
+				await reviews.updateDocument( reviews.getDocument().value._id, reviews.getDocument().value );
 				notification({
 					"type": "success",
 					"title": "Success",
@@ -147,12 +147,12 @@ export default {
 			}
 		};
 
-		onMounted( () => readDocuments( route.params.id ) );
-		onUnmounted( () => clearStore() );
+		onMounted( () => reviews.readDocuments( route.params.id ) );
+		onUnmounted( () => reviews.clearStore() );
 
 		return {
 			tabs,
-			document,
+			"document": reviews.getDocument(),
 			isDeleteVisible,
 			editReview,
 			exportReview,

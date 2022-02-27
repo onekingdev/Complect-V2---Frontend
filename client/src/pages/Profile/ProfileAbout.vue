@@ -44,11 +44,11 @@ section.grid-6
 			c-field.col-3(label="Phone Number" type="text" placeholder="Phone Number" v-model="form.tel")
 			c-field.col-3(label="Company Website" type="text" placeholder="Company Website" v-model="form.website")
 			.divider
-			c-field.col-5(label="Business Address" type="text" placeholder="Business Address" :errors="errors.address" required v-model="form.address")
+			c-address.col-5(label="Business Address" :value="form.address" :errors="errors.address" placeholder="Business Address" @update="updateAddressChange" required)
 			c-field.col-1(label="Apt/Unit:" type="text" placeholder="Apt/Unit:" v-model="form.apt")
 			c-field.col-2(label="City" type="text" placeholder="City" :errors="errors.city" required v-model="form.city")
 			c-field.col-2(label="State" type="text" placeholder="State" :errors="errors.state" required v-model="form.state")
-			c-field.col-2(label="Zip Code" type="number" placeholder="Zip Code" :errors="errors.zip" required v-model="form.zip")
+			c-field.col-2(label="Zip Code" type="text" placeholder="Zip Code" :errors="errors.zip" required v-model="form.zip")
 			.controls
 				c-button(type="link" title="Cancel" @click="restoreInformation('company')")
 				c-button(type="primary" title="Save" @click="saveInformation('company')")
@@ -60,6 +60,7 @@ import cSelect from "~/components/Inputs/cSelect.vue";
 import cUpload from "~/components/Inputs/cUpload.vue";
 import HorizontalTabs from "~/components/Containers/HorizontalTabs.vue";
 import UserExperiences from "~/pages/Profile/components/UserExperiences.vue";
+import cAddress from "~/components/Inputs/cAddress.vue";
 import useProfile from "~/store/Profile.js";
 import useAuth from "~/core/auth.js";
 
@@ -67,7 +68,6 @@ import { industries, jurisdictions, timezones } from "~/data/static.js";
 import { filterSubIndustries, validates } from "~/core/utils.js";
 import { maxLength, required } from "@vuelidate/validators";
 import { requireForArray } from "~/core/customValidates.js";
-
 
 const COMMON_FIELDS = {
 	"industries": [],
@@ -157,6 +157,7 @@ const getValidateRules = ( isBusiness, section ) => {
 
 export default {
 	"components": {
+		cAddress,
 		UserExperiences,
 		cSelect,
 		cUpload,
@@ -214,6 +215,14 @@ export default {
 			}
 		};
 
+		const updateAddressChange = data => {
+			const { address, city, state, zip } = data;
+			form.value.address = address;
+			if ( city ) form.value.city = city;
+			if ( state ) form.value.state = state;
+			if ( zip ) form.value.zip = zip;
+		};
+
 		return {
 			form,
 			tabs,
@@ -230,7 +239,8 @@ export default {
 			profile,
 			isBusiness,
 			restoreInformation,
-			saveInformation
+			saveInformation,
+			updateAddressChange
 		};
 	}
 };
