@@ -6,6 +6,7 @@ card-container
 		icon(name="mail")
 		.confirmation-code
 			input(v-for="i in 6" :key="i" type="number" :ref="el => { if (el) inputs[i-1] = el }" v-model="numbers[i-1]" required)
+		.error(v-if="errorMessage") {{ errorMessage }}
 		c-button(title="Submit" type="primary" @click="submitCode()" fullwidth)
 	template(#footer)
 		c-button(title="Send new code" type="link" @click="sendNewCode()")
@@ -15,6 +16,8 @@ card-container
 <script>
 import { ref, computed, onMounted, onUnmounted, onBeforeUpdate } from "vue";
 import useAuth from "~/core/auth.js";
+import { useRouter } from "vue-router";
+
 export default {
 	setup () {
 		const { verification, newOtp } = useAuth();
@@ -22,9 +25,20 @@ export default {
 		const inputs = ref([]);
 		const numbers = ref([]);
 		const otp = computed( () => numbers.value.join( "" ) );
+		const errorMessage = ref( "" );
+		const router = useRouter();
 
-
-		const submitCode = () => verification( email.value, otp.value );
+		const submitCode = async () => {
+			errorMessage.value = "";
+			if ( otp.value.length < 6 ) errorMessage.value = "Incomplete code";
+			else {
+				try {
+					await verification( email.value, otp.value );
+				} catch ( error ) {
+					errorMessage.value = "Incorrect code";
+				}
+			}
+		};
 		const sendNewCode = async () => {
 			await newOtp( email.value );
 			numbers.value = [];
@@ -46,6 +60,7 @@ export default {
 		// add Event Listners to all six number's inputs, for input & remove events
 		onMounted( () => {
 			if ( sessionStorage.getItem( "email" ) ) email.value = JSON.parse( sessionStorage.getItem( "email" ) );
+			else router.push({ "name": "AuthSignIn" });
 			inputs.value.forEach( ( input, index ) => {
 				input.addEventListener( "keydown", e => {
 					keydownHandler( e, index );
@@ -68,6 +83,7 @@ export default {
 		onBeforeUpdate( () => inputs.value = []);
 
 		return {
+			errorMessage,
 			email,
 			otp,
 			inputs,
@@ -81,6 +97,10 @@ export default {
 
 
 <style lang="stylus" scoped>
+.error
+	font-size: 0.8em
+	color: red
+	text-align: center
 svg.icon
 	flex: 1
 	display: block
@@ -88,7 +108,7 @@ svg.icon
 	height: 8em
 	margin: 2em auto
 .confirmation-code
-	margin: 1em 1em 2em
+	margin: 1em
 	display: flex
 	gap: 0.5em
 	font-size: 1.6em
