@@ -59,17 +59,9 @@ export default {
 		const step = ref( 1 );
 		const firstStep = computed( () => step.value === 1 );
 		const lastStep = computed( () => step.value === props.steps.length );
-		const nextStep = async value => {
-			let next;
-			next = true;
-			const index = step.value - 1;
-			const stepItem = props.steps[index];
-			if ( stepItem && stepItem.validates ) {
-				const isValid = await stepItem.validates( step.value );
-				if ( !isValid ) next = false;
-			}
+
+		const nextStep = value => {
 			if ( firstStep.value && value === -1 || lastStep.value && value === 1 ) return;
-			if ( !next ) return;
 			step.value += value;
 			router.push({ "query": { "step": step.value } });
 		};

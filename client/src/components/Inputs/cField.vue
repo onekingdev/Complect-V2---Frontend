@@ -1,6 +1,6 @@
 <template lang="pug">
 c-label.c-input.c-field(:class="{fullwidth, disabled, transparent}" v-bind="{label, required}")
-	.field-body(:class="{'errors': errors && errors.length}")
+	.field-body
 		icon(v-if="iconL || icon" :name="iconL || type")
 		component.field-input(
 			:is="type"
@@ -108,8 +108,6 @@ export default {
 		gap: 0.3em
 		padding: 0.35em 0.5em
 		min-height: 2em
-		&.errors
-			box-shadow: 0 0 0 1px #f00
 		svg.icon
 			width: 1em
 			height: 1em

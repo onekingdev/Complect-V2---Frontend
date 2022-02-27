@@ -3,9 +3,8 @@ import useVuelidate from "@vuelidate/core";
 
 const MESSAGE_VALIDATORS = {
 	"required": "Required field",
-	"sameAsPassword": "Password does not match",
-	"dateValidate": "Required field",
-	"validateRate": "Rate must be greater than 0"
+	"sameAsNewPassword": "Password does not match",
+	"dateValidate": "Required field"
 };
 
 // return random number
