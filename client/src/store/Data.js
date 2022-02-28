@@ -38,7 +38,6 @@ export default class UseData {
 		} finally {
 			copy = null;
 		}
-	}
 	async readDocuments ( documentsId, query ) {
 		try {
 			if ( documentsId ) {

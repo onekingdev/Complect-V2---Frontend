@@ -8,8 +8,9 @@
 					section
 						.header Do you have a CRD number?
 						.intro The CRD number will be used to auto-populate information about your business
-						.inputs
+						.inputs.grid-6
 							c-radios(id="crd" :data="radioOptions" v-model="form.crd")
+							c-field.col-3(id="crdValue" v-if="form.crd" v-model="form.crdValue")
 				template(#step2)
 					c-field(label="Company Name" type="text" placeholder="Company Name" :errors="errors.company" required v-model="form.company")
 					c-field.col-3(label="AUM" type="text" placeholder="AUM" v-model="form.aum")
@@ -78,7 +79,7 @@
 
 
 <script>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import useProfile from "~/store/Profile.js";
 import useForm from "~/store/Form.js";
@@ -93,6 +94,7 @@ import cAddress from "~/components/Inputs/cAddress.vue";
 
 import { industries, jurisdictions, timezones } from "~/data/static.js";
 import { plans } from "~/data/plans.js";
+import UseData from "~/store/Data.js";
 
 import { filterSubIndustries, validates } from "~/core/utils.js";
 import { required, requiredUnless } from "@vuelidate/validators";
@@ -144,12 +146,14 @@ export default {
 		cSwitcher,
 		cPlans
 	},
+	// eslint-disable-next-line max-lines-per-function
 	setup () {
 		const router = useRouter();
 		const { profile } = useProfile();
 		const userType = profile.value.type;
 		const { form } = useForm( "onboarding", baseForm[userType]);
 		const errors = ref({});
+		const potentials = new UseData( "potential_businesses" );
 
 		const validateInfor = computed( () => ({
 			"specialist": {
@@ -226,6 +230,39 @@ export default {
 		};
 
 		const filteredSubIndustries = computed( () => filterSubIndustries( form.value.industries, userType ) );
+
+		const resetValues = () => {
+			form.value.company = "";
+			form.value.website = "";
+			form.value.aum = "";
+			form.value.accounts = "";
+			form.value.tel = "";
+			form.value.address = "";
+			form.value.apt = "";
+			form.value.city = "";
+			form.value.state = "";
+			form.value.zip = "";
+		};
+
+		onMounted( () => potentials.readDocuments() );
+		onUnmounted( () => potentials.clearStore() );
+
+		watch( () => form.value.crdValue, () => {
+			if ( !form.value.crdValue ) return;
+			const crdValues = potentials.getDocuments().value.find( doc => doc.crd_number === form.value.crdValue );
+			resetValues();
+			if ( !crdValues ) return;
+			form.value.company = crdValues.business_name;
+			form.value.website = crdValues.website;
+			form.value.aum = crdValues.aum;
+			form.value.accounts = crdValues.client_account_cnt;
+			form.value.tel = crdValues.contact_phone;
+			form.value.address = crdValues.address_1;
+			form.value.apt = crdValues.apartment;
+			form.value.city = crdValues.city;
+			form.value.state = crdValues.state;
+			form.value.zip = crdValues.zipcode;
+		}, { "deep": true });
 
 		return {
 			errors,

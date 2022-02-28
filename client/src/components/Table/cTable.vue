@@ -30,8 +30,10 @@
 								:key="column.key"
 								:meta="column.meta"
 								:id="document._id"
+								:document="document"
 								:data="document[column.key]"
-								:isChecked="document.isChecked")
+								:isChecked="document.isChecked"
+								@cellEvent="cellEvent")
 			draggable.table-tbody(:list="showDocuments" @change="isdraggable.action($event)" v-if="filteredDocuments.length && isdraggable")
 				tr(v-for="document in showDocuments" :key="document._id")
 					td(v-for="(column, index) in columns" :key="index")
@@ -73,7 +75,8 @@ export default {
 			"default": false
 		}
 	},
-	setup ( props ) {
+	"emits": ["cellEvent"],
+	setup ( props, { emit }) {
 		// filter and Search Documents
 		const searchQuery = ref( "" );
 		const activeFilters = ref({});
@@ -125,6 +128,10 @@ export default {
 		};
 		watch( () => filteredDocuments.value, () => showDocuments.value = filteredDocuments.value, { "deep": true });
 
+		const cellEvent = id => {
+			emit( "cellEvent", id );
+		};
+
 
 		return {
 			getTableCell,
@@ -134,6 +141,7 @@ export default {
 			activateFilter,
 			activeFilters,
 			selectedFilterTitle,
+			cellEvent,
 			showDocuments
 		};
 	}

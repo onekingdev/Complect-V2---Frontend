@@ -143,6 +143,11 @@ export default {
 	// 		box-shadow: 0 0 0 0.15rem #4499f0
 	&.fullwidth
 		width: 100%
+	.field-info
+		font-size: 0.7em
+		margin-top: 0.3em
+		&.error
+			color: red
 	&.disabled
 		pointer-events: none
 </style>

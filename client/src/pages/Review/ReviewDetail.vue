@@ -61,7 +61,6 @@ vertical-detail
 				.empty
 				.buttons
 					c-button(title="Save" @click="updateReview()")
-					//- c-button(:title="btnTitle" type="primary" @click="completeReview()")
 					c-button-modal(:title="btnTitle" type="primary" :modalTitle="completeModalTitle")
 						template(#content)
 							.col-1

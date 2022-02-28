@@ -16,7 +16,6 @@
 		"@tinymce/tinymce-vue": "^4.0.5",
 		"@vitejs/plugin-vue": "1.10.1",
 		"@vue/compiler-sfc": "3.2.26",
-		"@vueform/slider": "^2.0.8",
 		"@vuelidate/core": "^2.0.0-alpha.34",
 		"@vuelidate/validators": "^2.0.0-alpha.26",
 		"@vueuse/core": "7.4.1",
@@ -30,7 +29,6 @@
 		"vue": "3.2.26",
 		"vue-draggable-next": "^2.1.1",
 		"vue-router": "4.0.12",
-		"vue3-slider": "^1.6.8",
 		"vue-google-autocomplete": "^1.1.2",
 		"vue3-apexcharts": "^1.4.1"
 	},
