@@ -1004,9 +1004,9 @@
   </head>
   <body>
 	<div id="pageHeader" class="container page-header pt-4">
-		<h3 style="text-align: center; font-weight: 700;">{{ title }}</h3>
+		<h3 style="text-align: center; font-weight: 700;">{{ policy_name }}</h3>
         <p style="text-align: center; margin-top: 50px; padding-bottom: 20px; border-bottom: 1px solid black;">
-            <small>Last Updated: {{ lastUpdated }}</small>
+            <small>Last Updated: {{ policy_date }}</small>
         </p>
 	</div>
     <table>
@@ -1015,7 +1015,7 @@
         </td></tr></thead>
         <tbody><tr><td>
                 <div class="container break-page">
-                    <p>{{ description }}</p>
+                    <p>{{ policy_content }}</p>
                 </div>
         </td></tr></tbody>
     </table>

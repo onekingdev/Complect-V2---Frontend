@@ -20,12 +20,12 @@ page-container(title="Projects")
 <script>
 import { ref, inject } from "vue";
 import { useRouter } from "vue-router";
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 export default {
 	setup () {
 		const notification = inject( "notification" );
 		const router = useRouter();
-		const { createDocuments } = useData( "projects" );
+		const projects = new UseData( "projects" );
 		const tabs = [
 			{
 				"title": "My Projects",
@@ -55,7 +55,7 @@ export default {
 
 
 		const createProject = async () => {
-			const projectId = await createDocuments([newProject.value]);
+			const projectId = await projects.createDocuments([newProject.value]);
 			notification({
 				"type": "success",
 				"title": "Project Cteated"

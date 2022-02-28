@@ -202,5 +202,8 @@ export default {
 		justify-content: center
 	&.disabled
 		pointer-events: none
+	&.inline-button
+		display: inline-block
+		margin-right: 10px
 
 </style>

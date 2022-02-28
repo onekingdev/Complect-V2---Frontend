@@ -5,13 +5,12 @@ c-table(v-bind="{columns, documents, filters}")
 
 <script>
 import { onMounted, onUnmounted } from "vue";
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 export default {
 	setup () {
-		const { documents, readDocuments, deleteDocuments, clearStore } = useData( "tasks" );
-
+		const tasks = new UseData( "tasks" );
 		const handleClickEdit = id => console.debug( "Edit", id );
-		const handleClickDelete = id => deleteDocuments( id );
+		const handleClickDelete = id => tasks.deleteDocuments( id );
 
 		const columns = [
 			{
@@ -95,12 +94,12 @@ export default {
 			}
 		];
 
-		onMounted( () => readDocuments() );
-		onUnmounted( () => clearStore() );
+		onMounted( () => tasks.readDocuments() );
+		onUnmounted( () => tasks.clearStore() );
 
 		return {
 			columns,
-			documents,
+			"documents": tasks.getDocuments(),
 			filters
 		};
 	}

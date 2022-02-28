@@ -12,7 +12,6 @@ card-container(title="Users")
 <script>
 import HorizontalTabs from "~/components/Containers/HorizontalTabs.vue";
 import { computed } from "vue";
-
 export default {
 	"components": { HorizontalTabs },
 	setup () {

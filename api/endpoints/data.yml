@@ -38,18 +38,3 @@ data:
         path: data/{collection}/{_id}
         method: delete
         cors: true
-updatePosition:
-  name: ${opt:stage, 'dev'}-api--position
-  handler: src/function/data.updatePosition
-  description: End Point for Update Policy Position
-  tags:
-    website: Complect App
-    type: API
-    subtype: Data
-  layers:
-    - {Ref: BaseLibsLambdaLayer}
-  events:
-    - http:
-        path: reorder
-        method: post
-        cors: true

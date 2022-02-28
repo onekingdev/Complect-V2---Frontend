@@ -16,7 +16,7 @@ div
 import { ref, inject, onMounted } from "vue";
 import cModalExperience from "~/components/Modals/cModalExperience.vue";
 import cModalDelete from "~/components/Modals/cModalDelete.vue";
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 import { formatDate } from "~/core/utils.js";
 
 export default {
@@ -29,13 +29,13 @@ export default {
 		const editExperienceId = ref( null );
 		const userExperiences = ref([]);
 
-		const { documents, readDocuments } = useData( "user_experiences" );
+		const userExperiencesData = new UseData( "user_experiences" );
 
 		const openExperienceModal = id => modal({ "name": "cModalExperience", id });
 		const editExperience = id => openExperienceModal( id );
 		const getExperienceData = async () => {
-			await readDocuments();
-			userExperiences.value = documents.value;
+			await userExperiencesData.readDocuments();
+			userExperiences.value = userExperiencesData.getDocuments().value;
 		};
 
 		const confirmDeleteExperience = id => {

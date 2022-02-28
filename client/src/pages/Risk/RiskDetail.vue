@@ -44,7 +44,7 @@ c-modal(title="Unlink Policy" v-model="isDeleteVisible")
 
 <script>
 import { computed, inject, ref } from "vue";
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 import definitionList from "~/components/Misc/DefinitionList.vue";
 import { calcRiskLevel } from "~/core/utils.js";
 import cSelect from "~/components/Inputs/cSelect.vue";
@@ -56,7 +56,7 @@ export default {
 	"components": { definitionList, cSelect, cLabel, cBadge, cModal },
 	// eslint-disable-next-line
 	setup () {
-		const { document, updateDocument, readDocuments } = useData( "risks" );
+		const risks = new UseData( "risks" );
 		const notification = inject( "notification" );
 		const locale = inject( "locale" );
 		const clickId = ref( "" );
@@ -71,9 +71,9 @@ export default {
 		});
 		const toggleRiskVisible = () => {
 			isEditRiskVisible.value = !isEditRiskVisible.value;
-			riskForm.value.title = document.value.title;
-			riskForm.value.impact = document.value.impact;
-			riskForm.value.likelihood = document.value.likelihood;
+			riskForm.value.title = risks.getDocument().value.title;
+			riskForm.value.impact = risks.getDocument().value.impact;
+			riskForm.value.likelihood = risks.getDocument().value.likelihood;
 		};
 		const handleClickDelete = id => {
 			clickId.value = id;
@@ -82,16 +82,15 @@ export default {
 		const deletePolicy = async () => {
 			try {
 				const policyId = clickId.value;
-				// await policies.deleteDocuments( policyId );
-				const controls = document.value.controls.filter( doc => doc._id !== policyId );
-				await updateDocument( document.value._id, { controls });
+				const controls = risks.getDocument().value.controls.filter( doc => doc._id !== policyId );
+				await risks.updateDocument( risks.getDocument().value._id, { controls });
 				isDeleteVisible.value = !isDeleteVisible.value;
 				notification({
 					"type": "success",
 					"title": "Success",
 					"message": "Control has been removed."
 				});
-				await readDocuments( document.value._id );
+				await risks.readDocuments( risks.getDocument().value._id );
 			} catch ( error ) {
 				notification({
 					"type": "error",
@@ -104,23 +103,23 @@ export default {
 			{ "title": "Low", "value": 0 }, { "title": "Medium", "value": 1 }, { "title": "High", "value": 2 }
 		];
 		const riskDetails = computed( () => ({
-			"title": document.value.title,
-			"impact": locale( `risk${document.value.impact}` ),
-			"likelihood": locale( `risk${document.value.likelihood}` )
+			"title": risks.getDocument().value.title,
+			"impact": locale( `risk${risks.getDocument().value.impact}` ),
+			"likelihood": locale( `risk${risks.getDocument().value.likelihood}` )
 		}) );
 		const newRiskLevel = computed( () => calcRiskLevel( riskForm.value.impact, riskForm.value.likelihood ) );
 		const editRisk = async () => {
 			try {
 				riskForm.value.riskLevel = newRiskLevel.value;
 				riskForm.value.creator = `${profile.value.firstName} ${profile.value.lastName}`;
-				await updateDocument( document.value._id, riskForm.value );
+				await risks.updateDocument( risks.getDocument().value._id, riskForm.value );
 				notification({
 					"type": "success",
 					"title": "Success",
 					"message": "Risk has been updated."
 				});
 				isEditRiskVisible.value = !isEditRiskVisible.value;
-				await readDocuments( document.value._id );
+				await risks.readDocuments( risks.getDocument().value._id );
 			} catch {
 				notification({
 					"type": "error",
