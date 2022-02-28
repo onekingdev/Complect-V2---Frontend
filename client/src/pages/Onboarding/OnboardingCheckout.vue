@@ -31,9 +31,6 @@
 
 	card-container.summary(title="Purchase Summary")
 		template(#sub-header)
-			c-field.col-5(label="Promo Code")
-			c-button.col-1.apply-promo(title="Apply" type="primary")
-		template(#sub-header)
 			c-field.col-5(label="Promo Code" v-model="promocode")
 			c-button.col-1.apply-promo(title="Apply" type="primary" @click="applyPromo()")
 		template(#content)
