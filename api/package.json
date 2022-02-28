@@ -28,12 +28,11 @@
     "serverless-domain-manager": "5.2.0",
     "serverless-iam-roles-per-function": "3.2.0",
     "serverless-offline": "8.3.1",
-  },
-  "dependencies": {
+    "serverless-prune-plugin": "1.6.1",
+    "stripe": "^8.201.0",
     "archiver": "^5.3.0",
     "lambda-multipart-parser": "^1.0.1",
-    "stream": "0.0.2",
-    "serverless-prune-plugin": "1.6.1",
-    "stripe": "^8.201.0"
+    "stream": "0.0.2"
   }
 }
+
