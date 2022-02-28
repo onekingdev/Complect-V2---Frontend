@@ -12,7 +12,6 @@
 					.plan-name {{plan.name}}
 					.plan-description {{plan.description}}
 				.plan-price ${{plan.price}}/year
-
 		section
 			.content
 				.plan
