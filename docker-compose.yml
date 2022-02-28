@@ -1,6 +1,6 @@
 version: '3.9'
 services:
-
+    
     # Client
     complect-client:
         container_name: complect-client
@@ -22,7 +22,7 @@ services:
         command: npm run dev
         depends_on:
             - complect-mongo
-
+    
     # API
     complect-api:
         container_name: complect-api
@@ -37,10 +37,6 @@ services:
             API_STAGE: dev
             DB_URI: ${LOCAL_DB_URI}
             DB_NAME: ${LOCAL_DB_NAME}
-            AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
-            AWS_SECRET_KEY: ${AWS_SECRET_KEY}
-            AWS_BUCKET_NAME: ${AWS_BUCKET_NAME}
-            AWS_BUCKET_REGION: ${AWS_BUCKET_REGION}
             SCHEDULE_TIME: ${SCHEDULE_TIME}
         volumes:
             - ./api:/home/app
