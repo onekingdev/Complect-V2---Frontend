@@ -62,7 +62,7 @@
 						.inputs
 							c-field(label="Enter your hourly rate" type="number" placeholder="Hourly rate" :errors="errors.rate" v-model="form.rate")
 					section
-						.header What's your experience?
+						.header Whats your experience?
 						.itro Select one that best matches your level of your expertise.
 						.inputs
 							c-radio-cards(id="experience" :data="formOptions.experience" :errors="errors.experience" v-model="form.experience")
@@ -90,11 +90,14 @@ import cSelect from "~/components/Inputs/cSelect.vue";
 import cDropzone from "~/components/Inputs/cDropzone.vue";
 import cSwitcher from "~/components/Inputs/cSwitcher.vue";
 import cPlans from "~/components/Misc/cPlans.vue";
+
+import { manualApi } from "~/core/api.js";
+import UseData from "~/store/Data.js";
+import useAuth from "~/core/auth.js";
 import cAddress from "~/components/Inputs/cAddress.vue";
 
 import { industries, jurisdictions, timezones } from "~/data/static.js";
 import { plans } from "~/data/plans.js";
-import UseData from "~/store/Data.js";
 
 import { filterSubIndustries, validates } from "~/core/utils.js";
 import { required, requiredUnless } from "@vuelidate/validators";
@@ -153,6 +156,7 @@ export default {
 		const userType = profile.value.type;
 		const { form } = useForm( "onboarding", baseForm[userType]);
 		const errors = ref({});
+		const { onboarding } = useAuth();
 		const potentials = new UseData( "potential_businesses" );
 
 		const validateInfor = computed( () => ({
@@ -219,7 +223,39 @@ export default {
 			]
 		};
 
-		const goToCheckout = () => router.push({ "name": "OnboardingCheckout" });
+		const goToCheckout = async () => {
+			try {
+				if ( userType === "business" ) {
+					form.value.email = profile.value.email;
+					const business = new UseData( "business" );
+					const ids = await business.createDocuments([form.value]);
+					await manualApi({
+						"method": "post",
+						"url": `payment/customer/${ids[0]}`,
+						"newData": {}
+					});
+					await onboarding({ "businessId": ids[0] });
+					// eslint-disable-next-line require-atomic-updates
+					form.value.businessId = ids[0];
+				} else {
+					const specialist = new UseData( "specialist" );
+					form.value.email = profile.value.email;
+					form.value.company = `${profile.value.firstName} ${profile.value.lastName}`;
+					const ids = await specialist.createDocuments([form.value]);
+					await manualApi({
+						"method": "post",
+						"url": `payment/customer/${ids[0]}`,
+						"newData": {}
+					});
+					await onboarding({ "specialistId": ids[0] });
+					// eslint-disable-next-line require-atomic-updates
+					form.value.specialistId = ids[0];
+				}
+				router.push({ "name": "OnboardingCheckout" });
+			} catch ( error ) {
+				console.debug( error );
+			}
+		};
 
 		const updateAddressChange = data => {
 			const { address, city, state, zip } = data;

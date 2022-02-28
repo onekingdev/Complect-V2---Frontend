@@ -69,14 +69,13 @@ const RisksOverview = () => import( "~/pages/Risks/RisksOverview.vue" );
 const _RiskEntry = () => import( "~/pages/Risk/_RiskEntry.vue" );
 const RiskDetail = () => import( "~/pages/Risk/RiskDetail.vue" );
 
+// jobs
+const _JobBoardEntry = () => import( "~/pages/Job/_JobBoardEntry.vue" );
+const JobBoardDetail = () => import( "~/pages/Job/JobBoardDetail.vue" );
 
-// records
-const _RecordsEntry = () => import( "~/pages/Records/_RecordsEntry.vue" );
-const RecordsOverview = () => import( "~/pages/Records/RecordsOverview.vue" );
-
-// organization
-const _OrganizationEntry = () => import( "~/pages/Organization/_OrganizationEntry.vue" );
-const OrganizationOverview = () => import( "~/pages/Organization/OrganizationOverview.vue" );
+// expoert
+const _ExpertListEntry = () => import( "~/pages/Expert/_ExpertListEntry.vue" );
+const ExpertDetail = () => import( "~/pages/Expert/ExpertDetail.vue" );
 
 
 // settings
@@ -89,6 +88,8 @@ const SettingsRoles = () => import( "~/pages/Settings/SettingsRoles.vue" );
 const SettingsSecurity = () => import( "~/pages/Settings/SettingsSecurity.vue" );
 const SettingsSubscriptions = () => import( "~/pages/Settings/SettingsSubscriptions.vue" );
 const SettingsBilling = () => import( "~/pages/Settings/SettingsBilling.vue" );
+const SettingsBillingPlan = () => import( "~/pages/Settings/SettingsBillingPlan.vue" );
+const SettingsClientBilling = () => import( "~/pages/Settings/SettingsClientBilling.vue" );
 
 // profiles
 const _ProfileEntry = () => import( "~/pages/Profile/_ProfileEntry.vue" );
@@ -341,24 +342,37 @@ const routes = [
 						}]
 					},
 					{
-						"path": "records",
-						"component": _RecordsEntry,
+						"path": "job_board",
+						"name": "JobBoard",
+						"component": _JobBoardEntry,
+						"meta": {
+							"title": "Job Board",
+							"sidebar": false
+						},
 						"children": [{
-							"path": "",
-							"name": "RecordsOverview",
-							"component": RecordsOverview,
-							"meta": { "title": "Records", "tab": "Documents" }
+							"path": ":id",
+							"name": "JobBoardDetail",
+							"component": JobBoardDetail,
+							"meta": { "title": "Job Board Detail" }
 						}]
 					},
 					{
-						"path": "organization",
-						"component": _OrganizationEntry,
-						"children": [{
-							"path": "",
-							"name": "OrganizationOverview",
-							"component": OrganizationOverview,
-							"meta": { "title": "Organization", "tab": "Reports" }
-						}]
+						"path": "specialistmarketplace",
+						"name": "ExpertList",
+						"component": _ExpertListEntry,
+						"meta": {
+							"title": "Specialist Market",
+							"sidebar": false
+						}
+					},
+					{
+						"path": "specialist-profile/:id",
+						"name": "ExpertDetail",
+						"component": ExpertDetail,
+						"meta": {
+							"title": "Specialist Profile",
+							"sidebar": false
+						}
 					},
 					{
 						"path": "profile",
@@ -387,7 +401,6 @@ const routes = [
 						"component": ReportEntry,
 						"meta": {
 							"title": "Report",
-							"tab": "Reports",
 							"sidebar": true
 						},
 						"children": [
@@ -407,6 +420,24 @@ const routes = [
 								"component": ReportFinancials
 							}
 						]
+					},
+					{
+						"path": "billplan",
+						"name": "BillingPlan",
+						"component": SettingsBillingPlan,
+						"meta": {
+							"title": "Plan",
+							"sidebar": false
+						}
+					},
+					{
+						"path": "clientbill",
+						"name": "ClientBill",
+						"component": SettingsClientBilling,
+						"meta": {
+							"title": "Plan",
+							"sidebar": false
+						}
 					},
 					{
 						"path": "settings",
