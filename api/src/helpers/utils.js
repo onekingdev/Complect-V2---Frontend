@@ -9,7 +9,6 @@ const requestGuard = async event => {
 		const { collection, _id } = event.pathParameters;
 		const query = event.queryStringParameters;
 		const documents = await JSON.parse( event.body );
-		const query = event.queryStringParameters;
 		return {
 			collection,
 			_id,
