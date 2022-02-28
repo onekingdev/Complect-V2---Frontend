@@ -78,6 +78,15 @@ const _ExpertListEntry = () => import( "~/pages/Expert/_ExpertListEntry.vue" );
 const ExpertDetail = () => import( "~/pages/Expert/ExpertDetail.vue" );
 
 
+// records
+const _RecordsEntry = () => import( "~/pages/Records/_RecordsEntry.vue" );
+const RecordsOverview = () => import( "~/pages/Records/RecordsOverview.vue" );
+
+// organization
+const _OrganizationEntry = () => import( "~/pages/Organization/_OrganizationEntry.vue" );
+const OrganizationOverview = () => import( "~/pages/Organization/OrganizationOverview.vue" );
+
+
 // settings
 const _SettingsEntry = () => import( "~/pages/Settings/_SettingsEntry.vue" );
 const SettingsGeneral = () => import( "~/pages/Settings/SettingsGeneral.vue" );
@@ -342,6 +351,26 @@ const routes = [
 						}]
 					},
 					{
+						"path": "records",
+						"component": _RecordsEntry,
+						"children": [{
+							"path": "",
+							"name": "RecordsOverview",
+							"component": RecordsOverview,
+							"meta": { "title": "Records", "tab": "Documents" }
+						}]
+					},
+					{
+						"path": "organization",
+						"component": _OrganizationEntry,
+						"children": [{
+							"path": "",
+							"name": "OrganizationOverview",
+							"component": OrganizationOverview,
+							"meta": { "title": "Organization", "tab": "Reports" }
+						}]
+					},
+					{
 						"path": "job_board",
 						"name": "JobBoard",
 						"component": _JobBoardEntry,
@@ -401,6 +430,7 @@ const routes = [
 						"component": ReportEntry,
 						"meta": {
 							"title": "Report",
+							"tab": "Reports",
 							"sidebar": true
 						},
 						"children": [
