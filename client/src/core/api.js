@@ -51,7 +51,7 @@ const deleteDocumentsFromCloudDb = async ( collectionName, documentId ) => {
 	return result;
 };
 
-const manualApi = async ({ method, url, newData }) => {
+const manualApi = async ({ method, url, data }) => {
 	try {
 		const API_URI = import.meta.env.VITE_API_URI;
 		const apiUrl = `${API_URI}/${url}`;
@@ -59,13 +59,12 @@ const manualApi = async ({ method, url, newData }) => {
 			method,
 			"mode": "cors",
 			"cache": "no-cache",
-			"headers": { "Content-Type": "application/json;charset=utf-8" },
-			"body": JSON.stringify( newData )
+			"body": data
 		};
 		const serverAnswer = await fetch( apiUrl, options );
 		const parsedServerAnswer = await serverAnswer.json();
 		if ( !parsedServerAnswer.ok ) throw new Error( serverAnswer.message );
-		return parsedServerAnswer;
+		return parsedServerAnswer.data;
 	} catch ( error ) {
 		console.error( error );
 		return { "error": error.message };
