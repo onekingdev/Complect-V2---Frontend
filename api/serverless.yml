@@ -100,7 +100,7 @@ layers:
     compatibleRuntimes:
       - nodejs14.x
   uploadLibs:
-    path: layers/uplad
+    path: layers/upload
     description: Additional libraries for File Upload
     compatibleRuntimes:
       - nodejs14.x
