@@ -99,3 +99,8 @@ layers:
     description: Additional libraries for Payment
     compatibleRuntimes:
       - nodejs14.x
+  uploadLibs:
+    path: layers/uplad
+    description: Additional libraries for File Upload
+    compatibleRuntimes:
+      - nodejs14.x

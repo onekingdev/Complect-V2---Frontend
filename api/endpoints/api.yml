@@ -10,6 +10,7 @@ fileUpload:
     subtype: Data
   layers:
     - {Ref: BaseLibsLambdaLayer}
+    - {Ref: UploadLibsLambdaLayer}
   events:
     - http:
         path: /upload
@@ -28,6 +29,7 @@ recordZipDownload:
     subtype: Data
   layers:
     - {Ref: BaseLibsLambdaLayer}
+    - {Ref: UploadLibsLambdaLayer}
   events:
     - http:
         path: /records/zipDownload/{_id}
@@ -46,6 +48,7 @@ recordMoveToDirs:
     subtype: Data
   layers:
     - {Ref: BaseLibsLambdaLayer}
+    - {Ref: UploadLibsLambdaLayer}
   events:
     - http:
         path: /records/movetoDirs
