@@ -105,7 +105,7 @@ export default {
 			}
 		};
 		const columns = [
-			{ "title": "Name", "key": "title", "cell": "CellRecords", "width": "55%" },
+			{ "title": "Name", "key": "name", "cell": "CellRecords", "width": "55%" },
 			{ "title": "Owner", "key": "owner", "cell": "CellDefault" },
 			{ "title": "Size", "key": "size", "cell": "CellSize", "align": "right" },
 			{ "title": "Last Modified", "key": "lastModified", "cell": "CellDate", "align": "right" },
