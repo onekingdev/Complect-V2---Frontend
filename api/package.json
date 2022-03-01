@@ -24,7 +24,7 @@
     "handlebars": "4.7.7",
     "jest": "27.4.5",
     "jest-extended": "1.2.0",
-    "lambda-multipart-parser": "^1.0.1",
+    "lambda-multipart-parser": "1.0.1",
     "mongodb": "4.2.2",
     "puppeteer-core": "13.1.2",
     "serverless-domain-manager": "5.2.0",
