@@ -19,10 +19,6 @@ provider:
     NODE_ENV: "dev"
     DB_URI: ${env:DB_URI}
     DB_NAME: ${env:DB_NAME}
-    AWS_ACCESS_KEY: ${env:AWS_ACCESS_KEY}
-    AWS_SECRET_KEY: ${env:AWS_SECRET_KEY}
-    AWS_BUCKET_NAME: ${env:AWS_BUCKET_NAME}
-    AWS_BUCKET_REGION: ${env:AWS_BUCKET_REGION}
     STAGE: ${opt:stage, "dev"}
   iamRoleStatements:
     - Effect: "Allow"
