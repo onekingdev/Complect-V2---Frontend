@@ -63,7 +63,6 @@ export default {
 				"max": 0
 			}
 		});
-
 		const isNewReview = computed( () => !props.id );
 		const title = computed( () => props.id ? "Edit Internal Review" : "New Internal Review" );
 		const btnTitle = computed( () => props.id ? "Save" : "Create" );

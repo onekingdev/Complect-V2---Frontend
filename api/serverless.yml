@@ -15,7 +15,7 @@ provider:
   httpApi:
     disableDefaultEndpoint: true
     cors: true
-  environment:
+  environment: 
     NODE_ENV: "dev"
     DB_URI: ${env:DB_URI}
     DB_NAME: ${env:DB_NAME}
@@ -30,12 +30,11 @@ provider:
     - Effect: "Allow"
       Action:
         - "s3:GetObject"
-      Resource: "arn:aws:s3:::complect-store/*"
+      Resource: "arn:aws:s3:::<s3-bucket-name>/*"
 
 functions:
   - "${file(endpoints/auth.yml)}"
   - "${file(endpoints/data.yml)}"
-  - "${file(endpoints/api.yml)}"
   - "${file(endpoints/team_member.yml)}"
   # - "${file(endpoints/download.yml)}"
   # - "${file(endpoints/cron.yml)}"
@@ -97,10 +96,5 @@ layers:
   paymentLibs:
     path: layers/payment
     description: Additional libraries for Payment
-    compatibleRuntimes:
-      - nodejs14.x
-  uploadLibs:
-    path: layers/upload
-    description: Additional libraries for File Upload
     compatibleRuntimes:
       - nodejs14.x
