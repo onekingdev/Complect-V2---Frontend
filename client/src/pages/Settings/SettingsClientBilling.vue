@@ -51,7 +51,7 @@ import cDropzone from "~/components/Inputs/cDropzone.vue";
 import cSwitcher from "~/components/Inputs/cSwitcher.vue";
 import cPlans from "~/components/Misc/cPlans.vue";
 import { manualApi } from "~/core/api.js";
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 
 import { selectCountries } from "~/data/static.js";
 import { plans } from "~/data/plans.js";
@@ -149,9 +149,9 @@ export default {
 					"method": "post",
 					"newData": requestBody
 				});
-				const { readDocuments, updateDocument, document } = useData( "specialist" );
-				await readDocuments( profile.value.specialistId );
-				const account = document.value.account || [];
+				const specialist = new UseData( "specialist" );
+				await specialist.readDocuments( profile.value.specialistId );
+				const account = specialist.getDocument().value.account || [];
 				let primary;
 				primary = true;
 				if ( account.length > 0 ) primary = false;
@@ -160,7 +160,7 @@ export default {
 					"last4": response.data.external_accounts.data[0].last4,
 					primary
 				});
-				updateDocument( document.value._id, { account });
+				specialist.updateDocument( specialist.getDocument().value._id, { account });
 				router.push({ "name": "SettingsBilling" });
 			} catch ( error ) {
 				console.debug( error );

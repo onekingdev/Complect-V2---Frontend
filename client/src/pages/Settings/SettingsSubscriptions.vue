@@ -47,7 +47,7 @@ c-modal(title="Edit Plan" v-model="isEditPlanVisible" wide)
 <script>
 import { ref, inject, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 import cSelect from "~/components/Inputs/cSelect.vue";
 import cRadios from "~/components/Inputs/cRadios.vue";
 import cLabel from "~/components/Misc/cLabel.vue";
@@ -66,7 +66,7 @@ export default {
 		const { profile, linkaccount } = useProfile();
 		const notification = inject( "notification" );
 		const router = useRouter();
-		const { document, readDocuments, documents } = useData( "plans" );
+		const planCollection = new UseData( "plans" );
 		const tokenCreated = token => console.debug( token );
 		const addPayment = () => console.debug( "test" );
 		const elementRef = ref();
@@ -136,7 +136,7 @@ export default {
 		const gotoPlan = () => router.push({ "name": "BillingPlan" });
 		const saveUsers = async () => {
 			try {
-				const planId = documents.value.find( doc => doc.amount === billingPlan.value );
+				const planId = planCollection.getDocuments().value.find( doc => doc.amount === billingPlan.value );
 				await manualApi({
 					"method": "post",
 					"url": `payment/subscription/${userType === "business" ? profile.value.businessId : profile.value.specialistId}`,
@@ -182,14 +182,14 @@ export default {
 		onMounted( () => {
 			console.debug( linkaccount.value );
 			if ( linkaccount.value?.currentPlan?.planId )	{
-				readDocuments( linkaccount.value.currentPlan.planId );
+				planCollection.readDocuments( linkaccount.value.currentPlan.planId );
 				getSubscription( linkaccount.value._id );
 			}
-			readDocuments();
+			planCollection.readDocuments();
 			getPayments();
 		});
 		return {
-			document,
+			"document": planCollection.getDocument(),
 			tokenCreated,
 			addPayment,
 			elementRef,

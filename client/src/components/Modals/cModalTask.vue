@@ -146,7 +146,7 @@ export default {
 
 		const getData = async () => {
 			await tasks.readDocuments( props.id );
-			form.value = tasks.document.value;
+			form.value = tasks.getDocument().value;
 		};
 
 

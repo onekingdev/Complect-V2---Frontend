@@ -59,7 +59,7 @@ import useAuth from "~/core/auth.js";
 import { loadStripe } from "@stripe/stripe-js";
 import { StripeElements, StripeElement } from "vue-stripe-js";
 import { onBeforeMount, onMounted, ref } from "vue";
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 import { manualApi } from "~/core/api.js";
 export default {
 	"components": { StripeElements, StripeElement },
@@ -69,7 +69,7 @@ export default {
 		const userType = profile.value.type;
 		const { form, resetForm } = useForm( "onboarding" );
 		const { onboarding } = useAuth();
-		const { readDocuments, documents } = useData( "plans" );
+		const plans = new UseData( "plans" );
 		const plan = ref({
 			"name": "All Access Membership",
 			"description": "Full access to all features and resources",
@@ -156,18 +156,18 @@ export default {
 			stripePromise.then( () => stripeLoaded.value = true );
 		});
 		onMounted( async () => {
-			await readDocuments();
+			await plans.readDocuments();
 			if ( userType === "business" ) {
 				const keywordMethod = form.value.annually ? "yearly" : "monthly";
 				const keywordTitle = `${form.value.plan} Plan`;
-				const findplan = documents.value.find( indplan => indplan.method === keywordMethod && indplan.title.toLowerCase() === keywordTitle.toLowerCase() );
+				const findplan = plans.getDocuments().value.find( indplan => indplan.method === keywordMethod && indplan.title.toLowerCase() === keywordTitle.toLowerCase() );
 				plan.value.name = findplan.title;
 				plan.value.price = findplan.perPrice;
 				plan.value.annually = form.value.annually;
 				plan.value._id = findplan._id;
 			} else {
 				const keywordMethod = form.value.annually ? "yearly" : "all";
-				const findplan = documents.value.find( indplan => indplan.method === keywordMethod );
+				const findplan = plans.getDocuments().value.find( indplan => indplan.method === keywordMethod );
 				plan.value.name = findplan.title;
 				plan.value.price = findplan.perPrice;
 				plan.value.annually = form.value.annually;

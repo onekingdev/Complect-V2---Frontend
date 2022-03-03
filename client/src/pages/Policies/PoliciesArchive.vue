@@ -91,7 +91,7 @@ export default {
 		const columns = [
 			{
 				"title": "Name",
-				"key": "title",
+				"key": "name",
 				"cell": "CellTitle",
 				"width": "50%",
 				"meta": { "link": "PolicyDetail" }

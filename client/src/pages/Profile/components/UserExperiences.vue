@@ -6,7 +6,7 @@ div
 	div.experiences(v-for="(item, index) in userExperiences" :key="index")
 		div.experiences-item
 			div.heading
-				h3.col-4.semibold {{ item.title }}
+				h3.col-4.semibold {{ item.name }}
 				c-button(title="Delete" @click="confirmDeleteExperience(item._id)")
 				c-button(title="Edit" type="primary" @click="editExperience(item._id)")
 			div.timeline {{ item.employer }} | {{ formatDate(item.startsAt) }} - {{ item.isPresent ? "Present" : formatDate(item.endsAt) }}

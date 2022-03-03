@@ -28,7 +28,7 @@ export default {
 		const controlsColumns = [
 			{
 				"title": "Policy",
-				"key": "title",
+				"key": "name",
 				"cell": "CellTitle",
 				"meta": {
 					"icon": "policy"

@@ -1,5 +1,5 @@
 <template lang="pug">
-page-container(section="Risk Register" :title="document.title" :badge="{icon:'warning-light', title: `risk${riskLevel}`}" type="document")
+page-container(section="Risk Register" :title="document.name" :badge="{icon:'warning-light', title: `risk${riskLevel}`}" type="document")
 	template(#controls)
 		c-button-modal(title="Delete" modalTitle="Delete Risk" type="primary")
 			template(#content)
@@ -37,7 +37,7 @@ export default {
 
 		const deleteRisk = async () => {
 			try {
-				await risks.deleteDocuments( document.value._id );
+				await risks.deleteDocuments( risks.getDocument().value._id );
 				notification({
 					"type": "success",
 					"title": "Success",
