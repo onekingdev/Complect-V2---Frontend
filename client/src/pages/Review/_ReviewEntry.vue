@@ -116,7 +116,7 @@ export default {
 				const pdfLink = await manualApi({
 					"method": "POST",
 					"url": "pdf",
-					"newData": pdfData
+					"data": JSON.stringify( pdfData )
 				});
 				window.location.href = pdfLink;
 			} else {

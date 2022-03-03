@@ -1,6 +1,7 @@
 <template lang="pug">
 button.c-input.c-button(:class="[type, size, {fullwidth, disabled}]" :tabindex="disabled ? -1 : 0")
 	icon.icon-l(v-if="iconL" :name="iconL")
+	c-loading(v-if="loading")
 	.title.primary-title(v-if="title") {{ $locale(title) }}
 	.title.additional-title(v-if="additionalTitle") {{ $locale(additionalTitle) }}
 	icon.icon-r(v-if="iconR" :name="iconR")
@@ -40,6 +41,11 @@ export default {
 		"size": {
 			"type": String,
 			"default": "regular",
+			"required": false
+		},
+		"loading": {
+			"type": Boolean,
+			"default": false,
 			"required": false
 		},
 		"disabled": Boolean,
