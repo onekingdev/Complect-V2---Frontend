@@ -5,7 +5,7 @@ c-label.c-input.c-field(v-bind="{label, required}" ref="selectComponent")
       div.value(:class="{'placeholder': !hasValue}")
         template(v-if="hasValue") {{ selected.title }}
         template(v-else) {{ placeholder }}
-      //- input(v-else type="text" :value="value" :placeholder="placeholder")
+      //- input(type="text" :value="value" :placeholder="placeholder")
       icon.close(v-if="hasValue" name="close" @click.stop="clearValue()")
       icon(name="chevron-down")
     .items-section(v-show="isShowDropList")
@@ -14,7 +14,7 @@ c-label.c-input.c-field(v-bind="{label, required}" ref="selectComponent")
           icon(name="chevron-right" :class="{'transform': canShowOptionItem(optionIndex)}")
           label {{ item.label }}
         .children-list(v-show="canShowOptionItem(optionIndex)")
-          .item-children.hover( v-for="(child, childIndex) in item.children" @click="selectItem(optionIndex, childIndex)")
+          .item-children.hover(v-for="(child, childIndex) in item.children" @click="selectItem(optionIndex, childIndex)")
             label {{ child.title }}
 </template>
 
