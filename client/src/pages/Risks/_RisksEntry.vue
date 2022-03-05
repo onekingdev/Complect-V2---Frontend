@@ -3,7 +3,7 @@ page-container(title="Risk Register")
 	template(#controls)
 		c-button-modal(title="New Risk" modalTitle="New Risk" type="primary")
 			template(#content)
-				c-field(label="Risk Name" v-model="newRisk.name" required)
+				c-field(label="Risk Name" v-model="newRisk.title" required)
 				c-select.col-3(label="Impact" :data="options" v-model="newRisk.impact")
 				c-select.col-3(label="Likelihood" :data="options" v-model="newRisk.likelihood")
 				c-label.col-2(label="Risk Level")
@@ -36,7 +36,7 @@ export default {
 			{ "title": "Low", "value": 0 }, { "title": "Medium", "value": 1 }, { "title": "High", "value": 2 }
 		];
 		const newRisk = ref({
-			"name": "",
+			"title": "",
 			"impact": 0,
 			"likelihood": 0,
 			"dateCreated": Date.now()
@@ -51,19 +51,19 @@ export default {
 				newRisk.value.controls = [
 					{
 						"_id": "2342343",
-						"name": "Policy1",
+						"title": "Policy1",
 						"dateCreated": Date.now(),
 						"lastModified": Date.now(),
 						"status": "draft"
 					}, {
 						"_id": "23423433434",
-						"name": "Policy2",
+						"title": "Policy2",
 						"dateCreated": Date.now(),
 						"lastModified": Date.now(),
 						"status": "published"
 					}, {
 						"_id": "234234234213",
-						"name": "Policy3",
+						"title": "Policy3",
 						"dateCreated": Date.now(),
 						"lastModified": Date.now(),
 						"status": "draft"

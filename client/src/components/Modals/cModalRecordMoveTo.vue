@@ -16,7 +16,7 @@ import cSelect from "~/components/Inputs/cSelect.vue";
 import useModals from "~/store/Modals.js";
 import { onClickOutside } from "@vueuse/core";
 import { manualApi } from "~/core/api.js";
-import UseData from "~/store/Data.js";
+import useData from "~/store/Data.js";
 
 export default {
 	"components": { cSelect },
@@ -37,7 +37,7 @@ export default {
 		}
 	},
 	setup ( props ) {
-		const records = new UseData( "records" );
+		const { document, readDocuments, updateDocument } = useData( "records" );
 		const notification = inject( "notification" );
 		const modalWindow = ref( null );
 		const { deleteModal } = useModals();
@@ -53,8 +53,8 @@ export default {
 
 		const MoveToRecord = async () => {
 			try {
-				await records.updateDocument( props.id, { "folderId": selectedId.value });
-				records.readDocuments( "", { "folderId": props.folderId });
+				await updateDocument( props.id, { "folderId": selectedId.value });
+				readDocuments( "", { "folderId": props.folderId });
 				notification({
 					"type": "success",
 					"title": "Success",
@@ -84,8 +84,8 @@ export default {
 		};
 
 		onMounted( async () => {
-			await records.readDocuments( props.id );
-			selectedStatus.value = records.getDocument().value.status === "folder" ? "Folder" : "File";
+			await readDocuments( props.id );
+			selectedStatus.value = document.value.status === "folder" ? "Folder" : "File";
 			await getDirectories();
 		});
 

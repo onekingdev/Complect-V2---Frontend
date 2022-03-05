@@ -55,13 +55,15 @@ export default function useAuth () {
 		if ( !result.ok ) throw result.message;
 		const userProfile = result.data.profile;
 		if ( result.data.profile.businessId ) {
-			const collection = new UseData( "business" );
-			await collection.readDocuments( result.data.profile.businessId );
-			setLinkAccount( collection.getDocument().value );
+			// const { document, readDocuments } = useData( "business" );
+			const business = new UseData( "business" );
+			business.readDocuments( result.data.profile.businessId );
+			setLinkAccount( business.getDocument().value );
 		} else if ( result.data.profile.specialistId ) {
-			const collection = new UseData( "specialist" );
-			await collection.readDocuments( result.data.profile.specialistId );
-			setLinkAccount( collection.getDocument().value );
+			// const { document, readDocuments } = useData( "specialist" );
+			const specialist = new UseData( "specialist" );
+			business.readDocuments( result.data.profile.specialistId );
+			setLinkAccount( specialist.getDocument().value );
 		}
 		setProfile( userProfile );
 		setUserIdState( userProfile._id );
@@ -86,13 +88,13 @@ export default function useAuth () {
 		if ( !result.ok ) throw result.message;
 		profile.value = result.data;
 		if ( result.data.businessId ) {
-			const collection = new UseData( "business" );
-			await collection.readDocuments( result.data.businessId );
-			linkaccount.value = collection.getDocument().value;
+			const business = new UseData( "business" );
+			business.readDocuments( result.data.businessId );
+			linkaccount.value = business.getDocument().value;
 		} else if ( result.data.specialistId ) {
-			const collection = new UseData( "specialist" );
-			await collection.readDocuments( result.data.specialistId );
-			linkaccount.value = collection.getDocument().value;
+			const specialist = new UseData( "specialist" );
+			specialist.readDocuments( result.data.specialistId );
+			linkaccount.value = specialist.getDocument().value;
 		}
 	};
 

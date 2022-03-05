@@ -58,7 +58,7 @@ import useProfile from "~/store/Profile.js";
 import { manualApi } from "~/core/api.js";
 import { formatDate } from "~/core/utils";
 import useForm from "~/store/Form.js";
-import { plans } from "~/data/plans.js";
+// import { plans } from "~/data/plans.js";
 export default {
 	"components": { cSelect, cLabel, cBadge, cSwitcher, cPlans, cRadios },
 	// eslint-disable-next-line
@@ -66,7 +66,7 @@ export default {
 		const { profile, linkaccount } = useProfile();
 		const notification = inject( "notification" );
 		const router = useRouter();
-		const planCollection = new UseData( "plans" );
+		const plans = new UseData( "plans" );
 		const tokenCreated = token => console.debug( token );
 		const addPayment = () => console.debug( "test" );
 		const elementRef = ref();
@@ -136,7 +136,7 @@ export default {
 		const gotoPlan = () => router.push({ "name": "BillingPlan" });
 		const saveUsers = async () => {
 			try {
-				const planId = planCollection.getDocuments().value.find( doc => doc.amount === billingPlan.value );
+				const planId = plans.getDocuments().value.find( doc => doc.amount === billingPlan.value );
 				await manualApi({
 					"method": "post",
 					"url": `payment/subscription/${userType === "business" ? profile.value.businessId : profile.value.specialistId}`,
@@ -182,14 +182,14 @@ export default {
 		onMounted( () => {
 			console.debug( linkaccount.value );
 			if ( linkaccount.value?.currentPlan?.planId )	{
-				planCollection.readDocuments( linkaccount.value.currentPlan.planId );
+				plans.readDocuments( linkaccount.value.currentPlan.planId );
 				getSubscription( linkaccount.value._id );
 			}
-			planCollection.readDocuments();
+			plans.readDocuments();
 			getPayments();
 		});
 		return {
-			"document": planCollection.getDocument(),
+			document: plans.getDocument(),
 			tokenCreated,
 			addPayment,
 			elementRef,
@@ -200,7 +200,7 @@ export default {
 			gotoPlan,
 			formOptions,
 			form,
-			plans,
+			// plans,
 			userType,
 			billingPlan,
 			payments,

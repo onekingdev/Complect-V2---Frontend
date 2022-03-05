@@ -1,7 +1,7 @@
 <template lang="pug">
 detail-container
 	template(#header)
-		c-field.category-title(type="text" placeholder="Enter category name" v-model="category.name" fullwidth transparent)
+		c-field.category-title(type="text" placeholder="Enter category name" v-model="category.title" fullwidth transparent)
 	template(#controls)
 		c-button-modal(title="Delete" modalTitle="Delete Category")
 			template(#content)
@@ -177,7 +177,7 @@ export default {
 			try {
 				const catId = route.params.catId;
 				reviews.getDocument().value.categories[catId] = category.value;
-				await reviews.updateDocument( reviews.getDocument().value._id, reviews.getDocument().value );
+				await reviews.updateDocument( document.value._id, document.value );
 				notification({
 					"type": "success",
 					"title": "Success",
@@ -198,7 +198,7 @@ export default {
 			const catId = route.params.catId;
 			reviews.getDocument().value.categories[catId].completedAt = timestamp;
 			try {
-				await reviews.updateDocument( reviews.getDocument().value._id, reviews.getDocument().value );
+				await reviews.updateDocument( document.value._id, document.value );
 				notification({
 					"type": "success",
 					"title": "Success",

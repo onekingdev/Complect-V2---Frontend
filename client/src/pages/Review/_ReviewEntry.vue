@@ -1,5 +1,5 @@
 <template lang="pug">
-page-container(section="Internal Review" :title="document.name" type="document")
+page-container(section="Internal Review" :title="document.title" type="document")
 	template(#controls)
 		c-button(title="Export" @click="exportReview()")
 		c-button(title="Save and Exit" type="primary" @click="saveAndExit()")

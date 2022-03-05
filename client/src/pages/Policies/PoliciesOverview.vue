@@ -118,7 +118,7 @@ export default {
 		const columns = [
 			{
 				"title": "Name",
-				"key": "name",
+				"key": "title",
 				"cell": "CellTitle",
 				"unsortable": true,
 				"width": "50%",

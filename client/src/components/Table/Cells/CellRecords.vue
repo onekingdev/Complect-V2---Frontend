@@ -7,7 +7,7 @@
 
 <script>
 import { computed } from "vue";
-import UseData from "~/store/Data.js";
+import useData from "~/store/Data.js";
 export default {
 	"props": {
 		"id": {
@@ -25,14 +25,14 @@ export default {
 	},
 	"emits": ["cellEvent"],
 	setup ( props, { emit }) {
-		const records = new UseData( "records" );
+		const { documents } = useData( "records" );
 
 		const iconName = computed( () => props.document.status );
 
 		const openSubFiles = () => {
-			const index = records.getDocuments().value.findIndex( item => item._id === props.id );
-			if ( records.getDocuments().value[index].status === "folder" ) emit( "cellEvent", props.id );
-			else window.open( records.getDocuments().value[index].link, "_blank" );
+			const index = documents.value.findIndex( item => item._id === props.id );
+			if ( documents.value[index].status === "folder" ) emit( "cellEvent", props.id );
+			else window.open( documents.value[index].link, "_blank" );
 		};
 
 		return {

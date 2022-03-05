@@ -91,7 +91,7 @@ export default {
 		const columns = [
 			{
 				"title": "Name",
-				"key": "name",
+				"key": "title",
 				"cell": "CellTitle",
 				"width": "50%",
 				"meta": { "link": "PolicyDetail" }
@@ -151,7 +151,10 @@ export default {
 		// 	}
 		// ];
 
-		onMounted( () => policies.readDocuments( "", { "status": "archived" }) );
+		onMounted( () => {
+			policies.readDocuments( "", { "status": "archived" });
+			console.log(">>>>>>>>>", profile);
+		});
 		onUnmounted( () => policies.clearStore() );
 
 		return {

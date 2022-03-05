@@ -22,7 +22,7 @@ export default {
 		const columns = [
 			{
 				"title": "Name",
-				"key": "name",
+				"key": "title",
 				"cell": "CellTask"
 			},
 			{
