@@ -113,7 +113,7 @@ export default {
 				// search Query
 				if ( !searchQuery.value ) return documents;
 				const query = String( searchQuery.value.toLowerCase().trim() );
-				documents = documents.filter( document => document.title.toLowerCase().includes( query ) );
+				documents = documents.filter( document => document.name.toLowerCase().includes( query ) );
 				return documents;
 			} catch ( error ) {
 				console.error( error );

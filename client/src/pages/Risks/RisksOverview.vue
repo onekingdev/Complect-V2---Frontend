@@ -2,7 +2,7 @@
 c-dropdown-table(v-bind="{columns, controlColumns, documents}" searchable)
 c-modal(title="Edit Risk" v-model="isEditVisible")
 	template(#content)
-		c-field(label="Risk Name" v-model="riskForm.title" required)
+		c-field(label="Risk Name" v-model="riskForm.name" required)
 		c-select.col-3(label="Impact" :data="options" v-model="riskForm.impact")
 		c-select.col-3(label="Likelihood" :data="options" v-model="riskForm.likelihood")
 		c-label.col-2(label="Risk Level")
@@ -83,14 +83,14 @@ export default {
 				// await policies.deleteDocuments( policyId );
 				await risks.readDocuments( riskId );
 				const controls = risks.getDocument().value.controls.filter( doc => doc._id !== policyId );
-				await risks.updateDocument( risks.document.value._id, { controls });
+				await risks.updateDocument( risks.getDocument().value._id, { controls });
 				isUnlinkVisible.value = !isUnlinkVisible.value;
 				notification({
 					"type": "success",
 					"title": "Success",
 					"message": "Control has been removed."
 				});
-				await risks.readDocuments( risks.document.value._id );
+				await risks.readDocuments( risks.getDocument().value._id );
 			} catch ( error ) {
 				console.error( error );
 				notification({
@@ -143,7 +143,7 @@ export default {
 		const columns = [
 			{
 				"title": "Name",
-				"key": "title",
+				"key": "name",
 				"cell": "CellTitle",
 				"width": "50%",
 				"meta": {
@@ -199,7 +199,7 @@ export default {
 		const controlColumns = ref([
 			{
 				"title": "Name",
-				"key": "title",
+				"key": "name",
 				"cell": "CellTitle",
 				"width": "50%",
 				"meta": {

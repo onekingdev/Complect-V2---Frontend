@@ -66,7 +66,7 @@ export default {
 		const { profile, linkaccount } = useProfile();
 		const notification = inject( "notification" );
 		const router = useRouter();
-		const plans = new UseData( "plans" );
+		const planCollection = new UseData( "plans" );
 		const tokenCreated = token => console.debug( token );
 		const addPayment = () => console.debug( "test" );
 		const elementRef = ref();
@@ -136,7 +136,7 @@ export default {
 		const gotoPlan = () => router.push({ "name": "BillingPlan" });
 		const saveUsers = async () => {
 			try {
-				const planId = plans.getDocuments().value.find( doc => doc.amount === billingPlan.value );
+				const planId = planCollection.getDocuments().value.find( doc => doc.amount === billingPlan.value );
 				await manualApi({
 					"method": "post",
 					"url": `payment/subscription/${userType === "business" ? profile.value.businessId : profile.value.specialistId}`,
@@ -182,14 +182,14 @@ export default {
 		onMounted( () => {
 			console.debug( linkaccount.value );
 			if ( linkaccount.value?.currentPlan?.planId )	{
-				plans.readDocuments( linkaccount.value.currentPlan.planId );
+				planCollection.readDocuments( linkaccount.value.currentPlan.planId );
 				getSubscription( linkaccount.value._id );
 			}
-			plans.readDocuments();
+			planCollection.readDocuments();
 			getPayments();
 		});
 		return {
-			document: plans.getDocument(),
+			"document": planCollection.getDocument(),
 			tokenCreated,
 			addPayment,
 			elementRef,

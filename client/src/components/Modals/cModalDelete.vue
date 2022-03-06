@@ -18,7 +18,7 @@ card-container(:title="modalTitle" ref="modalWindow")
 <script>
 import { ref, inject } from "vue";
 import useProfile from "~/store/Profile.js";
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 import useModals from "~/store/Modals.js";
 import { onClickOutside } from "@vueuse/core";
 
@@ -57,7 +57,7 @@ export default {
 	setup ( props ) {
 		const notification = inject( "notification" );
 		const modalWindow = ref( null );
-		const { deleteDocuments } = useData( props.collection );
+		const collection = new UseData( props.collection );
 		const { profile } = useProfile();
 		const { deleteModal } = useModals();
 		const closeModal = () => deleteModal( props.modalId );
@@ -69,7 +69,7 @@ export default {
 
 		const deleteItem = async () => {
 			try {
-				await deleteDocuments( props.id );
+				await collection.deleteDocuments( props.id );
 				notification({
 					"type": "success",
 					"title": "Success",

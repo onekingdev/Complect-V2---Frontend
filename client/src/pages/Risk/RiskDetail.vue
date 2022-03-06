@@ -22,7 +22,7 @@ card-container(title="Controls")
 		c-table(v-bind="{columns: controlsColumns, documents: controlsDocuments}")
 c-modal(title="Edit Risk" v-model="isEditRiskVisible")
 	template(#content)
-		c-field(label="Risk Name" v-model="riskForm.title" required)
+		c-field(label="Risk Name" v-model="riskForm.name" required)
 		c-select.col-3(label="Impact" :data="options" v-model="riskForm.impact")
 		c-select.col-3(label="Likelihood" :data="options" v-model="riskForm.likelihood")
 		c-label.col-2(label="Risk Level")
@@ -65,13 +65,13 @@ export default {
 		const isDeleteVisible = ref( false );
 		const isEditRiskVisible = ref( false );
 		const riskForm = ref({
-			"title": "",
+			"name": "",
 			"impact": "",
 			"likelihood": ""
 		});
 		const toggleRiskVisible = () => {
 			isEditRiskVisible.value = !isEditRiskVisible.value;
-			riskForm.value.title = risks.getDocument().value.title;
+			riskForm.value.name = risks.getDocument().value.name;
 			riskForm.value.impact = risks.getDocument().value.impact;
 			riskForm.value.likelihood = risks.getDocument().value.likelihood;
 		};
@@ -103,7 +103,7 @@ export default {
 			{ "title": "Low", "value": 0 }, { "title": "Medium", "value": 1 }, { "title": "High", "value": 2 }
 		];
 		const riskDetails = computed( () => ({
-			"title": risks.getDocument().value.title,
+			"name": risks.getDocument().value.name,
 			"impact": locale( `risk${risks.getDocument().value.impact}` ),
 			"likelihood": locale( `risk${risks.getDocument().value.likelihood}` )
 		}) );
@@ -132,7 +132,7 @@ export default {
 		const controlsColumns = [
 			{
 				"title": "Policy",
-				"key": "title",
+				"key": "name",
 				"cell": "CellTitle",
 				"width": "50%",
 				"meta": {
@@ -167,7 +167,7 @@ export default {
 		const controlsColumnsModal = [
 			{
 				"title": "Policy",
-				"key": "title",
+				"key": "name",
 				"cell": "CellTitle",
 				"width": "50%",
 				"unsortable": true,
@@ -198,48 +198,48 @@ export default {
 				"Created": 1644778085732,
 				"lastModified": 1644778085732,
 				"status": "draft",
-				"title": "Policy2",
+				"name": "Policy2",
 				"_id": "123234234"
 			},
 			{
 				"Created": 1644778085732,
 				"lastModified": 1644778085732,
 				"status": "draft",
-				"title": "Policy3",
+				"name": "Policy3",
 				"_id": "123234234"
 			},
 			{
 				"Created": 1644778085732,
 				"lastModified": 1644778085732,
 				"status": "draft",
-				"title": "Policy4",
+				"name": "Policy4",
 				"_id": "123234234"
 			},
 			{
 				"Created": 1644778085732,
 				"lastModified": 1644778085732,
 				"status": "draft",
-				"title": "Policy5",
+				"name": "Policy5",
 				"_id": "123234234"
 			},
 			{
 				"Created": 1644778085732,
 				"lastModified": 1644778085732,
 				"status": "draft",
-				"title": "Policy6",
+				"name": "Policy6",
 				"_id": "123234234"
 			},
 			{
 				"Created": 1644778085732,
 				"lastModified": 1644778085732,
 				"status": "draft",
-				"title": "Policy7",
+				"name": "Policy7",
 				"_id": "123234234"
 			}
 		]);
 		const addControl = () => console.debug( policyDocuments.value );
 
-		const controlsDocuments = computed( () => document.value.controls || []);
+		const controlsDocuments = computed( () => risks.getDocument().value.controls || []);
 
 		return {
 			handleClickDelete,

@@ -2,7 +2,7 @@
 .quick-access
 	span.tab(@click="goToHome()") All Documents
 	span.separator(v-if="selectedFolder._id") &nbsp;/&nbsp;
-	span.tab(v-if="selectedFolder._id" @click="goToFolder()") {{ selectedFolder.title }}
+	span.tab(v-if="selectedFolder._id" @click="goToFolder()") {{ selectedFolder.name }}
 .actions
 	input(v-show="false" type="file" @change="onChange()" ref="fileInput")
 	c-button(title="Upload" type="primary" @click="UploadRecord()" :loading="loading")
@@ -14,14 +14,14 @@ c-table(v-bind="{columns, documents}" @cellEvent="folderSelect")
 <script>
 import { ref, inject, onMounted } from "vue";
 import useProfile from "~/store/Profile.js";
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 import { manualApi } from "~/core/api.js";
 import cModalRecord from "~/components/Modals/cModalRecord.vue";
 import cModalDelete from "~/components/Modals/cModalDelete.vue";
 export default {
 	"components": { cModalDelete, cModalRecord },
 	setup () {
-		const { document, documents, readDocuments, createDocuments, updateDocument } = useData( "records" );
+		const records = new UseData( "records" );
 		const { profile } = useProfile();
 		const notification = inject( "notification" );
 		const modal = inject( "modal" );
@@ -54,7 +54,7 @@ export default {
 				formData.append( "folderId", folderId );
 				const uploadRes = await manualApi({ "method": "POST", "url": "upload", "data": formData });
 				const newFile = ref({
-					"title": file.name,
+					"name": file.name,
 					"status": "file",
 					"owner": `${profile.value.firstName} ${profile.value.lastName}`,
 					"ownerId": profile.value._id,
@@ -65,10 +65,10 @@ export default {
 					folderId,
 					"key": uploadRes.key
 				});
-				await createDocuments([newFile.value]);
-				if ( selectedFolder.value._id ) await updateDocument( selectedFolder.value._id, { "size": selectedFolder.value.size + file.size });
+				await records.createDocuments([newFile.value]);
+				if ( selectedFolder.value._id ) await records.updateDocument( selectedFolder.value._id, { "size": selectedFolder.value.size + file.size });
 				loading.value = false;
-				readDocuments( "", { folderId });
+				records.readDocuments( "", { folderId });
 				notification({ "type": "success", "title": "Success", "message": "File has been uploaded.." });
 			} catch ( error ) {
 				loading.value = false;
@@ -82,26 +82,26 @@ export default {
 		};
 		const handleClickEdit = id => modal({ "name": "cModalRecord", id, "folderKey": selectedFolder.value._id ? selectedFolder.value.key : "" });
 		const handleClickDelete = id => {
-			const index = documents.value.findIndex( item => item._id === id );
-			const title = documents.value[index].status === "folder" ? "Folder" : "File";
-			const description = `Removing this ${documents.value[index].status} will delete any progress and tasks associated with the ${documents.value[index].status}.`;
-			modal({ "name": "cModalDelete", id, title, description, "collection": "records", "ownerId": documents.value[index].ownerId });
+			const index = records.getDocuments().value.findIndex( item => item._id === id );
+			const title = records.getDocuments().value[index].status === "folder" ? "Folder" : "File";
+			const description = `Removing this ${records.getDocuments().value[index].status} will delete any progress and tasks associated with the ${records.getDocuments().value[index].status}.`;
+			modal({ "name": "cModalDelete", id, title, description, "collection": "records", "ownerId": records.getDocuments().value[index].ownerId });
 		};
 		const folderSelect = id => {
-			const index = documents.value.findIndex( item => item._id === id );
-			selectedFolder.value = documents.value[index];
-			readDocuments( "", { "folderId": selectedFolder.value._id });
+			const index = records.getDocuments().value.findIndex( item => item._id === id );
+			selectedFolder.value = records.getDocuments().value[index];
+			records.readDocuments( "", { "folderId": selectedFolder.value._id });
 		};
 		const goToHome = () => {
-			readDocuments( "", { "folderId": "root" });
+			records.readDocuments( "", { "folderId": "root" });
 			selectedFolder.value = {};
 		};
 		const goToFolder = () => {
-			readDocuments( "", { "folderId": selectedFolder.value.folderId });
+			records.readDocuments( "", { "folderId": selectedFolder.value.folderId });
 			if ( selectedFolder.value.folderId === "root" ) selectedFolder.value = {};
 			else {
-				readDocuments( selectedFolder.value.folderId );
-				selectedFolder.value = document.value;
+				records.readDocuments( selectedFolder.value.folderId );
+				selectedFolder.value = records.getDocument().value;
 			}
 		};
 		const columns = [
@@ -121,10 +121,10 @@ export default {
 			}
 		];
 		onMounted( async () => {
-			await readDocuments( "", { "folderId": "root" });
+			await records.readDocuments( "", { "folderId": "root" });
 		});
 		return {
-			documents,
+			"documents": records.getDocuments(),
 			UploadRecord,
 			fileInput,
 			createNewFolder,

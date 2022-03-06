@@ -119,8 +119,7 @@ import cSwitcher from "~/components/Inputs/cSwitcher.vue";
 import { manualApi } from "~/core/api.js";
 export default {
 	"components": { StripeElements, StripeElement, cSwitcher },
-	// eslint-disable-next-line max-statements
-	// eslint-disable-next-line max-lines-per-function
+	// eslint-disable-next-line
 	setup () {
 		const { profile } = useProfile();
 		const userType = profile.value.type;

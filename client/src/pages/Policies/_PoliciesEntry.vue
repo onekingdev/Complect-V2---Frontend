@@ -5,7 +5,7 @@ page-container(title="Policies and Procedures")
 		// c-button-modal(v-if="profile.role == 'Admin' || profile.role == 'Trusted'" title="New Policy" modalTitle="New Policy" type="primary")
 		c-button-modal(title="New Policy" modalTitle="New Policy" type="primary")
 			template(#content)
-				c-field(label="Policy Name" v-model="newPolicy.title" required)
+				c-field(label="Policy Name" v-model="newPolicy.name" required)
 			template(#footer)
 				c-button(title="Create" type="primary" @click="createPolicy()")
 	// template(#tabs v-if="profile.role == 'Admin' || profile.role == 'Trusted'")
@@ -62,7 +62,7 @@ export default {
 		}];
 
 		const newPolicy = ref({
-			"title": "",
+			"name": "",
 			"createdAt": Date.now(),
 			"modifiedAt": Date.now(),
 			"status": "draft",

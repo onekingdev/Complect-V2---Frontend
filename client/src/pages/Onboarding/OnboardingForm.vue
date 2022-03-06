@@ -224,7 +224,6 @@ export default {
 		};
 
 		const goToCheckout = async () => {
-			// eslint-disable-next-line max-depth
 			try {
 				if ( userType === "business" && form.value.plan === "starter" ) {
 					const business = new UseData( "business" );
@@ -246,6 +245,7 @@ export default {
 					router.push({ "name": "Dashboard" });
 				} else {
 					form.value.email = profile.value.email;
+					// eslint-disable-next-line max-depth
 					if ( userType === "specialist" ) form.value.company = `${profile.value.firstName} ${profile.value.lastName}`;
 					router.push({ "name": "OnboardingCheckout" });
 				}
