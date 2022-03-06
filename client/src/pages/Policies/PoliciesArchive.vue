@@ -151,10 +151,7 @@ export default {
 		// 	}
 		// ];
 
-		onMounted( () => {
-			policies.readDocuments( "", { "status": "archived" });
-			console.log(">>>>>>>>>", profile);
-		});
+		onMounted( () => policies.readDocuments( "", { "status": "archived" }));
 		onUnmounted( () => policies.clearStore() );
 
 		return {

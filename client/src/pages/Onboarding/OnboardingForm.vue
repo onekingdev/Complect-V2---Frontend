@@ -91,7 +91,7 @@ import cDropzone from "~/components/Inputs/cDropzone.vue";
 import cSwitcher from "~/components/Inputs/cSwitcher.vue";
 import cPlans from "~/components/Misc/cPlans.vue";
 
-import { manualApi } from "~/core/api.js";
+// import { manualApi } from "~/core/api.js";
 import UseData from "~/store/Data.js";
 import useAuth from "~/core/auth.js";
 import cAddress from "~/components/Inputs/cAddress.vue";
@@ -224,10 +224,12 @@ export default {
 		};
 
 		const goToCheckout = async () => {
+			// eslint-disable-next-line max-depth
 			try {
 				if ( userType === "business" && form.value.plan === "starter" ) {
 					const business = new UseData( "business" );
 					const ids = await business.createDocuments([form.value]);
+					// eslint-disable-next-line require-atomic-updates
 					form.value.businessId = ids[0];
 					await onboarding( form.value );
 					profile.value.new = false;
@@ -236,6 +238,7 @@ export default {
 				} else if ( userType === "specialist" && form.value.plan === "standard" ) {
 					const specialist = new UseData( "specialist" );
 					const ids = await specialist.createDocuments([form.value]);
+					// eslint-disable-next-line require-atomic-updates
 					form.value.specialistId = ids[0];
 					await onboarding( form.value );
 					profile.value.new = false;

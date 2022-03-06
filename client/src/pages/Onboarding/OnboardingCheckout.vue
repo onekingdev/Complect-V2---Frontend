@@ -106,14 +106,13 @@
 
 
 <script>
-import { inject } from "vue";
 import { useRouter } from "vue-router";
 import useProfile from "~/store/Profile.js";
 import useForm from "~/store/Form.js";
 import useAuth from "~/core/auth.js";
 import { loadStripe } from "@stripe/stripe-js";
 import { StripeElements, StripeElement } from "vue-stripe-js";
-import { onBeforeMount, onMounted, ref } from "vue";
+import { onBeforeMount, onMounted, ref, inject } from "vue";
 import UseData from "~/store/Data.js";
 import { plans } from "~/data/plans.js";
 import cSwitcher from "~/components/Inputs/cSwitcher.vue";
@@ -121,6 +120,7 @@ import { manualApi } from "~/core/api.js";
 export default {
 	"components": { StripeElements, StripeElement, cSwitcher },
 	// eslint-disable-next-line max-statements
+	// eslint-disable-next-line max-lines-per-function
 	setup () {
 		const { profile } = useProfile();
 		const userType = profile.value.type;
@@ -140,7 +140,7 @@ export default {
 		const stripeLoaded = ref( false );
 		const card = ref();
 		const elms = ref();
-		const users = ref(0);
+		const users = ref( 0 );
 		const cardresult = ref({ });
 		const promocode = ref();
 		const promoInfo = ref({ });
@@ -153,7 +153,7 @@ export default {
 				"value": false
 			}
 		]);
-		const stripeChange = (e) => isPurchaseVisible.value = !e.complete;
+		const stripeChange = e => isPurchaseVisible.value = !e.complete;
 		const addPayment = () => {
 			const cardElement = card.value.stripeElement;
 			elms.value.instance.createToken( cardElement ).then( async result => {
@@ -191,6 +191,7 @@ export default {
 						"newData": {}
 					});
 					// await onboarding({ "businessId": ids[0] });
+					// eslint-disable-next-line require-atomic-updates
 					form.value.businessId = ids[0];
 				} else {
 					const specialist = new UseData( "specialist" );
@@ -201,6 +202,7 @@ export default {
 						"newData": {}
 					});
 					// await onboarding({ "specialistId": ids[0] });
+					// eslint-disable-next-line require-atomic-updates
 					form.value.specialistId = ids[0];
 				}
 
@@ -242,7 +244,7 @@ export default {
 			const stripePromise = loadStripe( publishkey.value );
 			stripePromise.then( () => stripeLoaded.value = true );
 		});
-		onMounted( async () => {
+		onMounted( () => {
 			plan.value = plans[userType].find( item => item.key === form.value.plan );
 			// plans.readDocuments();
 			// if ( userType === "business" ) {
@@ -263,6 +265,7 @@ export default {
 			// }
 		});
 
+		// eslint-disable-next-line max-len
 		return { userType, plan, stripeChange, paymentOptions, users, goBack, profile, form, onBoard, publishkey, instanceOptions, elementsOptions, cardOptions, card, elms, stripeLoaded, addPayment, isAddButtonVisible, isPurchaseVisible, cardresult, promoInfo, promocode,	applyPromo };
 	}
 };
