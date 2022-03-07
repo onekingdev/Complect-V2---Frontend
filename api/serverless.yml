@@ -37,7 +37,7 @@ functions:
   - "${file(endpoints/data.yml)}"
   - "${file(endpoints/api.yml)}"
   - "${file(endpoints/team_member.yml)}"
-  - "${file(endpoints/download.yml)}"
+  # - "${file(endpoints/download.yml)}"
   # - "${file(endpoints/cron.yml)}"
   - "${file(endpoints/_debug.yml)}"
   - "${file(endpoints/payment.yml)}"

@@ -70,14 +70,6 @@ const randomName = length => {
 	for ( let i = 0; i < length; i++ ) result += characters.charAt( Math.floor( Math.random() * charactersLength ) );
 	return result;
 };
-const formatDate = date => {
-	const options = {
-		year: "numeric",
-		month: "numeric",
-		day: "numeric"
-	};
-	return new Date( date ).toLocaleString( "en-US", options );
-};
 
 
 // const generateHash = async plain => await bcrypt.hash( plain, 10 );
@@ -90,6 +82,5 @@ module.exports = {
 	randomNumber,
 	checkFields,
 	devStageLog,
-	randomName,
-	formatDate
+	randomName
 };

@@ -52,7 +52,7 @@ export default {
 		},
 		"hasHamberger": {
 			"type": Object,
-			"default": ""
+			"default": () => {}
 		}
 	}
 };
