@@ -111,11 +111,6 @@ const ReportOrganizations = () => import( "~/pages/Reports/ReportOrganizations.v
 const ReportRisks = () => import( "~/pages/Reports/ReportRisks.vue" );
 const ReportFinancials = () => import( "~/pages/Reports/ReportFinancials.vue" );
 
-// exams
-const _ExamsEntry = () => import( "~/pages/Exams/_ExamsEntry.vue" );
-const ExamsOverview = () => import( "~/pages/Exams/ExamsOverview.vue" );
-const ExamDetail = () => import( "~/pages/Exams/ExamDetail.vue" );
-
 import { devRoutes } from "~/_devmode/Routes.js";
 
 // ––––––––––––––– Routes ––––––––––––––– //
@@ -285,23 +280,6 @@ const routes = [
 								"name": "PolicyHistory",
 								"component": PolicyHistory,
 								"meta": { "title": "Policy History" }
-							}
-						]
-					},
-					{
-						"path": "exam_management",
-						"component": _ExamsEntry,
-						"children": [
-							{
-								"path": "",
-								"name": "ExamsOverview",
-								"component": ExamsOverview,
-								"meta": { "title": "Exam Overview" }
-							}, {
-								"path": ":id",
-								"name": "ExamDetail",
-								"component": ExamDetail,
-								"meta": { "title": "Exam Detail" }
 							}
 						]
 					},
