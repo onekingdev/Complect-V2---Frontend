@@ -29,10 +29,10 @@ export default {
 
 		const iconName = computed( () => props.document.status );
 
-		const openSubFiles = async () => {
-			await records.readDocuments( props.id );
-			if ( records.getDocument().value.status === "folder" ) emit( "cellEvent", props.id );
-			else window.open( records.getDocument().value.link, "_blank" );
+		const openSubFiles = () => {
+			const index = records.getDocuments().value.findIndex( item => item._id === props.id );
+			if ( records.getDocuments().value[index].status === "folder" ) emit( "cellEvent", props.id );
+			else window.open( records.getDocuments().value[index].link, "_blank" );
 		};
 
 		return {

@@ -4,7 +4,7 @@ card-container.c-modal-review(:title="modalTitle" ref="modalWindow")
 		c-button(type="icon" iconL="close" size="small" @click="closeModal()")
 	template(#content)
 		.grid-6
-			c-field(label="Name" v-model="form.name" :errors="errors.name" required)
+			c-field(label="Name" v-model="form.name" required)
 	template(#footer)
 		c-button(title="Cancel" type="link" @click="closeModal()")
 		c-button(:title="btnTitle" type="primary" @click="saveRecord()")
@@ -16,8 +16,6 @@ import { ref, inject, computed, onMounted } from "vue";
 import useProfile from "~/store/Profile.js";
 import UseData from "~/store/Data.js";
 import useModals from "~/store/Modals.js";
-import { validates } from "~/core/utils.js";
-import { required } from "@vuelidate/validators";
 import { onClickOutside } from "@vueuse/core";
 
 export default {
@@ -29,11 +27,6 @@ export default {
 		"id": {
 			"type": String,
 			"default": "",
-			"required": false
-		},
-		"records": {
-			"type": Object,
-			"default": {},
 			"required": false
 		},
 		"folderId": {
@@ -54,7 +47,6 @@ export default {
 		const { profile } = useProfile();
 		const { deleteModal } = useModals();
 		const modalTitle = ref( "" );
-		const errors = ref({});
 		const btnTitle = computed( () => props.id ? "Save" : "Create" );
 		const form = ref({
 			"name": "",
@@ -67,14 +59,15 @@ export default {
 			"folderId": props.folderId,
 			"key": ""
 		});
-		const rule = { "name": { required }};
+
 		const closeModal = () => deleteModal( props.modalId );
 		onClickOutside( modalWindow, () => closeModal() );
 
 		const createRecord = async () => {
 			try {
-				if ( form.value.status === "folder" ) form.value.key = `${props.folderKey}${form.value.name}/`;
+				if ( form.value.status === "folder" ) form.value.key = `${props.folderKey}${form.value.title}/`;
 				await records.createDocuments([form.value]);
+				records.readDocuments( "", { "folderId": props.folderId });
 				notification({
 					"type": "success",
 					"title": "Success",
@@ -93,15 +86,13 @@ export default {
 		const updateRecord = async () => {
 			const title = form.value.status;
 			try {
-				form.value.key = `${props.folderKey}${form.value.name}`;
+				form.value.key = `${props.folderKey}${form.value.title}`;
 				await records.updateDocument( form.value._id, form.value );
 				notification({
 					"type": "success",
 					"title": "Success",
 					"message": `${title} has been updated`
 				});
-				await props.records.readDocuments();
-				console.log(props.records.getDocuments().value);
 			} catch ( error ) {
 				console.error( error );
 				notification({
@@ -113,8 +104,6 @@ export default {
 		};
 
 		const saveRecord = async () => {
-			errors.value = await validates( rule, form.value );
-			if ( Object.keys( errors.value ).length > 0 ) return;
 			try {
 				if ( !props.id ) await createRecord();
 				else if ( props.id ) await updateRecord();
@@ -133,7 +122,7 @@ export default {
 			} else modalTitle.value = "New Folder";
 		});
 
-		return { modalWindow, modalTitle, btnTitle, errors, saveRecord, form, closeModal };
+		return { modalWindow, modalTitle, btnTitle, saveRecord, form, closeModal };
 	}
 };
 </script>

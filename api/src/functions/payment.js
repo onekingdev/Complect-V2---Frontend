@@ -209,7 +209,7 @@ exports.seat = async event => {
 exports.pay = async event => {
 	try {
 		const { senderId, receiverId, jobId, description, type, contract } = await JSON.parse( event.body );
-		const project = readDocuments({
+		const project = await readDocuments({
 			collection: "jobs",
 			_id: jobId
 		});
