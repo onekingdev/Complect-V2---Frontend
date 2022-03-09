@@ -17,7 +17,7 @@ pdfprint:
         method: post
         cors: true
 csvdownload:
-  name: ${opt:stage, 'dev'}-api--csv-download
+  name: ${opt:stage, 'dev'}-api--csvdownload
   handler: src/functions/download.csvdownload
   description: API endpoint for CSV download
   memorySize: 2056

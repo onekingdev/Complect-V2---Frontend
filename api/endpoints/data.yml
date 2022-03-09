@@ -40,7 +40,7 @@ data:
         cors: true
 updatePosition:
   name: ${opt:stage, 'dev'}-api--position
-  handler: src/functions/data.updatePosition
+  handler: src/function/data.updatePosition
   description: End Point for Update Policy Position
   tags:
     website: Complect App
@@ -51,20 +51,5 @@ updatePosition:
   events:
     - http:
         path: reorder
-        method: post
-        cors: true
-financialReports:
-  name: ${opt:stage, 'dev'}-api--financial
-  handler: src/functions/data.financialReports
-  description: End Point for Financial Reports
-  tags:
-    website: Complect App
-    type: API
-    subtype: Data
-  layers:
-    - {Ref: BaseLibsLambdaLayer}
-  events:
-    - http:
-        path: report/financial
         method: post
         cors: true
