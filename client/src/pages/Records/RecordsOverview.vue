@@ -20,7 +20,7 @@ import cModalRecord from "~/components/Modals/cModalRecord.vue";
 import cModalDelete from "~/components/Modals/cModalDelete.vue";
 export default {
 	"components": { cModalDelete, cModalRecord },
-	// eslint-disable-next-line max-statements
+	// eslint-disable-next-line
 	setup () {
 		const records = new UseData( "records" );
 		const { profile } = useProfile();
@@ -131,9 +131,8 @@ export default {
 			}
 		];
 		const documents = computed( () => records.getDocuments().value );
-		onMounted( async () => await records.readDocuments( "", { "folderId": "root" }) );
+		onMounted( () => records.readDocuments( "", { "folderId": "root" }) );
 		onUnmounted( () => records.clearStore() );
-		// eslint-disable-next-line no-return-await
 		return {
 			documents,
 			uploadRecord,
