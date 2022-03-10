@@ -40,6 +40,7 @@ export default {
 		},
 		"callback": {
 			"type": Function,
+			"default": () => 1,
 			"required": false
 		},
 		"title": {
@@ -74,7 +75,7 @@ export default {
 		const deleteItem = async () => {
 			try {
 				await collection.deleteDocuments( props.id );
-				if( props.collection === "records" ) props.callback();
+				if ( props.collection === "records" ) props.callback();
 				notification({
 					"type": "success",
 					"title": "Success",

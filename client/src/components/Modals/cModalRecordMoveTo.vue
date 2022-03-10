@@ -39,6 +39,7 @@ export default {
 		},
 		"callback": {
 			"type": Function,
+			"default": () => 1,
 			"required": false
 		}
 	},
@@ -55,9 +56,9 @@ export default {
 		onClickOutside( modalWindow, () => {
 			closeModal();
 		});
-		const rule = { "dir": { required }};
+		const rule = { "dir": { required } };
 		const MoveToRecord = async () => {
-			errors.value = await validates( rule, { "dir": selectedId.value } );
+			errors.value = await validates( rule, { "dir": selectedId.value });
 			if ( Object.keys( errors.value ).length > 0 ) return;
 			try {
 				await records.updateDocument( props.id, { "folderId": selectedId.value });

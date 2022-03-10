@@ -20,6 +20,7 @@ import cModalRecord from "~/components/Modals/cModalRecord.vue";
 import cModalDelete from "~/components/Modals/cModalDelete.vue";
 export default {
 	"components": { cModalDelete, cModalRecord },
+	// eslint-disable-next-line max-statements
 	setup () {
 		const records = new UseData( "records" );
 		const { profile } = useProfile();
@@ -38,11 +39,15 @@ export default {
 				notification({ "type": "error", "title": "Error", "message": "Folder has not been downloaded. Please try again." });
 			}
 		};
+		const updateRecords = async () => {
+			const folderId = selectedFolder.value._id ? selectedFolder.value._id : "root";
+			await records.readDocuments( "", { folderId });
+		};
+		const uploadRecord = () => fileInput.value.click();
 		const handleClickMoveTo = id => {
 			const folderId = selectedFolder.value._id ? selectedFolder.value._id : "root";
 			modal({ "name": "cModalRecordMoveTo", "callback": updateRecords, id, folderId });
 		};
-		const uploadRecord = () => fileInput.value.click();
 		const onChange = async () => {
 			loading.value = true;
 			try {
@@ -76,20 +81,16 @@ export default {
 				notification({ "type": "error", "title": "Error", "message": "Folder has not been uploaded. Please try again." });
 			}
 		};
-		const createNewFolder = async () => {
+		const createNewFolder = () => {
 			const folderId = selectedFolder.value._id ? selectedFolder.value._id : "root";
 			const folderKey = selectedFolder.value._id ? selectedFolder.value.key : "";
 			modal({ "name": "cModalRecord", "callback": updateRecords, folderId, folderKey });
 		};
-		const updateRecords = async () => {
-			const folderId = selectedFolder.value._id ? selectedFolder.value._id : "root";
-			await records.readDocuments( "", { "folderId": folderId });
-		};
-		const handleClickEdit = async id => {
+		const handleClickEdit = id => {
 			const folderKey = selectedFolder.value._id ? selectedFolder.value.key : "";
-			modal({ "name": "cModalRecord", "callback": updateRecords, id, folderKey })
+			modal({ "name": "cModalRecord", "callback": updateRecords, id, folderKey });
 		};
-		const handleClickDelete = async id => {
+		const handleClickDelete = id => {
 			const index = records.getDocuments().value.findIndex( item => item._id === id );
 			const title = records.getDocuments().value[index].status === "folder" ? "Folder" : "File";
 			const description = `Removing this ${records.getDocuments().value[index].status} will delete any progress and tasks associated with the ${records.getDocuments().value[index].status}.`;
@@ -109,6 +110,7 @@ export default {
 			if ( selectedFolder.value.folderId === "root" ) selectedFolder.value = {};
 			else {
 				await records.readDocuments( selectedFolder.value.folderId );
+				// eslint-disable-next-line require-atomic-updates
 				selectedFolder.value = records.getDocument().value;
 			}
 		};
@@ -128,11 +130,10 @@ export default {
 				}
 			}
 		];
-
 		const documents = computed( () => records.getDocuments().value );
-
 		onMounted( async () => await records.readDocuments( "", { "folderId": "root" }) );
 		onUnmounted( () => records.clearStore() );
+		// eslint-disable-next-line no-return-await
 		return {
 			documents,
 			uploadRecord,

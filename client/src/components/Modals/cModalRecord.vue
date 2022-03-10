@@ -33,6 +33,7 @@ export default {
 		},
 		"callback": {
 			"type": Function,
+			"default": () => 1,
 			"required": false
 		},
 		"folderId": {
@@ -66,7 +67,7 @@ export default {
 			"folderId": props.folderId,
 			"key": ""
 		});
-		const rule = { "name": { required }};
+		const rule = { "name": { required } };
 		const closeModal = () => deleteModal( props.modalId );
 		onClickOutside( modalWindow, () => closeModal() );
 
