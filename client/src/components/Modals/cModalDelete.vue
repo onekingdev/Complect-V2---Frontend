@@ -38,6 +38,10 @@ export default {
 			"default": "",
 			"required": true
 		},
+		"callback": {
+			"type": Function,
+			"required": false
+		},
 		"title": {
 			"type": String,
 			"default": "",
@@ -70,6 +74,7 @@ export default {
 		const deleteItem = async () => {
 			try {
 				await collection.deleteDocuments( props.id );
+				if( props.collection === "records" ) props.callback();
 				notification({
 					"type": "success",
 					"title": "Success",

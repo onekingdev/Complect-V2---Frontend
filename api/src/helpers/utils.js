@@ -1,6 +1,6 @@
 "use strict";
 
-const bcrypt = require( "bcrypt" );
+// const bcrypt = require( "bcrypt" );
 
 
 // request guard
@@ -71,8 +71,10 @@ const randomName = length => {
 	return result;
 };
 
-const generateHash = async plain => await bcrypt.hash( plain, 10 );
-const compareHash = async ( plain, hashed ) => await bcrypt.compare( plain, hashed );
+
+// const generateHash = async plain => await bcrypt.hash( plain, 10 );
+// const compareHash = async ( plain, hashed ) => await bcrypt.compare( plain, hashed );
+
 
 module.exports = {
 	requestGuard,
@@ -80,7 +82,5 @@ module.exports = {
 	randomNumber,
 	checkFields,
 	devStageLog,
-	generateHash,
-	compareHash,
 	randomName
 };

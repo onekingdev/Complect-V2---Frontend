@@ -5,14 +5,14 @@
 	span.tab(v-if="selectedFolder._id" @click="goToFolder()") {{ selectedFolder.name }}
 .actions
 	input(v-show="false" type="file" @change="onChange()" ref="fileInput")
-	c-button(title="Upload" type="primary" @click="UploadRecord()" :loading="loading")
+	c-button(title="Upload" type="primary" @click="uploadRecord()" :loading="loading")
 	c-button(title="New Folder" type="default" @click="createNewFolder()")
 c-table(v-bind="{columns, documents}" @cellEvent="folderSelect")
 </template>
 
 
 <script>
-import { ref, inject, onMounted } from "vue";
+import { ref, inject, computed, onMounted, onUnmounted } from "vue";
 import useProfile from "~/store/Profile.js";
 import UseData from "~/store/Data.js";
 import { manualApi } from "~/core/api.js";
@@ -40,9 +40,9 @@ export default {
 		};
 		const handleClickMoveTo = id => {
 			const folderId = selectedFolder.value._id ? selectedFolder.value._id : "root";
-			modal({ "name": "cModalRecordMoveTo", id, folderId });
+			modal({ "name": "cModalRecordMoveTo", "callback": updateRecords, id, folderId });
 		};
-		const UploadRecord = () => fileInput.value.click();
+		const uploadRecord = () => fileInput.value.click();
 		const onChange = async () => {
 			loading.value = true;
 			try {
@@ -63,12 +63,12 @@ export default {
 					"lastModified": Date.now(),
 					"link": uploadRes.Location,
 					folderId,
-					"key": uploadRes.key
+					"key": uploadRes.Key
 				});
 				await records.createDocuments([newFile.value]);
 				if ( selectedFolder.value._id ) await records.updateDocument( selectedFolder.value._id, { "size": selectedFolder.value.size + file.size });
 				loading.value = false;
-				records.readDocuments( "", { folderId });
+				await records.readDocuments( "", { folderId });
 				notification({ "type": "success", "title": "Success", "message": "File has been uploaded.." });
 			} catch ( error ) {
 				loading.value = false;
@@ -76,31 +76,39 @@ export default {
 				notification({ "type": "error", "title": "Error", "message": "Folder has not been uploaded. Please try again." });
 			}
 		};
-		const createNewFolder = () => {
+		const createNewFolder = async () => {
 			const folderId = selectedFolder.value._id ? selectedFolder.value._id : "root";
-			modal({ "name": "cModalRecord", folderId, "folderKey": selectedFolder.value._id ? selectedFolder.value.key : "" });
+			const folderKey = selectedFolder.value._id ? selectedFolder.value.key : "";
+			modal({ "name": "cModalRecord", "callback": updateRecords, folderId, folderKey });
 		};
-		const handleClickEdit = id => modal({ "name": "cModalRecord", id, "folderKey": selectedFolder.value._id ? selectedFolder.value.key : "" });
-		const handleClickDelete = id => {
+		const updateRecords = async () => {
+			const folderId = selectedFolder.value._id ? selectedFolder.value._id : "root";
+			await records.readDocuments( "", { "folderId": folderId });
+		};
+		const handleClickEdit = async id => {
+			const folderKey = selectedFolder.value._id ? selectedFolder.value.key : "";
+			modal({ "name": "cModalRecord", "callback": updateRecords, id, folderKey })
+		};
+		const handleClickDelete = async id => {
 			const index = records.getDocuments().value.findIndex( item => item._id === id );
 			const title = records.getDocuments().value[index].status === "folder" ? "Folder" : "File";
 			const description = `Removing this ${records.getDocuments().value[index].status} will delete any progress and tasks associated with the ${records.getDocuments().value[index].status}.`;
-			modal({ "name": "cModalDelete", id, title, description, "collection": "records", "ownerId": records.getDocuments().value[index].ownerId });
+			modal({ "name": "cModalDelete", id, title, description, "collection": "records", "callback": updateRecords, "ownerId": records.getDocuments().value[index].ownerId });
 		};
-		const folderSelect = id => {
+		const folderSelect = async id => {
 			const index = records.getDocuments().value.findIndex( item => item._id === id );
 			selectedFolder.value = records.getDocuments().value[index];
-			records.readDocuments( "", { "folderId": selectedFolder.value._id });
+			await records.readDocuments( "", { "folderId": selectedFolder.value._id });
 		};
-		const goToHome = () => {
-			records.readDocuments( "", { "folderId": "root" });
+		const goToHome = async () => {
+			await records.readDocuments( "", { "folderId": "root" });
 			selectedFolder.value = {};
 		};
-		const goToFolder = () => {
-			records.readDocuments( "", { "folderId": selectedFolder.value.folderId });
+		const goToFolder = async () => {
+			await records.readDocuments( "", { "folderId": selectedFolder.value.folderId });
 			if ( selectedFolder.value.folderId === "root" ) selectedFolder.value = {};
 			else {
-				records.readDocuments( selectedFolder.value.folderId );
+				await records.readDocuments( selectedFolder.value.folderId );
 				selectedFolder.value = records.getDocument().value;
 			}
 		};
@@ -120,12 +128,14 @@ export default {
 				}
 			}
 		];
-		onMounted( async () => {
-			await records.readDocuments( "", { "folderId": "root" });
-		});
+
+		const documents = computed( () => records.getDocuments().value );
+
+		onMounted( async () => await records.readDocuments( "", { "folderId": "root" }) );
+		onUnmounted( () => records.clearStore() );
 		return {
-			"documents": records.getDocuments(),
-			UploadRecord,
+			documents,
+			uploadRecord,
 			fileInput,
 			createNewFolder,
 			onChange,
