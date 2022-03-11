@@ -142,7 +142,7 @@ export default {
 </script>
 
 
-<style lang="styl" scoped>
+<style lang="stylus" scoped>
 .text-small
 	font-size: 0.85em;
 </style>

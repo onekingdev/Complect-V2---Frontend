@@ -1,6 +1,8 @@
 <template lang="pug">
 .cell-collaborators(v-if="data.length")
-	c-avatar(v-for="user in data" size="small" :avatar="user.avatar" :firstName="user.firstName" :lastName="user.lastName" :title="`${user.firstName} ${user.lastName}`")
+	template(v-for="(user, index) in data")
+		c-avatar(size="small" :avatar="user.avatar" :firstName="user.firstName" :lastName="user.lastName" :title="`${user.firstName} ${user.lastName}`" v-if="index < 2")
+	span.more-collaborators(v-if="data.length > 2") +1
 </template>
 
 
@@ -21,4 +23,6 @@ export default {
 <style lang="stylus" scoped>
 .cell-collaborators
 	gap: 0.3em
+.more-collaborators
+	color: var(--c-blue)
 </style>
