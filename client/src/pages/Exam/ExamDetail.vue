@@ -3,7 +3,7 @@ card-container.custom(title="Requests")
 	template(#controls)
 		c-button(title="View Portal")
 	template(#content)
-		c-switcher(id="layout" :options="options" v-model="switcherValue")
+		c-switcher(id="layout" :options="options" v-model="switcherValue" type="primary")
 		.requests(v-if="requestFilters.length")
 			.requests-item(v-for="(request, index) in requestFilters" :key="index" :class="{'completed': request.completed}")
 				.left
@@ -16,7 +16,7 @@ card-container.custom(title="Requests")
 							| {{ request.name }}
 						.controls
 							c-dropdown(label="Label" title="Add Item" wide)
-								c-button(title="Text Entry" type="transparent")
+								c-button(title="Text Entry" type="transparent" @click="addTextEntry(request)")
 								c-button(title="Upload Files" type="transparent")
 								c-button(title="Select Existing" type="transparent")
 							c-button(title="New Task" type="primary")
@@ -27,11 +27,15 @@ card-container.custom(title="Requests")
 					.details {{ request.details }}
 					.counts
 						icon(name="chevron-down")
-						span 0 Items
+						span {{ request.text_entries ? request.text_entries.length : 0 }} Items
+					.text-entries(v-if="request.text_entries")
+						.text-entry(v-for="(item, idx) in request.text_entries" :key="idx")
+							c-textarea.textarea(v-model.trim="item.content")
+							icon(name="close" @click="removeTextEntry(request, idx)")
 		.controls
-			c-button(title="Add Request" @click="openRequestModal()")
+			c-button(title="Add Request" @click="openRequestModal()" iconL="circle_plus")
 			.right
-				c-button(title="Save")
+				c-button(title="Save" @click="saveExam()")
 				c-button(v-if="exam.completed" title="Mark as Incomplete" @click="markAsInComplete()")
 				c-button(v-else title="Mark as Complete" type="primary" @click="markAsComplete()")
 c-modal(:title="requestModalConfig.title" v-model="isVisibleRequestModal")
@@ -40,12 +44,16 @@ c-modal(:title="requestModalConfig.title" v-model="isVisibleRequestModal")
 		c-textarea(label="Details" v-model="requestForm.details")
 	template(#footer)
 		c-button(:title="requestModalConfig.btn" type="primary" @click="saveExamRequest()")
+c-modal(title="Delete Note" v-model="isVisibleDeleteNoteModal")
+	template(#content)
+		p This note will be permanently deleted from this exam request response.
+	template(#footer)
+		c-button(title="Confirm" type="primary" @click="confirmDeleteReqTextEntry()")
 </template>
 
 
 <script>
 import { ref, onMounted, computed } from "vue";
-import UseData from "~/store/Data.js";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
 import cSwitcher from "~/components/Inputs/cSwitcher.vue";
 import cModal from "~/components/Misc/cModal.vue";
@@ -70,17 +78,20 @@ export default {
 			modal,
 			id,
 			exam,
+			requests,
+			requestDocuments,
 			markAsComplete,
-			markAsInComplete
+			markAsInComplete,
+			saveExam
 		} = useExamDetail();
 
 		const initForm = { "completed": false, "examId": id, "shared": false };
-		const requests = new UseData( "exam_requests" );
 		const isVisibleRequestModal = ref( false );
+		const isVisibleDeleteNoteModal = ref(false);
 		const switcherValue = ref( "all" );
 		const requestForm = ref( null );
-		const requestDocuments = ref([]);
 		const requestErrors = ref({});
+		const pendingReqTextDelete = ref({});
 
 		const requestModalConfig = computed( () => {
 			const editConfig = { "btn": "Save", "title": "Edit Request" };
@@ -183,6 +194,36 @@ export default {
 			});
 		};
 
+		const addTextEntry = (req) => {
+			if (req.text_entries) req.text_entries.push({"content": ""})
+			else req.text_entries = [{"content": ""}]
+		}
+
+		const removeTextEntry = (req, idx) => {
+			pendingReqTextDelete.value = { req, idx }
+			isVisibleDeleteNoteModal.value = true
+		}
+
+		const confirmDeleteReqTextEntry = async () => {
+			const req = pendingReqTextDelete.value.req
+			req.text_entries.splice(pendingReqTextDelete.value.idx, 1)
+			try {
+				await requests.updateDocument( req._id, req )
+				isVisibleDeleteNoteModal.value = false
+				notification({
+					"type": "success",
+					"title": "Success",
+					"message": "Note has been deleted."
+				});
+			} catch (err) {
+				notification({
+					"type": "error",
+					"title": "Error",
+					"message": "Note has not been deleted. Please try again."
+				});
+			}
+		}
+
 		onMounted( async () => {
 			await requests.readDocuments( null, { "examId": id });
 			requestDocuments.value = requests.getDocuments().value;
@@ -194,6 +235,7 @@ export default {
 			requestErrors,
 			requestFilters,
 			requestForm,
+			isVisibleDeleteNoteModal,
 			isVisibleRequestModal,
 			options,
 			switcherValue,
@@ -205,7 +247,11 @@ export default {
 			editRequest,
 			confirmDeleteRequest,
 			markAsComplete,
-			markAsInComplete
+			markAsInComplete,
+			addTextEntry,
+			removeTextEntry,
+			confirmDeleteReqTextEntry,
+			saveExam
 		};
 	}
 };
@@ -269,6 +315,15 @@ export default {
 					margin-left: 0.5em
 					font-size: 0.9em
 
+.text-entry
+	margin: 1em 0
+	display: flex
+	.textarea
+		padding-right: 1.5em
+	svg
+		width: 0.8em
+		cursor: pointer
+		margin-top: 1.5em
 .controls
 	display: flex
 	justify-content: space-between

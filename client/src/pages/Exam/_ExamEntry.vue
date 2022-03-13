@@ -4,6 +4,8 @@ page-container(section="Regulatory Exams" :title="exam.name" type="document")
 		c-button(title="Share Link" type="link" @click="openShareLinkModal()")
 		c-button(v-if="exam.completed" title="Mark as InComplete" @click="markAsInComplete()")
 		c-button(v-else title="Mark as Complete" @click="markAsComplete()")
+		c-button(title="Save and Exit" type="primary" @click="saveExam(true)")
+		icon.exit(name="close" @click="exitExamDetail()")
 	template(#tabs)
 		router-link(v-for="(tab, index) in tabs" :key="index" :to="{name: tab.routeName}") {{ $locale(tab.title)}}
 	template(#navigation-controls)
@@ -37,7 +39,6 @@ c-modal(title="Revoke Access" v-model="isVisibleRevokeAccess" @update:modelValue
 
 <script>
 import { ref, computed } from "vue";
-import { useRouter } from "vue-router";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
 import cCheckbox from "~/components/Inputs/cCheckbox.vue";
 import cModal from "~/components/Misc/cModal.vue";
@@ -74,10 +75,11 @@ export default {
 			exams,
 			exam,
 			markAsComplete,
-			markAsInComplete
+			markAsInComplete,
+			saveExam,
+			exitExamDetail
 		} = useExamDetail();
 
-		const router = useRouter();
 		const isVisibleInviteEmail = ref( false );
 		const isVisibleRevokeAccess = ref( false );
 		const indexRevokeEmail = ref( -1 );
@@ -94,8 +96,6 @@ export default {
 
 		const editExam = () => modal({ "name": "cModalExam", id, callBack });
 
-		const handleDeleteExamSuccess = () => router.push({ "name": "ExamsOverview" });
-
 		const handleDeleteExam = () => {
 			modal({
 				"name": "cModalDelete",
@@ -103,7 +103,7 @@ export default {
 				"title": "Exam",
 				"description": "Removing this exam will delete any progress and tasks associated with the file.",
 				"collection": "exams",
-				"callback": handleDeleteExamSuccess
+				"callback": exitExamDetail
 			});
 		};
 
@@ -195,7 +195,9 @@ export default {
 			editExam,
 			handleDeleteExam,
 			markAsComplete,
-			markAsInComplete
+			markAsInComplete,
+			exitExamDetail,
+			saveExam
 		};
 	}
 };
@@ -203,6 +205,9 @@ export default {
 
 
 <style lang="stylus" scoped>
+.exit
+	margin-top: 0.5em
+	cursor: pointer
 .description
 	font-size: 0.8em
 .confirm
