@@ -38,6 +38,11 @@ export default {
 			"default": "",
 			"required": true
 		},
+		"callback": {
+			"type": Function,
+			"default": () => 1,
+			"required": false
+		},
 		"title": {
 			"type": String,
 			"default": "",
@@ -51,11 +56,6 @@ export default {
 		"ownerId": {
 			"type": String,
 			"default": "",
-			"required": false
-		},
-		"callback": {
-			"type": Object,
-			"default": () => {},
 			"required": false
 		}
 	},
@@ -75,12 +75,12 @@ export default {
 		const deleteItem = async () => {
 			try {
 				await collection.deleteDocuments( props.id );
+				if ( props.callback ) props.callback( props.id );
 				notification({
 					"type": "success",
 					"title": "Success",
 					"message": `${props.title} has been deleted.`
 				});
-				if ( props.callback && props.callback.handleSuccess ) props.callback.handleSuccess( props.id );
 			} catch ( error ) {
 				console.error( error );
 				notification({

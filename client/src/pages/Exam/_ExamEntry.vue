@@ -103,7 +103,7 @@ export default {
 				"title": "Exam",
 				"description": "Removing this exam will delete any progress and tasks associated with the file.",
 				"collection": "exams",
-				"callback": { "handleSuccess": handleDeleteExamSuccess }
+				"callback": handleDeleteExamSuccess
 			});
 		};
 

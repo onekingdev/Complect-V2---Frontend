@@ -16,3 +16,21 @@ pdfprint:
         path: pdf
         method: post
         cors: true
+csvdownload:
+  name: ${opt:stage, 'dev'}-api--csvdownload
+  handler: src/functions/download.csvdownload
+  description: API endpoint for CSV download
+  memorySize: 2056
+  timeout: 60
+  tags:
+    website: Complect App
+    type: API
+    subtype: Data
+  layers:
+    - {Ref: BaseLibsLambdaLayer}
+    - {Ref: PdfLibsLambdaLayer}
+  events:
+    - http:
+        path: csv
+        method: post
+        cors: true

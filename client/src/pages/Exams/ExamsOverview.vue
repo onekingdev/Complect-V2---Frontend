@@ -7,10 +7,8 @@ c-table(v-bind="{columns, documents}")
 import { onMounted, onUnmounted, inject, ref } from "vue";
 import { appState } from "~/store/appState";
 import UseData from "~/store/Data.js";
-import cModalDelete from "~/components/Modals/cModalDelete.vue";
 
 export default {
-	"components": { cModalDelete },
 	setup () {
 		const modal = inject( "modal" );
 		const exams = new UseData( "exams" );
@@ -37,7 +35,7 @@ export default {
 				"title": "Exam",
 				"description": "Removing this exam will delete any progress and tasks associated with the file.",
 				"collection": "exams",
-				"callback": { "handleSuccess": handleDeleteExamSuccess }
+				"callback": handleDeleteExamSuccess
 			});
 		};
 

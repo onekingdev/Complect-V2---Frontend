@@ -3,7 +3,7 @@
 	.plan-card.card-style(v-for="(plan, index) in plans" :key="index" :class="[plan.key]")
 
 		template(v-if="modelValue === plan.key")
-			c-button(title="Current Plan" type="primary")
+			c-button(title="Current Plan" type="primary" @click="selectPlan(plan.key)")
 		template(v-else)
 			c-button(title="Select Plan" type="plan" @click="selectPlan(plan.key)")
 
