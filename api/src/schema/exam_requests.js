@@ -1,38 +1,34 @@
 module.exports = {
 	bsonType: "object",
-	required: ["_id", "business", "specialist"],
+	required: ["_id", "name", "examId"],
 	properties: {
 		_id: {
 			bsonType: "objectId",
 			description: "must be an ObjectId and is required"
 		},
-		business: {
+		name: {
 			bsonType: "string",
 			description: "must be a string and is required"
 		},
-		specialist: {
+		examId: {
 			bsonType: "string",
 			description: "must be a string and is required"
 		},
-		project: {
-			bsonType: "string",
-			description: "must be a string and is required"
+		completed: {
+			bsonType: "bool",
+			description: "must be a boolean"
 		},
-		job: {
-			bsonType: "string",
-			description: "must be a string and is required"
+		shared: {
+			bsonType: "bool",
+			description: "must be a boolean"
 		},
-		startsAt: {
+		createdAt: {
 			bsonType: "int",
 			description: "must be a number"
 		},
-		endsAt: {
+		modifiedAt: {
 			bsonType: "int",
 			description: "must be a number"
-		},
-		status: {
-			bsonType: "string",
-			description: "must be a string and is required"
 		}
 	}
 };

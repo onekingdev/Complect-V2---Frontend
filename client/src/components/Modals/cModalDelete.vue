@@ -52,6 +52,11 @@ export default {
 			"type": String,
 			"default": "",
 			"required": false
+		},
+		"callback": {
+			"type": Object,
+			"default": () => {},
+			"required": false
 		}
 	},
 	setup ( props ) {
@@ -75,6 +80,7 @@ export default {
 					"title": "Success",
 					"message": `${props.title} has been deleted.`
 				});
+				if ( props.callback && props.callback.handleSuccess ) props.callback.handleSuccess( props.id );
 			} catch ( error ) {
 				console.error( error );
 				notification({

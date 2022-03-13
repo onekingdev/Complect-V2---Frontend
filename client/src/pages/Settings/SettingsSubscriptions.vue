@@ -58,7 +58,7 @@ import useProfile from "~/store/Profile.js";
 import { manualApi } from "~/core/api.js";
 import { formatDate } from "~/core/utils";
 import useForm from "~/store/Form.js";
-// import { plans } from "~/data/plans.js";
+import { plans } from "~/data/plans.js";
 export default {
 	"components": { cSelect, cLabel, cBadge, cSwitcher, cPlans, cRadios },
 	// eslint-disable-next-line
@@ -200,7 +200,7 @@ export default {
 			gotoPlan,
 			formOptions,
 			form,
-			// plans,
+			plans,
 			userType,
 			billingPlan,
 			payments,

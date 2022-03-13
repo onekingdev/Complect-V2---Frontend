@@ -43,7 +43,6 @@ const plans = {
 			"users": [
 				"3 free users plus $120/year per person", "3 free users plus $15/mo per person"
 			],
-			"freeUsers": 3,
 			"benefits": [
 				"Compliance Calendar",
 				"Project Management",
@@ -62,7 +61,6 @@ const plans = {
 			"users": [
 				"10 free users plus $120/year per person", "10 free users plus $15/mo per person"
 			],
-			"freeUsers": 10,
 			"benefits": [
 				"Compliance Calendar",
 				"Project Management",

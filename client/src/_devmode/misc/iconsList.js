@@ -52,7 +52,8 @@ const icons = [
 	{ title: "Role (admin)", value: "role-admin", icon: "role-admin" },
 	{ title: "Role (trusted", value: "role-trusted", icon: "role-trusted" },
 	{ title: "Role (basic)", value: "role-basic", icon: "role-basic" },
-	{ title: "3 dots", value: "more", icon: "more" }
+	{ title: "3 dots", value: "more", icon: "more" },
+	{ title: "Mark", value: "mark", icon: "mark" }
 ]
 
 export { icons }
