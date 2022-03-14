@@ -257,7 +257,7 @@ class StripePayment {
 	}
 	async makeCharge ({ businessId, amount, description }) {
 		const { stripe_customer } = await this.getUserLinkData( businessId );
-		const charge = await stripe.charges.create({
+		const charge = await stripe.paymentIntents.create({
 			amount,
 			customer: stripe_customer,
 			description,
@@ -307,6 +307,16 @@ class StripePayment {
 			description: request.description
 		});
 		return invoice;
+	}
+	async getPayout ( businessId ) {
+		const { stripe_customer } = await this.getUserLinkData( businessId );
+		const paymentIntnets = await stripe.paymentIntents.list({ customer: stripe_customer });
+		return paymentIntnets;
+	}
+	async upcomingInvoice ( businessId ) {
+		const { stripe_customer } = await this.getUserLinkData( businessId );
+		const paymentIntnets = await stripe.invoices.retrieveUpcoming({ customer: stripe_customer });
+		return paymentIntnets;
 	}
 }
 

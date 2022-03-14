@@ -88,8 +88,8 @@ module.exports = {
 	randomNumber,
 	checkFields,
 	devStageLog,
-	formatDate,
 	generateHash,
 	compareHash,
-	randomName
+	randomName,
+	formatDate
 };
