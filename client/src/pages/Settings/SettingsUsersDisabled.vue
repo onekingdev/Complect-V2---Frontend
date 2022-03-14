@@ -1,5 +1,5 @@
 <template lang="pug">
-c-table(v-bind="{columns, documents: users}" searchable)
+c-table(v-bind="{columns, documents: disabledUsers}" searchable)
 	template(#actions)
 		settings-users-actions
 c-modal(title="Reactivate User" v-model="isReactiveUserVisible")
@@ -13,32 +13,24 @@ c-modal(title="Reactivate User" v-model="isReactiveUserVisible")
 
 
 <script>
-import { ref, onMounted, inject } from "vue";
-import UseData from "~/store/Data.js";
+import { ref, inject } from "vue";
 import teamMember from "~/core/teamMember.js";
 import SettingsUsersActions from "~/components/Helpers/SettingsUsersActions.vue";
 import cModal from "~/components/Misc/cModal.vue";
+import useTeamMember from "~/store/TeamMember.js";
 
 const COLLECTION_NAME = "team_members";
 export default {
 	"components": { SettingsUsersActions, cModal },
 	setup () {
-		const teamMembers = new UseData( COLLECTION_NAME );
-		const modal = inject( "modal" );
+		const {
+			modal,
+			disabledUsers,
+			getData
+		} = useTeamMember();
 		const notification = inject( "notification" );
-		const users = ref([]);
 		const isReactiveUserVisible = ref( false );
 		const enableUserId = ref( null );
-
-		const getData = async () => {
-			await teamMembers.readDocuments();
-			users.value = teamMembers.getDocuments().value.filter( item => item.disabled ).map( item => ({
-				"user": { "firstName": item.firstName, "lastName": item.lastName },
-				"reason": { "id": item._id, "disabledReason": item.disabledReason, "disabledReasonInfor": item.disabledReasonInfor },
-				"name": `${item.firstName} ${item.lastName} ${item.email}`,
-				...item
-			}) );
-		};
 
 		const callBack = { "handleSuccess": getData };
 
@@ -59,7 +51,7 @@ export default {
 
 		const { toggleDisable } = teamMember();
 		const reactiveUser = async () => {
-			const user = users.value.find( item => item._id === enableUserId.value );
+			const user = disabledUsers.value.find( item => item._id === enableUserId.value );
 			if ( !user ) return;
 
 			const form = {
@@ -129,11 +121,9 @@ export default {
 			}
 		];
 
-		onMounted( () => getData() );
-
 		return {
 			isReactiveUserVisible,
-			users,
+			disabledUsers,
 			columns,
 			reactiveUser
 		};
