@@ -18,7 +18,7 @@ export default {
 		const handleSuccess = updatedExam => {
 			const index = documents.value.findIndex( item => item._id === updatedExam._id );
 
-			documents.value[index] = { ...updatedExam, "status": item.completed ? "complete" : "inprogress" };
+			documents.value[index] = { ...updatedExam, "status": updatedExam.completed ? "complete" : "inprogress" };
 		};
 
 		const callBack = { handleSuccess };
