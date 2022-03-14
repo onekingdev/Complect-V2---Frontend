@@ -72,7 +72,7 @@ export default {
 		"searchable": Boolean,
 		"isdraggable": {
 			"type": Object,
-			"default": () => {}
+			"default": false
 		}
 	},
 	"emits": ["cellEvent"],

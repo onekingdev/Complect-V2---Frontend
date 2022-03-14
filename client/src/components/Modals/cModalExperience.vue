@@ -47,6 +47,10 @@ export default {
 			"type": String,
 			"default": "",
 			"required": false
+		},
+		"callback": {
+			"type": Function,
+			"default": () => 1
 		}
 	},
 	setup ( props ) {
@@ -83,6 +87,8 @@ export default {
 					"title": "Success",
 					"message": `Experience has been ${action}.`
 				});
+
+				if ( props.callback ) props.callback( form.value );
 
 				closeModal();
 			} catch ( error ) {
