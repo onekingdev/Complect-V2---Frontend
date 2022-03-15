@@ -1,28 +1,40 @@
 <template lang="pug">
-c-table(v-bind="{columns, documents: activeUsers}" searchable)
+c-table(v-bind="{columns, documents: users}" searchable)
 	template(#actions)
 		settings-users-actions(@update-user="getData")
 </template>
 
 
 <script>
+
+import { ref, onMounted, inject } from "vue";
+import UseData from "~/store/Data.js";
 import SettingsUsersActions from "~/components/Helpers/SettingsUsersActions.vue";
-import useTeamMember from "~/store/TeamMember.js";
 
 export default {
 	"components": { SettingsUsersActions },
 	setup () {
-		const {
-			modal,
-			activeUsers,
-			getData,
-			handleEditUser,
-			handleDisableUser
-		} = useTeamMember();
+		const modal = inject( "modal" );
+		const teamMembers = new UseData( "team_members" );
+		const users = ref([]);
 
+		const getData = async () => {
+			await teamMembers.readDocuments();
+			users.value = teamMembers.getDocuments().value.filter( item => !item.disabled ).map( item => ({
+				"user": { "firstName": item.firstName, "lastName": item.lastName, "email": item.email },
+				"name": `${item.firstName} ${item.lastName} ${item.email}`,
+				"status": item.userId ? "active" : "pending",
+				...item
+			}) );
+		};
+
+		const callBack = { "handleSuccess": getData };
+
+		const handleEditUser = id => modal({ "name": "cModalTeamMember", id, callBack });
+		const handleDisableUser = id => modal({ "name": "cModalTeamMember", id, "modalType": "disabled", callBack });
 		const handleReinvite = id => console.debug( id );
 		const checkShowReInvite = id => {
-			const user = activeUsers.value.find( item => item._id === id );
+			const user = users.value.find( item => item._id === id );
 			if ( !user ) return false;
 			return user.status === "pending";
 		};
@@ -67,8 +79,11 @@ export default {
 			}
 		];
 
+		onMounted( () => getData() );
+
 		return {
-			activeUsers,
+			"documents": teamMembers.getDocuments(),
+			users,
 			columns,
 			getData
 		};

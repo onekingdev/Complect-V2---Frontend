@@ -8,6 +8,7 @@ data:
     subtype: Data
   layers:
     - {Ref: BaseLibsLambdaLayer}
+    - {Ref: PaymentLibsLambdaLayer}
   events:
     - http:
         path: data/{collection}
@@ -40,7 +41,7 @@ data:
         cors: true
 updatePosition:
   name: ${opt:stage, 'dev'}-api--position
-  handler: src/function/data.updatePosition
+  handler: src/functions/data.updatePosition
   description: End Point for Update Policy Position
   tags:
     website: Complect App
@@ -48,8 +49,25 @@ updatePosition:
     subtype: Data
   layers:
     - {Ref: BaseLibsLambdaLayer}
+    - {Ref: PaymentLibsLambdaLayer}
   events:
     - http:
         path: reorder
+        method: post
+        cors: true
+financialReports:
+  name: ${opt:stage, 'dev'}-api--financial
+  handler: src/functions/data.financialReports
+  description: End Point for Financial Reports
+  tags:
+    website: Complect App
+    type: API
+    subtype: Data
+  layers:
+    - {Ref: BaseLibsLambdaLayer}
+    - {Ref: PaymentLibsLambdaLayer}
+  events:
+    - http:
+        path: report/financial
         method: post
         cors: true
