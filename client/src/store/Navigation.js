@@ -79,7 +79,7 @@ const sidebarDocumentsNavigation = [{
 			"view": "RecordsOverview"
 		}, {
 			"title": "Exam Management",
-			"view": "ReviewsOverview"
+			"view": "ExamsOverview"
 		}
 	]
 }];

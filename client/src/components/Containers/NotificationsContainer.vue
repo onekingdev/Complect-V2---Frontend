@@ -24,7 +24,7 @@ export default {
 .notifications-container
 	position: absolute
 	right: 0
-	z-index: 100
+	z-index: 1000000
 	padding: 0.5em
 	overflow: hidden
 	height: 100%

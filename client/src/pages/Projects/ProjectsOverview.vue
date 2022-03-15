@@ -29,12 +29,6 @@ export default {
 				"align": "right"
 			},
 			{
-				"title": "Cost",
-				"key": "fixedBudget",
-				"cell": "CellPrice",
-				"align": "right"
-			},
-			{
 				"title": "Status",
 				"key": "status",
 				"cell": "CellStatus",
@@ -52,6 +46,12 @@ export default {
 				"cell": "CellDate",
 				"align": "right",
 				"meta": { "overdueWarning": true }
+			},
+			{
+				"title": "Completetion Date",
+				"key": "completeAt",
+				"cell": "CellDate",
+				"align": "right"
 			}
 		];
 
