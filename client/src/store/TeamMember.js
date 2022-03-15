@@ -31,7 +31,7 @@ export default function useTeamMember () {
 
 	const terminateUsers = computed( () => disabledUsers.value.filter( item => item.disabledReason === "termination" ).map( formatUser ) );
 
-	const resignationUsers = computed( () => disabledUsers.value.filter( formatUser ) );
+	const resignationUsers = computed( () => disabledUsers.value.filter( item => item.disabledReason === "resignation" ).map( formatUser ) );
 
 	const usersCount = computed( () => ({
 		"Total": 2,
