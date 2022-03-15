@@ -18,6 +18,7 @@ import cModalExperience from "~/components/Modals/cModalExperience.vue";
 import cModalDelete from "~/components/Modals/cModalDelete.vue";
 import UseData from "~/store/Data.js";
 import { formatDate } from "~/core/utils.js";
+import useProfile from "~/store/Profile.js";
 
 export default {
 	"components": {
@@ -25,23 +26,37 @@ export default {
 		cModalDelete
 	},
 	setup () {
+		const { profile } = useProfile();
 		const modal = inject( "modal" );
 		const editExperienceId = ref( null );
 		const userExperiences = ref([]);
 
 		const userExperiencesData = new UseData( "user_experiences" );
 
-		const openExperienceModal = id => modal({ "name": "cModalExperience", id });
-		const editExperience = id => openExperienceModal( id );
 		const getExperienceData = async () => {
-			await userExperiencesData.readDocuments();
+			await userExperiencesData.readDocuments( null, { "userId": profile.value._id });
 			userExperiences.value = userExperiencesData.getDocuments().value;
+		};
+
+		const callbackModalExperience = experience => {
+			const index = userExperiences.value.findIndex( item => item._id === experience._id );
+			if ( index > -1 ) userExperiences.value[index] = experience;
+			else getExperienceData();
+		};
+
+		const openExperienceModal = id => modal({ "name": "cModalExperience", id, "callback": callbackModalExperience });
+		const editExperience = id => openExperienceModal( id );
+
+		const callbackDelete = id => {
+			const index = userExperiences.value.findIndex( item => item._id === id );
+			if ( index > -1 ) userExperiences.value.splice( index, 1 );
 		};
 
 		const confirmDeleteExperience = id => {
 			modal({
 				"name": "cModalDelete",
 				id,
+				"callback": callbackDelete,
 				"title": "Experience",
 				"description": "You are deleting a record of your work experience.",
 				"collection": "user_experiences"
