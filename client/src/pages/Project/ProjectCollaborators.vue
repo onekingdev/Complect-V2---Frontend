@@ -1,7 +1,7 @@
 <template lang="pug">
 card-container(title="Collaborators")
 	template(#controls)
-		c-button(title="New Collaborator" type="default" @click="toggleAddModal()")
+		c-button(title="Add Collaborator" type="default" @click="toggleAddModal()")
 	template(#content)
 		.ind-collaborator(v-for="collaborator in projectDetail?.collaborators")
 			c-avatar(:firstName="collaborator.firstName" :lastName="collaborator.lastName" :avatar="collaborator.avatar")
@@ -10,7 +10,7 @@ card-container(title="Collaborators")
 			.action
 				c-button(title="Delete" type="default" @click="toggleDeleteModal( collaborator._id )")
 				c-button(title="End Contract" type="default" @click="toggleEndModal( collaborator._id )")
-c-modal(title="New Collaborator" v-model="isAddModalVisible")
+c-modal(title="Add Collaborator" v-model="isAddModalVisible")
 	template(#content)
 		c-select(label="Select User" placeholder="Select..." :data="userData" v-model="newUser" searchable)
 	template(#footer)
