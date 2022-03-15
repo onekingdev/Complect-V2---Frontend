@@ -11,44 +11,27 @@ const users = ref([]);
 const isReactiveUserVisible = ref( false );
 const enableUserId = ref( null );
 
+const formatUser = item => ({
+	"user": { "firstName": item.firstName, "lastName": item.lastName, "email": item.email },
+	"name": `${item.firstName} ${item.lastName} ${item.email}`,
+	"reason": { "id": item._id, "disabledReason": item.disabledReason, "disabledReasonInfor": item.disabledReasonInfor },
+	"status": item.userId ? "active" : "pending",
+	...item
+});
+
 export default function useTeamMember () {
 	const notification = inject( "notification" );
 	const modal = inject( "modal" );
 
-	const activeUsers = computed( () => users.value.filter( item => !item.disabled ).map( item => ({
-		"user": { "firstName": item.firstName, "lastName": item.lastName, "email": item.email },
-		"name": `${item.firstName} ${item.lastName} ${item.email}`,
-		"status": item.userId ? "active" : "pending",
-		...item
-	}) ) );
+	const activeUsers = computed( () => users.value.filter( item => !item.disabled ).map( formatUser ) );
 
-	const disabledUsers = computed( () => users.value.filter( item => item.disabled ).map( item => ({
-		"user": { "firstName": item.firstName, "lastName": item.lastName },
-		"reason": { "id": item._id, "disabledReason": item.disabledReason, "disabledReasonInfor": item.disabledReasonInfor },
-		"name": `${item.firstName} ${item.lastName} ${item.email}`,
-		...item
-	}) ) );
+	const disabledUsers = computed( () => users.value.filter( item => item.disabled ).map( formatUser ) );
 
-	const accessUsers = computed( () => activeUsers.value.filter( item => item.accessPerson ).map( item => ({
-		"user": { "firstName": item.firstName, "lastName": item.lastName, "email": item.email },
-		"name": `${item.firstName} ${item.lastName} ${item.email}`,
-		"status": item.userId ? "active" : "pending",
-		...item
-	}) ) );
+	const accessUsers = computed( () => activeUsers.value.filter( item => item.accessPerson ).map( formatUser ) );
 
-	const terminateUsers = computed( () => disabledUsers.value.filter( item => item.disabledReason === "termination" ).map( item => ({
-		"user": { "firstName": item.firstName, "lastName": item.lastName, "email": item.email },
-		"name": `${item.firstName} ${item.lastName} ${item.email}`,
-		"status": item.userId ? "active" : "pending",
-		...item
-	}) ) );
+	const terminateUsers = computed( () => disabledUsers.value.filter( item => item.disabledReason === "termination" ).map( formatUser ) );
 
-	const resignationUsers = computed( () => disabledUsers.value.filter( item => item.disabledReason === "resignation" ).map( item => ({
-		"user": { "firstName": item.firstName, "lastName": item.lastName, "email": item.email },
-		"name": `${item.firstName} ${item.lastName} ${item.email}`,
-		"status": item.userId ? "active" : "pending",
-		...item
-	}) ) );
+	const resignationUsers = computed( () => disabledUsers.value.filter( formatUser ) );
 
 	const usersCount = computed( () => ({
 		"Total": 2,
