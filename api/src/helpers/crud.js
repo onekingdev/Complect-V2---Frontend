@@ -59,7 +59,6 @@ const deleteDocuments = async ({ collection, _id, query }) => {
 	}
 };
 
-
 module.exports = {
 	createDocuments,
 	readDocuments,

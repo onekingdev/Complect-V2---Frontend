@@ -5,7 +5,7 @@ card-container(title="Billing")
 			div.grid-6.sub-header
 				h4.col-3 Payment Method
 				div.col-2
-				c-button.col-1.buttons(title="Add Payment" type="primary" @click="toggleNewMethod()")
+				c-button.col-1.buttons(title="New Method" type="primary" @click="toggleNewMethod()")
 			div.payment-content.grid-6(v-for="(payment, index) in payments")
 				div.col-1.icon-content
 					icon(name="number" size="huge")
@@ -20,7 +20,7 @@ card-container(title="Billing")
 			div.grid-6.sub-header
 				h4.col-3 Clinet Billing
 				div.col-2
-				c-button.col-1.buttons(title="Add Bank Account" type="primary" @click="clientBilling()")
+				c-button.col-1.buttons(title="Add Method" type="primary" @click="clientBilling()")
 			template(v-if="linkaccount.account")
 				div.payment-content.grid-6(v-for="(account, index) in linkaccount.account")
 					div.col-1.icon-content
@@ -34,7 +34,7 @@ card-container(title="Billing")
 			div.grid-6.sub-header
 				h4.col-3 Payment Method
 				div.col-2
-				c-button.col-1.buttons(title="Add Payment" type="primary" @click="toggleNewMethod()")
+				c-button.col-1.buttons(title="New Method" type="primary" @click="toggleNewMethod()")
 			div.payment-content.grid-6(v-for="(payment, index) in payments")
 				div.col-1.icon-content
 					icon(name="number" size="huge")
@@ -101,13 +101,13 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Payment method has been made the primary payment source."
+					"message": "Set Primary Method is successful."
 				});
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Payment method has not been made the primary payment source. Please try again."
+					"message": "Set Primary Method is failed. Please try again."
 				});
 			}
 		};
@@ -132,7 +132,7 @@ export default {
 					notification({
 						"type": "success",
 						"title": "Success",
-						"message": "New payment method has been added."
+						"message": "New Payment Method has been added successfully."
 					});
 					isNewMethodVisible.value = !isNewMethodVisible.value;
 					await getPayments();
@@ -140,7 +140,7 @@ export default {
 					notification({
 						"type": "error",
 						"title": "Error",
-						"message": "New payment method has not been added. Please try again."
+						"message": "New Payment Method has not been added. Please try again."
 					});
 				}
 			});

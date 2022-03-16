@@ -13,7 +13,7 @@ card-container
 						c-button(title="Back" @click="goBack()")
 						header
 							.title Time to power up
-							.intro Review and confirm your subscription
+							.intro Review and confirm your subsctiption
 						section
 							.title Plan
 							.content
@@ -58,7 +58,7 @@ card-container
 <script>
 import { ref, inject, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 import cSelect from "~/components/Inputs/cSelect.vue";
 import cRadios from "~/components/Inputs/cRadios.vue";
 import cLabel from "~/components/Misc/cLabel.vue";
@@ -77,7 +77,7 @@ export default {
 		const notification = inject( "notification" );
 		const router = useRouter();
 		const { profile, linkaccount } = useProfile();
-		const { document, readDocuments, documents } = useData( "plans" );
+		const planCollection = new UseData( "plans" );
 		const tokenCreated = token => console.debug( token );
 		const addPayment = () => console.debug( "test" );
 		const elementRef = ref();
@@ -155,14 +155,14 @@ export default {
 			if ( userType === "business" ) {
 				const keywordMethod = form.value.annually ? "yearly" : "monthly";
 				const keywordTitle = `${form.value.plan} Plan`;
-				const findplan = documents.value.find( indplan => indplan.method === keywordMethod && indplan.title.toLowerCase() === keywordTitle.toLowerCase() );
+				const findplan = planCollection.getDocuments().value.find( indplan => indplan.method === keywordMethod && indplan.title.toLowerCase() === keywordTitle.toLowerCase() );
 				plan.value.name = findplan.title;
 				plan.value.price = findplan.perPrice;
 				plan.value.annually = form.value.annually;
 				plan.value._id = findplan._id;
 			} else {
 				const keywordMethod = form.value.annually ? "yearly" : "all";
-				const findplan = documents.value.find( indplan => indplan.method === keywordMethod );
+				const findplan = planCollection.getDocuments().value.find( indplan => indplan.method === keywordMethod );
 				plan.value.name = findplan.title;
 				plan.value.price = findplan.perPrice;
 				plan.value.annually = form.value.annually;
@@ -184,14 +184,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Subscription has been upgraded."
+					"message": "Plan has been upgraded successfully."
 				});
 				router.push({ "name": "Dashboard" });
 			} catch ( erorr ) {
 				notification({
 					"type": "Error",
 					"title": "Error",
-					"message": "Subscription has not been upgraded. Please try again."
+					"message": "Plan has not been upgraded successfully. Please try again."
 				});
 			}
 		};
@@ -209,21 +209,21 @@ export default {
 				notification({
 					"type": "Error",
 					"title": "Error",
-					"message": "Invalid promo code. Please try again."
+					"message": "You have inputted wrong promo code. Please try again."
 				});
 			}
 		};
 		onMounted( () => {
 			console.debug( linkaccount.value );
 			if ( linkaccount.value?.currentPlan?.planId )	{
-				readDocuments( linkaccount.value.currentPlan.planId );
+				planCollection.readDocuments( linkaccount.value.currentPlan.planId );
 				getSubscription( linkaccount.value._id );
 			}
-			readDocuments();
+			planCollection.readDocuments();
 			getPayments();
 		});
 		return {
-			document,
+			"document": planCollection.getDocument(),
 			tokenCreated,
 			addPayment,
 			elementRef,

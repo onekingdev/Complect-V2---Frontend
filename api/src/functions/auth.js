@@ -1,7 +1,7 @@
 "use strict";
 
 const { createDocuments, readDocuments, updateDocument, deleteDocuments } = require( "../helpers/crud" );
-const { response, randomNumber, checkFields, devStageLog } = require( "../helpers/utils" );
+const { response, randomNumber, checkFields, devStageLog, generateHash, compareHash } = require( "../helpers/utils" );
 const codes = require( "../helpers/codes" );
 const { sendEmail } = require( "../modules/sendEmail" );
 
@@ -21,12 +21,12 @@ const generateOtp = async email => {
 		documents: { otp },
 		options: { upsert: true }
 	});
-	await sendEmail({
-		template: "otp",
-		email,
-		subject: "OTP",
-		data: { otp }
-	});
+	// await sendEmail({
+	// 	template: "otp",
+	// 	email,
+	// 	subject: "OTP",
+	// 	data: { otp }
+	// });
 	devStageLog( `OTP is: ${otp}` ); // print otp number to console at dev stage
 };
 
@@ -53,11 +53,11 @@ const emailChangeAuthInfor = async ( type, email ) => {
 	});
 };
 
-// const checkPassword = async ( plain, hash ) => {
-// 	const match = await compareHash( plain, hash );
-// 	if ( !match ) throw { internalCode: 40503 };
-// 	return true;
-// };
+const checkPassword = async ( plain, hash ) => {
+	const match = await compareHash( plain, hash );
+	if ( !match ) throw { internalCode: 40503 };
+	return true;
+};
 
 
 exports.signUp = async event => {
@@ -65,7 +65,7 @@ exports.signUp = async event => {
 		const profile = await JSON.parse( event.body ); // parse request data
 		if ( !checkFields( profile, ["type", "firstName", "lastName", "email", "password"]) ) throw { internalCode: 10500 }; // check fields
 		if ( await emailInUse( profile.email ) ) throw { internalCode: 40504 };
-		// profile.password = await generateHash( profile.password );
+		profile.password = await generateHash( profile.password );
 		// if(profile.invite) {
 		// 	const invitesCollection = await getCollection( "invites" ); // get invites Collection from DB
 		// 	const invite = await invitesCollection.findOne({ "invite": profile.invite }); // find invite
@@ -104,8 +104,8 @@ exports.signIn = async event => {
 		});
 		if ( !document.length ) throw { internalCode: 40502 }; // check if user exist
 		const profile = document[0];
-		if ( request.password !== profile.password ) throw { internalCode: 40503 };
-		// await checkPassword( request.password, profile.password ); // compare passwords
+		// if ( request.password !== profile.password ) throw { internalCode: 40503 };
+		await checkPassword( request.password, profile.password ); // compare passwords
 		await generateOtp( request.email );
 		return response({ httpCode: 200 });
 	} catch ( error ) {

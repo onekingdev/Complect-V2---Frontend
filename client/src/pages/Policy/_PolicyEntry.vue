@@ -4,14 +4,14 @@ menu-container(:type="menuType")
 		c-button(title="New Policy" type="primary" @click="toggleNewPolicy()")
 		c-modal(title="New Policy" v-model="isNewPolicyVisible")
 			template(#content)
-				c-field(label="Policy Name" v-model="newPolicy.title" required)
+				c-field(label="Policy Name" v-model="newPolicy.name" required)
 			template(#footer)
 				c-button(title="Create" type="primary" @click="createPolicy()")
 		draggable.policies-list(:list="documents")
 			p.ind-policy(v-for="(indDoc, index) in documents" :key="indDoc._id")
-				router-link(:to=" {name: 'PolicyDetail', params: { id: indDoc._id } } ") {{indDoc.title}}
+				router-link(:to=" {name: 'PolicyDetail', params: { id: indDoc._id } } ") {{indDoc.name}}
 	template(#content)
-		page-container(:badge="{title: policyDetails.status }" :title="policyDetails.title" type="document full-width" :hasHamberger="hasHamberger")
+		page-container(:badge="{title: policyDetails.status }" :title="policyDetails.name" type="document full-width" :hasHamberger="hasHamberger")
 			template(#controls)
 				// c-button(title="Save Draft" type="link" @click="saveDraft()" v-if="policyDetails.status != 'archived' && profile.role != 'Basic'")
 				// c-button(title="Download" @click="exportPDF()"  v-if="policyDetails.status != 'archived' && profile.role != 'Basic'")
@@ -26,12 +26,12 @@ menu-container(:type="menuType")
 					c-button(title="Archive" type="transparent" @click="toggleArchivePolicy()")
 					c-button-modal(title="Delete" type="transparent"  modalTitle="Delete Policy")
 						template(#content)
-							.col-1
-								icon(name="error" size="huge")
-							.col-5
-								p Removing this policy will permanently delete all risks and tasks associated with this policy.
-								p
-									b Do you want to continue?
+							.delete-container
+								div
+									icon(name="error" size="big")
+								.description
+									p Removing this policy will permanently delete all risks and tasks associated with this policy.
+									p.confirm Do you want to continue?
 						template(#footer)
 							c-button(title="Confirm" type="primary" @click="deletePolicy()")
 			template(#tabs  v-if="policyDetails.status == 'archived'")
@@ -40,54 +40,54 @@ menu-container(:type="menuType")
 					c-button(title="Unarchive" type="transparent"  @click="toggleUnarchivePolicy()")
 					c-button-modal(title="Delete" type="transparent"  modalTitle="Delete Policy")
 						template(#content)
-							.col-1
-								icon(name="error" size="huge")
-							.col-5
-								p Removing this policy will permanently delete all risks and tasks associated with this policy.
-								p
-									b Do you want to continue?
+							.delete-container
+								div
+									icon(name="error" size="big")
+								.description
+									p Removing this policy will permanently delete all risks and tasks associated with this policy.
+									p.confirm Do you want to continue?
 						template(#footer)
 							c-button(title="Confirm" type="primary" @click="deletePolicy()")
 			template(#content)
 				router-view(v-model:policyDetails="policyDetails")
 c-modal(title="Unsaved Change" v-model="isUnsavedVisible")
 	template(#content)
-		.col-1
-			icon(name="warning" size="huge")
-		.col-5
-			p You have unsaved changes. Exiting without saving will clear all unsaved information.
-			p
-				b Do you want to continue?
+		.delete-container
+			div
+				icon(name="warning" size="big")
+			.description
+				p You have unsaved changes. Exiting without saving will clear all unsaved information.
+				p.confirm Do you want to continue?
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="toPoliciePage()")
 c-modal(title="Publish Policy" v-model="isPublishVisible")
 	template(#content)
-		.col-1
-			icon(name="success" size="huge")
-		.col-5
-			p You are publishing a policy which will make it viewable to all users. It will also be included in an official version of the compliance manual.
-			p
-				b Do you want to continue?
+		.delete-container
+			div
+				icon(name="success" size="big")
+			.description
+				p You are publishing a policy which will make it viewable to all users. It will also be included in an official version of the compliance manual.
+				p.confirm Do you want to continue?
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="publishPolicy()")
 c-modal(title="Archive Policy" v-model="isArchiveVisible")
 	template(#content)
-		.col-1
-			icon(name="warning" size="huge")
-		.col-5
-			p Archiving the policy will remove it from the published compliance manual, but maintain a record of the policy and all of its linked risks and tasks.
-			p
-				b Do you want to continue?
+		.delete-container
+			div
+				icon(name="warning" size="big")
+			.description
+				p Archiving the policy will remove it from the published compliance manual, but maintain a record of the policy and all of its linked risks and tasks.
+				p.confirm Do you want to continue?
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="archivePolicy()")
 c-modal(title="Unarchive Policy" v-model="isUnarchiveVisible")
 	template(#content)
-		.col-1
-			icon(name="warning" size="huge")
-		.col-5
-			p Unarchiving the policy will place it back into the compliance manual.
-			p
-				b Do you want to continue?
+		.delete-container
+			div
+				icon(name="warning" size="big")
+			.description
+				p Unarchiving the policy will place it back into the compliance manual.
+				p.confirm Do you want to continue?
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="unarchivePolicy()")
 </template>
@@ -157,22 +157,22 @@ export default {
 			}
 		];
 		const toPoliciePage = () => router.push({ "name": "Policies" });
-		const policyDetails = computed( () => policies.document.value );
-		const policiesDetails = computed( () => policies.documents.value.filter( document => document.status !== "archived" ) );
-		const publishPolicies = computed( () => policies.documents.value.filter( document => document.status === "published" ) );
+		const policyDetails = computed( () => policies.getDocument().value );
+		const policiesDetails = computed( () => policies.getDocuments().value.filter( document => document.status !== "archived" ) );
+		const publishPolicies = computed( () => policies.getDocuments().value.filter( document => document.status === "published" ) );
 		const toggleNewPolicy = () => isNewPolicyVisible.value = !isNewPolicyVisible.value;
 		const togglePublishPolicy = () => isPublishVisible.value = !isPublishVisible.value;
 		const toggleArchivePolicy = () => isArchiveVisible.value = !isPublishVisible.value;
 		const toggleUnarchivePolicy = () => isUnarchiveVisible.value = !isPublishVisible.value;
 
 		const closePolicy = () => {
-			const originValue = policies.documents.value.filter( document => document._id === policyDetails.value._id )[0];
-			if ( originValue.title !== policies.getDocument().value.title || originValue.description !== policies.getDocument().value.description ) isUnsavedVisible.value = !isUnsavedVisible.value;
+			const originValue = policies.getDocuments().value.filter( document => document._id === policyDetails.value._id )[0];
+			if ( originValue.name !== policies.getDocument().value.name || originValue.description !== policies.getDocument().value.description ) isUnsavedVisible.value = !isUnsavedVisible.value;
 			else toPoliciePage();
 		};
 		const publishPolicy = async () => {
 			try {
-				const policyId = policies.document.value._id;
+				const policyId = policies.getDocument().value._id;
 				let history;
 				history = policyDetails.value.history;
 				policyDetails.value.status = "published";
@@ -181,10 +181,10 @@ export default {
 					"version": `Version ${history.length + 1}`,
 					"publishedBy": `Published By ${profile._value.firstName} ${profile._value.lastName}`,
 					"lastUpdated": Date.now(),
-					"title": policyDetails.value.title,
+					"name": policyDetails.value.name,
 					"description": policyDetails.value.description
 				});
-				await policies.updateDocument( policyId, { "status": "published", "name": policyDetails.value.title, "description": policyDetails.value.description, history });
+				await policies.updateDocument( policyId, { "status": "published", "name": policyDetails.value.name, "description": policyDetails.value.description, history });
 				notification({
 					"type": "success",
 					"title": "Success",
@@ -201,7 +201,7 @@ export default {
 		};
 		const archivePolicy = async () => {
 			try {
-				const policyId = policies.document.value._id;
+				const policyId = policies.getDocument().value._id;
 				await policies.updateDocument( policyId, { "status": "archived", "tasks": [] });
 				notification({
 					"type": "success",
@@ -219,7 +219,7 @@ export default {
 		};
 		const unarchivePolicy = async () => {
 			try {
-				const policyId = policies.document.value._id;
+				const policyId = policies.getDocument().value._id;
 				await policies.updateDocument( policyId, { "status": "published" });
 				notification({
 					"type": "success",
@@ -236,15 +236,15 @@ export default {
 			}
 		};
 		const deletePolicy = async () => {
-			const policyId = policies.document.value._id;
+			const policyId = policies.getDocument().value._id;
 			await policies.deleteDocuments( policyId );
 			toPoliciePage();
 		};
 		const saveDraft = async () => {
 			try {
-				const policyId = policies.document.value._id;
+				const policyId = policies.getDocument().value._id;
 				policyDetails.value.status = "draft";
-				await policies.updateDocument( policyId, { "status": "draft", "title": policyDetails.value.title, "description": policyDetails.value.description });
+				await policies.updateDocument( policyId, { "status": "draft", "name": policyDetails.value.name, "description": policyDetails.value.description });
 				notification({
 					"type": "success",
 					"title": "Success",
@@ -259,7 +259,7 @@ export default {
 			}
 		};
 		const newPolicy = ref({
-			"title": "",
+			"name": "",
 			"createdAt": Date.now(),
 			"modifiedAt": Date.now(),
 			"status": "draft",
@@ -291,7 +291,7 @@ export default {
 			}
 		};
 		const exportPDF = async () => {
-			const policyId = policies.document.value._id;
+			const policyId = policies.getDocument().value._id;
 			const pdfData = {
 				"collection": "policies",
 				"template": "manualTemplate",
@@ -318,7 +318,6 @@ export default {
 		return {
 			tabs,
 			archivetabs,
-			document,
 			documents,
 			newPolicy,
 			closePolicy,
@@ -369,4 +368,12 @@ export default {
 			border: 1px solid #ddd
 			border-radius: 5px
 			margin-bottom: 5px
+.delete-container
+	display: flex
+	gap: 1.25em
+	.description
+		font-size: 0.875em
+		.confirm
+			padding-top: 0.625em
+			font-weight: bold
 </style>

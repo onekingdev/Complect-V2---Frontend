@@ -36,7 +36,7 @@ export default {
 		const columns = [
 			{
 				"title": "Name",
-				"key": "title",
+				"key": "name",
 				"cell": "CellTitle",
 				"width": "50%",
 				"meta": { "link": "RiskDetail" }
@@ -71,7 +71,7 @@ export default {
 		const archivecolumns = [
 			{
 				"title": "Name",
-				"key": "title",
+				"key": "name",
 				"cell": "CellTitle",
 				"meta": { "link": "RiskDetail" }
 			}, {
@@ -92,7 +92,7 @@ export default {
 		];
 
 		const newTask = ref({
-			"title": "",
+			"name": "",
 			"linkto": "",
 			"assigned": "",
 			"startAt": Date.now(),

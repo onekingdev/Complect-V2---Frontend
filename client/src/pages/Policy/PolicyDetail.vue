@@ -1,12 +1,12 @@
 <template lang="pug">
 card-container(title="Policy Details")
 	template(#content v-if="policyDetail.status != 'archived'")
-		c-field( label="Name" placeholder="Name" size="small" v-model="policyDetail.title")
+		c-field( label="Name" placeholder="Name" size="small" v-model="policyDetail.name")
 		label
 			.field-label Description
 			Editor.field-body(v-model="policyDetail.description" :init="{ height: 500, plugins: [ 'advlist autoresize autolink lists link image charmap print preview anchor' ], toolbar: 'bullist numlist outdent indent | removeformat | help'}")
 	template(#content v-else)
-		c-field( label="Name" placeholder="Name" size="small" v-model="policyDetail.title" disabled)
+		c-field( label="Name" placeholder="Name" size="small" v-model="policyDetail.name" disabled)
 		label
 			.field-label Description
 			div(v-html="policyDetail.description")

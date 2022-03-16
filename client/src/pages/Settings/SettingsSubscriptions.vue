@@ -18,13 +18,13 @@ card-container(title="Subscription")
 				p Next payment date {{ formatDate(linkaccount.currentPlan.subscriptionEndAt * 1000) }}
 c-modal(title="Cancel Plan" v-model="isCancelVisible")
 	template(#content)
-		.col-1
-			icon(name="error" size="huge")
-		.col-5
-			p You are canceling your subscription to Complect. This will terminate your access to our full suite of features on {{ formatDate(linkaccount.currentPlan.subscriptionEndAt * 1000) }} when your subscription ends.
-			p If you have more than 1GB of stored data, this will cause your account to be locked until you upgrade to a paid plan.
-			p
-				b Do you want to continue?
+		.delete-container
+			div
+				icon(name="error" size="big")
+			.description
+				p You are canceling your subscription to Complect. This will terminate your access to our full suite of features on {{ formatDate(linkaccount.currentPlan.subscriptionEndAt * 1000) }} when your subscription ends.
+				p If you have more than 1GB of stored data or users, this will cause your account to be locked until you upgrade to a paid plan.
+				p.confirm Do you want to continue?
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="cancelPlan()")
 c-modal(title="Edit Plan" v-model="isEditPlanVisible" wide)
@@ -47,7 +47,7 @@ c-modal(title="Edit Plan" v-model="isEditPlanVisible" wide)
 <script>
 import { ref, inject, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
 import cSelect from "~/components/Inputs/cSelect.vue";
 import cRadios from "~/components/Inputs/cRadios.vue";
 import cLabel from "~/components/Misc/cLabel.vue";
@@ -58,7 +58,7 @@ import useProfile from "~/store/Profile.js";
 import { manualApi } from "~/core/api.js";
 import { formatDate } from "~/core/utils";
 import useForm from "~/store/Form.js";
-import { plans } from "~/data/plans.js";
+// import { plans } from "~/data/plans.js";
 export default {
 	"components": { cSelect, cLabel, cBadge, cSwitcher, cPlans, cRadios },
 	// eslint-disable-next-line
@@ -66,7 +66,7 @@ export default {
 		const { profile, linkaccount } = useProfile();
 		const notification = inject( "notification" );
 		const router = useRouter();
-		const { document, readDocuments, documents } = useData( "plans" );
+		const planCollection = new UseData( "plans" );
 		const tokenCreated = token => console.debug( token );
 		const addPayment = () => console.debug( "test" );
 		const elementRef = ref();
@@ -136,7 +136,7 @@ export default {
 		const gotoPlan = () => router.push({ "name": "BillingPlan" });
 		const saveUsers = async () => {
 			try {
-				const planId = documents.value.find( doc => doc.amount === billingPlan.value );
+				const planId = planCollection.getDocuments().value.find( doc => doc.amount === billingPlan.value );
 				await manualApi({
 					"method": "post",
 					"url": `payment/subscription/${userType === "business" ? profile.value.businessId : profile.value.specialistId}`,
@@ -149,13 +149,13 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Seat(s) has been added."
+					"message": "Seats are sucessfully added"
 				});
 			} catch ( error ) {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Seat(s) has not been added. Please try again."
+					"message": "Seats has not been added. Please try again."
 				});
 			}
 		};
@@ -169,7 +169,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Subscription has been cancelled."
+					"message": "Subscription successfully cancelled."
 				});
 			} catch ( error ) {
 				notification({
@@ -182,14 +182,14 @@ export default {
 		onMounted( () => {
 			console.debug( linkaccount.value );
 			if ( linkaccount.value?.currentPlan?.planId )	{
-				readDocuments( linkaccount.value.currentPlan.planId );
+				planCollection.readDocuments( linkaccount.value.currentPlan.planId );
 				getSubscription( linkaccount.value._id );
 			}
-			readDocuments();
+			planCollection.readDocuments();
 			getPayments();
 		});
 		return {
-			document,
+			"document": planCollection.getDocument(),
 			tokenCreated,
 			addPayment,
 			elementRef,
@@ -200,7 +200,7 @@ export default {
 			gotoPlan,
 			formOptions,
 			form,
-			plans,
+			// plans,
 			userType,
 			billingPlan,
 			payments,
@@ -243,4 +243,12 @@ export default {
 		margin-bottom: 0.7em
 .plan-content.plan-hide
 	display: none
+.delete-container
+	display: flex
+	gap: 1.25em
+	.description
+		font-size: 0.875em
+		.confirm
+			padding-top: 0.625em
+			font-weight: bold
 </style>

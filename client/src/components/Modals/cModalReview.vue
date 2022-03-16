@@ -5,7 +5,7 @@ card-container.c-modal-review(:title="title" ref="modalWindow")
 	template(#content)
 		.grid-6
 			c-select(v-if="isNewReview && items.length" label="Template" v-model="selectedId" :data="items")
-			c-field(label="Review Name" v-model="form.title" required)
+			c-field(label="Review Name" v-model="form.name" required)
 			c-field.col-3(label="Review Period Start Date" type="date" v-model="form.startsAt" required)
 			c-field.col-3(label="Review Period End Date" type="date" v-model="form.endsAt" required)
 	template(#footer)
@@ -45,7 +45,7 @@ export default {
 		const selectedId = ref( null );
 		const items = ref([]);
 		const form = ref({
-			"title": "",
+			"name": "",
 			"dateCreated": Date.now(),
 			"lastModified": Date.now(),
 			"startsAt": Date.now(),
@@ -63,6 +63,7 @@ export default {
 				"max": 0
 			}
 		});
+
 		const isNewReview = computed( () => !props.id );
 		const title = computed( () => props.id ? "Edit Internal Review" : "New Internal Review" );
 		const btnTitle = computed( () => props.id ? "Save" : "Create" );

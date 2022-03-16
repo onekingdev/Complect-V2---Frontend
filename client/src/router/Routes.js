@@ -78,6 +78,15 @@ const _ExpertListEntry = () => import( "~/pages/Expert/_ExpertListEntry.vue" );
 const ExpertDetail = () => import( "~/pages/Expert/ExpertDetail.vue" );
 
 
+// records
+const _RecordsEntry = () => import( "~/pages/Records/_RecordsEntry.vue" );
+const RecordsOverview = () => import( "~/pages/Records/RecordsOverview.vue" );
+
+// organization
+const _OrganizationEntry = () => import( "~/pages/Organization/_OrganizationEntry.vue" );
+const OrganizationOverview = () => import( "~/pages/Organization/OrganizationOverview.vue" );
+
+
 // settings
 const _SettingsEntry = () => import( "~/pages/Settings/_SettingsEntry.vue" );
 const SettingsGeneral = () => import( "~/pages/Settings/SettingsGeneral.vue" );
@@ -101,6 +110,14 @@ const ReportEntry = () => import( "~/pages/Reports/ReportEntry.vue" );
 const ReportOrganizations = () => import( "~/pages/Reports/ReportOrganizations.vue" );
 const ReportRisks = () => import( "~/pages/Reports/ReportRisks.vue" );
 const ReportFinancials = () => import( "~/pages/Reports/ReportFinancials.vue" );
+
+// exams
+const _ExamsEntry = () => import( "~/pages/Exams/_ExamsEntry.vue" );
+const ExamsOverview = () => import( "~/pages/Exams/ExamsOverview.vue" );
+const _ExamEntry = () => import( "~/pages/Exam/_ExamEntry.vue" );
+const ExamDetail = () => import( "~/pages/Exam/ExamDetail.vue" );
+const ExamDetailDocuments = () => import( "~/pages/Exam/ExamDetailDocuments.vue" );
+const ExamDetailTasks = () => import( "~/pages/Exam/ExamDetailTasks.vue" );
 
 import { devRoutes } from "~/_devmode/Routes.js";
 
@@ -275,6 +292,42 @@ const routes = [
 						]
 					},
 					{
+						"path": "exam_management",
+						"component": _ExamsEntry,
+						"children": [{
+							"path": "",
+							"name": "ExamsOverview",
+							"component": ExamsOverview,
+							"meta": { "title": "Exam Overview", "tab": "Documents" }
+						}]
+					},
+					{
+						"path": "exam_management/:id",
+						"component": _ExamEntry,
+						"meta": {
+							"title": "Exam Detail",
+							"sidebar": false
+						},
+						"children": [
+							{
+								"path": "",
+								"name": "ExamDetail",
+								"component": ExamDetail,
+								"meta": { "title": "ExamDetail" }
+							}, {
+								"path": "tasks",
+								"name": "ExamDetailTasks",
+								"component": ExamDetailTasks,
+								"meta": { "title": "ExamDetailTasks" }
+							}, {
+								"path": "documents",
+								"name": "ExamDetailDocuments",
+								"component": ExamDetailDocuments,
+								"meta": { "title": "ExamDetailDocuments" }
+							}
+						]
+					},
+					{
 						"path": "internal_reviews",
 						"component": _ReviewsEntry,
 						"children": [{
@@ -342,6 +395,26 @@ const routes = [
 						}]
 					},
 					{
+						"path": "records",
+						"component": _RecordsEntry,
+						"children": [{
+							"path": "",
+							"name": "RecordsOverview",
+							"component": RecordsOverview,
+							"meta": { "title": "Records", "tab": "Documents" }
+						}]
+					},
+					{
+						"path": "organization",
+						"component": _OrganizationEntry,
+						"children": [{
+							"path": "",
+							"name": "OrganizationOverview",
+							"component": OrganizationOverview,
+							"meta": { "title": "Organization", "tab": "Reports" }
+						}]
+					},
+					{
 						"path": "job_board",
 						"name": "JobBoard",
 						"component": _JobBoardEntry,
@@ -401,6 +474,7 @@ const routes = [
 						"component": ReportEntry,
 						"meta": {
 							"title": "Report",
+							"tab": "Reports",
 							"sidebar": true
 						},
 						"children": [

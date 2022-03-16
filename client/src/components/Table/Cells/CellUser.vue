@@ -4,6 +4,7 @@
 	.info
 		.name {{ data.firstName }} {{ data.lastName }}
 		.email {{ data.email }}
+		.add-info {{ data.info }}
 </template>
 
 
@@ -27,4 +28,7 @@ export default {
 		margin-right: 0.5em
 	.email
 		color: var(--c-grey)
+	.add-info
+		color: var(--c-grey)
+		font-size: 12px
 </style>

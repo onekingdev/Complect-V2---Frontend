@@ -4,7 +4,7 @@ card-container(:title="modalTitle" ref="modalWindow")
 		c-button(type="icon" iconL="close" size="small" @click="closeModal()")
 	template(#content)
 		.grid-6
-			c-field(label="Title" :errors="errors.title" v-model="form.title" required)
+			c-field(label="Title" :errors="errors.name" v-model="form.name" required)
 			c-field(label="Employer" :errors="errors.employer" v-model="form.employer" required)
 			c-field.col-3(label="Start Date" type="date" :errors="errors.startsAt" v-model="form.startsAt" required)
 			c-field.col-3(label="End Date" type="date" :errors="errors.endsAt" v-model="form.endsAt" required)
@@ -47,6 +47,10 @@ export default {
 			"type": String,
 			"default": "",
 			"required": false
+		},
+		"callback": {
+			"type": Function,
+			"default": () => 1
 		}
 	},
 	setup ( props ) {
@@ -63,7 +67,7 @@ export default {
 		const errors = ref({});
 
 		const rules = {
-			"title": { required },
+			"name": { required },
 			"employer": { required },
 			"startsAt": { "required": requireDate },
 			"endsAt": { "required": requireEndAt, "endsAtGreaterStartAt": helpers.withMessage( "Date must not occur before start date", endsAtGreaterStartAt ) }
@@ -83,6 +87,8 @@ export default {
 					"title": "Success",
 					"message": `Experience has been ${action}.`
 				});
+
+				if ( props.callback ) props.callback( form.value );
 
 				closeModal();
 			} catch ( error ) {

@@ -20,7 +20,7 @@ exports.sendEmail = async emailData => {
 
 	const html = emailTemplate( data );
 	const params = {
-		Source: "noreply@complect.dev",
+		Source: "Complect<noreply@complect.dev>",
 		Destination: { ToAddresses: [email] },
 		Message: {
 			Body: {
