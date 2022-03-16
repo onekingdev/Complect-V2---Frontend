@@ -18,7 +18,7 @@ page-container(section="Projects" :title="document.name" :owner="linkaccount?.co
 			c-button(title="Edit" modalTitle="Edit Project" type="transparent" @click="toggleEditModal()")
 			c-button(title="Delete" type="transparent" modalTitle="Remove Project" @click="toggleDeleteModal()")
 	template(#content)
-		router-view(v-model:projectDetail="document" :reloadCollection="reloadCollection")
+		router-view(v-model:projectDetail="document")
 c-modal(title="Edit Project" v-model="isEditModalVisible")
 	template(#content)
 		c-field(label="Project Name" v-model="projectForm.name" required)
@@ -29,25 +29,29 @@ c-modal(title="Edit Project" v-model="isEditModalVisible")
 		c-button(title="Save" type="primary" @click="updateProject()")
 c-modal(title="Complete Project" v-model="isCompleteModalVisible")
 	template(#content)
-		icon.col-1(name="success" size="big")
-		.text.col-5
-			p This will mark the project as complete and close the project to further edits.
-			b Do you want to continue?
+		.delete-container
+			div
+				icon.col-1(name="success" size="big")
+			.description
+				p This will mark the project as complete and close the project to further edits.
+				p.confirm Do you want to continue?
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="markAsComplete()")
 c-modal(title="Reactive Project" v-model="isIncompleteModalVisible")
 	template(#content)
 		icon.col-1(name="success" size="big")
-		.text.col-5
+		.description
 			p This project will be reactiveated and re-accessible for editing by all collaborators.
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="markAsIncomplete()")
 c-modal(title="Remove Project" v-model="isDeleteModalVisible")
 	template(#content)
-		icon.col-1(name="error" size="big")
-		.text.col-5
-			p This will delete the project and all of its related tasks, documents, and comments from your records.
-			b Do you want to continue?
+		.delete-container
+			div
+				icon(name="error" size="big")
+			.description
+				p This will delete the project and all of its related tasks, documents, and comments from your records.
+				p.confirm Do you want to continue?
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="deleteProject()")
 </template>
@@ -102,8 +106,6 @@ export default {
 				"routeName": "ProjectCollaborators"
 			}
 		];
-
-		const reloadCollection = () => projects.readDocuments( route.params.id );
 
 		const toggleCompleteModal = () => isCompleteModalVisible.value = !isCompleteModalVisible.value;
 		const toggleIncompleteModal = () => isIncompleteModalVisible.value = !isIncompleteModalVisible.value;
@@ -262,8 +264,7 @@ export default {
 			isEditModalVisible,
 			isDeleteModalVisible,
 			markAsIncomplete,
-			projectForm,
-			reloadCollection
+			projectForm
 		};
 	}
 };
@@ -271,4 +272,12 @@ export default {
 <style lang="stylus" scoped>
 .show-calendar
 	margin-bottom: 2em
+.delete-container
+	display: flex
+	gap: 1.25em
+	.description
+		font-size: 0.875em
+		.confirm
+			padding-top: 0.625em
+			font-weight: bold
 </style>

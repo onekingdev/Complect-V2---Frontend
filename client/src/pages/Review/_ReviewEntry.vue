@@ -11,24 +11,24 @@ page-container(section="Internal Review" :title="document.name" type="document")
 			c-button(title="Edit" type="transparent" @click="editReview()")
 			c-button-modal(title="Delete" type="transparent" modalTitle="Delete Internal Review")
 				template(#content)
-					.col-1
-						icon(name="error" size="huge")
-					.col-5
-						p Removing this internal review will delete any progress, tasks, and documents associated with the review.
-						p
-							b Do you want to continue?
+					.delete-container
+						div
+							icon(name="error" size="big")
+						.description
+							p Removing this internal review will delete any progress, tasks, and documents associated with the review.
+							p.confirm Do you want to continue?
 				template(#footer)
 					c-button(title="Confirm" type="primary" @click="deleteReiew()")
 	template(#content)
 		router-view
 c-modal(title="Confirm Unsaved Changes" v-model="isDeleteVisible")
 	template(#content)
-		.col-1
-			icon(name="error" size="huge")
-		.col-5
-			p You have unsaved changes. Exiting without saving will clear all unsaved information.
-			p
-				b Do you want to continue?
+		.delete-container
+			div
+				icon(name="error" size="big")
+			.description
+				p You have unsaved changes. Exiting without saving will clear all unsaved information.
+				p.confirm Do you want to continue?
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="handleUnsavedClick()")
 </template>
@@ -170,4 +170,12 @@ export default {
 		:deep(.router-link-active)
 			box-shadow: inset 0 -4px 0 0 var(--c-gold);
 			font-weight: bold
+	.delete-container
+		display: flex
+		gap: 1.25em
+		.description
+			font-size: 0.875em
+			.confirm
+				padding-top: 0.625em
+				font-weight: bold
 </style>
