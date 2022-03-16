@@ -4,22 +4,22 @@
 c-table(v-bind="{columns, documents: archivePolicies}" searchable)
 c-modal(title="Unrchive Policy" v-model="isUnarchiveVisible")
 	template(#content)
-		.delete-container
-			div
-				icon(name="warning" size="big")
-			.description
-				p Unarchiving the policy will place it back into the compliance manual.
-				p.confirm Do you want to continue?
+		.col-1
+			icon(name="warning" size="huge")
+		.col-5
+			p Unarchiving the policy will place it back into the compliance manual.
+			p
+				b Do you want to continue?
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="handleClickUnarchive()")
 c-modal(title="Delete Policy" v-model="isDeleteVisible")
 	template(#content)
-		.delete-container
-			div
-				icon(name="error" size="big")
-			.description
-				p Removing this policy will permanently delete all risks and tasks associated with this policy.
-				p.confirm Do you want to continue?
+		.col-1
+			icon(name="error" size="huge")
+		.col-5
+			p Removing this policy will permanently delete all risks and tasks associated with this policy.
+			p
+				b Do you want to continue?
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="handleClickDelete()")
 </template>
@@ -91,7 +91,7 @@ export default {
 		const columns = [
 			{
 				"title": "Name",
-				"key": "name",
+				"key": "title",
 				"cell": "CellTitle",
 				"width": "50%",
 				"meta": { "link": "PolicyDetail" }
@@ -174,12 +174,4 @@ export default {
 .rules-block
 	font-size: 0.9em
 	margin: 1em 0
-.delete-container
-	display: flex
-	gap: 1.25em
-	.description
-		font-size: 0.875em
-		.confirm
-			padding-top: 0.625em
-			font-weight: bold
 </style>

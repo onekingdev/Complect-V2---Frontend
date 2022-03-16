@@ -11,8 +11,7 @@ card-container(title="Users")
 
 <script>
 import HorizontalTabs from "~/components/Containers/HorizontalTabs.vue";
-import useTeamMember from "~/store/TeamMember.js";
-
+import { computed } from "vue";
 export default {
 	"components": { HorizontalTabs },
 	setup () {
@@ -26,7 +25,11 @@ export default {
 			}
 		];
 
-		const { usersCount } = useTeamMember();
+		const usersCount = computed( () => ({
+			"Total": 2,
+			"Directory": 0,
+			"Disabled": 0
+		}) );
 
 		return {
 			tabs,

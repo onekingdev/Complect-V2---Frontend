@@ -1,16 +1,16 @@
 <template lang="pug">
 detail-container
 	template(#header)
-		c-field.category-title(type="text" placeholder="Enter category name" v-model="category.name" fullwidth transparent)
+		c-field.category-title(type="text" placeholder="Enter category name" v-model="category.title" fullwidth transparent)
 	template(#controls)
 		c-button-modal(title="Delete" modalTitle="Delete Category")
 			template(#content)
-				.delete-container
-					div
-						icon(name="error" size="big")
-					.description
-						p This will remove the category from this internal review and all of its associated content.
-						p.confirm Do you want to continue?
+				.col-1
+					icon(name="error" size="huge")
+				.col-5
+					p This will remove the category from this internal review and all of its associated content.
+					p
+						b Do you want to continue?
 			template(#footer)
 				c-button(title="Confirm" type="primary" @click="deleteCategory()")
 	template(#content)
@@ -24,12 +24,12 @@ detail-container
 						c-button(title="New Task" type="transparent" @click="newTask()")
 						c-button-modal(title="Delete" type="transparent" modalTitle="Delete Topic")
 							template(#content)
-								.delete-container
-									div
-										icon(name="error" size="big")
-									.description
-										p This will remove the topic from this internal review and all of its associated content.
-										p.confirm Do you want to continue?
+								.col-1
+									icon(name="error" size="huge")
+								.col-5
+									p This will remove the topic from this internal review and all of its associated content.
+									p
+										b Do you want to continue?
 							template(#footer)
 								c-button(title="Confirm" type="primary" @click="deleteTopic(category.content, i)")
 			.item-container(v-for="(item, j) in topic.items" :key="j")
@@ -47,12 +47,12 @@ detail-container
 							c-button(title="Log Finding" type="transparent" @click="addLogFinding(item)")
 							c-button-modal(title="Delete" type="transparent" modalTitle="Delete Item")
 								template(#content)
-									.delete-container
-										div
-											icon(name="error" size="big")
-										.description
-											p This will remove the topic from this internal review and all of its associated content.
-											p.confirm Do you want to continue?
+									.col-1
+										icon(name="error" size="huge")
+									.col-5
+										p This will remove the topic from this internal review and all of its associated content.
+										p
+											b Do you want to continue?
 								template(#footer)
 									c-button(title="Confirm" type="primary" @click="deleteItem(topic.items, j)")
 				.finding.grid-12(v-for="(finding, k) in item.finding" :key="k")
@@ -61,12 +61,12 @@ detail-container
 					.finding-delete
 						c-button-modal(type="transparent" icon="close" modalTitle="Delete Finding")
 							template(#content)
-								.delete-container
-									div
-										icon(name="error" size="big")
-									.description
-										p This will remove the finding from this internal review.
-										p.confirm Do you want to continue?
+								.col-1
+									icon(name="error" size="huge")
+								.col-5
+									p This will remove the finding from this internal review.
+									p
+										b Do you want to continue?
 							template(#footer)
 								c-button(title="Confirm" type="primary" @click="deleteFinding(item.finding, k)")
 	template(#footer)
@@ -76,12 +76,12 @@ detail-container
 			//- c-button(:title="btnTitle" type="primary" @click="completeCategory()")
 			c-button-modal(:title="btnTitle" type="primary" :modalTitle="completeModalTitle")
 				template(#content)
-					.complete-container
-						div
-							icon(name="success" size="big")
-						.description
-							p {{ category.completedAt ? "This will mark the category as incomplete and your progress will be updated." : "This will mark the category as complete and your progress will be updated." }}
-							p.confirm Do you want to continue?
+					.col-1
+						icon(name="success" size="huge")
+					.col-5
+						p {{ category.completedAt ? "This will mark the category as incomplete and your progress will be updated." : "This will mark the category as complete and your progress will be updated." }}
+						p
+							b Do you want to continue?
 				template(#footer)
 					c-button(title="Confirm" type="primary" @click="completeCategory()")
 </template>
@@ -177,7 +177,7 @@ export default {
 			try {
 				const catId = route.params.catId;
 				reviews.getDocument().value.categories[catId] = category.value;
-				await reviews.updateDocument( reviews.getDocument().value._id, reviews.getDocument().value );
+				await reviews.updateDocument( document.value._id, document.value );
 				notification({
 					"type": "success",
 					"title": "Success",
@@ -198,7 +198,7 @@ export default {
 			const catId = route.params.catId;
 			reviews.getDocument().value.categories[catId].completedAt = timestamp;
 			try {
-				await reviews.updateDocument( reviews.getDocument().value._id, reviews.getDocument().value );
+				await reviews.updateDocument( document.value._id, document.value );
 				notification({
 					"type": "success",
 					"title": "Success",
@@ -362,13 +362,5 @@ export default {
 	.item-text
 		:deep(.field-body)
 			font-size: 16px
-	.delete-container, .complete-container
-		display: flex
-		gap: 1.25em
-		.description
-			font-size: 0.875em
-			.confirm
-				padding-top: 0.625em
-				font-weight: bold
 
 </style>

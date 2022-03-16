@@ -22,7 +22,7 @@ card-container(title="Controls")
 		c-table(v-bind="{columns: controlsColumns, documents: controlsDocuments}")
 c-modal(title="Edit Risk" v-model="isEditRiskVisible")
 	template(#content)
-		c-field(label="Risk Name" v-model="riskForm.name" required)
+		c-field(label="Risk Name" v-model="riskForm.title" required)
 		c-select.col-3(label="Impact" :data="options" v-model="riskForm.impact")
 		c-select.col-3(label="Likelihood" :data="options" v-model="riskForm.likelihood")
 		c-label.col-2(label="Risk Level")
@@ -31,11 +31,12 @@ c-modal(title="Edit Risk" v-model="isEditRiskVisible")
 		c-button(title="Save" type="primary" @click="editRisk()")
 c-modal(title="Unlink Policy" v-model="isDeleteVisible")
 	template(#content)
-		div
-			icon(name="error" size="big")
-		.description
+		.col-1
+			icon(name="error" size="huge")
+		.col-5
 			p This policy will be removed as a control for this risk. This will also remove the risk from the policy's associated Risks tab.
-			p.confirm Do you want to continue?
+			p
+				b Do you want to continue?
 	template(#footer)
 		c-button(title="Unlink" type="primary" @click="deletePolicy()")
 </template>
@@ -64,13 +65,13 @@ export default {
 		const isDeleteVisible = ref( false );
 		const isEditRiskVisible = ref( false );
 		const riskForm = ref({
-			"name": "",
+			"title": "",
 			"impact": "",
 			"likelihood": ""
 		});
 		const toggleRiskVisible = () => {
 			isEditRiskVisible.value = !isEditRiskVisible.value;
-			riskForm.value.name = risks.getDocument().value.name;
+			riskForm.value.title = risks.getDocument().value.title;
 			riskForm.value.impact = risks.getDocument().value.impact;
 			riskForm.value.likelihood = risks.getDocument().value.likelihood;
 		};
@@ -102,7 +103,7 @@ export default {
 			{ "title": "Low", "value": 0 }, { "title": "Medium", "value": 1 }, { "title": "High", "value": 2 }
 		];
 		const riskDetails = computed( () => ({
-			"name": risks.getDocument().value.name,
+			"title": risks.getDocument().value.title,
 			"impact": locale( `risk${risks.getDocument().value.impact}` ),
 			"likelihood": locale( `risk${risks.getDocument().value.likelihood}` )
 		}) );
@@ -131,7 +132,7 @@ export default {
 		const controlsColumns = [
 			{
 				"title": "Policy",
-				"key": "name",
+				"key": "title",
 				"cell": "CellTitle",
 				"width": "50%",
 				"meta": {
@@ -166,7 +167,7 @@ export default {
 		const controlsColumnsModal = [
 			{
 				"title": "Policy",
-				"key": "name",
+				"key": "title",
 				"cell": "CellTitle",
 				"width": "50%",
 				"unsortable": true,
@@ -197,48 +198,48 @@ export default {
 				"Created": 1644778085732,
 				"lastModified": 1644778085732,
 				"status": "draft",
-				"name": "Policy2",
+				"title": "Policy2",
 				"_id": "123234234"
 			},
 			{
 				"Created": 1644778085732,
 				"lastModified": 1644778085732,
 				"status": "draft",
-				"name": "Policy3",
+				"title": "Policy3",
 				"_id": "123234234"
 			},
 			{
 				"Created": 1644778085732,
 				"lastModified": 1644778085732,
 				"status": "draft",
-				"name": "Policy4",
+				"title": "Policy4",
 				"_id": "123234234"
 			},
 			{
 				"Created": 1644778085732,
 				"lastModified": 1644778085732,
 				"status": "draft",
-				"name": "Policy5",
+				"title": "Policy5",
 				"_id": "123234234"
 			},
 			{
 				"Created": 1644778085732,
 				"lastModified": 1644778085732,
 				"status": "draft",
-				"name": "Policy6",
+				"title": "Policy6",
 				"_id": "123234234"
 			},
 			{
 				"Created": 1644778085732,
 				"lastModified": 1644778085732,
 				"status": "draft",
-				"name": "Policy7",
+				"title": "Policy7",
 				"_id": "123234234"
 			}
 		]);
 		const addControl = () => console.debug( policyDocuments.value );
 
-		const controlsDocuments = computed( () => risks.getDocument().value.controls || []);
+		const controlsDocuments = computed( () => document.value.controls || []);
 
 		return {
 			handleClickDelete,
@@ -260,15 +261,3 @@ export default {
 	}
 };
 </script>
-
-
-<style lang="stylus" scoped>
-.delete-container
-	display: flex
-	gap: 1.25em
-	.description
-		font-size: 0.875em
-		.confirm
-			padding-top: 0.625em
-			font-weight: bold
-</style>

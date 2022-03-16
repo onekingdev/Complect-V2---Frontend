@@ -9,8 +9,6 @@ const reviews = require( "./reviews" );
 const risks = require( "./risks" );
 const user_experiences = require( "./user_experiences" );
 const team_members = require( "./team_members" );
-const exams = require( "./exams" );
-const exam_requests = require( "./exam_requests" );
 
 
 module.exports = {
@@ -24,7 +22,5 @@ module.exports = {
 	reviews,
 	risks,
 	user_experiences,
-	team_members,
-	exams,
-	exam_requests
+	team_members
 };

@@ -101,13 +101,13 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Set Primary Method is successful."
+					"message": "Payment method has been made the primary payment source."
 				});
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Set Primary Method is failed. Please try again."
+					"message": "Payment method has not been made the primary payment source. Please try again."
 				});
 			}
 		};
@@ -132,7 +132,7 @@ export default {
 					notification({
 						"type": "success",
 						"title": "Success",
-						"message": "New Payment Method has been added successfully."
+						"message": "New payment method has been added."
 					});
 					isNewMethodVisible.value = !isNewMethodVisible.value;
 					await getPayments();
@@ -140,7 +140,7 @@ export default {
 					notification({
 						"type": "error",
 						"title": "Error",
-						"message": "New Payment Method has not been added. Please try again."
+						"message": "New payment method has not been added. Please try again."
 					});
 				}
 			});

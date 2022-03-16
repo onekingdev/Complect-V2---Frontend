@@ -30,7 +30,7 @@ export default {
 
 		const isCompleted = computed( () => {
 			const document = tasks.getDocuments().value.find( doc => doc._id === props.id );
-			return Boolean( document?.completedAt );
+			return Boolean( document.completedAt );
 		});
 
 

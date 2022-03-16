@@ -42,9 +42,6 @@ jobs:
       
       - name: Install dependencies for Payment Layer
         run: cd layers/payment/nodejs && npm i && cd ../../../
-      
-      - name: Install dependencies for Upload Layer
-        run: cd layers/upload/nodejs && npm i && cd ../../../
 
       - name: Deploy Lambda functions
         run: sls deploy --stage dev

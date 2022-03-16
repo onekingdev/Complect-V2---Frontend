@@ -1,5 +1,5 @@
 <template lang="pug">
-c-table(v-bind="{columns, documents: disabledUsers}" searchable)
+c-table(v-bind="{columns, documents: users}" searchable)
 	template(#actions)
 		settings-users-actions
 c-modal(title="Reactivate User" v-model="isReactiveUserVisible")
@@ -13,21 +13,79 @@ c-modal(title="Reactivate User" v-model="isReactiveUserVisible")
 
 
 <script>
+import { ref, onMounted, inject } from "vue";
+import UseData from "~/store/Data.js";
+import teamMember from "~/core/teamMember.js";
 import SettingsUsersActions from "~/components/Helpers/SettingsUsersActions.vue";
 import cModal from "~/components/Misc/cModal.vue";
-import useTeamMember from "~/store/TeamMember.js";
 
+const COLLECTION_NAME = "team_members";
 export default {
 	"components": { SettingsUsersActions, cModal },
 	setup () {
-		const {
-			isReactiveUserVisible,
-			disabledUsers,
-			handleEditUser,
-			handleDeleteUser,
-			handleEnableUser,
-			reactiveUser
-		} = useTeamMember();
+		const teamMembers = new UseData( COLLECTION_NAME );
+		const modal = inject( "modal" );
+		const notification = inject( "notification" );
+		const users = ref([]);
+		const isReactiveUserVisible = ref( false );
+		const enableUserId = ref( null );
+
+		const getData = async () => {
+			await teamMembers.readDocuments();
+			users.value = teamMembers.getDocuments().value.filter( item => item.disabled ).map( item => ({
+				"user": { "firstName": item.firstName, "lastName": item.lastName },
+				"reason": { "id": item._id, "disabledReason": item.disabledReason, "disabledReasonInfor": item.disabledReasonInfor },
+				"name": `${item.firstName} ${item.lastName} ${item.email}`,
+				...item
+			}) );
+		};
+
+		const callBack = { "handleSuccess": getData };
+
+		const handleEditUser = id => modal({ "name": "cModalTeamMember", id, callBack });
+		const handleEnableUser = id => {
+			isReactiveUserVisible.value = true;
+			enableUserId.value = id;
+		};
+		const handleDeleteUser = id => {
+			modal({
+				"name": "cModalDelete",
+				id,
+				"title": "Delete User",
+				"description": "Removing the user will permanently delete them and all of their associated records from the system. This action is most appropriate if a user account was created in error. Otherwise, please consider disabling the user instead in order to retain records of their prior activities on Complect.",
+				"collection": COLLECTION_NAME
+			});
+		};
+
+		const { toggleDisable } = teamMember();
+		const reactiveUser = async () => {
+			const user = users.value.find( item => item._id === enableUserId.value );
+			if ( !user ) return;
+
+			const form = {
+				"_id": user._id,
+				"disabled": user.disabled,
+				"disabledReason": "",
+				"disabledReasonInfor": ""
+			};
+
+			try {
+				await toggleDisable( form );
+				isReactiveUserVisible.value = false;
+				notification({
+					"title": "Success",
+					"message": "User has been reactivated."
+				});
+
+				getData();
+			} catch ( err ) {
+				notification({
+					"type": "error",
+					"title": "Error",
+					"message": "User has not been reactivated. Please try again."
+				});
+			}
+		};
 
 		const columns = [
 			{
@@ -71,12 +129,20 @@ export default {
 			}
 		];
 
+		onMounted( () => getData() );
+
 		return {
 			isReactiveUserVisible,
-			disabledUsers,
+			users,
 			columns,
 			reactiveUser
 		};
 	}
 };
 </script>
+
+
+<style lang="styl" scoped>
+.text-small
+	font-size: 0.85em;
+</style>

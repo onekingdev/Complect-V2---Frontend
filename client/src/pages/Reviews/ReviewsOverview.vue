@@ -7,12 +7,12 @@ c-banner(title="Key Regulatory Developments 2021" message="New regulatory change
 c-table(v-bind="{columns, documents}")
 c-modal(title="Delete Internal Review" v-model="isDeleteVisible")
 	template(#content)
-		.delete-container
-			.div
-				icon(name="error" size="big")
-			.description
-				p Removing this internal review will delete any progress, tasks, and documents associated with the review.
-				p.confirm Do you want to continue?
+		.col-1
+			icon(name="error" size="huge")
+		.col-5
+			p Removing this internal review will delete any progress, tasks, and documents associated with the review.
+			p
+				b Do you want to continue?
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="handleClickDelete()")
 </template>
@@ -74,7 +74,7 @@ export default {
 		const columns = [
 			{
 				"title": "Name",
-				"key": "name",
+				"key": "title",
 				"cell": "CellTitle",
 				"width": "25%",
 				"meta": { "link": "ReviewDetail" }
@@ -157,12 +157,4 @@ export default {
 	width: 1.5em
 	height: 1.5em
 	margin: 0 auto
-.delete-container
-	display: flex
-	gap: 1.25em
-	.description
-		font-size: 0.875em
-		.confirm
-			padding-top: 0.625em
-			font-weight: bold
 </style>

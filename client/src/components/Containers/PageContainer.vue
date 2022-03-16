@@ -52,7 +52,7 @@ export default {
 		},
 		"hasHamberger": {
 			"type": Object,
-			"default": () => {}
+			"default": ""
 		}
 	}
 };
@@ -139,7 +139,4 @@ export default {
 			width: 100%
 		.container-content
 			background: var(--c-bg-z1)
-	&.half-width
-		.container-content
-			padding: 1em 6em
 </style>

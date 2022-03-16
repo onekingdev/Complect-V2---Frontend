@@ -31,12 +31,12 @@ vertical-detail
 						c-textarea(label="Response" placeholder="Describe the response" v-model="regulatoryChange.response")
 						c-button-modal(type="transparent" icon="close" modalTitle="Delete Item")
 							template(#content)
-								.delete-container
-									div
-										icon(name="error" size="big")
-									.description
-										p This entry will be removed from the internal review.
-										p.confirm Do you want to continue?
+								.col-1
+									icon(name="error" size="huge")
+								.col-5
+									p This entry will be removed from the internal review.
+									p
+										b Do you want to continue?
 							template(#footer)
 								c-button(title="Confirm" type="primary" @click="deleteRegulatoryChange(document.regulatoryChanges, i)")
 					c-button(title="Add Entry" iconL="circle_plus" @click="addRegulatoryChange()")
@@ -61,14 +61,15 @@ vertical-detail
 				.empty
 				.buttons
 					c-button(title="Save" @click="updateReview()")
+					//- c-button(:title="btnTitle" type="primary" @click="completeReview()")
 					c-button-modal(:title="btnTitle" type="primary" :modalTitle="completeModalTitle")
 						template(#content)
-							.complete-container
-								div
-									icon(name="success" size="big")
-								.description
-									p {{ document.completedAt ? "This will mark the category as incomplete and your progress will be updated." : "This will mark the category as complete and your progress will be updated."}}
-									p.confirm Do you want to continue?
+							.col-1
+								icon(name="success" size="huge")
+							.col-5
+								p {{ document.completedAt ? "This will mark the category as incomplete and your progress will be updated." : "This will mark the category as complete and your progress will be updated."}}
+								p
+									b Do you want to continue?
 						template(#footer)
 							c-button(title="Confirm" type="primary" @click="completeReview()")
 		router-view(v-else v-model:reviewCategory="reviewCategory")
@@ -278,14 +279,6 @@ export default {
 .buttons
 	display: flex
 	gap: 0.75em
-.delete-container, .complete-container
-	display: flex
-	gap: 1.25em
-	.description
-		font-size: 0.875em
-		.confirm
-			padding-top: 0.625em
-			font-weight: bold
 
 </style>
 

@@ -78,7 +78,7 @@ export default {
 		}
 
 		onMounted(() => devmode.readDocuments())
-		onUnmounted(() => devmode.clearStore())
+		onUnmounted(() => clearStore())
 		
 		return { form, documents : devmode.getDocuments(), reset, create, update, select, remove, generate, crudTest, randomPatch }
 	}

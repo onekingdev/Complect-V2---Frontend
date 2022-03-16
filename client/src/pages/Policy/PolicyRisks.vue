@@ -8,7 +8,7 @@ card-container(title="Risks")
 		c-table(v-bind="{columns: archivecolumns, documents}" v-else)
 c-modal(title="New Risk" v-model="isRiskVisible")
 	template(#content)
-		c-field(label="Risk Name" v-model="newRisk.name" required)
+		c-field(label="Risk Name" v-model="newRisk.title" required)
 		c-select.col-3(label="Impact" :data="options" v-model="newRisk.impact")
 		c-select.col-3(label="Likelihood" :data="options" v-model="newRisk.likelihood")
 		c-label.col-2(label="Risk Level")
@@ -17,7 +17,7 @@ c-modal(title="New Risk" v-model="isRiskVisible")
 		c-button(title="Add" type="primary" @click="createRisk()")
 c-modal(title="New Risk" v-model="isRiskEditVisible")
 	template(#content)
-		c-field(label="Risk Name" v-model="editRisk.name" required)
+		c-field(label="Risk Name" v-model="editRisk.title" required)
 		c-select.col-3(label="Impact" :data="options" v-model="editRisk.impact")
 		c-select.col-3(label="Likelihood" :data="options" v-model="editRisk.likelihood")
 		c-label.col-2(label="Risk Level")
@@ -26,12 +26,12 @@ c-modal(title="New Risk" v-model="isRiskEditVisible")
 		c-button(title="Edit" type="primary" @click="editRiskValue()")
 c-modal(title="New Risk" v-model="isRiskDeleteVisible")
 	template(#content)
-		.delete-container
-			div
-				icon(name="error" size="big")
-			.description
-				p This risk will be deleted from the Risk Register and all policy controls will be unlinked.
-				p.confirm Do you want to continue?
+		.col-1
+			icon(name="error" size="huge")
+		.col-5
+			p This risk will be deleted from the Risk Register and all policy controls will be unlinked.
+			p
+				b Do you want to continue?
 	template(#footer)
 		c-button(title="Delete" type="primary" @click="deleteRiskValue()")
 </template>
@@ -62,7 +62,7 @@ export default {
 	setup ( props ) {
 		const risks = new UseData( "risks" );
 		const editRisk = ref({
-			"name": "",
+			"title": "",
 			"impact": 0,
 			"likelihood": 0
 		});
@@ -85,7 +85,7 @@ export default {
 		const isRiskVisible = ref( false );
 		const toggleNewRisk = () => isRiskVisible.value = !isRiskVisible.value;
 		const newRisk = ref({
-			"name": "",
+			"title": "",
 			"impact": 0,
 			"likelihood": 0,
 			"dateCreated": Date.now()
@@ -97,7 +97,7 @@ export default {
 		const columns = [
 			{
 				"title": "Name",
-				"key": "name",
+				"key": "title",
 				"width": "50%",
 				"cell": "CellTitle",
 				"meta": { "link": "RiskDetail" }
@@ -144,7 +144,7 @@ export default {
 		const archivecolumns = [
 			{
 				"title": "Name",
-				"key": "name",
+				"key": "title",
 				"cell": "CellTitle",
 				"meta": { "link": "RiskDetail" }
 			},
@@ -183,7 +183,7 @@ export default {
 				newRisk.value.riskLevel = newRiskLevel.value;
 				newRisk.value.controls = {
 					"_id": policyDetail.value._id,
-					"name": policyDetail.value.name,
+					"title": policyDetail.value.title,
 					"status": policyDetail.value.status,
 					"lastModified": policyDetail.value.lastModified,
 					"dateCreated": policyDetail.value.dateCreated
@@ -271,12 +271,4 @@ export default {
 .rules-block
 	font-size: 0.9em
 	margin: 1em 0
-.delete-container
-	display: flex
-	gap: 1.25em
-	.description
-		font-size: 0.875em
-		.confirm
-			padding-top: 0.625em
-			font-weight: bold
 </style>

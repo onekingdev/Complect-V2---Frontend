@@ -2,7 +2,7 @@
 c-dropdown-table(v-bind="{columns, controlColumns, documents}" searchable)
 c-modal(title="Edit Risk" v-model="isEditVisible")
 	template(#content)
-		c-field(label="Risk Name" v-model="riskForm.name" required)
+		c-field(label="Risk Name" v-model="riskForm.title" required)
 		c-select.col-3(label="Impact" :data="options" v-model="riskForm.impact")
 		c-select.col-3(label="Likelihood" :data="options" v-model="riskForm.likelihood")
 		c-label.col-2(label="Risk Level")
@@ -11,22 +11,22 @@ c-modal(title="Edit Risk" v-model="isEditVisible")
 		c-button(title="Save" type="primary" @click="editRisk()")
 c-modal(title="Delete Risk" v-model="isDeleteVisible")
 	template(#content)
-		.delete-container
-			div
-				icon(name="error" size="big")
-			.description
-				p This risk will be deleted from the Risk Register and all policy controls will be unlinked.
-				p.confirm Do you want to continue?
+		.col-1
+			icon(name="error" size="huge")
+		.col-5
+			p This risk will be deleted from the Risk Register and all policy controls will be unlinked.
+			p
+				b Do you want to continue?
 	template(#footer)
 		c-button(title="Delete" type="primary" @click="deleteRisk()")
 c-modal(title="Unlink Policy" v-model="isUnlinkVisible")
 	template(#content)
-		.delete-container
-			div
-				icon(name="error" size="big")
-			.description
-				p This policy will be removed as a control for this risk. This will also remove the risk from the policy s associated Risks tab.
-				p.confirm Do you want to continue?
+		.col-1
+			icon(name="error" size="huge")
+		.col-5
+			p This policy will be removed as a control for this risk. This will also remove the risk from the policy s associated Risks tab.
+			p
+				b Do you want to continue?
 	template(#footer)
 		c-button(title="Unlink" type="primary" @click="unlinkPolicy()")
 </template>
@@ -83,14 +83,14 @@ export default {
 				// await policies.deleteDocuments( policyId );
 				await risks.readDocuments( riskId );
 				const controls = risks.getDocument().value.controls.filter( doc => doc._id !== policyId );
-				await risks.updateDocument( risks.getDocument().value._id, { controls });
+				await risks.updateDocument( risks.document.value._id, { controls });
 				isUnlinkVisible.value = !isUnlinkVisible.value;
 				notification({
 					"type": "success",
 					"title": "Success",
 					"message": "Control has been removed."
 				});
-				await risks.readDocuments( risks.getDocument().value._id );
+				await risks.readDocuments( risks.document.value._id );
 			} catch ( error ) {
 				console.error( error );
 				notification({
@@ -143,7 +143,7 @@ export default {
 		const columns = [
 			{
 				"title": "Name",
-				"key": "name",
+				"key": "title",
 				"cell": "CellTitle",
 				"width": "50%",
 				"meta": {
@@ -199,7 +199,7 @@ export default {
 		const controlColumns = ref([
 			{
 				"title": "Name",
-				"key": "name",
+				"key": "title",
 				"cell": "CellTitle",
 				"width": "50%",
 				"meta": {
@@ -258,12 +258,4 @@ export default {
 .rules-block
 	font-size: 0.9em
 	margin: 1em 0
-.delete-container
-	display: flex
-	gap: 1.25em
-	.description
-		font-size: 0.875em
-		.confirm
-			padding-top: 0.625em
-			font-weight: bold
 </style>

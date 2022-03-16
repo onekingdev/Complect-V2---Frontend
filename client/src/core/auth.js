@@ -2,7 +2,7 @@ import { useRouter } from "vue-router";
 import { appState, setUserIdState } from "~/store/appState";
 import useProfile from "~/store/Profile";
 import { randomMongoId } from "~/core/utils.js";
-import UseData from "~/store/Data.js";
+import useData from "~/store/Data.js";
 
 
 const authServer = async ({ path, data }) => {
@@ -55,13 +55,13 @@ export default function useAuth () {
 		if ( !result.ok ) throw result.message;
 		const userProfile = result.data.profile;
 		if ( result.data.profile.businessId ) {
-			const collection = new UseData( "business" );
-			await collection.readDocuments( result.data.profile.businessId );
-			setLinkAccount( collection.getDocument().value );
+			const { document, readDocuments } = useData( "business" );
+			await readDocuments( result.data.profile.businessId );
+			setLinkAccount( document.value );
 		} else if ( result.data.profile.specialistId ) {
-			const collection = new UseData( "specialist" );
-			await collection.readDocuments( result.data.profile.specialistId );
-			setLinkAccount( collection.getDocument().value );
+			const { document, readDocuments } = useData( "specialist" );
+			await readDocuments( result.data.profile.specialistId );
+			setLinkAccount( document.value );
 		}
 		setProfile( userProfile );
 		setUserIdState( userProfile._id );
@@ -86,13 +86,13 @@ export default function useAuth () {
 		if ( !result.ok ) throw result.message;
 		profile.value = result.data;
 		if ( result.data.businessId ) {
-			const collection = new UseData( "business" );
-			await collection.readDocuments( result.data.businessId );
-			linkaccount.value = collection.getDocument().value;
+			const { document, readDocuments } = useData( "business" );
+			await readDocuments( result.data.businessId );
+			linkaccount.value = document.value;
 		} else if ( result.data.specialistId ) {
-			const collection = new UseData( "specialist" );
-			await collection.readDocuments( result.data.specialistId );
-			linkaccount.value = collection.getDocument().value;
+			const { document, readDocuments } = useData( "specialist" );
+			await readDocuments( result.data.specialistId );
+			linkaccount.value = document.value;
 		}
 	};
 
