@@ -103,14 +103,14 @@ export default {
 					// notification({
 					// 	"type": "success",
 					// 	"title": "Success",
-					// 	"message": "New Payment Method has been added successfully."
+					// 	"message": "New payment method has been added."
 					// });
 					isAddButtonVisible.value = !isAddButtonVisible.value;
 				} catch ( error ) {
 					// notification({
 					// 	"type": "error",
 					// 	"title": "Error",
-					// 	"message": "New Payment Method has not been added. Please try again."
+					// 	"message": "New payment method has not been added. Please try again."
 					// });
 				}
 			});
@@ -147,7 +147,7 @@ export default {
 				// notification({
 				// 	"type": "Error",
 				// 	"title": "Error",
-				// 	"message": "You have inputted wrong promo code. Please try again."
+				// 	"message": "Invalid promo code. Please try again."
 				// });
 			}
 		};
