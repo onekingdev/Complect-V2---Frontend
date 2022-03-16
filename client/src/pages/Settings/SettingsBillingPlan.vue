@@ -13,7 +13,7 @@ card-container
 						c-button(title="Back" @click="goBack()")
 						header
 							.title Time to power up
-							.intro Review and confirm your subsctiption
+							.intro Review and confirm your subscription
 						section
 							.title Plan
 							.content
