@@ -184,14 +184,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Plan has been upgraded successfully."
+					"message": "Subscription has been upgraded."
 				});
 				router.push({ "name": "Dashboard" });
 			} catch ( erorr ) {
 				notification({
 					"type": "Error",
 					"title": "Error",
-					"message": "Plan has not been upgraded successfully. Please try again."
+					"message": "Subscription has not been upgraded. Please try again."
 				});
 			}
 		};
@@ -209,7 +209,7 @@ export default {
 				notification({
 					"type": "Error",
 					"title": "Error",
-					"message": "You have inputted wrong promo code. Please try again."
+					"message": "Invalid promo code. Please try again."
 				});
 			}
 		};
