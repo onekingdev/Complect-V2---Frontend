@@ -22,7 +22,7 @@ c-modal(title="Cancel Plan" v-model="isCancelVisible")
 			icon(name="error" size="huge")
 		.col-5
 			p You are canceling your subscription to Complect. This will terminate your access to our full suite of features on {{ formatDate(linkaccount.currentPlan.subscriptionEndAt * 1000) }} when your subscription ends.
-			p If you have more than 1GB of stored data or users, this will cause your account to be locked until you upgrade to a paid plan.
+			p If you have more than 1GB of stored data, this will cause your account to be locked until you upgrade to a paid plan.
 			p
 				b Do you want to continue?
 	template(#footer)
@@ -149,13 +149,13 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Seats are sucessfully added"
+					"message": "Seat(s) has been added."
 				});
 			} catch ( error ) {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Seats has not been added. Please try again."
+					"message": "Seat(s) has not been added. Please try again."
 				});
 			}
 		};
@@ -169,7 +169,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Subscription successfully cancelled."
+					"message": "Subscription has been cancelled."
 				});
 			} catch ( error ) {
 				notification({
