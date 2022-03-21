@@ -5,7 +5,8 @@ const MESSAGE_VALIDATORS = {
 	"required": "Required field",
 	"sameAsPassword": "Password does not match",
 	"dateValidate": "Required field",
-	"validateRate": "Rate must be greater than 0"
+	"validateRate": "Rate must be greater than 0",
+	"email": "Invalid email address"
 };
 
 // return random number

@@ -10,12 +10,13 @@ header
 				icon(name="search")
 			.right
 				h3 Welcome
-				p Click on a request item below to view its contents and download documents
-		.confirm-email(v-if="isConfirmPage")
-			h3 Let's get started!
-			.form
-				c-field(label="Email" required)
-				c-button(title="Confirm" type="primary")
+				p {{ notice }}
+		card-container.confirm-email(v-if="isConfirmPage")
+			template(#content)
+				h3 Let's get started!
+				.form
+					c-field(label="Email" :errors="errors.email" v-model="confirmEmail" required)
+					c-button(title="Confirm" type="primary" @click="handleConfirmEmail()")
 		card-container.custom(title="Shared with Me" v-else)
 			template(#content)
 				.requests(v-if="sharedReqs.length")
@@ -38,6 +39,8 @@ header
 import { ref, onMounted, onUnmounted, computed } from "vue";
 import UseData from "~/store/Data.js";
 import { useRoute } from "vue-router";
+import { validates } from "~/core/utils.js";
+import { required, email } from "@vuelidate/validators";
 
 export default {
 	setup () {
@@ -45,9 +48,23 @@ export default {
 		const requestDocuments = ref([]);
 		const route = useRoute();
 		const id = route.params.id;
-		const isConfirmPage = ref( false );
+		const isConfirmPage = ref( true );
+		const confirmEmail = ref( "" );
+		const errors = ref({});
 
 		const sharedReqs = computed( () => requestDocuments.value.filter( req => req.shared ) );
+
+		const notice = computed( () => {
+			if ( isConfirmPage.value ) return "Please confirm your email to get started";
+			return "Click on a request item below to view its contents and download documents";
+		});
+
+		const rules = { "email": { required, email } };
+
+		const handleConfirmEmail = async () => {
+			errors.value = await validates( rules, { "email": confirmEmail.value });
+			// if ( Object.keys( errors.value ).length ) return;
+		};
 
 		onMounted( async () => {
 			await requests.readDocuments( null, { "examId": id });
@@ -58,8 +75,12 @@ export default {
 
 		return {
 			id,
+			confirmEmail,
+			errors,
+			notice,
 			sharedReqs,
-			isConfirmPage
+			isConfirmPage,
+			handleConfirmEmail
 		};
 	}
 };
@@ -67,10 +88,6 @@ export default {
 
 <style lang="stylus" scoped>
 .confirm-email
-	border: 1px solid var(--c-border)
-	border-radius: 0.3em
-	padding: 1em
-	background: #fff
 	max-width: 40em
 	margin: 0 auto
 	h3
@@ -80,6 +97,8 @@ export default {
 	button
 		margin-top: 1.2em
 		width: 100%
+	:deep(.card-content)
+		border-top: none
 header
 	background: #ecf4ff
 	padding: 1em
