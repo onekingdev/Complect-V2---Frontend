@@ -11,7 +11,12 @@ header
 			.right
 				h3 Welcome
 				p Click on a request item below to view its contents and download documents
-		card-container.custom(title="Shared with Me")
+		.confirm-email(v-if="isConfirmPage")
+			h3 Let's get started!
+			.form
+				c-field(label="Email" required)
+				c-button(title="Confirm" type="primary")
+		card-container.custom(title="Shared with Me" v-else)
 			template(#content)
 				.requests(v-if="sharedReqs.length")
 					.requests-item(v-for="(request, index) in sharedReqs" :key="index" :class="{'completed': request.completed}")
@@ -40,6 +45,7 @@ export default {
 		const requestDocuments = ref([]);
 		const route = useRoute();
 		const id = route.params.id;
+		const isConfirmPage = ref( false );
 
 		const sharedReqs = computed( () => requestDocuments.value.filter( req => req.shared ) );
 
@@ -52,13 +58,28 @@ export default {
 
 		return {
 			id,
-			sharedReqs
+			sharedReqs,
+			isConfirmPage
 		};
 	}
 };
 </script>
 
 <style lang="stylus" scoped>
+.confirm-email
+	border: 1px solid var(--c-border)
+	border-radius: 0.3em
+	padding: 1em
+	background: #fff
+	max-width: 40em
+	margin: 0 auto
+	h3
+		font-size: 1.8em
+		text-align: center
+		font-weight: bold
+	button
+		margin-top: 1.2em
+		width: 100%
 header
 	background: #ecf4ff
 	padding: 1em
