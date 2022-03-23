@@ -16,7 +16,7 @@
 		c-button(v-if="!firstStep" title="Go Back" @click="nextStep(-1)")
 		c-button(v-if="!lastStep" title="Next" type="primary" @click="nextStep(1)")
 		slot(v-if="$slots['controls']" name="controls")
-		//- c-button(v-if="lastStep" title="Submit" type="primary" @click="nextStep(1)")
+		c-button(v-if="lastStep && onSubmit" :title="onSubmit.title" type="primary" @click="onSubmit.action()")
 </template>
 
 
@@ -51,6 +51,10 @@ export default {
 		"navigation": {
 			"type": Boolean,
 			"default": true
+		},
+		"onSubmit": {
+			"type": Object,
+			"default": false
 		}
 	},
 	"emits": ["update:step"],

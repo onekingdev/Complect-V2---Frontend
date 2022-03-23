@@ -141,7 +141,7 @@ export default {
 				"url": `payment/method/${userType === "business" ? profile.value.businessId : profile.value.specialistId}`
 			});
 			const paymentInfo = [];
-			for ( let i = 0; i < response.data.data.length; i++ ) {
+			for ( let i = 0; i < response.data?.data?.length; i++ ) {
 				paymentInfo.push({
 					"value": response.data.data[i].id,
 					"title": `**** **** **** ${response.data.data[i].last4} ${response.data.data[i].brand}`
@@ -175,11 +175,11 @@ export default {
 				await manualApi({
 					"method": "post",
 					"url": `payment/subscription/${linkaccount.value._id}`,
-					"newData": {
+					"data": JSON.stringify({
 						"planId": plan.value._id,
 						"cardId": payInfo.value,
 						"promocode": promocode.value
-					}
+					})
 				});
 				notification({
 					"type": "success",
@@ -201,7 +201,7 @@ export default {
 					const response = await manualApi({
 						"method": "post",
 						"url": "payment/promocode",
-						"newData": { "promocode": promocode.value }
+						"data": JSON.stringify({ "promocode": promocode.value })
 					});
 					promoInfo.value = response.data;
 				}

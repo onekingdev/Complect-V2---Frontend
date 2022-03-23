@@ -52,7 +52,7 @@ c-modal(title="Remove Collaborator" v-model="isRemoveColModalVisible")
 
 
 <script>
-import { computed, ref } from "vue";
+import { computed, ref, inject } from "vue";
 import cBanner from "~/components/Misc/cBanner.vue";
 import definitionList from "~/components/Misc/DefinitionList.vue";
 import cModal from "~/components/Misc/cModal.vue";
@@ -73,23 +73,36 @@ export default {
 			"type": Object,
 			"required": true,
 			"default": {}
+		},
+		"reloadCollection": {
+			"type": Function,
+			"default": () => 1
 		}
 	},
 	"emits": ["update:projectDetail"],
+	// eslint-disable-next-line
 	setup ( props ) {
 		const projects = new UseData( "projects" );
+		const notification = inject( "notification" );
 		const router = useRouter();
 		const { profile } = useProfile();
 		const isEditModalVisible = ref( false );
 		const isRemoveColModalVisible = ref( false );
 		const newcomment = ref( "" );
+		const clickedId = ref( "" );
 		const projectForm = ref({
 			"name": "",
 			"startsAt": "",
 			"endsAt": "",
 			"description": ""
 		});
-		const updateProjectDetail = () => isEditModalVisible.value = !isEditModalVisible.value;
+		const toggleEditModal = () => {
+			isEditModalVisible.value = !isEditModalVisible.value;
+			projectForm.value.name = props.projectDetail.name;
+			projectForm.value.startsAt = props.projectDetail.startsAt;
+			projectForm.value.endsAt = props.projectDetail.endsAt;
+			projectForm.value.description = props.projectDetail.description;
+		};
 		const projectDetails = computed( () => ({
 			"name": props.projectDetail?.name,
 			"startsAt": formatDate( props.projectDetail?.startsAt ),
@@ -97,17 +110,34 @@ export default {
 			"description": props.projectDetail?.description
 		}) );
 
-		const handleClickRemoveCol = () => {
+		const handleClickRemoveCol = id => {
 			isRemoveColModalVisible.value = !isRemoveColModalVisible.value;
+			clickedId.value = id;
 		};
 		const handleViewTimeSheet = () => {
 
 		};
-		const deleteCol = () => {
-
+		const deleteCol = async () => {
+			try {
+				const allCollaborator = props.projectDetail.collaborators.filter( collaborator => collaborator._id !== clickedId.value );
+				await projects.updateDocument( props.projectDetail._id, { "collaborators": allCollaborator });
+				props.reloadCollection();
+				isRemoveColModalVisible.value = !isRemoveColModalVisible.value;
+				notification({
+					"type": "success",
+					"title": "Success",
+					"message": "User has been removed from the project."
+				});
+			} catch ( error ) {
+				notification({
+					"type": "error",
+					"title": "Error",
+					"message": "User has been not removed from the project. Please try again."
+				});
+			}
 		};
 		const addNewComment = () => {
-			const commentData = [];
+			const commentData = props.projectDetail.comments || [];
 			commentData.push({
 				"description": newcomment.value,
 				"creator": {
@@ -118,6 +148,8 @@ export default {
 				"createdAt": Date.now()
 			});
 			projects.updateDocument( props.projectDetail._id, { "comments": commentData });
+			newcomment.value = "";
+			props.reloadCollection();
 		};
 
 		const columns = [{
@@ -152,12 +184,10 @@ export default {
 			return returnValue;
 		});
 		const projectStatus = computed( () => props.projectDetail?.status );
-		const toggleEditModal = () => {
+		const updateProjectDetail = async () => {
 			isEditModalVisible.value = !isEditModalVisible.value;
-			projectForm.value.name = props.projectDetail.name;
-			projectForm.value.startsAt = props.projectDetail.startsAt;
-			projectForm.value.endsAt = props.projectDetail.endsAt;
-			projectForm.value.description = props.projectDetail.description;
+			await projects.updateDocument( props.projectDetail._id, projectForm.value );
+			props.reloadCollection();
 		};
 		const collaboratorTab = () => router.push({ "name": "ProjectCollaborators" });
 

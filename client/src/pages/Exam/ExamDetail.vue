@@ -1,7 +1,7 @@
 <template lang="pug">
 card-container.custom(title="Requests")
 	template(#controls)
-		c-button(title="View Portal" @click="redirectToPortal()")
+		c-button(title="View Portal")
 	template(#content)
 		c-switcher(id="layout" :options="options" v-model="switcherValue" type="primary")
 		.requests(v-if="requestFilters.length")
@@ -17,8 +17,8 @@ card-container.custom(title="Requests")
 						.controls
 							c-dropdown(label="Label" title="Add Item" wide)
 								c-button(title="Text Entry" type="transparent" @click="addTextEntry(request)")
-								c-button(title="Upload Files" type="transparent" @click="uploadFileReq(request)")
-								c-button(title="Select Existing" type="transparent" @click="selectExisting(request)")
+								c-button(title="Upload Files" type="transparent")
+								c-button(title="Select Existing" type="transparent")
 							c-button(title="New Task" type="primary")
 							c-dropdown(iconR="more" wide)
 								c-button(title="Edit" type="transparent" @click="editRequest(request)")
@@ -32,15 +32,12 @@ card-container.custom(title="Requests")
 						.text-entry(v-for="(item, idx) in request.text_entries" :key="idx")
 							c-textarea.textarea(v-model.trim="item.content")
 							icon(name="close" @click="removeTextEntry(request, idx)")
-					.files.grid-6(v-if="request.files")
-						file-item.col-3(v-for="(file, fileIdx) in request.files" :key="fileIdx" :file="file")
 		.controls
 			c-button(title="Add Request" @click="openRequestModal()" iconL="circle_plus")
 			.right
 				c-button(title="Save" @click="saveExam()")
 				c-button(v-if="exam.completed" title="Mark as Incomplete" @click="markAsInComplete()")
 				c-button(v-else title="Mark as Complete" type="primary" @click="markAsComplete()")
-input(v-show="false" type="file" @change="onChange()" ref="fileInput")
 c-modal(:title="requestModalConfig.title" v-model="isVisibleRequestModal")
 	template(#content)
 		c-field(label="Requested Item" :errors="requestErrors.name" v-model="requestForm.name" required)
@@ -60,29 +57,23 @@ import { ref, onMounted, computed } from "vue";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
 import cSwitcher from "~/components/Inputs/cSwitcher.vue";
 import cModal from "~/components/Misc/cModal.vue";
-import FileItem from "~/components/Helpers/FileItem.vue";
-import { validates, validateFileSize } from "~/core/utils.js";
+import { validates } from "~/core/utils.js";
 import { required, maxLength } from "@vuelidate/validators";
 import useExamDetail from "~/store/Exam.js";
-import { manualApi } from "~/core/api.js";
 
 const options = [
 	{ "title": "All", "value": "all" }, { "title": "Shared", "value": "shared" }
 ];
-
-const MAX_FILE_SIZE = 10; // mB
 
 /* eslint-disable */
 export default {
 	"components": {
 		cDropdown,
 		cModal,
-		cSwitcher,
-		FileItem
+		cSwitcher
 	},
 	setup () {
 		const {
-			router,
 			notification,
 			modal,
 			id,
@@ -93,8 +84,7 @@ export default {
 			markAsInComplete,
 			saveExam
 		} = useExamDetail();
-		
-		const fileInput = ref( null );
+
 		const initForm = { "completed": false, "examId": id, "shared": false };
 		const isVisibleRequestModal = ref( false );
 		const isVisibleDeleteNoteModal = ref(false);
@@ -200,7 +190,7 @@ export default {
 				"title": "Request",
 				"description": "Removing this request will delete any progress and tasks associated with it.",
 				"collection": "exam_requests",
-				"callback": handleDeleteRequestSuccess
+				"callback": { "handleSuccess": handleDeleteRequestSuccess }
 			});
 		};
 
@@ -234,66 +224,12 @@ export default {
 			}
 		}
 
-		const redirectToPortal = () => {
-			router.push({
-				"name": "ExamPortal",
-				"params": { "id": id }
-			});
-		}
-
-		const uploadingReq = ref(null);
-		const uploadFileReq = (req) => {
-			uploadingReq.value = req
-			fileInput.value.click()
-		}
-
-		const onChange = async () => {
-			// loading.value = true;
-			try {
-				const file = fileInput.value.files[0];
-				const formData = new FormData();
-				if (!validateFileSize(file.size, MAX_FILE_SIZE)) {
-					notification({ "type": "error", "title": "Error", "message": "Document has not been uploaded. File size must be less than 10MB." });
-					return false
-				}
-
-				formData.append( "file", file );
-				formData.append( "collection", "documents" );
-				// formData.append( "folderId", folderId );
-				const uploadRes = await manualApi({ "method": "POST", "url": "upload", "data": formData });
-				const newFile = {
-					"name": file.name,
-					"size": file.size,
-					"createdAt": Date.now(),
-					"link": uploadRes.Location,
-					"key": uploadRes.Key
-				}
-				// console.log(uploadRes)
-
-				if (uploadingReq.value.files) {
-					uploadingReq.value.files.push(newFile)
-				} else uploadingReq.value.files = [newFile]
-				await requests.updateDocument( uploadingReq.value._id, { ...uploadingReq.value });
-				notification({ "type": "success", "title": "Success", "message": "File has been uploaded." });
-			} catch ( error ) {
-				console.error( error );
-				notification({ "type": "error", "title": "Error", "message": "Folder has not been uploaded. Please try again." });
-			}
-		};
-
-		const selectExisting = (requestId) => {
-			modal({
-				"name": "cModalExamSelectExisting"
-			});
-		}
-
 		onMounted( async () => {
 			await requests.readDocuments( null, { "examId": id });
 			requestDocuments.value = requests.getDocuments().value;
 		});
 
 		return {
-			fileInput,
 			exam,
 			requestModalConfig,
 			requestErrors,
@@ -315,11 +251,7 @@ export default {
 			addTextEntry,
 			removeTextEntry,
 			confirmDeleteReqTextEntry,
-			redirectToPortal,
-			saveExam,
-			uploadFileReq,
-			onChange,
-			selectExisting
+			saveExam
 		};
 	}
 };
@@ -329,7 +261,69 @@ export default {
 <style lang="stylus" scoped>
 .custom
 	height: auto
+.requests
+	&-item
+		padding: 1em
+		margin: 1em 0
+		display: flex
+		border: 1px solid var(--c-border)
+		border-radius: 0.2em
+		&.completed
+			background-color: var(--c-bg-light-hover);
+		.left
+			.mark
+				margin-top: 0.4em
+				border: 1px solid #ccc
+				border-radius: 0.2em
+				width: 2em
+				height: 1.4em
+				svg
+					position: relative
+					left: 0.3em
+					cursor: pointer
+				&.checked
+					border-color: var(--c-success)
+					background: var(--c-success)
+					svg
+						fill: white
+		.right
+			width: 100%
+			margin-left: 2em
+			.header
+				display: flex
+				justify-content: space-between
+				.name
+					flex-basis: 70%
+					font-size: 1.3em
+					font-weight: bold
+					span
+						position: relative
+						top: -0.2em
+						border-radius: 0.3em
+						margin-right: 1em
+						padding: 0.5em 1em
+						font-size: 0.6em
+						background: #d5fbef;
+						color: #1bb380;
+			.details
+				margin-top: 1em
+			.counts
+				padding-bottom: 1.2em
+				margin: 1em 0
+				border-bottom: 1px solid rgba(0, 0, 0, 0.1)
+				span
+					margin-left: 0.5em
+					font-size: 0.9em
 
+.text-entry
+	margin: 1em 0
+	display: flex
+	.textarea
+		padding-right: 1.5em
+	svg
+		width: 0.8em
+		cursor: pointer
+		margin-top: 1.5em
 .controls
 	display: flex
 	justify-content: space-between

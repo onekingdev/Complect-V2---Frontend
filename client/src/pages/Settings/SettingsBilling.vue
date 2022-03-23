@@ -5,7 +5,7 @@ card-container(title="Billing")
 			div.grid-6.sub-header
 				h4.col-3 Payment Method
 				div.col-2
-				c-button.col-1.buttons(title="New Method" type="primary" @click="toggleNewMethod()")
+				c-button.col-1.buttons(title="Add Payment" type="primary" @click="toggleNewMethod()")
 			div.payment-content.grid-6(v-for="(payment, index) in payments")
 				div.col-1.icon-content
 					icon(name="number" size="huge")
@@ -20,7 +20,7 @@ card-container(title="Billing")
 			div.grid-6.sub-header
 				h4.col-3 Clinet Billing
 				div.col-2
-				c-button.col-1.buttons(title="Add Method" type="primary" @click="clientBilling()")
+				c-button.col-1.buttons(title="Add Bank Account" type="primary" @click="clientBilling()")
 			template(v-if="linkaccount.account")
 				div.payment-content.grid-6(v-for="(account, index) in linkaccount.account")
 					div.col-1.icon-content
@@ -34,7 +34,7 @@ card-container(title="Billing")
 			div.grid-6.sub-header
 				h4.col-3 Payment Method
 				div.col-2
-				c-button.col-1.buttons(title="New Method" type="primary" @click="toggleNewMethod()")
+				c-button.col-1.buttons(title="Add Payment" type="primary" @click="toggleNewMethod()")
 			div.payment-content.grid-6(v-for="(payment, index) in payments")
 				div.col-1.icon-content
 					icon(name="number" size="huge")
@@ -81,7 +81,7 @@ export default {
 				"method": "get",
 				"url": `payment/method/${userType === "business" ? profile.value.businessId : profile.value.specialistId}`
 			});
-			payments.value = response.data.data;
+			payments.value = response.data;
 		};
 		const getCustomer = async () => {
 			const customres = await manualApi({
@@ -95,19 +95,19 @@ export default {
 				await manualApi({
 					"method": "put",
 					"url": `payment/customer/${userType === "business" ? profile.value.businessId : profile.value.specialistId}`,
-					"newData": { "invoice_settings": { "default_payment_method": id } }
+					"data": JSON.stringify({ "invoice_settings": { "default_payment_method": id } })
 				});
 				await getCustomer();
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Set Primary Method is successful."
+					"message": "Payment method has been made the primary payment source."
 				});
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Set Primary Method is failed. Please try again."
+					"message": "Payment method has not been made the primary payment source. Please try again."
 				});
 			}
 		};
@@ -127,12 +127,12 @@ export default {
 					await manualApi({
 						"method": "post",
 						"url": `payment/method/${userType === "business" ? profile.value.businessId : profile.value.specialistId}`,
-						"newData": { stripeToken }
+						"data": JSON.stringify({ stripeToken })
 					});
 					notification({
 						"type": "success",
 						"title": "Success",
-						"message": "New Payment Method has been added successfully."
+						"message": "New payment method has been added."
 					});
 					isNewMethodVisible.value = !isNewMethodVisible.value;
 					await getPayments();
@@ -140,7 +140,7 @@ export default {
 					notification({
 						"type": "error",
 						"title": "Error",
-						"message": "New Payment Method has not been added. Please try again."
+						"message": "New payment method has not been added. Please try again."
 					});
 				}
 			});

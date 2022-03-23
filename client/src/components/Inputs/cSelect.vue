@@ -140,6 +140,7 @@ export default {
 			}
 
 			if ( !props.multiple && !newValue ) selectedObjects.value = "";
+			else if ( newValue ) selectedObjects.value = valuesToObjects( newValue );
 		});
 
 		return {
