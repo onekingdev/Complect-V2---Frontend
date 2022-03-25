@@ -4,14 +4,11 @@ label.c-input.c-textarea(:class="{fullwidth}")
 		span.required(v-if="required") *
 	textarea.field-body(
 		ref="root"
-		:class="{'errors': errors && errors.length}"
 		:placeholder="placeholder"
 		:required="required"
 		:tabIndex="tabIndex"
 		@input="$emit('update:modelValue', $event.target.value)"
 		:value="modelValue")
-	.field-info.error(v-if="errors && errors.length")
-		p(v-for="(error, index) in errors" :key="index") {{error}}
 </template>
 
 
@@ -38,10 +35,6 @@ export default {
 				String, Array, Number
 			],
 			"required": true
-		},
-		"errors": {
-			"type": Array,
-			"default": () => []
 		},
 		"fullwidth": {
 			"type": Boolean,
@@ -107,13 +100,6 @@ export default {
 		&::placeholder
 			color: #999
 			font-size: 0.9em
-		&.errors
-			box-shadow: 0 0 0 1px #f00
-	.field-info
-		font-size: 0.7em
-		margin-top: 0.3em
-		&.error
-			color: red
 	&.fullwidth
 		width: 100%
 </style>

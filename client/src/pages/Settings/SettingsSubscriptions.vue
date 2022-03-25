@@ -125,10 +125,10 @@ export default {
 				"url": `payment/method/${userType === "business" ? profile.value.businessId : profile.value.specialistId}`
 			});
 			const paymentInfo = [];
-			for ( let i = 0; i < response.data.length; i++ ) {
+			for ( let i = 0; i < response.data.data.length; i++ ) {
 				paymentInfo.push({
-					"value": response.data[i].id,
-					"title": `**** **** **** ${response.data[i].last4} ${response.data[i].brand}`
+					"value": response.data.data[i].id,
+					"title": `**** **** **** ${response.data.data[i].last4} ${response.data.data[i].brand}`
 				});
 			}
 			payments.value = paymentInfo;
@@ -140,10 +140,10 @@ export default {
 				await manualApi({
 					"method": "post",
 					"url": `payment/subscription/${userType === "business" ? profile.value.businessId : profile.value.specialistId}`,
-					"data": JSON.stringify({
+					"newData": {
 						"planId": planId._id,
 						"cardId": payInfo.value
-					})
+					}
 				});
 				isEditPlanVisible.value = !isEditPlanVisible.value;
 				notification({

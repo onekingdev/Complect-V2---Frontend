@@ -81,7 +81,7 @@ export default {
 				"method": "get",
 				"url": `payment/method/${userType === "business" ? profile.value.businessId : profile.value.specialistId}`
 			});
-			payments.value = response.data;
+			payments.value = response.data.data;
 		};
 		const getCustomer = async () => {
 			const customres = await manualApi({
@@ -95,7 +95,7 @@ export default {
 				await manualApi({
 					"method": "put",
 					"url": `payment/customer/${userType === "business" ? profile.value.businessId : profile.value.specialistId}`,
-					"data": JSON.stringify({ "invoice_settings": { "default_payment_method": id } })
+					"newData": { "invoice_settings": { "default_payment_method": id } }
 				});
 				await getCustomer();
 				notification({
@@ -127,7 +127,7 @@ export default {
 					await manualApi({
 						"method": "post",
 						"url": `payment/method/${userType === "business" ? profile.value.businessId : profile.value.specialistId}`,
-						"data": JSON.stringify({ stripeToken })
+						"newData": { stripeToken }
 					});
 					notification({
 						"type": "success",

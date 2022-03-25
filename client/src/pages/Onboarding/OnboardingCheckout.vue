@@ -162,7 +162,7 @@ export default {
 					await manualApi({
 						"method": "post",
 						"url": `payment/method/${userType === "business" ? form.value.businessId : form.value.specialistId}`,
-						"data": JSON.stringify({ stripeToken })
+						"newData": { stripeToken }
 					});
 					notification({
 						"type": "success",
@@ -187,7 +187,7 @@ export default {
 					await manualApi({
 						"method": "post",
 						"url": `payment/customer/${ids[0]}`,
-						"data": JSON.stringify({})
+						"newData": {}
 					});
 					// await onboarding({ "businessId": ids[0] });
 					// eslint-disable-next-line require-atomic-updates
@@ -198,7 +198,7 @@ export default {
 					await manualApi({
 						"method": "post",
 						"url": `payment/customer/${ids[0]}`,
-						"data": JSON.stringify({})
+						"newData": {}
 					});
 					// await onboarding({ "specialistId": ids[0] });
 					// eslint-disable-next-line require-atomic-updates
@@ -208,10 +208,10 @@ export default {
 				await manualApi({
 					"method": "post",
 					"url": `payment/subscription/${userType === "business" ? form.value.businessId : form.value.specialistId}`,
-					"data": JSON.stringify({
+					"newData": {
 						// "planId": plan.value._id,
 						"promocode": promocode.value
-					})
+					}
 				});
 				await onboarding( form.value );
 				profile.value.new = false;
@@ -227,7 +227,7 @@ export default {
 					const response = await manualApi({
 						"method": "post",
 						"url": "payment/promocode",
-						"data": JSON.stringify({ "promocode": promocode.value })
+						"newData": { "promocode": promocode.value }
 					});
 					promoInfo.value = response.data;
 				}
