@@ -36,7 +36,11 @@ const ProjectTasks = () => import( "~/pages/Project/ProjectTasks.vue" );
 const ProjectDocuments = () => import( "~/pages/Project/ProjectDocuments.vue" );
 const ProjectCollaborators = () => import( "~/pages/Project/ProjectCollaborators.vue" );
 const ProjectPost = () => import( "~/pages/Project/ProjectPost.vue" );
+const ProjectContract = () => import( "~/pages/Project/ProjectContract.vue" );
+const ProjectPostForm = () => import( "~/pages/Project/ProjectPostForm.vue" );
 
+// proposal
+const ProposalForm = () => import( "~/pages/Proposal/ProposalForm.vue" );
 
 // policies
 const _PoliciesEntry = () => import( "~/pages/Policies/_PoliciesEntry.vue" );
@@ -202,10 +206,28 @@ const routes = [
 					},
 					{
 						"path": "project/new",
-						"name": "ProjectPost",
-						"component": ProjectPost,
+						"name": "ProjectPostNew",
+						"component": ProjectPostForm,
 						"meta": {
-							"title": "Post Project",
+							"title": "Post Job",
+							"sidebar": false
+						}
+					},
+					{
+						"path": "project/new/:id",
+						"name": "ProjectPostJob",
+						"component": ProjectPostForm,
+						"meta": {
+							"title": "Post Job",
+							"sidebar": false
+						}
+					},
+					{
+						"path": "project/edit/:id",
+						"name": "ProjectPostEdit",
+						"component": ProjectPostForm,
+						"meta": {
+							"title": "Edit Job",
 							"sidebar": false
 						}
 					},
@@ -222,21 +244,36 @@ const routes = [
 								"name": "ProjectDetail",
 								"component": ProjectDetail,
 								"meta": { "title": "Project Detail" }
-							}, {
+							},
+							{
 								"path": "tasks",
 								"name": "ProjectTasks",
 								"component": ProjectTasks,
 								"meta": { "title": "Project Tasks" }
-							}, {
+							},
+							{
 								"path": "documents",
 								"name": "ProjectDocuments",
 								"component": ProjectDocuments,
 								"meta": { "title": "Project Documents" }
-							}, {
+							},
+							{
 								"path": "collaborators",
 								"name": "ProjectCollaborators",
 								"component": ProjectCollaborators,
 								"meta": { "title": "Project Collaborators" }
+							},
+							{
+								"path": "jobpost",
+								"name": "ProjectPost",
+								"component": ProjectPost,
+								"meta": { "title": "Job Post" }
+							},
+							{
+								"path": "contract",
+								"name": "ProjectContract",
+								"component": ProjectContract,
+								"meta": { "title": "Project Contract" }
 							}
 						]
 					},
@@ -428,6 +465,29 @@ const routes = [
 							"component": JobBoardDetail,
 							"meta": { "title": "Job Board Detail" }
 						}]
+					},
+					{
+						"path": "job_board/:id",
+						"component": ProposalForm,
+						"meta": { "sidebar": false },
+						"children": [
+							{
+								"path": "applications/new",
+								"name": "ProposalNew",
+								"component": ProposalForm,
+								"meta": { "title": "Job Board Detail" }
+							}, {
+								"path": "applications/edit",
+								"name": "ProposalEdit",
+								"component": ProposalForm,
+								"meta": { "title": "Job Board Detail" }
+							}, {
+								"path": "applications/view",
+								"name": "ProposalView",
+								"component": ProposalForm,
+								"meta": { "title": "Job Board Detail" }
+							}
+						]
 					},
 					{
 						"path": "specialistmarketplace",

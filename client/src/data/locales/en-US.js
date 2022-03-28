@@ -106,6 +106,17 @@ export default {
 		"risk1": "Medium",
 		"risk2": "High",
 
+		// jobs
+		"roleDetails": "Role Details",
+		"industries": "Industry",
+		"jurisdictions": "Jurisdiction",
+		"minExperience": "Minimum Experience",
+		"formerRegulators": "Former Regulator",
+		"skills": "Skills",
+		"budget": "Estimated Budget",
+		"hourlyRate": "Horly Rate",
+		"paymentSchedule": "Payment Schedule",
+
 
 		// database Keys
 		"title": "Title",

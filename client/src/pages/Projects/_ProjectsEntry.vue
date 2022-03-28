@@ -49,7 +49,7 @@ export default {
 				"method": "get",
 				"url": `payment/method/${userType === "business" ? profile.value.businessId : profile.value.specialistId}`
 			});
-			if ( response.data?.data && response.data?.data.length > 0 ) router.push({ "name": "ProjectPost" });
+			if ( response.data && response.data.length > 0 ) router.push({ "name": "ProjectPostNew" });
 			else {
 				router.push({ "name": "BillingPlan" });
 				notification({
