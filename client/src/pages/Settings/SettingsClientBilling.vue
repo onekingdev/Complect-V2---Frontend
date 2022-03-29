@@ -147,7 +147,7 @@ export default {
 				const response = await manualApi({
 					"url": "payment/account",
 					"method": "post",
-					"data": JSON.stringify( requestBody )
+					"newData": requestBody
 				});
 				const specialist = new UseData( "specialist" );
 				await specialist.readDocuments( profile.value.specialistId );

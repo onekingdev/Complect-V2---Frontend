@@ -11,8 +11,8 @@ market-container
 							icon(name="chevron-up" size="small" v-if="filterShow['jobtype']")
 							icon(name="chevron-down" size="small" v-if="!filterShow['jobtype']")
 					.filter-values(v-if="filterShow['jobtype']")
-						c-checkbox.filter-value(label="Fixed" v-model="filterValues['jobtype']" value="fixed" multiple)
-						c-checkbox.filter-value(label="Hourly" v-model="filterValues['jobtype']" value="hourly" multiple)
+						c-checkbox.filter-value(label="Fixed" v-model="filterValues['jobtype']" value="Fixed" multiple)
+						c-checkbox.filter-value(label="Hourly" v-model="filterValues['jobtype']" value="Hourly" multiple)
 				.filter-content.border-bottom
 					.filter-title-content(@click="toggleShowStatus('level')")
 						.filter-title EXPEREINCE LEVEL
@@ -20,9 +20,9 @@ market-container
 							icon(name="chevron-up" size="small" v-if="filterShow['level']")
 							icon(name="chevron-down" size="small" v-if="!filterShow['level']")
 					.filter-values(v-if="filterShow['level']")
-						c-checkbox.filter-value(label="Junior" v-model="filterValues['level']" value="1" multiple)
-						c-checkbox.filter-value(label="Intermediate" v-model="filterValues['level']" value="2" multiple)
-						c-checkbox.filter-value(label="Expert" v-model="filterValues['level']" value="3" multiple)
+						c-checkbox.filter-value(label="Junior" v-model="filterValues['level']" value="Junior" multiple)
+						c-checkbox.filter-value(label="Intermediate" v-model="filterValues['level']" value="Intermediate" multiple)
+						c-checkbox.filter-value(label="Expert" v-model="filterValues['level']" value="Expert" multiple)
 				.filter-content
 					.filter-title-content(@click="toggleShowStatus('duration')")
 						.filter-title ESTIMATED DURATION
@@ -41,31 +41,31 @@ market-container
 					c-field.col-5(label="Search" v-model="searchValue" placeholder="Enter job type, keywords, etc.")
 					c-select.col-1(label="Sort By" :data="sortOptions" v-model="sortValue")
 				.job-content(v-for="(job, index) in jobs")
-					router-link(:to="{name: 'JobBoardDetail', params: {id: job._id}}") {{ job.name }}
-					p.job-type {{ locationType[job.locationType] }} | {{ job.industries?.map( ind => industriesMap[ind] ).join(',  ') }} | Start {{ formatDate(job.startsAt) }}
+					router-link(:to="{name: 'JobBoardDetail', params: {id: job.id}}") {{ job.name }}
+					p.job-type {{ job.locationType }} | {{ job.industries }} | Start {{ formatDate(job.startAt) }}
 					p.job-description {{ job.description }}
 					div.grid-6.job-info
 						div.col-3.grid-6
 							div.col-3.job-info-ind
 								icon(name="money" size="small")
 								.detail
-									label(v-if="job.priceType !== 'fixed'")
+									label(v-if="job.priceType == 'Hourly'")
 										span Hourly Rate
-										p ${{ job.hourlyRate }} ~ ${{ job.maxHourlyRate }}
+										p ${{ job.budget[0] }} ~ ${{ job.budget[1] }}
 									label(v-else)
 										span Fixed Budget
-										p ${{ job.budget }}
+										p ${{ job.budget[0] }}
 							div.col-3.border-left.job-info-ind
 								icon(name="money" size="small")
 								.detail
 									span PAYMENT SCHEDULE
-									p {{ paymentType[job.paymentSchedule] }}
+									p {{ job.payment }}
 						div.col-3.grid-6
 							div.col-3.border-left.job-info-ind
 								icon(name="world" size="small")
 								.detail
 									span EXPEREINCE
-									p {{ minExperience[job.minExperience] }}
+									p {{ job.level }}
 							div.col-3
 								c-button(title="View Details" @click="showDetail()")
 					hr(v-if="index != jobs.length - 1")
@@ -74,12 +74,11 @@ router-view
 
 
 <script>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import MarketContainer from "~/components/Containers/MarketContainer.vue";
 import { formatDate } from "~/core/utils.js";
-import { industries, jurisdictions, minExperience, paymentType, locationType } from "~/data/static.js";
-import UseData from "~/store/Data.js";
+// import useData from "~/store/Data.js";
 import cSelect from "~/components/Inputs/cSelect.vue";
 import cLabel from "~/components/Misc/cLabel.vue";
 import cBadge from "~/components/Misc/cBadge.vue";
@@ -89,7 +88,7 @@ export default {
 	setup () {
 		// const notification = inject( "notification" );
 		const router = useRouter();
-		const jobCollection = new UseData( "jobs" );
+		// const { createDocuments } = useData( "risks" );
 
 		const sortOptions = [
 			{ "title": "Newest", "value": "newest" }, { "title": "Price", "value": "price" }, { "title": "Duration", "value": "duration" }
@@ -115,13 +114,56 @@ export default {
 			});
 		};
 		const toggleShowStatus = id => filterShow.value[id] = !filterShow.value[id];
-		// eslint-disable-next-line no-sequences
-		const juristdictionMap = jurisdictions.reduce( ( jur, cur ) => ( jur[cur.value] = cur.title, jur ), {});
-		// eslint-disable-next-line no-sequences
-		const industriesMap = industries.reduce( ( ind, cur ) => ( ind[cur.value] = cur.title, ind ), {});
+		const documents = ref([
+			{
+				"id": "234982734982734",
+				"name": "Test1",
+				"startAt": 1643994498410,
+				"endsAt": 1643994498410,
+				"description": "This is first test project",
+				"details": "",
+				"locationType": "Remote",
+				"location": "USA",
+				"jurisdictions": "USA",
+				"industries": "Bank",
+				"skills": [
+					"HTML", "CSS", "Javascript"
+				],
+				"level": "Intermediate",
+				"minExperience": 4,
+				"regulator": true,
+				"priceType": "Hourly",
+				"budget": [
+					"30", "50"
+				],
+				"payment": "Upon Complete",
+				"duration": "Less than 1 month"
+			}, {
+				"id": "50996830495830495",
+				"name": "Test2",
+				"startAt": 1643936623499,
+				"endsAt": 1643936623499,
+				"description": "This is second test project",
+				"details": "",
+				"locationType": "Remote",
+				"location": "USA",
+				"jurisdictions": "USA",
+				"industries": "Fintech",
+				"level": "Junior",
+				"skills": [
+					"HTML", "CSS", "Javascript"
+				],
+				"priceType": "Fixed",
+				"minExperience": 4,
+				"regulator": true,
+				"budget": ["500"],
+				"payment": "50/50",
+				"duration": "1 to 3 months"
+			}
+		]);
 		const jobs = computed( () => {
 			let alljobs;
-			alljobs = jobCollection.getDocuments().value;
+			alljobs = documents.value;
 			if ( searchValue.value ) alljobs = alljobs.filter( job => job.name.indexOf( searchValue.value ) > -1 );
 			if ( filterValues.value.jobtype.length > 0 ) alljobs = alljobs.filter( job => filterValues.value.jobtype.indexOf( job.priceType ) > -1 );
 			if ( filterValues.value.level.length > 0 ) alljobs = alljobs.filter( job => filterValues.value.level.indexOf( job.level ) > -1 );
@@ -140,9 +182,6 @@ export default {
 
 			return alljobs;
 		});
-
-		onMounted( () => jobCollection.readDocuments() );
-
 		return {
 			sortOptions,
 			showDetail,
@@ -152,12 +191,7 @@ export default {
 			formatDate,
 			sortValue,
 			filterValues,
-			searchValue,
-			minExperience,
-			paymentType,
-			juristdictionMap,
-			industriesMap,
-			locationType
+			searchValue
 		};
 	}
 };

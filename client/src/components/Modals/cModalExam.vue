@@ -23,6 +23,7 @@ import { onClickOutside } from "@vueuse/core";
 import { validates } from "~/core/utils.js";
 import { required, helpers } from "@vuelidate/validators";
 import { requireDate } from "~/core/customValidates.js";
+import { v4 as uuidv4 } from "uuid";
 
 
 const endsAtGreaterStartAt = ( endsAt, siblings ) => endsAt >= siblings.startsAt;
@@ -56,8 +57,10 @@ export default {
 			"name": "",
 			"startsAt": "",
 			"endsAt": "",
-			"businessId": profile.value._id,
-			"completed": false
+			"user_id": profile.value._id,
+			"businessId": profile.value.businessId,
+			"completed": false,
+			"shareId": uuidv4()
 		});
 		const errors = ref({});
 

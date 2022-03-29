@@ -92,7 +92,7 @@ export default {
 		margin-left: auto
 
 .c-modal-content
-	padding: 1em 1em 2.5em
+	padding: 1.25em
 
 .c-modal-footer
 	display: flex
