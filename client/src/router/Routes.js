@@ -125,12 +125,6 @@ import { devRoutes } from "~/_devmode/Routes.js";
 // ––––––––––––––– Routes ––––––––––––––– //
 const routes = [
 	{
-		"path": "/error",
-		"name": "ErrorLayer",
-		"props": true,
-		"component": ErrorLayer,
-		"meta": { "title": "Error" }
-	}, {
 		"path": "/",
 		"component": AuthenticatedLayer,
 		"beforeEnter": useAuthGuard,
@@ -618,15 +612,23 @@ const routes = [
 			}
 		]
 	}, {
+		"path": "/error",
+		"name": "ErrorLayer",
+		"component": ErrorLayer,
+		"props": {
+			"code": 404,
+			"title": "No page found",
+			"message": "The page you are looking for is either missing of can't be found."
+		}
+	}, {
 		"path": "/:pathMatch(.*)*",
 		"redirect": {
-			"name": "ErrorLayer",
-			"params": {
-				"code": 404,
-				"title": "No page found",
-				"message": "The page you are looking for is either missing of can't be found."
-			}
+			"name": "ErrorLayer"
 		}
+	}, {
+		"path": "/unauthorized",
+		"component": ErrorLayer,
+		"props": { "code": 401, "title": "Unauthorized access", "message": "The page you are looking for requires different authentication credentials" },
 	}
 ];
 
