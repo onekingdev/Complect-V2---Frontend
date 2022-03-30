@@ -2,8 +2,10 @@
 .mobile-view(:class="isMobileType ? '' : 'hide'")
 	icon(name="logo")
 	.title Looks like you're on a mobile device.
-	.content This isn't available on mobile browsers. For full functionality, switch to desktop.
 	.desktop(@click="goDeskTopMode()") Enter desktop site
+	.content
+		div This isn't available on mobile browsers.
+		div For full functionality, switch to desktop.
 .layout.layout-authenticated(:class="isMobileType ? 'hide' : ''")
 	transition(appear name="pushTop")
 		TopBar
@@ -55,7 +57,7 @@ export default {
 	.content
 		font-size: 0.875em
 	.desktop
-		margin-top: 0.5em
+		margin-bottom: 0.5em
 		font-size: 0.875em
 		text-decoration: underline
 .layout.layout-authenticated

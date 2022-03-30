@@ -223,7 +223,7 @@ export default {
 	.table-tbody
 		display: table-row-group
 .c-table .c-pagination
-	justify-content: center
+	justify-content: flex-start
 svg.icon-empty-state
 	width: 8em
 	height: 8em
