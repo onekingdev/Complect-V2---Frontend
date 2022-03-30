@@ -150,7 +150,7 @@ export default {
 		};
 
 		onMounted( () => {
-			for( const filter of props.filters ) activateFilter( filter.title, filter.field, filter.keys[0]);
+			for ( const filter of props.filters ) activateFilter( filter.title, filter.field, filter.keys[0]);
 		});
 
 		return {

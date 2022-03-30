@@ -585,7 +585,8 @@ const routes = [
 				]
 			}
 		]
-	}, {
+	},
+	{
 		"path": "/",
 		"component": UnauthenticatedLayer,
 		"children": [
@@ -611,7 +612,8 @@ const routes = [
 				"meta": { "title": "Reset Password" }
 			}
 		]
-	}, {
+	},
+	{
 		"path": "/error",
 		"name": "ErrorLayer",
 		"component": ErrorLayer,
@@ -620,15 +622,15 @@ const routes = [
 			"title": "No page found",
 			"message": "The page you are looking for is either missing of can't be found."
 		}
-	}, {
+	},
+	{
 		"path": "/:pathMatch(.*)*",
-		"redirect": {
-			"name": "ErrorLayer"
-		}
-	}, {
+		"redirect": { "name": "ErrorLayer" }
+	},
+	{
 		"path": "/unauthorized",
 		"component": ErrorLayer,
-		"props": { "code": 401, "title": "Unauthorized access", "message": "The page you are looking for requires different authentication credentials" },
+		"props": { "code": 401, "title": "Unauthorized access", "message": "The page you are looking for requires different authentication credentials" }
 	}
 ];
 

@@ -22,6 +22,7 @@ export default {
 			// eslint-disable-next-line quote-props
 			get: () => {
 				if ( props.value ) return props.value;
+				// eslint-disable-next-line
 				else return '';
 			},
 			// eslint-disable-next-line quote-props
