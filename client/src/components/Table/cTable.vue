@@ -52,7 +52,7 @@
 
 
 <script>
-import { ref, computed, defineAsyncComponent, watch } from "vue";
+import { ref, computed, onMounted, defineAsyncComponent, watch } from "vue";
 import { sortArrayByKey } from "~/core/utils.js";
 export default {
 	"components": { "cDropdown": defineAsyncComponent( () => import( "~/components/Inputs/cDropdown.vue" ) ) },
@@ -132,6 +132,10 @@ export default {
 			emit( "cellEvent", id );
 		};
 
+		onMounted( () => {
+			for( let filter of props.filters )
+				activateFilter( filter.title, filter.field, filter.keys[0] );
+		});
 
 		return {
 			getTableCell,
@@ -168,7 +172,7 @@ export default {
 			gap: 1em
 
 .c-table table
-	font-size: 0.85em
+	font-size: 0.875em
 	width: 100%
 	tr
 		border-bottom: 1px solid var(--c-border)
@@ -180,7 +184,7 @@ export default {
 		justify-content: flex-start
 		align-items: center
 		line-height: 1.2
-		padding: 0.7em 1em
+		padding: 0.7em 0.715em
 		&.center
 			justify-content: center
 		&.right
@@ -197,6 +201,8 @@ export default {
 			.c-button:hover
 				:deep(svg.icon-sort)
 					fill: #444
+		&.c-dropdown
+			padding: 0
 	.table-tbody
 		display: table-row-group
 

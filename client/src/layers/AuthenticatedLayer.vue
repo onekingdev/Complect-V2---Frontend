@@ -82,7 +82,7 @@ export default {
 		z-index: 10
 		grid-column: 1/-1
 	main
-		background: var(--c-bg-z1)
+		background: var(--c-bg-z2)
 		min-width: 600px
 		max-height: 100%
 		overflow-y: auto
