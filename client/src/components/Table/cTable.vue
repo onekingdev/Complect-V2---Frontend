@@ -48,6 +48,7 @@
 								:data="document[column.key]")
 
 		icon(v-if="!filteredDocuments.length" name="empty-state")
+	c-pagination(v-if="documents.length > perPage" :length="documents.length" :perPage="perPage" v-model:currentPage="currentPage")
 .loading(v-else)
 	c-loading(size="big")
 </template>
@@ -56,8 +57,10 @@
 <script>
 import { ref, computed, onMounted, defineAsyncComponent, watch } from "vue";
 import { sortArrayByKey } from "~/core/utils.js";
+import cPagination from "~/components/Misc/cPagination.vue";
+import cDropdown from "~/components/Inputs/cDropdown.vue";
 export default {
-	"components": { "cDropdown": defineAsyncComponent( () => import( "~/components/Inputs/cDropdown.vue" ) ) },
+	"components": { cPagination, cDropdown },
 	"props": {
 		"columns": {
 			"type": Array,
@@ -70,6 +73,10 @@ export default {
 		"filters": {
 			"type": Array,
 			"default": () => []
+		},
+		"perPage": {
+			"type": Number,
+			"default": 10
 		},
 		"loading": {
 			"type": Boolean,
@@ -88,6 +95,7 @@ export default {
 		const searchQuery = ref( "" );
 		const activeFilters = ref({});
 		const showDocuments = ref([]);
+		const currentPage = ref(1)
 
 		const getTableCell = cell => defineAsyncComponent( () => import( `./Cells/${cell}.vue` ) );
 
@@ -117,10 +125,12 @@ export default {
 				}
 
 				// search Query
-				if ( !searchQuery.value ) return documents;
+				if ( !searchQuery.value ) return Array.from(documents).splice( props.perPage * ( currentPage.value - 1 ), props.perPage );
 				const query = String( searchQuery.value.toLowerCase().trim() );
 				documents = documents.filter( document => document.name.toLowerCase().includes( query ) );
-				return documents;
+
+				// pagination
+				return Array.from(documents).splice( props.perPage * ( currentPage.value - 1 ), props.perPage );
 			} catch ( error ) {
 				console.error( error );
 				return documents;
@@ -153,6 +163,7 @@ export default {
 			activeFilters,
 			selectedFilterTitle,
 			cellEvent,
+			currentPage,
 			showDocuments
 		};
 	}
@@ -211,6 +222,8 @@ export default {
 			padding: 0
 	.table-tbody
 		display: table-row-group
+.c-table .c-pagination
+	justify-content: center
 svg.icon-empty-state
 	width: 8em
 	height: 8em
