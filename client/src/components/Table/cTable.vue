@@ -1,5 +1,5 @@
 <template lang="pug">
-.c-table
+.c-table(v-if="!loading")
 	.controls(v-if="searchable || filters.length || $slots.actions")
 		c-field.search-input(v-if="searchable" type="search" iconL="search" placeholder="Search..." v-model="searchQuery")
 		.actions(v-if="filters.length")
@@ -48,6 +48,8 @@
 								:data="document[column.key]")
 
 		icon(v-if="!filteredDocuments.length" name="empty-state")
+.loading(v-else)
+	c-loading(size="big")
 </template>
 
 
@@ -68,6 +70,11 @@ export default {
 		"filters": {
 			"type": Array,
 			"default": () => []
+		},
+		"loading": {
+			"type": Boolean,
+			"required": false,
+			"default": false
 		},
 		"searchable": Boolean,
 		"isdraggable": {
@@ -170,7 +177,6 @@ export default {
 			display: flex
 			align-items: center
 			gap: 1em
-
 .c-table table
 	font-size: 0.875em
 	width: 100%
@@ -205,11 +211,15 @@ export default {
 			padding: 0
 	.table-tbody
 		display: table-row-group
-
 svg.icon-empty-state
 	width: 8em
 	height: 8em
 	display: block
 	margin: 3em auto
-
+.loading
+	width: 100%
+	height: 100%
+	display: flex
+	justify-content: center
+	align-items: center
 </style>
