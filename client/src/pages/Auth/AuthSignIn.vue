@@ -6,7 +6,7 @@ card-container
 			c-field(label="Email" type="email" :errors="errors.email" v-model="form.email" fullwidth required)
 			c-field(label="Password" type="password" :errors="errors.password" v-model="form.password" fullwidth required)
 			c-button(title="Sign In" type="primary" @click="signIn()" fullwidth)
-			c-button(title="Forgot Password" type="link" @click="toResetPassword()" fullwidth)
+			router-link(:to="{name: 'AuthResetPassword'}") Forgot Password
 	template(#footer)
 		p Don't have an account yet?&nbsp;
 			router-link(:to="{name: 'AuthSignUp'}") Sign Up
@@ -47,14 +47,10 @@ export default {
 			}
 		};
 
-
-		const toResetPassword = () => router.push({ "name": "AuthResetPassword" });
-
 		return {
 			errors,
 			form,
-			signIn,
-			toResetPassword
+			signIn
 		};
 	}
 };

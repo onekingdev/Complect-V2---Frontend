@@ -43,8 +43,9 @@ export default {
 			font-size: 1.2em
 			margin-right: auto
 	.card-content, .card-sub-header, .card-footer
-		border-top: 1px solid var(--c-border)
 		padding: 1.5em
+	.card-sub-header, .card-footer
+		border-top: 1px solid var(--c-border)
 	.card-footer
 		display: flex
 		gap: 1em

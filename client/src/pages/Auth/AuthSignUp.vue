@@ -101,6 +101,5 @@ export default {
 .account-types
 	margin: 1em 0
 .terms
-	font-size: 0.9em
-	margin-bottom: 1em
+	font-size: 0.875em
 </style>
