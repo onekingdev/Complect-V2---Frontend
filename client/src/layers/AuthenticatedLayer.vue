@@ -29,7 +29,7 @@ export default {
 		DevBar
 	},
 	setup () {
-		const isMobileType = ref(true);
+		const isMobileType = ref( true );
 		const goDeskTopMode = () => isMobileType.value = !isMobileType.value;
 		return { goDeskTopMode, isMobileType };
 	}

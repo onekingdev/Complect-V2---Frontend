@@ -95,7 +95,7 @@ export default {
 		const searchQuery = ref( "" );
 		const activeFilters = ref({});
 		const showDocuments = ref([]);
-		const currentPage = ref(1)
+		const currentPage = ref( 1 );
 
 		const getTableCell = cell => defineAsyncComponent( () => import( `./Cells/${cell}.vue` ) );
 
@@ -125,12 +125,12 @@ export default {
 				}
 
 				// search Query
-				if ( !searchQuery.value ) return Array.from(documents).splice( props.perPage * ( currentPage.value - 1 ), props.perPage );
+				if ( !searchQuery.value ) return Array.from( documents ).splice( props.perPage * ( currentPage.value - 1 ), props.perPage );
 				const query = String( searchQuery.value.toLowerCase().trim() );
 				documents = documents.filter( document => document.name.toLowerCase().includes( query ) );
 
 				// pagination
-				return Array.from(documents).splice( props.perPage * ( currentPage.value - 1 ), props.perPage );
+				return Array.from( documents ).splice( props.perPage * ( currentPage.value - 1 ), props.perPage );
 			} catch ( error ) {
 				console.error( error );
 				return documents;
@@ -150,8 +150,7 @@ export default {
 		};
 
 		onMounted( () => {
-			for( let filter of props.filters )
-				activateFilter( filter.title, filter.field, filter.keys[0] );
+			for( const filter of props.filters ) activateFilter( filter.title, filter.field, filter.keys[0]);
 		});
 
 		return {

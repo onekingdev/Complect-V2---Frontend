@@ -28,7 +28,7 @@ export default {
 	},
 	setup () {
 		const router = useRouter();
-		const goBackPage = () => router.go(-1);
+		const goBackPage = () => router.go( -1 );
 		return { goBackPage };
 	}
 };

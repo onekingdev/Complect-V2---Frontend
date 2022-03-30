@@ -19,16 +19,13 @@ export default {
 	"emits": ["updateValue"],
 	setup ( props, context ) {
 		const editorValue = computed({
+			// eslint-disable-next-line quote-props
 			get: () => {
-      if (props.value) {
-          return props.value
-        } else {
-          return ''
-        }
-      },
-			set: (value) => {
-        context.emit( "updateValue", value )
-      }
+				if ( props.value ) return props.value;
+				else return '';
+			},
+			// eslint-disable-next-line quote-props
+			set: value => context.emit( "updateValue", value )
 		});
 		return { editorValue };
 	}
