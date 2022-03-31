@@ -1,5 +1,5 @@
 <template lang="pug">
-.c-table
+.c-table(v-if="!loading")
 	.controls(v-if="searchable || filters.length || $slots.actions")
 		c-field.search-input(v-if="searchable" type="search" iconL="search" placeholder="Search..." v-model="searchQuery")
 		.actions(v-if="filters.length")
@@ -48,14 +48,19 @@
 								:data="document[column.key]")
 
 		icon(v-if="!filteredDocuments.length" name="empty-state")
+	c-pagination(v-if="documents.length > perPage" :length="documents.length" :perPage="perPage" v-model:currentPage="currentPage")
+.loading(v-else)
+	c-loading(size="big")
 </template>
 
 
 <script>
-import { ref, computed, defineAsyncComponent, watch } from "vue";
+import { ref, computed, onMounted, defineAsyncComponent, watch } from "vue";
 import { sortArrayByKey } from "~/core/utils.js";
+import cPagination from "~/components/Misc/cPagination.vue";
+import cDropdown from "~/components/Inputs/cDropdown.vue";
 export default {
-	"components": { "cDropdown": defineAsyncComponent( () => import( "~/components/Inputs/cDropdown.vue" ) ) },
+	"components": { cPagination, cDropdown },
 	"props": {
 		"columns": {
 			"type": Array,
@@ -69,6 +74,15 @@ export default {
 			"type": Array,
 			"default": () => []
 		},
+		"perPage": {
+			"type": Number,
+			"default": 10
+		},
+		"loading": {
+			"type": Boolean,
+			"required": false,
+			"default": false
+		},
 		"searchable": Boolean,
 		"isdraggable": {
 			"type": Object,
@@ -81,6 +95,7 @@ export default {
 		const searchQuery = ref( "" );
 		const activeFilters = ref({});
 		const showDocuments = ref([]);
+		const currentPage = ref( 1 );
 
 		const getTableCell = cell => defineAsyncComponent( () => import( `./Cells/${cell}.vue` ) );
 
@@ -110,10 +125,12 @@ export default {
 				}
 
 				// search Query
-				if ( !searchQuery.value ) return documents;
+				if ( !searchQuery.value ) return Array.from( documents ).splice( props.perPage * ( currentPage.value - 1 ), props.perPage );
 				const query = String( searchQuery.value.toLowerCase().trim() );
 				documents = documents.filter( document => document.name.toLowerCase().includes( query ) );
-				return documents;
+
+				// pagination
+				return Array.from( documents ).splice( props.perPage * ( currentPage.value - 1 ), props.perPage );
 			} catch ( error ) {
 				console.error( error );
 				return documents;
@@ -132,6 +149,9 @@ export default {
 			emit( "cellEvent", id );
 		};
 
+		onMounted( () => {
+			for ( const filter of props.filters ) activateFilter( filter.title, filter.field, filter.keys[0]);
+		});
 
 		return {
 			getTableCell,
@@ -142,6 +162,7 @@ export default {
 			activeFilters,
 			selectedFilterTitle,
 			cellEvent,
+			currentPage,
 			showDocuments
 		};
 	}
@@ -166,9 +187,8 @@ export default {
 			display: flex
 			align-items: center
 			gap: 1em
-
 .c-table table
-	font-size: 0.85em
+	font-size: 0.875em
 	width: 100%
 	tr
 		border-bottom: 1px solid var(--c-border)
@@ -180,7 +200,7 @@ export default {
 		justify-content: flex-start
 		align-items: center
 		line-height: 1.2
-		padding: 0.7em 1em
+		padding: 0.7em 0.715em
 		&.center
 			justify-content: center
 		&.right
@@ -197,13 +217,21 @@ export default {
 			.c-button:hover
 				:deep(svg.icon-sort)
 					fill: #444
+		&.c-dropdown
+			padding: 0
 	.table-tbody
 		display: table-row-group
-
+.c-table .c-pagination
+	justify-content: flex-start
 svg.icon-empty-state
 	width: 8em
 	height: 8em
 	display: block
 	margin: 3em auto
-
+.loading
+	width: 100%
+	height: 100%
+	display: flex
+	justify-content: center
+	align-items: center
 </style>

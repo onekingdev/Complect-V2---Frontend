@@ -2,8 +2,7 @@ name: API Deploy (Dev)
 on:
   push:
     branches: [ dev ]
-    paths:
-      - "api/**"
+
 defaults:
   run:
     working-directory: api

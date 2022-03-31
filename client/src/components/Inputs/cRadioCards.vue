@@ -54,7 +54,7 @@ export default {
 .c-radio-card
 	display: flex
 	gap: 1.5em
-	margin-top: 0.5em
+	margin: 1em 0 0 0
 	label.radio-card
 		flex: 1 0 0
 		display: flex
@@ -76,7 +76,7 @@ export default {
 				text-align: center
 				padding: 2.5em 1em
 				.title
-					font-weight: bold
+					font-weight: 600
 					margin-bottom: 1em
 				svg.icon
 					width: 3em
@@ -94,7 +94,7 @@ export default {
 					margin-bottom: 0.3em
 				.description
 					color: var(--c-dimmed)
-					font-size: 0.9em
+					font-size: 0.875em
 					line-height: 1.4
 			&:hover
 				background: #f6f6f8

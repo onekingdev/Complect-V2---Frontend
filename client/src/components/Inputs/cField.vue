@@ -1,6 +1,6 @@
 <template lang="pug">
 c-label.c-input.c-field(:class="{fullwidth, disabled, transparent}" v-bind="{label, required}")
-	.field-body(:class="{'errors': errors && errors.length}")
+	div(:class="{'errors': errors && errors.length, 'field-body': type != 'rich'}")
 		icon(v-if="iconL || icon" :name="iconL || type")
 		component.field-input(
 			:is="type"
@@ -30,6 +30,7 @@ export default {
 		"Search": defineAsyncComponent( () => import( "./Types/TypeSearch.vue" ) ),
 		"Tel": defineAsyncComponent( () => import( "./Types/TypeTel.vue" ) ),
 		"Text": defineAsyncComponent( () => import( "./Types/TypeText.vue" ) ),
+		"Rich": defineAsyncComponent( () => import( "./Types/TypeRich.vue" ) ),
 		"Time": defineAsyncComponent( () => import( "./Types/TypeTime.vue" ) ),
 		"Url": defineAsyncComponent( () => import( "./Types/TypeUrl.vue" ) ),
 		"Address": defineAsyncComponent( () => import( "./Types/TypeAddress.vue" ) )

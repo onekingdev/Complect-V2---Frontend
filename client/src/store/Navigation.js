@@ -36,23 +36,6 @@ const sidebarNavigation = [
 	}
 ];
 
-const sidebarSpecialistNavigation = [{
-	"title": "Overview",
-	"icon": "list-outline",
-	"links": [
-		{
-			"title": "Dashboard",
-			"view": "Dashboard"
-		}, {
-			"title": "Tasks",
-			"view": "TasksOverview"
-		}, {
-			"title": "Jobs",
-			"view": "JobsOverview"
-		}
-	]
-}];
-
 const sidebarHomeNavigation = [
 	{
 		"title": "Overview",
@@ -154,7 +137,6 @@ export default function useNavigation () {
 	return {
 		topbarNavigation,
 		sidebarHomeNavigation,
-		sidebarSpecialistNavigation,
 		sidebarDocumentsNavigation,
 		sidebarReportsNavigation,
 		sidebarReportsSpecialistNavigation,

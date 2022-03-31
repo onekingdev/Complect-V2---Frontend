@@ -33,25 +33,29 @@ c-modal(title="Edit Project" v-model="isEditModalVisible")
 		c-button(title="Save" type="primary" @click="updateProject()")
 c-modal(title="Complete Project" v-model="isCompleteModalVisible")
 	template(#content)
-		icon.col-1(name="success" size="big")
-		.text.col-5
-			p This will mark the project as complete and close the project to further edits.
-			b Do you want to continue?
+		.delete-container
+			div
+				icon.col-1(name="success" size="big")
+			.description
+				p This will mark the project as complete and close the project to further edits.
+				p.confirm Do you want to continue?
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="markAsComplete()")
 c-modal(title="Reactive Project" v-model="isIncompleteModalVisible")
 	template(#content)
 		icon.col-1(name="success" size="big")
-		.text.col-5
+		.description
 			p This project will be reactiveated and re-accessible for editing by all collaborators.
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="markAsIncomplete()")
 c-modal(title="Remove Project" v-model="isDeleteModalVisible")
 	template(#content)
-		icon.col-1(name="error" size="big")
-		.text.col-5
-			p This will delete the project and all of its related tasks, documents, and comments from your records.
-			b Do you want to continue?
+		.delete-container
+			div
+				icon(name="error" size="big")
+			.description
+				p This will delete the project and all of its related tasks, documents, and comments from your records.
+				p.confirm Do you want to continue?
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="deleteProject()")
 </template>
@@ -166,10 +170,7 @@ export default {
 			projectForm.value.endsAt = projects.getDocument().value.endsAt;
 			projectForm.value.description = projects.getDocument().value.description;
 		};
-		const closeProject = () => {
-			if ( profile.value.type === "specialist" ) router.push({ "name": "JobsOverview" });
-			else router.push({ "name": "ProjectsOverview" });
-		};
+		const closeProject = () => router.push({ "name": "ProjectsOverview" });
 		const updateProject = async updateDocument => {
 			try {
 				if ( updateDocument ) projectForm.value = updateDocument;
@@ -331,4 +332,12 @@ export default {
 <style lang="stylus" scoped>
 .show-calendar
 	margin-bottom: 2em
+.delete-container
+	display: flex
+	gap: 1.25em
+	.description
+		font-size: 0.875em
+		.confirm
+			padding-top: 0.625em
+			font-weight: bold
 </style>

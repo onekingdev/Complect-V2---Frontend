@@ -4,7 +4,7 @@
 	icon(v-if="meta && meta.icon" :name="meta.icon" size="big")
 	icon(v-if="meta && meta.expandable && !showSub && controlLength" name="chevron-right" @click="hideShow()")
 	icon(v-if="meta && meta.expandable && showSub && controlLength" name="chevron-down" @click="hideShow()")
-	template(v-if="meta && meta.link && id")
+	template(v-if="meta && meta.link")
 		router-link(:to="{name: meta.link, params: {id: id}}") {{data}}
 	template(v-else) {{data}}
 </template>
@@ -17,8 +17,7 @@ export default {
 	"props": {
 		"id": {
 			"type": String,
-			"required": true,
-			"default": false
+			"required": true
 		},
 		"data": {
 			"type": String,

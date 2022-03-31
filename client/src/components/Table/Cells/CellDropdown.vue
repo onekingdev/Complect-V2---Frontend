@@ -43,9 +43,12 @@ export default {
 		left: -100%
 		min-width: 8em
 	:deep(.c-button)
-		padding: 0.6em 1em
+		padding: 0.6em 0.8em
 		.title
 			font-size: 1.2em
 			color: var(--c-headers)
 			font-weight: 600
+	:deep(svg.icon)
+		width: 1.275em
+		height: 1.275em
 </style>

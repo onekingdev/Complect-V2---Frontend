@@ -65,10 +65,7 @@ export default {
 		const isDeleteModalVisible = ref( false );
 		const notification = inject( "notification" );
 		const toggleDeleteModal = () => isDeleteModalVisible.value = !isDeleteModalVisible.value;
-		const gotoProposal = id => {
-			const findProposal = proposals.getDocuments().value.find( proposal => proposal._id === id );
-			router.push({ "name": "ProposalView", "params": { "id": findProposal.job_id, "specialist_id": findProposal.owner_id } });
-		};
+		const gotoProposal = id => router.push({ "name": "ProposalView", "params": { id } });
 		const deleteJobPost = async () => {
 			try {
 				await jobs.deleteDocuments( props.projectDetail.jobId );
