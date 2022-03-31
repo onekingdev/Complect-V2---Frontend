@@ -18,13 +18,13 @@ card-container(title="Subscription")
 				p Next payment date {{ formatDate(linkaccount.currentPlan.subscriptionEndAt * 1000) }}
 c-modal(title="Cancel Plan" v-model="isCancelVisible")
 	template(#content)
-		.delete-container
-			div
-				icon(name="error" size="big")
-			.description
-				p You are canceling your subscription to Complect. This will terminate your access to our full suite of features on {{ formatDate(linkaccount.currentPlan.subscriptionEndAt * 1000) }} when your subscription ends.
-				p If you have more than 1GB of stored data or users, this will cause your account to be locked until you upgrade to a paid plan.
-				p.confirm Do you want to continue?
+		.col-1
+			icon(name="error" size="huge")
+		.col-5
+			p You are canceling your subscription to Complect. This will terminate your access to our full suite of features on {{ formatDate(linkaccount.currentPlan.subscriptionEndAt * 1000) }} when your subscription ends.
+			p If you have more than 1GB of stored data or users, this will cause your account to be locked until you upgrade to a paid plan.
+			p
+				b Do you want to continue?
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="cancelPlan()")
 c-modal(title="Edit Plan" v-model="isEditPlanVisible" wide)
@@ -125,10 +125,10 @@ export default {
 				"url": `payment/method/${userType === "business" ? profile.value.businessId : profile.value.specialistId}`
 			});
 			const paymentInfo = [];
-			for ( let i = 0; i < response.data.data.length; i++ ) {
+			for ( let i = 0; i < response.data.length; i++ ) {
 				paymentInfo.push({
-					"value": response.data.data[i].id,
-					"title": `**** **** **** ${response.data.data[i].last4} ${response.data.data[i].brand}`
+					"value": response.data[i].id,
+					"title": `**** **** **** ${response.data[i].last4} ${response.data[i].brand}`
 				});
 			}
 			payments.value = paymentInfo;
@@ -140,10 +140,10 @@ export default {
 				await manualApi({
 					"method": "post",
 					"url": `payment/subscription/${userType === "business" ? profile.value.businessId : profile.value.specialistId}`,
-					"newData": {
+					"data": JSON.stringify({
 						"planId": planId._id,
 						"cardId": payInfo.value
-					}
+					})
 				});
 				isEditPlanVisible.value = !isEditPlanVisible.value;
 				notification({
@@ -243,12 +243,4 @@ export default {
 		margin-bottom: 0.7em
 .plan-content.plan-hide
 	display: none
-.delete-container
-	display: flex
-	gap: 1.25em
-	.description
-		font-size: 0.875em
-		.confirm
-			padding-top: 0.625em
-			font-weight: bold
 </style>

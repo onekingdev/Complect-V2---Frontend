@@ -2,7 +2,8 @@
 .job-detail
 	.controls
 		c-button(iconL="chevron-left" title="Close" @click="closeDetail()")
-		c-button.right-button(title="Apply" type="primary")
+		c-button.right-button(title="Apply" type="primary" @click="applyJob()" v-if="!proposal || proposal.length == 0")
+		c-button.right-button(title="Edit Proposal" type="primary" @click="editProposal()" v-else)
 	.content
 		.job-detail-content
 			p.job-board-title Project Details
@@ -10,15 +11,15 @@
 			.job-info-content.grid-6
 				.col-1.job-info-title Location
 				div.col-1
-				.col-1.job-info-value {{ job.locationType }}
+				.col-1.job-info-value {{ locationType[job.locationType] }}
 			.job-info-content.grid-6
 				.col-1.job-info-title Industry
 				div.col-1
-				.col-1.job-info-value {{ job.industries }}
+				.col-1.job-info-value {{ job.industries?.map( ind => industriesMap[ind] ).join(',  ') }}
 			.job-info-content.grid-6
 				.col-1.job-info-title Start Date
 				div.col-1
-				.col-1.job-info-value {{ formatDate(job.startAt) }}
+				.col-1.job-info-value {{ formatDate(job.startsAt) }}
 			.job-info-content.grid-6
 				.col-1.job-info-title End Date
 				div.col-1
@@ -26,7 +27,7 @@
 			.job-info-content.grid-6
 				.col-1.job-info-title Min. Expereince
 				div.col-1
-				.col-1.job-info-value {{ job.level }}
+				.col-1.job-info-value {{ minExperience[job.minExperience] }}
 			.job-info-content.grid-6
 				.col-1.job-info-title Description
 				div.col-1
@@ -34,27 +35,27 @@
 			.job-info-content.grid-6
 				.col-1.job-info-title Role Details
 				div.col-1
-				.col-1.job-info-value {{ job.roleDetail }}
+				.col-1.job-info-value {{ job.roleDetails }}
 			div.grid-6.job-info
 				div.col-2.job-info-ind
 					icon(name="money" size="small")
 					.detail
-						label(v-if="job.priceType == 'Hourly'")
+						label(v-if="job.priceType !== 'fixed'")
 							span Hourly Rate
-							p ${{ job.budget[0] }} ~ ${{ job.budget[1] }}
+							p ${{ job.hourlyRate }} ~ ${{ job.maxHourlyRate }}
 						label(v-else)
 							span Fixed Budget
-							p ${{ job.budget[0] }}
+							p ${{ job.budget }}
 				div.col-2.border-left.job-info-ind
 					icon(name="money" size="small")
 					.detail
 						span PAYMENT SCHEDULE
-						p {{ job.payment }}
+						p {{ paymentType[job.paymentSchedule] }}
 				div.col-2.border-left.job-info-ind
 					icon(name="world" size="small")
 					.detail
 						span EXPEREINCE
-						p {{ job.level }}
+						p {{ minExperience[job.minExperience] }}
 		hr
 		.skill-content
 			p.skill-title Skills
@@ -97,11 +98,13 @@ c-modal(:title="`Message with ${business.firstName} ${business.lastName}`" v-mod
 
 
 <script>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import { formatDate } from "~/core/utils.js";
-// import useData from "~/store/Data.js";
+import UseData from "~/store/Data.js";
+import { industries, jurisdictions, minExperience, paymentType, locationType } from "~/data/static.js";
 import cSelect from "~/components/Inputs/cSelect.vue";
+import useProfile from "~/store/Profile.js";
 import cLabel from "~/components/Misc/cLabel.vue";
 import cBadge from "~/components/Misc/cBadge.vue";
 import cAvatar from "~/components/Misc/cAvatar.vue";
@@ -110,31 +113,10 @@ import cModal from "~/components/Misc/cModal.vue";
 export default {
 	"components": { cSelect, cLabel, cBadge, cAvatar, cChat, cModal },
 	setup () {
-		const job = ref({
-			"id": "234982734982734",
-			"name": "Test1",
-			"startAt": 1643994498410,
-			"endsAt": 1643994498410,
-			"description": "This is first test project",
-			"details": "",
-			"locationType": "Remote",
-			"location": "USA",
-			"jurisdictions": "USA",
-			"industries": "Bank",
-			"skills": [
-				"HTML", "CSS", "Javascript"
-			],
-			"level": "Intermediate",
-			"minExperience": 4,
-			"regulator": true,
-			"priceType": "Hourly",
-			"budget": [
-				"30", "50"
-			],
-			"roleDetail": "Test",
-			"payment": "Upon Complete",
-			"duration": "Less than 1 month"
-		});
+		const route = useRoute();
+		const jobs = new UseData( "jobs" );
+		const proposals = new UseData( "proposals" );
+		const { profile } = useProfile();
 		const business = ref({
 			"id": "3234234029384209384",
 			"firstName": "Manuel",
@@ -151,17 +133,34 @@ export default {
 		const isChatVisible = ref( false );
 		const router = useRouter();
 		const toggleChatModal = () => isChatVisible.value = !isChatVisible.value;
+		// eslint-disable-next-line no-sequences
+		const juristdictionMap = jurisdictions.reduce( ( jur, cur ) => ( jur[cur.value] = cur.title, jur ), {});
+		// eslint-disable-next-line no-sequences
+		const industriesMap = industries.reduce( ( ind, cur ) => ( ind[cur.value] = cur.title, ind ), {});
 
-
+		onMounted( () => {
+			jobs.readDocuments( route.params.id );
+			proposals.readDocuments( "", { "job_id": route.params.id, "owner_id": profile.value._id });
+		});
 		const closeDetail = () => router.push({ "name": "JobBoard" });
+		const applyJob = () => router.push({ "name": "ProposalNew", "params": { "id": route.params.id } });
+		const editProposal = () => router.push({ "name": "ProposalEdit", "params": { "id": route.params.id } });
 
 		return {
-			job,
+			"job": jobs.getDocument(),
+			"proposal": proposals.getDocuments(),
 			business,
 			closeDetail,
 			formatDate,
 			toggleChatModal,
-			isChatVisible
+			isChatVisible,
+			juristdictionMap,
+			industriesMap,
+			minExperience,
+			paymentType,
+			locationType,
+			applyJob,
+			editProposal
 		};
 	}
 };

@@ -4,19 +4,23 @@ page-container(section="Projects" :title="document.name" :owner="linkaccount?.co
 		c-checkbox.show-calendar(label="Show on Calendar")
 
 	template(#controls)
-		c-button(title="Post Project"  @click="postProject()" v-if="document.creator === profile._id")
+		c-button(title="Post Project"  @click="postProject()" v-if="document.creator === profile._id && !document.jobId")
 		c-button(v-if="!document.completed" title="Mark as Complete" type="primary" @click="toggleCompleteModal()")
 		c-button(v-if="document.completed && document.creator === profile._id" title="Mark as Incomplete" type="primary" @click="toggleIncompleteModal()")
-		c-button(title="Post Project"  @click="postProject()" v-if="document.creator !== profile._id")
+		c-button(title="Post Project"  @click="postProject()" v-if="document.creator !== profile._id && !document.jobId")
 		c-button(type="icon" iconL="close" size="small" @click="closeProject()")
 
-	template(#tabs)
+	template(#tabs v-if="!document.jobId")
 		router-link(v-for="(tab, index) in tabs" :key="index" :to="{name: tab.routeName}") {{ $locale(tab.title)}}
+	template(#tabs v-if="document.jobId && (!proposals || proposals.length == 0)")
+		router-link(v-for="(tab, index) in jobTabs" :key="index" :to="{name: tab.routeName}") {{ $locale(tab.title)}}
+	template(#tabs v-if="document.jobId && proposals && proposals.length > 0")
+		router-link(v-for="(tab, index) in contractTab" :key="index" :to="{name: tab.routeName}") {{ $locale(tab.title)}}
 	template(#navigation-controls)
 		// c-dropdown(title="Actions" v-if="document.creator === profile._id")
 		c-dropdown(title="Actions")
-			c-button(title="Edit" modalTitle="Edit Project" type="transparent" @click="toggleEditModal()")
-			c-button(title="Delete" type="transparent" modalTitle="Remove Project" @click="toggleDeleteModal()")
+			c-button(title="Edit" type="transparent" @click="toggleEditModal()")
+			c-button(title="Delete" type="transparent" @click="toggleDeleteModal()")
 	template(#content)
 		router-view(v-model:projectDetail="document" :reloadCollection="reloadCollection")
 c-modal(title="Edit Project" v-model="isEditModalVisible")
@@ -29,29 +33,25 @@ c-modal(title="Edit Project" v-model="isEditModalVisible")
 		c-button(title="Save" type="primary" @click="updateProject()")
 c-modal(title="Complete Project" v-model="isCompleteModalVisible")
 	template(#content)
-		.delete-container
-			div
-				icon.col-1(name="success" size="big")
-			.description
-				p This will mark the project as complete and close the project to further edits.
-				p.confirm Do you want to continue?
+		icon.col-1(name="success" size="big")
+		.text.col-5
+			p This will mark the project as complete and close the project to further edits.
+			b Do you want to continue?
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="markAsComplete()")
 c-modal(title="Reactive Project" v-model="isIncompleteModalVisible")
 	template(#content)
 		icon.col-1(name="success" size="big")
-		.description
+		.text.col-5
 			p This project will be reactiveated and re-accessible for editing by all collaborators.
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="markAsIncomplete()")
 c-modal(title="Remove Project" v-model="isDeleteModalVisible")
 	template(#content)
-		.delete-container
-			div
-				icon(name="error" size="big")
-			.description
-				p This will delete the project and all of its related tasks, documents, and comments from your records.
-				p.confirm Do you want to continue?
+		icon.col-1(name="error" size="big")
+		.text.col-5
+			p This will delete the project and all of its related tasks, documents, and comments from your records.
+			b Do you want to continue?
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="deleteProject()")
 </template>
@@ -66,6 +66,69 @@ import cCheckbox from "~/components/Inputs/cCheckbox.vue";
 import useProfile from "~/store/Profile.js";
 import { manualApi } from "~/core/api.js";
 import cModal from "~/components/Misc/cModal.vue";
+
+const tabs = [
+	{
+		"title": "Detail",
+		"routeName": "ProjectDetail"
+	}, {
+		"title": "Tasks",
+		"routeName": "ProjectTasks"
+	}, {
+		"title": "Documents",
+		"routeName": "ProjectDocuments"
+	}, {
+		"title": "Collaborators",
+		"routeName": "ProjectCollaborators"
+	}
+];
+
+const jobTabs = [
+	{
+		"title": "Detail",
+		"routeName": "ProjectDetail"
+	},
+	{
+		"title": "Tasks",
+		"routeName": "ProjectTasks"
+	},
+	{
+		"title": "Documents",
+		"routeName": "ProjectDocuments"
+	},
+	{
+		"title": "Collaborators",
+		"routeName": "ProjectCollaborators"
+	},
+	{
+		"title": "Job Post",
+		"routeName": "ProjectPost"
+	}
+];
+
+const contractTab = [
+	{
+		"title": "Detail",
+		"routeName": "ProjectDetail"
+	},
+	{
+		"title": "Tasks",
+		"routeName": "ProjectTasks"
+	},
+	{
+		"title": "Documents",
+		"routeName": "ProjectDocuments"
+	},
+	{
+		"title": "Collaborators",
+		"routeName": "ProjectCollaborators"
+	},
+	{
+		"title": "Contract",
+		"routeName": "ProjectContract"
+	}
+];
+
 export default {
 	"components": {
 		cDropdown,
@@ -75,7 +138,7 @@ export default {
 	// eslint-disable-next-line
 	setup () {
 		const projects = new UseData( "projects" );
-		const contracts = new UseData( "contracts" );
+		const proposals = new UseData( "proposals" );
 		const notification = inject( "notification" );
 		const route = useRoute();
 		const router = useRouter();
@@ -90,22 +153,6 @@ export default {
 			"endsAt": "",
 			"description": ""
 		});
-
-		const tabs = [
-			{
-				"title": "Detail",
-				"routeName": "ProjectDetail"
-			}, {
-				"title": "Tasks",
-				"routeName": "ProjectTasks"
-			}, {
-				"title": "Documents",
-				"routeName": "ProjectDocuments"
-			}, {
-				"title": "Collaborators",
-				"routeName": "ProjectCollaborators"
-			}
-		];
 
 		const reloadCollection = () => projects.readDocuments( route.params.id );
 
@@ -141,11 +188,11 @@ export default {
 
 		const markAsComplete = async () => {
 			try {
-				await contracts.readDocuments( "", { "project": projects.getDocument().value._id });
-				const allContracts = contracts.getDocuments();
+				await proposals.readDocuments( "", { "job_id": projects.getDocument().value.jobId });
+				const allContracts = proposals.getDocuments().value;
 				const hasActive = ref( false );
 				// eslint-disable-next-line max-depth
-				for ( let i = 0; i < allContracts.length; i++ ) if ( allContracts[i].status !== "complete" ) hasActive.value = false;
+				for ( let i = 0; i < allContracts.length; i++ ) if ( allContracts[i].status !== "complete" ) hasActive.value = true;
 				if ( hasActive.value === true ) {
 					notification({
 						"type": "error",
@@ -198,8 +245,8 @@ export default {
 			closeProject();
 
 			try {
-				await contracts.readDocuments( "", { "project": projects.getDocument().value._id });
-				const allContracts = contracts.getDocuments();
+				await proposals.readDocuments( "", { "job_id": projects.getDocument().value.jobId });
+				const allContracts = proposals.getDocuments().value;
 				const hasActive = ref( false );
 				// eslint-disable-next-line max-depth
 				for ( let i = 0; i < allContracts.length; i++ ) if ( allContracts[i].status !== "complete" ) hasActive.value = false;
@@ -233,7 +280,7 @@ export default {
 				"method": "get",
 				"url": `payment/method/${userType === "business" ? profile.value.businessId : profile.value.specialistId}`
 			});
-			if ( response.data?.data && response.data?.data.length > 0 ) router.push({ "name": "ProjectPost" });
+			if ( response.data && response.data.length > 0 ) router.push({ "name": "ProjectPostJob", "params": { "id": projects.getDocument().value._id } });
 			else {
 				router.push({ "name": "BillingPlan" });
 				notification({
@@ -244,11 +291,15 @@ export default {
 			}
 		};
 
-		onMounted( () => projects.readDocuments( route.params.id ) );
+		onMounted( async () => {
+			await projects.readDocuments( route.params.id );
+			proposals.readDocuments( "", { "job_id": projects.getDocument().value.jobId, "status": "accepted" });
+		});
 		onUnmounted( () => projects.clearStore() );
 
 		return {
 			"document": projects.getDocument(),
+			"proposals": proposals.getDocuments(),
 			tabs,
 			markAsComplete,
 			closeProject,
@@ -267,7 +318,9 @@ export default {
 			isDeleteModalVisible,
 			markAsIncomplete,
 			projectForm,
-			reloadCollection
+			reloadCollection,
+			jobTabs,
+			contractTab
 		};
 	}
 };
@@ -275,12 +328,4 @@ export default {
 <style lang="stylus" scoped>
 .show-calendar
 	margin-bottom: 2em
-.delete-container
-	display: flex
-	gap: 1.25em
-	.description
-		font-size: 0.875em
-		.confirm
-			padding-top: 0.625em
-			font-weight: bold
 </style>

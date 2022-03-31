@@ -65,7 +65,6 @@ export default {
 	height: 100%
 	min-height: 0
 	.container-header
-		background: var(--c-bg-z1)
 		flex-shrink: 0
 		display: flex
 		flex-wrap: wrap
@@ -75,7 +74,7 @@ export default {
 			padding: 2em
 			flex: 1
 			.page-name
-				font-size: 1.5em
+				font-size: 1.4em
 				display: flex
 				align-items: center
 				.title

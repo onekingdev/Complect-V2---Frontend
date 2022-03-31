@@ -33,6 +33,7 @@ export default {
 	display: flex
 	padding: 1em 1.5em
 	background: var(--c-bg-z2, #fff)
+	border-bottom: 1px solid var(--c-border, #dcdee4)
 	.logo
 		margin-right: auto
 		svg.icon-logo
@@ -62,7 +63,7 @@ export default {
 				font-size: 2em
 				font-weight: 600
 			h2
-				font-size: 1.25em
+				font-size: 1.3em
 			.form
 				margin: 1em 0 0em
 		.card-footer

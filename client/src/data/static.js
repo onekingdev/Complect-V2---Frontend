@@ -1649,6 +1649,22 @@ const timezones = [
 	{ "title": "Samoa", "value": "Pacific/Apia" },
 	{ "title": "Tokelau Is.", "value": "Pacific/Fakaofo" }
 ];
+const minExperience = {
+	"1": "Junior",
+	"2": "Intermediate",
+	"3": "Expert"
+};
+const paymentType = {
+	"upfront": "Upfront",
+	"50/50": "50/50",
+	"uponCompletion": "Upon Completion",
+	"monthly": "Monthly",
+	"biweekly": "Bi-Weekly"
+};
+const locationType = {
+	"remote": "Remote",
+	"travle": "Remote + Travel",
+	"onsite": "Onsite"
+};
 
-
-export { industries, subIndustries, jurisdictions, countries, timezones, selectCountries };
+export { industries, subIndustries, jurisdictions, countries, timezones, selectCountries, minExperience, paymentType, locationType };

@@ -99,11 +99,11 @@ export default {
 				opacity: 0.4
 	&.primary
 		color: #fff
-		background: #1B1C29
+		background: #2E304F
 		&:hover, &.hovered
-			background: #2E304F
-		&.focused
 			background: #1B1C29
+		&.focused
+			background: #2e304f
 			box-shadow: 0 0 0 0.15em #007aff
 		&:active, &.active
 			background: #000

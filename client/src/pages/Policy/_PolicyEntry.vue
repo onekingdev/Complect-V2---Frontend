@@ -26,12 +26,12 @@ menu-container(:type="menuType")
 					c-button(title="Archive" type="transparent" @click="toggleArchivePolicy()")
 					c-button-modal(title="Delete" type="transparent"  modalTitle="Delete Policy")
 						template(#content)
-							.delete-container
-								div
-									icon(name="error" size="big")
-								.description
-									p Removing this policy will permanently delete all risks and tasks associated with this policy.
-									p.confirm Do you want to continue?
+							.col-1
+								icon(name="error" size="huge")
+							.col-5
+								p Removing this policy will permanently delete all risks and tasks associated with this policy.
+								p
+									b Do you want to continue?
 						template(#footer)
 							c-button(title="Confirm" type="primary" @click="deletePolicy()")
 			template(#tabs  v-if="policyDetails.status == 'archived'")
@@ -40,54 +40,54 @@ menu-container(:type="menuType")
 					c-button(title="Unarchive" type="transparent"  @click="toggleUnarchivePolicy()")
 					c-button-modal(title="Delete" type="transparent"  modalTitle="Delete Policy")
 						template(#content)
-							.delete-container
-								div
-									icon(name="error" size="big")
-								.description
-									p Removing this policy will permanently delete all risks and tasks associated with this policy.
-									p.confirm Do you want to continue?
+							.col-1
+								icon(name="error" size="huge")
+							.col-5
+								p Removing this policy will permanently delete all risks and tasks associated with this policy.
+								p
+									b Do you want to continue?
 						template(#footer)
 							c-button(title="Confirm" type="primary" @click="deletePolicy()")
 			template(#content)
 				router-view(v-model:policyDetails="policyDetails")
 c-modal(title="Unsaved Change" v-model="isUnsavedVisible")
 	template(#content)
-		.delete-container
-			div
-				icon(name="warning" size="big")
-			.description
-				p You have unsaved changes. Exiting without saving will clear all unsaved information.
-				p.confirm Do you want to continue?
+		.col-1
+			icon(name="warning" size="huge")
+		.col-5
+			p You have unsaved changes. Exiting without saving will clear all unsaved information.
+			p
+				b Do you want to continue?
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="toPoliciePage()")
 c-modal(title="Publish Policy" v-model="isPublishVisible")
 	template(#content)
-		.delete-container
-			div
-				icon(name="success" size="big")
-			.description
-				p You are publishing a policy which will make it viewable to all users. It will also be included in an official version of the compliance manual.
-				p.confirm Do you want to continue?
+		.col-1
+			icon(name="success" size="huge")
+		.col-5
+			p You are publishing a policy which will make it viewable to all users. It will also be included in an official version of the compliance manual.
+			p
+				b Do you want to continue?
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="publishPolicy()")
 c-modal(title="Archive Policy" v-model="isArchiveVisible")
 	template(#content)
-		.delete-container
-			div
-				icon(name="warning" size="big")
-			.description
-				p Archiving the policy will remove it from the published compliance manual, but maintain a record of the policy and all of its linked risks and tasks.
-				p.confirm Do you want to continue?
+		.col-1
+			icon(name="warning" size="huge")
+		.col-5
+			p Archiving the policy will remove it from the published compliance manual, but maintain a record of the policy and all of its linked risks and tasks.
+			p
+				b Do you want to continue?
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="archivePolicy()")
 c-modal(title="Unarchive Policy" v-model="isUnarchiveVisible")
 	template(#content)
-		.delete-container
-			div
-				icon(name="warning" size="big")
-			.description
-				p Unarchiving the policy will place it back into the compliance manual.
-				p.confirm Do you want to continue?
+		.col-1
+			icon(name="warning" size="huge")
+		.col-5
+			p Unarchiving the policy will place it back into the compliance manual.
+			p
+				b Do you want to continue?
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="unarchivePolicy()")
 </template>
@@ -300,7 +300,7 @@ export default {
 			const pdfLink = await manualApi({
 				"method": "post",
 				"endpoint": "/pdf",
-				"newData": pdfData
+				"data": JSON.stringify( pdfData )
 			});
 			window.location.href = pdfLink.data;
 		};
@@ -368,12 +368,4 @@ export default {
 			border: 1px solid #ddd
 			border-radius: 5px
 			margin-bottom: 5px
-.delete-container
-	display: flex
-	gap: 1.25em
-	.description
-		font-size: 0.875em
-		.confirm
-			padding-top: 0.625em
-			font-weight: bold
 </style>

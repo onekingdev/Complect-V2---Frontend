@@ -3,12 +3,12 @@ card-container(:title="modalTitle" ref="modalWindow")
 	template(#controls)
 		c-button(type="icon" iconL="close" size="small" @click="closeModal()")
 	template(#content)
-		.content
-			div
-				icon(name="error" size="big")
-			.description
-				p {{ description }}
-				p.confirm Do you want to continue?
+		.grid-6
+			.col-1
+				icon(name="error" size="huge")
+			.col-5
+				div.description {{ description }}
+				div.description.confirm Do you want to continue?
 	template(#footer)
 		c-button(title="Cancel" type="link" @click="closeModal()")
 		c-button(title="Confirm" type="primary" @click="handleClickDelete()")
@@ -113,15 +113,8 @@ export default {
 
 
 <style lang="stylus" scoped>
-.card-container
-	:deep(.card-content)
-		padding: 1.25em
-.content
-	display: flex
-	gap: 1.25em
 .description
-	font-size: 0.875em
-	.confirm
-		padding-top: 0.625em
-		font-weight: bold
+	font-size: 0.8em
+.confirm
+	font-weight: bold
 </style>

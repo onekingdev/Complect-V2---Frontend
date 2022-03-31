@@ -39,7 +39,7 @@
 
 
 <script>
-import { ref } from "vue";
+import { ref, inject } from "vue";
 import { useRouter } from "vue-router";
 import useProfile from "~/store/Profile.js";
 import useForm from "~/store/Form.js";
@@ -83,6 +83,7 @@ export default {
 		const { profile } = useProfile();
 		const userType = profile.value.type;
 		const { form } = useForm( "onboarding", baseForm[userType]);
+		const notification = inject( "notification" );
 
 		const wizardSteps = [
 			{ "title": "Account information" },	{ "title": "Personal information" }, { "title": "Payout type" }
@@ -147,7 +148,7 @@ export default {
 				const response = await manualApi({
 					"url": "payment/account",
 					"method": "post",
-					"newData": requestBody
+					"data": JSON.stringify( requestBody )
 				});
 				const specialist = new UseData( "specialist" );
 				await specialist.readDocuments( profile.value.specialistId );
@@ -161,9 +162,18 @@ export default {
 					primary
 				});
 				specialist.updateDocument( specialist.getDocument().value._id, { account });
+				notification({
+					"type": "success",
+					"title": "Success",
+					"message": "Receiving bank has been added."
+				});
 				router.push({ "name": "SettingsBilling" });
 			} catch ( error ) {
-				console.debug( error );
+				notification({
+					"type": "error",
+					"title": "Error",
+					"message": "Receiving bank has not been added. Please try again."
+				});
 			}
 		};
 
