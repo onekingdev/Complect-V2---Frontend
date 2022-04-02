@@ -2,11 +2,14 @@
 card-container
 	template(#content)
 		h1 Confirm Your Email
-		h3 We sent a 6 digit code to {{email}}. Please enter it below.
+		div
+			h3 We sent a 6 digit code to {{email}}.
+			h3 Please enter it below.
 		icon(name="mail")
 		.confirmation-code
 			input(v-for="i in 6" :key="i" type="number" :ref="el => { if (el) inputs[i-1] = el }" v-model="numbers[i-1]" required)
-		.error(v-if="errorMessage") {{ errorMessage }}
+		.error
+			.message(v-if="errorMessage") {{ errorMessage }}
 		c-button(title="Submit" type="primary" @click="submitCode()" fullwidth)
 	template(#footer)
 		c-button(title="Send new code" type="link" @click="sendNewCode()")
@@ -98,17 +101,21 @@ export default {
 
 <style lang="stylus" scoped>
 .error
-	font-size: 0.8em
-	color: red
-	text-align: center
+	height: 1.4em
+	.message
+		font-size: 0.8em
+		color: red
+		text-align: center
 svg.icon
 	flex: 1
 	display: block
 	width: 12em
 	height: 8em
 	margin: 2em auto
+h3
+	text-align: center
 .confirmation-code
-	margin: 1em
+	margin: 1em 1em 0 1em
 	display: flex
 	gap: 0.5em
 	font-size: 1.6em

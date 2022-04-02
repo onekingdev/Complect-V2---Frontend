@@ -6,7 +6,7 @@ card-container
 			c-field(label="Email" type="email" :errors="errors.email" v-model="form.email" fullwidth required)
 			c-field(label="Password" type="password" :errors="errors.password" v-model="form.password" fullwidth required)
 			c-button(title="Sign In" type="primary" @click="signIn()" fullwidth)
-			router-link(:to="{name: 'AuthResetPassword'}") Forgot Password
+			router-link.forgot-password(:to="{name: 'AuthResetPassword'}") Forgot Password
 	template(#footer)
 		p Don't have an account yet?&nbsp;
 			router-link(:to="{name: 'AuthSignUp'}") Sign Up
@@ -55,3 +55,8 @@ export default {
 	}
 };
 </script>
+
+<style lang="stylus" scoped>
+.forgot-password
+	font-size: 0.875em
+</style>

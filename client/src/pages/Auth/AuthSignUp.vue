@@ -10,8 +10,8 @@ card-container
 			h1 Let's get you started!
 			h2 Create your FREE account
 			.form.grid-6
-				c-field.col-3(label="First Name" :errors="errors.firstName" v-model="form.firstName" required)
-				c-field.col-3(label="Last Name" :errors="errors.lastName" v-model="form.lastName" required)
+				c-field.name-col.col-3(label="First Name" :errors="errors.firstName" v-model="form.firstName" required)
+				c-field.name-col.col-3(label="Last Name" :errors="errors.lastName" v-model="form.lastName" required)
 				c-field(label="Email" :errors="errors.email" v-model="form.email" required)
 				c-field(label="Password" type="password" :errors="errors.password" v-model="form.password" required)
 				c-field(label="Repeat Password" type="password" :errors="errors.password2" v-model="password2" required)
@@ -102,4 +102,8 @@ export default {
 	margin: 1em 0
 .terms
 	font-size: 0.875em
+.name-col
+	@media (max-width: 500px)
+		grid-column: 1 / -1
+
 </style>

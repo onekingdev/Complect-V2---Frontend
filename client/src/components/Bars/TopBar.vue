@@ -150,6 +150,7 @@ export default {
 			width: 0.7em
 			height: 0.7em
 			margin-left: 1em
+			fill: var(--c-text)
 			transition: transform var(--fx-duration-short, .15s)
 		.dropdown-menu
 			font-size: 0.9em
