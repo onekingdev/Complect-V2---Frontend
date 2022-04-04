@@ -21,8 +21,8 @@ card-container
 				a(href="https://www.complect.com/privacy-policy" target="_blank" rel="noopener") Privacy Policy
 			c-button(title="Sign Up" type="primary" @click="signUpUser()" fullwidth)
 	template(#footer)
-		p Already have a Complect account?
-			router-link(:to="{name: 'AuthSignIn'}")  Sign In
+		p Already have a Complect account?&nbsp;
+			router-link(:to="{name: 'AuthSignIn'}") Sign In
 </template>
 
 
