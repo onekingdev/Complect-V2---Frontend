@@ -189,6 +189,7 @@ export default {
 					"title": "Success",
 					"message": "Timesheet has been submitted."
 				});
+				isLogModalVisible.value = !isLogModalVisible.value;
 			} catch ( error ) {
 				notification({
 					"type": "error",
@@ -208,6 +209,7 @@ export default {
 					"title": "Success",
 					"message": "Timesheet has been saved."
 				});
+				isLogModalVisible.value = !isLogModalVisible.value;
 			} catch ( error ) {
 				notification({
 					"type": "error",
@@ -224,6 +226,7 @@ export default {
 					"title": "Success",
 					"message": "Timesheet has been approved."
 				});
+				isLogModalVisible.value = !isLogModalVisible.value;
 			} catch ( error ) {
 				notification({
 					"type": "error",
@@ -240,6 +243,7 @@ export default {
 					"title": "Success",
 					"message": "Timesheet has been rejected."
 				});
+				isLogModalVisible.value = !isLogModalVisible.value;
 			} catch ( error ) {
 				notification({
 					"type": "error",
