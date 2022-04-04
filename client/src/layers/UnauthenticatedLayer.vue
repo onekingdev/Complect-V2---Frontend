@@ -24,19 +24,18 @@ export default {
 
 <style lang="stylus" scoped>
 .view.auth-view
-	min-height: 100%
+	height: 100%
 	display: flex
 	flex-direction: column
 
 .top-bar
 	width: 100%
 	display: flex
-	height: 5em
+	padding: 1em 1.5em
 	background: var(--c-bg-z2, #fff)
-	align-items: center
-	justify-content: space-between
+	border-bottom: 1px solid var(--c-border, #dcdee4)
 	.logo
-		margin: 0 1.25em
+		margin-right: auto
 		svg.icon-logo
 			width: 2em
 			height: 2em
@@ -45,8 +44,6 @@ export default {
 			height: 1.8em
 			margin-left: 0.5em
 			fill: #000
-	.c-button
-		margin: 0 1.1em
 
 .container
 	background: #f6f6f8
@@ -66,10 +63,10 @@ export default {
 				font-size: 2em
 				font-weight: 600
 			h2
-				font-size: 1.25em
+				font-size: 1.3em
 			.form
-				margin: 1em 0 0
+				margin: 1em 0 0em
 		.card-footer
-			font-size: 0.875em
+			font-size: 0.9em
 			justify-content: center
 </style>

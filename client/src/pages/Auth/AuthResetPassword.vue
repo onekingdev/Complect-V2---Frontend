@@ -6,7 +6,7 @@ card-container.reset-password
 			a(href="mailto:help@complect.com") help@complect.com&nbsp;
 			| for assistance.
 		.form.grid-6
-			c-field(label="Email" :errors="errors.resetEmail" v-model="resetEmail" fullwidth required)
+			c-field(label="Email" placeholder="example@email.com" :errors="errors.resetEmail" v-model="resetEmail" fullwidth required)
 			c-button(title="Reset" type="primary" @click="resetPassword()" fullwidth)
 	template(#footer)
 		router-link(to="/sign-in") Cancel
@@ -47,10 +47,3 @@ export default {
 	}
 };
 </script>
-
-<style lang="stylus" scoped>
-.reset-password p
-	font-size: 0.875em
-	margin-top: 1em
-</style>
-

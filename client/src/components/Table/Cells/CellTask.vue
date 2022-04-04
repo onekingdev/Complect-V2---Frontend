@@ -63,7 +63,7 @@ export default {
 .cell-task
 	max-width: 20em
 	.c-checkbox
-		margin-right: 0.7937em
+		margin-right: 0.5em
 	.title
 		color: var(--c-link)
 		cursor: pointer

@@ -26,12 +26,12 @@ c-modal(title="New Risk" v-model="isRiskEditVisible")
 		c-button(title="Edit" type="primary" @click="editRiskValue()")
 c-modal(title="New Risk" v-model="isRiskDeleteVisible")
 	template(#content)
-		.delete-container
-			div
-				icon(name="error" size="big")
-			.description
-				p This risk will be deleted from the Risk Register and all policy controls will be unlinked.
-				p.confirm Do you want to continue?
+		.col-1
+			icon(name="error" size="huge")
+		.col-5
+			p This risk will be deleted from the Risk Register and all policy controls will be unlinked.
+			p
+				b Do you want to continue?
 	template(#footer)
 		c-button(title="Delete" type="primary" @click="deleteRiskValue()")
 </template>
@@ -271,12 +271,4 @@ export default {
 .rules-block
 	font-size: 0.9em
 	margin: 1em 0
-.delete-container
-	display: flex
-	gap: 1.25em
-	.description
-		font-size: 0.875em
-		.confirm
-			padding-top: 0.625em
-			font-weight: bold
 </style>
