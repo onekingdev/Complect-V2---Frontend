@@ -1,10 +1,12 @@
 #app
 	width: 100vw
 	height: 100vh
+	overflow: hidden
 
 #app-container
 	width: 100%
 	height: 100%
+	overflow: auto
 
 // card
 .medium-card
@@ -28,6 +30,8 @@ form.form-container
 	display: grid
 	grid-template-columns: repeat(6, 1fr)
 	gap: 1em
+	@media (max-width: 575px)
+		gap: 0.5em
 	.col-6, > *
 		grid-column: 1 / -1
 	.col-5

@@ -111,7 +111,7 @@ export default {
 		"industries": "Industry",
 		"jurisdictions": "Jurisdiction",
 		"minExperience": "Minimum Experience",
-		"Former Regulator": "formerRegulators",
+		"formerRegulators": "Former Regulator",
 		"skills": "Skills",
 		"budget": "Estimated Budget",
 		"hourlyRate": "Horly Rate",

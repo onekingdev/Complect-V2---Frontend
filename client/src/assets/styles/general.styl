@@ -1,13 +1,15 @@
 #app-container
 	color: var(--c-text, #aaa)
-	background: var(--c-bg-z0, #000)
+	background: var(--c-bg-white)
 
 a
 	color: var(--c-link, blue)
 	text-decoration: none
+	text-align: center
 	transition: color var(--fx-duration-short), box-shadow var(--fx-duration-short)
 	&:hover
 		color: var(--c-selected)
+		text-decoration: underline
 
 .divider
 	width: 100%
@@ -39,3 +41,67 @@ a
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
+
+.requests
+	&-item
+		padding: 1em
+		margin: 1em 0
+		display: flex
+		border: 1px solid var(--c-border)
+		border-radius: 0.2em
+		&.completed
+			background-color: var(--c-bg-light-hover);
+		.left
+			.mark
+				margin-top: 0.4em
+				border: 1px solid #ccc
+				border-radius: 0.2em
+				width: 2em
+				height: 1.4em
+				svg
+					position: relative
+					left: 0.3em
+					cursor: pointer
+				&.checked
+					border-color: var(--c-success)
+					background: var(--c-success)
+					svg
+						fill: white
+		.right
+			width: 100%
+			margin-left: 2em
+			.header
+				display: flex
+				justify-content: space-between
+				.name
+					flex-basis: 70%
+					font-size: 1.3em
+					font-weight: bold
+					span
+						position: relative
+						top: -0.2em
+						border-radius: 0.3em
+						margin-right: 1em
+						padding: 0.5em 1em
+						font-size: 0.6em
+						background: #d5fbef;
+						color: #1bb380;
+			.details
+				margin-top: 1em
+			.counts
+				padding-bottom: 1.2em
+				margin: 1em 0
+				border-bottom: 1px solid rgba(0, 0, 0, 0.1)
+				span
+					margin-left: 0.5em
+					font-size: 0.9em
+
+.text-entry
+	margin: 1em 0
+	display: flex
+	.textarea
+		padding-right: 1.5em
+	svg
+		width: 0.8em
+		cursor: pointer
+		margin-top: 1.5em

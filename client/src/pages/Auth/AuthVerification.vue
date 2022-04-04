@@ -2,11 +2,14 @@
 card-container
 	template(#content)
 		h1 Confirm Your Email
-		h3 We sent a 6 digit code to {{email}}. Please enter it below.
+		div
+			h3 We sent a 6 digit code to {{email}}.
+			h3 Please enter it below.
 		icon(name="mail")
 		.confirmation-code
 			input(v-for="i in 6" :key="i" type="number" :ref="el => { if (el) inputs[i-1] = el }" v-model="numbers[i-1]" required)
-		.error(v-if="errorMessage") {{ errorMessage }}
+		.error
+			.message(v-if="errorMessage") {{ errorMessage }}
 		c-button(title="Submit" type="primary" @click="submitCode()" fullwidth)
 	template(#footer)
 		c-button(title="Send new code" type="link" @click="sendNewCode()")
@@ -98,20 +101,32 @@ export default {
 
 <style lang="stylus" scoped>
 .error
-	font-size: 0.8em
-	color: red
-	text-align: center
+	height: 1.4em
+	.message
+		font-size: 0.8em
+		color: red
+		text-align: center
 svg.icon
 	flex: 1
 	display: block
 	width: 12em
 	height: 8em
-	margin: 2em auto
+	margin: 0 auto 2em auto
+	@media (max-width: 575px)
+		margin: 0 auto 1.25em auto
+h3
+	text-align: center
+	font-size: 1.25em
+	@media (max-width: 575px)
+		font-size: 0.875em
 .confirmation-code
-	margin: 1em
+	margin: 0 1.6em
 	display: flex
-	gap: 0.5em
-	font-size: 1.6em
+	gap: 0.3em
+	font-size: 1.625em
+	@media (max-width: 575px)
+		margin: 0 auto
+		font-size: 1.25em
 	input
 		flex: 1 1 0
 		width: 0
@@ -122,4 +137,9 @@ svg.icon
 		border-radius: var(--v-border-radius)
 		&:focus
 			border-color: var(--c-selected)
+		@media (max-width: 575px)
+			width: 1.75em
+.card-container
+	:deep(.card-footer) .c-button
+		font-size: 1em
 </style>

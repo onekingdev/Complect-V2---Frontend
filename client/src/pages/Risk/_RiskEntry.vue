@@ -3,12 +3,12 @@ page-container(section="Risk Register" :title="document.name" :badge="{icon:'war
 	template(#controls)
 		c-button-modal(title="Delete" modalTitle="Delete Risk" type="primary")
 			template(#content)
-				.col-1
-					icon(name="error" size="huge")
-				.col-5
-					p This risk will be deleted from the Risk Register and all policy controls will be unlinked.
-					p
-						b Do you want to continue?
+				.delete-container
+					div
+						icon(name="error" size="big")
+					.description
+						p This risk will be deleted from the Risk Register and all policy controls will be unlinked.
+						p.confirm Do you want to continue?
 			template(#footer)
 				c-button(title="Delete" type="primary" @click="deleteRisk()")
 		c-button(type="icon" iconL="close" size="small" @click="closeRisk()")
@@ -65,3 +65,14 @@ export default {
 	}
 };
 </script>
+
+<style lang="stylus" scoped>
+.delete-container
+	display: flex
+	gap: 1.25em
+	.description
+		font-size: 0.875em
+		.confirm
+			padding-top: 0.625em
+			font-weight: bold
+</style>

@@ -1,6 +1,8 @@
 <template lang="pug">
 .bar.topbar
-	icon(name="logo" @click="toDashboard()")
+	.logo
+		icon(name="logo" @click="toDashboard()")
+		icon(name="brandname")
 	.navigation(v-if="!simpleTopBar")
 		.menu
 			a(v-for="(tab, index) in tabs" :key="index" :class="{ active: activedTopbar == tab.title }" @click="goToRoute(tab.routeName)") {{ $locale(tab.title) }}
@@ -91,15 +93,23 @@ export default {
 <style lang="stylus" scoped>
 .bar.topbar
 	width: 100%
-	padding-left: 1em
 	background: var(--c-bg-z2, #fff)
-	border-bottom: 1px solid var(--c-border, #dcdee4)
 	display: flex
 	align-items: center
-	svg.icon-logo
-		width: 1.5em
-		height: 1.5em
-		cursor: pointer
+	height: 5em
+	.logo
+		margin: 0 1.25em
+		svg.icon-logo
+			width: 2em
+			height: 2em
+			cursor: pointer
+		svg.icon-brandname
+			width: 8em
+			height: 1.8em
+			margin-left: 0.5em
+			fill: #000
+			@media (max-width: 575px)
+				display: none
 	.navigation
 		display: flex
 		align-items: center
@@ -127,6 +137,7 @@ export default {
 	.user-block
 		position: relative
 		display: flex
+		height: 100%
 		padding: 1em
 		margin-left: auto
 		align-items: center
@@ -134,8 +145,6 @@ export default {
 		transition: background var(--fx-duration-regular, .25s)
 		cursor: pointer
 		user-select: none
-		&:hover
-			background: var(--c-bg-light-hover, #f3f6f9)
 		&.expanded
 			svg.icon-chevron-down
 				transform: rotate(180deg)
@@ -150,6 +159,7 @@ export default {
 			width: 0.7em
 			height: 0.7em
 			margin-left: 1em
+			fill: var(--c-text)
 			transition: transform var(--fx-duration-short, .15s)
 		.dropdown-menu
 			font-size: 0.9em
