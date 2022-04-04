@@ -7,7 +7,9 @@
 				template(#step1)
 					section
 						.header.crd-header Do you have a CRD number?
-							.crd-info(tooltip="You can find your CRD number on the IAPD site" @click="goToCRD()")
+							.crd-info
+								.tooltip You can find your CRD number on the&nbsp
+									router-link(to="https://adviserinfo.sec.gov" target="_blank") IAPD site
 								icon(name="info-black" size="small")
 						.intro The CRD number will be used to auto-populate information about your business
 						.inputs.grid-6
@@ -279,8 +281,6 @@ export default {
 			form.value.zip = "";
 		};
 
-		const goToCRD = () => window.open( "https://adviserinfo.sec.gov", "_blank" );
-
 		onMounted( () => potentials.readDocuments() );
 		onUnmounted( () => potentials.clearStore() );
 
@@ -313,7 +313,6 @@ export default {
 			jurisdictions,
 			timezones,
 			plans,
-			goToCRD,
 			goToCheckout,
 			updateAddressChange
 		};
@@ -323,9 +322,6 @@ export default {
 
 
 <style lang="stylus" scoped>
-:deep([tooltip])
-	&:after
-		width: 24rem
 .onboarding-form
 	.m-container
 		max-width: 30em
@@ -351,6 +347,34 @@ section
 		.crd-info
 			display: flex
 			align-items: center
+			position: relative
+			.tooltip
+				visibility: hidden
+				width: 17em
+				background: var(--c-tooltip-bgColor)
+				text-align: center
+				padding: 0.34em 0.68em
+				color: var(--c-tooltip-color)
+				position: absolute
+				bottom: 140%
+				left: -7.8em
+				opacity: 0
+				transition: opacity 0.3s
+				font-size: 0.577em
+				border-radius: 0.3em
+				box-shadow: 0 1rem 1rem -0.5rem rgba(0, 0, 0, 0.35)
+				&:after
+					content: ""
+					position: absolute
+					top: 100%
+					left: 50%
+					margin-left: -5px
+					border-width: 5px
+					border-style: solid
+					border-color: var(--c-tooltip-bgColor) transparent transparent transparent
+			&:hover .tooltip
+				visibility: visible
+				opacity: 1
 	.intro
 		font-size: 0.9em
 		margin-top: 0.3em
