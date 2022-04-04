@@ -32,7 +32,7 @@ export default {
 	setup () {
 		const route = useRoute();
 		const isMobileType = ref( true );
-		const isOnboarding = computed( () => route.meta.topbar == "simple" );
+		const isOnboarding = computed( () => route.meta.topbar === "simple" );
 		const goDeskTopMode = () => isMobileType.value = !isMobileType.value;
 		return { goDeskTopMode, isMobileType, isOnboarding };
 	}
