@@ -1,15 +1,14 @@
 <template lang="pug">
-c-table(v-bind="{columns, documents, filters}" :loading="loading")
+c-table(v-bind="{columns, documents, filters}")
 </template>
 
 
 <script>
-import { onMounted, ref, onUnmounted } from "vue";
+import { onMounted, onUnmounted } from "vue";
 import UseData from "~/store/Data.js";
 export default {
 	setup () {
 		const tasks = new UseData( "tasks" );
-		const loading = ref( true );
 		const handleClickEdit = id => console.debug( "Edit", id );
 		const handleClickDelete = id => tasks.deleteDocuments( id );
 
@@ -21,7 +20,7 @@ export default {
 				"unsortable": true
 			},
 			{
-				"title": "Linked to",
+				"title": "Linked",
 				"key": "linked",
 				"cell": "CellLinked",
 				"unsortable": true
@@ -50,7 +49,6 @@ export default {
 			{
 				"unsortable": true,
 				"cell": "CellDropdown",
-				"align": "right",
 				"meta": {
 					"actions": [
 						{ "title": "Edit", "action": handleClickEdit }, { "title": "Delete", "action": handleClickDelete }
@@ -96,16 +94,11 @@ export default {
 			}
 		];
 
-		onMounted( async () => {
-			loading.value = true;
-			await tasks.readDocuments();
-			loading.value = false;
-		});
+		onMounted( () => tasks.readDocuments() );
 		onUnmounted( () => tasks.clearStore() );
 
 		return {
 			columns,
-			loading,
 			"documents": tasks.getDocuments(),
 			filters
 		};

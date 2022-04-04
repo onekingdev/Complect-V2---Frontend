@@ -77,7 +77,7 @@ export default {
 
 		onMounted( async () => {
 			const userId = appState.value.userId;
-			await exams.readDocuments( null, { "user_id": userId });
+			await exams.readDocuments( null, { "businessId": userId });
 			documents.value = exams.getDocuments().value.map( item => ({ ...item, "status": item.completed ? "complete" : "inprogress" }) );
 		});
 

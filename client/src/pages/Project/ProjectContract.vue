@@ -2,7 +2,7 @@
 card-container(title="Contract Details")
 	template(#controls)
 		c-dropdown(title="Actions" wide)
-			c-button(title="View Timesheet" type="transparent")
+			c-button(title="View Timesheet" type="transparent" @click="viewTimeSheet()")
 			c-button(title="Edit Contract" type="transparent")
 			c-button(title="End Contract" type="transparent" @click="toggleEndModal()")
 			c-button(title="Edit Role" type="transparent" @click="toggleEditRoleModal()")
@@ -70,6 +70,7 @@ import { paymentType } from "~/data/static.js";
 import { formatDate, validates } from "~/core/utils.js";
 import useProfile from "~/store/Profile.js";
 import { required } from "@vuelidate/validators";
+import { useRouter, useRoute } from "vue-router";
 
 const roles = [
 	{
@@ -120,6 +121,8 @@ export default {
 	// eslint-disable-next-line
 	setup ( props ) {
 		const isEditRoleModalVisible = ref( false );
+		const router = useRouter();
+		const route = useRoute();
 		const isReportModalVisible = ref( false );
 		const isEndModalVisible = ref( false );
 		const newRole = ref( "" );
@@ -171,6 +174,9 @@ export default {
 			}
 			return returnProposal;
 		});
+		const viewTimeSheet = () => {
+			router.push({ "name": "ProjectTimesheet", "params": { "id": route.params.id } });
+		};
 		const stepValidate = async currentStep => {
 			const step = validateInfor.value[currentStep];
 			errors.value = await validates( step.rules, step.data );
@@ -265,7 +271,8 @@ export default {
 			roles,
 			reportType,
 			reportForm,
-			errors
+			errors,
+			viewTimeSheet
 		};
 	}
 };

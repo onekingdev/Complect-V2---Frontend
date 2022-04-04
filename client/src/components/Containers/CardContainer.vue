@@ -40,12 +40,11 @@ export default {
 		align-items: center
 		font-size: 1em
 		.card-title, .header-content
-			font-size: 1.25em
+			font-size: 1.2em
 			margin-right: auto
 	.card-content, .card-sub-header, .card-footer
-		padding: 1.5em
-	.card-sub-header, .card-footer
 		border-top: 1px solid var(--c-border)
+		padding: 1.5em
 	.card-footer
 		display: flex
 		gap: 1em

@@ -69,7 +69,6 @@ export default function useExamDetail () {
 	onUnmounted( () => exams.clearStore() );
 
 	return {
-		router,
 		notification,
 		modal,
 		id,
@@ -83,4 +82,3 @@ export default function useExamDetail () {
 		exitExamDetail
 	};
 }
-

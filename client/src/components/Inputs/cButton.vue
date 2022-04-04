@@ -58,7 +58,7 @@ export default {
 <style lang="stylus" scoped>
 .c-button
 	user-select: none
-	font-size: 0.875em
+	font-size: 0.9em
 	border-radius: var(--v-inputs-border-radius)
 	transition: color 0.2s ease-in, background 0.2s ease-in, opacity 0.2s ease-in
 	padding: 0.5em 1em
@@ -99,11 +99,11 @@ export default {
 				opacity: 0.4
 	&.primary
 		color: #fff
-		background: #1B1C29
+		background: #2E304F
 		&:hover, &.hovered
-			background: #2E304F
-		&.focused
 			background: #1B1C29
+		&.focused
+			background: #2e304f
 			box-shadow: 0 0 0 0.15em #007aff
 		&:active, &.active
 			background: #000
@@ -197,7 +197,7 @@ export default {
 	&.small
 		font-size: 0.75em
 	&.regular
-		font-size: 0.875em
+		font-size: 0.9em
 	&.big
 		font-size: 1em
 	&.huge

@@ -278,19 +278,12 @@ export default {
 	gap: 2em
 	overflow: scroll
 	min-height: 100%
-	@media (max-width: 800px)
-		flex-direction: column
 	main
 		flex: 3 0 auto
 		background: var(--c-bg-z2)
 		align-self: stretch
 		padding: 2em
-		border-top: 1px solid var(--c-border)
 		border-right: 1px solid var(--c-border)
-		@media (max-width: 950px)
-			flex: initial
-		@media (max-width: 575px)
-			padding: 2em 1em
 		.title
 			font-size: 1.6em
 		header
@@ -369,8 +362,6 @@ export default {
 		flex: 1 3 20em
 		min-width: 20em
 		// max-width: 28em
-		@media (max-width: 575px)
-			margin-right: 0
 		.apply-promo
 			align-self: end
 		.plan_content

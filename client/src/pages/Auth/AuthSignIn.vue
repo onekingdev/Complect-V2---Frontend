@@ -4,9 +4,9 @@ card-container
 		h1 Let's get you started!
 		.form.grid-6
 			c-field(label="Email" type="email" :errors="errors.email" v-model="form.email" fullwidth required)
-			c-field(label="Password" type="password" @keypress.enter="signIn()" :errors="errors.password" v-model="form.password" fullwidth required)
+			c-field(label="Password" type="password" :errors="errors.password" v-model="form.password" fullwidth required)
 			c-button(title="Sign In" type="primary" @click="signIn()" fullwidth)
-			router-link.forgot-password(:to="{name: 'AuthResetPassword'}") Forgot Password
+			c-button(title="Forgot Password" type="link" @click="toResetPassword()" fullwidth)
 	template(#footer)
 		p Don't have an account yet?&nbsp;
 			router-link(:to="{name: 'AuthSignUp'}") Sign Up
@@ -47,16 +47,15 @@ export default {
 			}
 		};
 
+
+		const toResetPassword = () => router.push({ "name": "AuthResetPassword" });
+
 		return {
 			errors,
 			form,
-			signIn
+			signIn,
+			toResetPassword
 		};
 	}
 };
 </script>
-
-<style lang="stylus" scoped>
-.forgot-password
-	font-size: 0.875em
-</style>

@@ -31,11 +31,12 @@ c-modal(title="Edit Risk" v-model="isEditRiskVisible")
 		c-button(title="Save" type="primary" @click="editRisk()")
 c-modal(title="Unlink Policy" v-model="isDeleteVisible")
 	template(#content)
-		div
-			icon(name="error" size="big")
-		.description
+		.col-1
+			icon(name="error" size="huge")
+		.col-5
 			p This policy will be removed as a control for this risk. This will also remove the risk from the policy's associated Risks tab.
-			p.confirm Do you want to continue?
+			p
+				b Do you want to continue?
 	template(#footer)
 		c-button(title="Unlink" type="primary" @click="deletePolicy()")
 </template>
@@ -260,15 +261,3 @@ export default {
 	}
 };
 </script>
-
-
-<style lang="stylus" scoped>
-.delete-container
-	display: flex
-	gap: 1.25em
-	.description
-		font-size: 0.875em
-		.confirm
-			padding-top: 0.625em
-			font-weight: bold
-</style>

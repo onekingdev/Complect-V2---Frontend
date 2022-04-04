@@ -26,12 +26,12 @@ c-modal(title="Share Exam" v-model="isVisibleInviteEmail")
 				icon(name="close" @click="revokeEmail(index)")
 c-modal(title="Revoke Access" v-model="isVisibleRevokeAccess" @update:modelValue="handleCloseRevokeModal")
 	template(#content)
-		.delete-container
-			div
+		.grid-6.confirm-revoke
+			.col-1
 				icon(name="error" size="big")
-			.description
-				p This will revoke the email address owner's access to your auditor portal.
-				p.confirm Do you want to continue?
+			.col-5
+				div.description This will revoke the email address owner's access to your auditor portal.
+				div.description.confirm Do you want to continue?
 	template(#footer)
 		c-button(title="Confirm" type="primary" @click="handleConfirmRevoke()")
 </template>
@@ -208,6 +208,10 @@ export default {
 .exit
 	margin-top: 0.5em
 	cursor: pointer
+.description
+	font-size: 0.8em
+.confirm
+	font-weight: bold
 .send-btn
 	align-self: flex-start
 	position: relative
@@ -233,12 +237,4 @@ export default {
 			margin-right: 0.3em
 			width: 0.8em
 			margin-top: 0.1em
-.delete-container
-	display: flex
-	gap: 1.25em
-	.description
-		font-size: 0.875em
-		.confirm
-			padding-top: 0.625em
-			font-weight: bold
 </style>

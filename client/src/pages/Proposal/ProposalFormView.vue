@@ -1,28 +1,27 @@
 <template lang="pug">
-card-container(title="Create Proposal")
+card-container(title="View Proposal")
 	template(#content)
 		.proposal-content.col-3
 			.proposal-info-content.grid-6
 				p.proposal-title Terms
-				c-field.col-3(label="Start Date" type="date" v-model="form.startsAt"  :errors="errors.startsAt" disabled)
-				c-field.col-3(label="Due Date" type="date" v-model="form.endsAt"  :errors="errors.endsAt" disabled)
-				c-field(v-if="job.priceType === 'fixed'" label="Bid Price" v-model="form.budget"  :errors="errors.budget" disabled)
-				c-field(v-else label="Hourly Rate" v-model="form.hourlyRate"  :errors="errors.hourlyRate" disabled)
-				c-select(v-if="job.priceType === 'fixed'" label="Payment Schedule" :data="fieldsOptions.fixedPaymentSchedule" v-model="form.paymentSchedule"  :errors="errors.paymentSchedule" disabled)
-				c-select(v-else label="Payment Schedule" :data="fieldsOptions.hourlyPaymentSchedule" v-model="form.paymentSchedule"  :errors="errors.paymentSchedule" disabled)
+				c-field.col-3(label="Start Date" type="date" v-model="form.startsAt" disabled)
+				c-field.col-3(label="Due Date" type="date" v-model="form.endsAt" disabled)
+				c-field(v-if="job.priceType === 'fixed'" label="Bid Price" v-model="form.budget" disabled)
+				c-field(v-else label="Hourly Rate" v-model="form.hourlyRate" disabled)
+				c-select(v-if="job.priceType === 'fixed'" label="Payment Schedule" :data="fieldsOptions.fixedPaymentSchedule" v-model="form.paymentSchedule" disabled)
+				c-select(v-else label="Payment Schedule" :data="fieldsOptions.hourlyPaymentSchedule" v-model="form.paymentSchedule" disabled)
 			hr
 			.proposal-info-content
 				p.proposal-title Role
-				c-textarea(label="Role Details" v-model="form.roleDetails"  :errors="errors.roleDetails" disabled)
-				c-textarea(label="Key Deliverables" v-model="form.keyDeliverables"  :errors="errors.keyDeliverables" disabled)
+				c-textarea(label="Role Details" v-model="form.roleDetails" disabled)
+				c-textarea(label="Key Deliverables" v-model="form.keyDeliverables" disabled)
 			hr
 			.proposal-info-content
 				p.proposal-title Attachments
 			.proposal-actions
-				c-button.right-button(title="ReSubmit" type="primary" @click="submitProposal()" v-if="proposals && proposals.length > 0")
-				c-button.right-button(title="Submit Proposal" type="primary" @click="submitProposal()" v-else)
-				c-button.right-button(title="Save Draft" type="default" @click="saveProposal()" v-else)
-				c-button.right-button(title="Exit" type="link" @click="gotoJobBoard()")
+				c-button.right-button(title="Accept" type="primary" @click="acceptProposal()")
+				c-button.right-button(title="Reject" type="default" @click="rejectProposal()")
+				c-button.right-button(title="Cancel" type="link" @click="gotoJobBoard()")
 		.job-content.col-3
 			.job-detail-content
 				p.proposal-title TestTest
@@ -82,45 +81,39 @@ card-container(title="Create Proposal")
 			.client-content
 				.client-info
 					.client-name-content
-						c-avatar(avatar="avatar.jpg" :firstName="business.firstName" :lastName="business.lastName" )
+						c-avatar(avatar="avatar.jpg" :firstName="specialist.firstName" :lastName="specialist.lastName" )
 						div
-							p.client-name(@click="toggleChatModal" ) {{ business.firstName }} {{ business.lastName }}
-							p.client-location {{ business.city }}, {{ business.state }}, {{ business.country }}
+							p.client-name(@click="toggleChatModal" ) {{ specialist.firstName }} {{ specialist.lastName }}
+							p.client-location {{ specialist.city }}, {{ specialist.state }}, {{ specialist.country }}
 					.client-details-content
 						.client-detail-content.grid-6
 							.col-1.client-info-title Industry
 							div.col-1
-							.col-1.client-info-value {{ business.industry }}
+							.col-1.client-info-value {{ specialist.industry }}
 						.client-detail-content.grid-6
 							.col-1.client-info-title Jurisdictions
 							div.col-1
-							.col-1.client-info-value {{ business.jurisdictions }}
+							.col-1.client-info-value {{ specialist.jurisdictions }}
 						.client-detail-content.grid-6
-							.col-1.client-info-title AUM
+							.col-1.client-info-title Expereince
 							div.col-1
-							.col-1.client-info-value {{ business.AUM }}
+							.col-1.client-info-value {{ specialist.experience }}
 						.client-detail-content.grid-6
-							.col-1.client-info-title Accouonts
+							.col-1.client-info-title Description
 							div.col-1
-							.col-1.client-info-value {{ business.accounts }}
-						.client-detail-content.grid-6
-							.col-1.client-info-title Employees
-							div.col-1
-							.col-1.client-info-value {{ business.employee }}
-c-modal(:title="`Message with ${business.firstName} ${business.lastName}`" v-model="isChatVisible")
+							.col-1.client-info-value {{ specialist.description }}
+c-modal(:title="`Message with ${specialist.firstName} ${specialist.lastName}`" v-model="isChatVisible")
 	template(#content)
 		c-chat(:comments="comments")
 </template>
 
 
 <script>
-import { ref, inject, computed, onMounted } from "vue";
+import { ref, inject, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { formatDate, validates } from "~/core/utils.js";
+import { formatDate } from "~/core/utils.js";
 import useProfile from "~/store/Profile.js";
 import { industries, jurisdictions, minExperience, paymentType, locationType } from "~/data/static.js";
-import { required, requiredUnless } from "@vuelidate/validators";
-import { requireDate } from "~/core/customValidates.js";
 import UseData from "~/store/Data.js";
 import cSelect from "~/components/Inputs/cSelect.vue";
 import cLabel from "~/components/Misc/cLabel.vue";
@@ -129,7 +122,7 @@ import cAvatar from "~/components/Misc/cAvatar.vue";
 import cChat from "~/components/Misc/cChat.vue";
 import cModal from "~/components/Misc/cModal.vue";
 import cDropzone from "~/components/Inputs/cDropzone.vue";
-const business = ref({
+const specialist = ref({
 	"id": "3234234029384209384",
 	"firstName": "Manuel",
 	"lastName": "Perez",
@@ -137,10 +130,8 @@ const business = ref({
 	"state": "NY",
 	"industry": "Banking",
 	"jurisdictions": "USA",
-	"AUM": "234234234",
-	"accounts": 10,
-	"employee": 2,
-	"country": "United State"
+	"experience": "Senior",
+	"description": "I am senior Developer"
 });
 export default {
 	"components": { cSelect, cLabel, cBadge, cAvatar, cChat, cModal, cDropzone },
@@ -167,32 +158,6 @@ export default {
 			"owner_id": profile.value._id,
 			"job_id": route.params.id
 		});
-		const validateInfor = computed( () => ({
-			"rules": {
-				"startsAt": { "required": requireDate },
-				"endsAt": { "required": requireDate },
-				"hourlyRate": { "required": requiredUnless( form.value.priceType === "fixed" ) },
-				"budget": { "required": requiredUnless( form.value.priceType !== "fixed" ) },
-				"roleDetails": { required },
-				"paymentSchedule": { required },
-				"keyDeliverables": { required }
-			},
-			"data": {
-				"startsAt": form.value.startsAt,
-				"endsAt": form.value.endsAt,
-				"hourlyRate": form.value.hourlyRate,
-				"budget": form.value.budget,
-				"roleDetails": form.value.roleDetails,
-				"paymentSchedule": form.value.paymentSchedule,
-				"keyDeliverables": form.value.keyDeliverables
-			}
-		}) );
-
-		const stepValidate = async () => {
-			const step = validateInfor.value;
-			errors.value = await validates( step.rules, step.data );
-			return Object.keys( errors.value ).length === 0;
-		};
 
 		const fieldsOptions = {
 			"fixedPaymentSchedule": [
@@ -225,59 +190,52 @@ export default {
 		// eslint-disable-next-line no-sequences
 		const industriesMap = industries.reduce( ( ind, cur ) => ( ind[cur.value] = cur.title, ind ), {});
 		const toggleChatModal = () => isChatVisible.value = !isChatVisible.value;
-		const gotoJobBoard = () => router.push({ "name": "JobBoard" });
-		const saveProposal = async () => {
+		const gotoJobBoard = () => router.push({
+			"name": "ProjectPost",
+			"params": { "id": "61fb29f8d39177aad786604e" }
+		});
+		const rejectProposal = async () => {
 			try {
-				form.value.status = "draft";
+				form.value.status = "rejected";
 				await proposals.createDocuments([form.value]);
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Proposal has been saved"
+					"message": "Proposal has been rejected"
 				});
 				gotoJobBoard();
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Proposal has not been saved. Please try again."
+					"message": "Proposal has not been rejected. Please try again."
 				});
 			}
 		};
-		const submitProposal = async () => {
+		const acceptProposal = async () => {
 			try {
-				form.value.status = "pending";
-				const isValidate = await stepValidate();
-				if ( isValidate ) {
-					// eslint-disable-next-line max-depth
-					if ( !proposals.getDocuments().value || proposals.getDocuments().value.length === 0 ) {
-						await proposals.createDocuments([form.value]);
-						notification({
-							"type": "success",
-							"title": "Success",
-							"message": "Proposal has been submitted."
-						});
-					} else {
-						await proposals.updateDocument( form.value._id, form.value );
-						notification({
-							"type": "success",
-							"title": "Success",
-							"message": "Proposal has been submitted."
-						});
-					}
-					gotoJobBoard();
-				}
+				form.value.status = "accepted";
+				await proposals.createDocuments([form.value]);
+				notification({
+					"type": "success",
+					"title": "Success",
+					"message": "Proposal has been accepted"
+				});
+				router.push({
+					"name": "ProjectContract",
+					"params": { "id": "61fb29f8d39177aad786604e" }
+				});
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Proposal has not been submitted. Please try again."
+					"message": "Proposal has not been accepted. Please try again."
 				});
 			}
 		};
 		onMounted( async () => {
 			await jobs.readDocuments( route.params.id );
-			await proposals.readDocuments( "", { "job_id": route.params.id, "owner_id": profile.value._id });
+			await proposals.readDocuments( "", { "job_id": route.params.id, "owner_id": route.params.specialist_id });
 			if ( !proposals.getDocuments().value || proposals.getDocuments().value.length === 0 ) {
 				form.value.startsAt = jobs.getDocument().value.startsAt;
 				form.value.endsAt = jobs.getDocument().value.endsAt;
@@ -287,7 +245,7 @@ export default {
 		return {
 			"job": jobs.getDocument(),
 			"proposals": proposals.getDocuments(),
-			business,
+			specialist,
 			formatDate,
 			toggleChatModal,
 			isChatVisible,
@@ -299,8 +257,8 @@ export default {
 			juristdictionMap,
 			industriesMap,
 			gotoJobBoard,
-			saveProposal,
-			submitProposal,
+			rejectProposal,
+			acceptProposal,
 			errors
 		};
 	}

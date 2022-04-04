@@ -74,8 +74,8 @@ export default {
 		flex-shrink: 0
 		font-size: 1.2em
 		cursor: pointer
-		width: 1.323em
-		height: 1.323em
+		width: 1em
+		height: 1em
 		border: 0.1em solid var(--c-border)
 		position: relative
 		transition: background var(--fx-duration-short), border-color var(--fx-duration-short)
@@ -83,10 +83,10 @@ export default {
 			content: ''
 			display: block
 			position: absolute
-			top: 0.13em
-			right: 0.37em
-			width: 0.4em
-			height: 0.75em
+			top: 0.09em
+			right: 0.25em
+			width: 0.3em
+			height: 0.55em
 			transform: rotate(45deg)
 			border: solid var(--c-border)
 			border-width: 0 0.15em 0.15em 0
