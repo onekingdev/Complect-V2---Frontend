@@ -29,13 +29,6 @@ const _ProjectsEntry = () => import( "~/pages/Projects/_ProjectsEntry.vue" );
 const ProjectsOverview = () => import( "~/pages/Projects/ProjectsOverview.vue" );
 const ProjectsContacts = () => import( "~/pages/Projects/ProjectsContacts.vue" );
 const ProjectsRatings = () => import( "~/pages/Projects/ProjectsRatings.vue" );
-// jobs
-const _JobsEntry = () => import( "~/pages/Jobs/_JobsEntry.vue" );
-const JobsOverview = () => import( "~/pages/Jobs/JobsOverview.vue" );
-const JobsContacts = () => import( "~/pages/Jobs/JobsContacts.vue" );
-const JobsRatings = () => import( "~/pages/Jobs/JobsRatings.vue" );
-
-
 // project
 const _ProjectEntry = () => import( "~/pages/Project/_ProjectEntry.vue" );
 const ProjectDetail = () => import( "~/pages/Project/ProjectDetail.vue" );
@@ -45,11 +38,9 @@ const ProjectCollaborators = () => import( "~/pages/Project/ProjectCollaborators
 const ProjectPost = () => import( "~/pages/Project/ProjectPost.vue" );
 const ProjectContract = () => import( "~/pages/Project/ProjectContract.vue" );
 const ProjectPostForm = () => import( "~/pages/Project/ProjectPostForm.vue" );
-const ProjectTimesheet = () => import( "~/pages/Project/ProjectTimesheet.vue" );
 
 // proposal
 const ProposalForm = () => import( "~/pages/Proposal/ProposalForm.vue" );
-const ProposalFormView = () => import( "~/pages/Proposal/ProposalFormView.vue" );
 
 // policies
 const _PoliciesEntry = () => import( "~/pages/Policies/_PoliciesEntry.vue" );
@@ -131,18 +122,13 @@ const _ExamEntry = () => import( "~/pages/Exam/_ExamEntry.vue" );
 const ExamDetail = () => import( "~/pages/Exam/ExamDetail.vue" );
 const ExamDetailDocuments = () => import( "~/pages/Exam/ExamDetailDocuments.vue" );
 const ExamDetailTasks = () => import( "~/pages/Exam/ExamDetailTasks.vue" );
+const ExamPortal = () => import( "~/pages/Exam/ExamPortal.vue" );
 
 import { devRoutes } from "~/_devmode/Routes.js";
 
 // ––––––––––––––– Routes ––––––––––––––– //
 const routes = [
 	{
-		"path": "/error",
-		"name": "ErrorLayer",
-		"props": true,
-		"component": ErrorLayer,
-		"meta": { "title": "Error" }
-	}, {
 		"path": "/",
 		"component": AuthenticatedLayer,
 		"beforeEnter": useAuthGuard,
@@ -209,29 +195,6 @@ const routes = [
 								"path": "ratings",
 								"name": "ProjectsRatings",
 								"component": ProjectsRatings,
-								"meta": { "title": "Ratings and Reviews" }
-							}
-						]
-					},
-					{
-						"path": "jobs",
-						"component": _JobsEntry,
-						"meta": { "title": "Jobs" },
-						"children": [
-							{
-								"path": "",
-								"name": "JobsOverview",
-								"component": JobsOverview,
-								"meta": { "title": "My Jobs" }
-							}, {
-								"path": "contacts",
-								"name": "JobsContacts",
-								"component": JobsContacts,
-								"meta": { "title": "Contacts" }
-							}, {
-								"path": "ratings",
-								"name": "JobsRatings",
-								"component": JobsRatings,
 								"meta": { "title": "Ratings and Reviews" }
 							}
 						]
@@ -306,12 +269,6 @@ const routes = [
 								"name": "ProjectContract",
 								"component": ProjectContract,
 								"meta": { "title": "Project Contract" }
-							},
-							{
-								"path": "timesheets",
-								"name": "ProjectTimesheet",
-								"component": ProjectTimesheet,
-								"meta": { "title": "Time Sheet" }
 							}
 						]
 					},
@@ -401,6 +358,15 @@ const routes = [
 								"meta": { "title": "ExamDetailDocuments" }
 							}
 						]
+					},
+					{
+						"path": "exam_management/:id/portal",
+						"component": ExamPortal,
+						"name": "ExamPortal",
+						"meta": {
+							"title": "Exam Portal",
+							"sidebar": false
+						}
 					},
 					{
 						"path": "internal_reviews",
@@ -519,14 +485,13 @@ const routes = [
 								"name": "ProposalEdit",
 								"component": ProposalForm,
 								"meta": { "title": "Job Board Detail" }
+							}, {
+								"path": "applications/view",
+								"name": "ProposalView",
+								"component": ProposalForm,
+								"meta": { "title": "Job Board Detail" }
 							}
 						]
-					},
-					{
-						"path": "job_board/:id/:specialist_id/view",
-						"name": "ProposalView",
-						"component": ProposalFormView,
-						"meta": { "sidebar": false }
 					},
 					{
 						"path": "specialistmarketplace",
@@ -680,7 +645,8 @@ const routes = [
 				]
 			}
 		]
-	}, {
+	},
+	{
 		"path": "/",
 		"component": UnauthenticatedLayer,
 		"children": [
@@ -706,16 +672,25 @@ const routes = [
 				"meta": { "title": "Reset Password" }
 			}
 		]
-	}, {
-		"path": "/:pathMatch(.*)*",
-		"redirect": {
-			"name": "ErrorLayer",
-			"params": {
-				"code": 404,
-				"title": "No page found",
-				"message": "The page you are looking for is either missing of can't be found."
-			}
+	},
+	{
+		"path": "/error",
+		"name": "ErrorLayer",
+		"component": ErrorLayer,
+		"props": {
+			"code": 404,
+			"title": "No page found",
+			"message": "The page you are looking for is either missing of can't be found."
 		}
+	},
+	{
+		"path": "/:pathMatch(.*)*",
+		"redirect": { "name": "ErrorLayer" }
+	},
+	{
+		"path": "/unauthorized",
+		"component": ErrorLayer,
+		"props": { "code": 401, "title": "Unauthorized access", "message": "The page you are looking for requires different authentication credentials" }
 	}
 ];
 

@@ -5,7 +5,8 @@ const MESSAGE_VALIDATORS = {
 	"required": "Required field",
 	"sameAsPassword": "Password does not match",
 	"dateValidate": "Required field",
-	"validateRate": "Rate must be greater than 0"
+	"validateRate": "Rate must be greater than 0",
+	"email": "Invalid email address"
 };
 
 // return random number
@@ -108,4 +109,10 @@ const validates = async ( rules, data ) => {
 	return errors;
 };
 
-export { randomNumber, randomId, randomMongoId, sortArrayByKey, splitArrayToChunks, formatDate, calcRiskLevel, calcExpandDirections, removeSensitiveData, filterSubIndustries, validates };
+// maxSize is MB
+const validateFileSize = ( fileSize, maxFileSize ) => {
+	const fileSizeMb = fileSize / 1024 / 1024;
+	return fileSizeMb <= maxFileSize;
+};
+
+export { randomNumber, randomId, randomMongoId, sortArrayByKey, splitArrayToChunks, formatDate, calcRiskLevel, calcExpandDirections, removeSensitiveData, filterSubIndustries, validates, validateFileSize };

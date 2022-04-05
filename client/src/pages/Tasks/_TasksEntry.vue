@@ -1,7 +1,7 @@
 <template lang="pug">
 page-container(title="Tasks")
 	template(#controls)
-		c-dropdown(title="Download" wide)
+		c-dropdown(title="Export" wide)
 			.container.date-range-container
 				c-field(label="Start Date" type="date" v-model="dateRange.start")
 				c-field(label="End Date" type="date" v-model="dateRange.end")

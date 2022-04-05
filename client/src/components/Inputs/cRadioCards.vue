@@ -54,7 +54,7 @@ export default {
 .c-radio-card
 	display: flex
 	gap: 1.5em
-	margin-top: 0.5em
+	margin: 1em 0 0 0
 	label.radio-card
 		flex: 1 0 0
 		display: flex
@@ -68,6 +68,7 @@ export default {
 			align-items: flex-start
 			gap: 0.7em
 			padding: 1em
+			width: 100%
 			border: 1px solid var(--c-border)
 			border-radius: var(--v-border-radius)
 			transition: background var(--fx-duration-short), border-color var(--fx-duration-short)
@@ -75,8 +76,10 @@ export default {
 			&.center
 				text-align: center
 				padding: 2.5em 1em
+				@media (max-width: 575px)
+					padding: 1.25em
 				.title
-					font-weight: bold
+					font-weight: 600
 					margin-bottom: 1em
 				svg.icon
 					width: 3em
@@ -88,21 +91,21 @@ export default {
 				height: 1.1em
 				fill: var(--c-headers)
 			.content
+				width: 100%
 				.title
-					color: var(--c-headers)
 					line-height: 1
 					margin-bottom: 0.3em
 				.description
 					color: var(--c-dimmed)
-					font-size: 0.9em
+					font-size: 0.875em
 					line-height: 1.4
 			&:hover
 				background: #f6f6f8
 		input:checked + .option
 			border-color: var(--c-headers)
 			background: #f6f6f8
-			.title
-				color: var(--c-headers)
 			svg.icon
 				fill: var(--c-headers)
+	@media (max-width: 575px)
+		flex-direction: column
 </style>

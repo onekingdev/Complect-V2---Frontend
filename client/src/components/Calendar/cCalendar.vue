@@ -211,6 +211,9 @@ export default {
 	.date-range-container
 		.c-field
 			width: 9em
+	:deep(.dropdown)
+		right: 0 !important
+		left: initial !important
 .calendar
 	overflow: hidden
 	.grid

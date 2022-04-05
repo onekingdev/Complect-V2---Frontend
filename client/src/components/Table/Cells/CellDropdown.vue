@@ -40,12 +40,15 @@ export default {
 	:deep(.dropdown)
 		border-radius: 5px
 		top: 2.5em
-		left: -100%
+		right: 0
 		min-width: 8em
 	:deep(.c-button)
-		padding: 0.6em 1em
+		padding: 0.6em 0.8em
 		.title
 			font-size: 1.2em
 			color: var(--c-headers)
 			font-weight: 600
+	:deep(svg.icon)
+		width: 1.275em
+		height: 1.275em
 </style>
