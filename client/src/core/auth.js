@@ -87,7 +87,7 @@ export default function useAuth () {
 			setUserIdState( "" );
 			profile.value = {};
 			linkaccount.value = {};
-			window.location.href = '/';
+			window.location.href = "/";
 			return;
 		}
 		profile.value = result.data;
