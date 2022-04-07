@@ -31,8 +31,8 @@ export default function useAuth () {
 
 	const registration = async data => {
 		const result = await authServer({ "path": "users", data });
-		if ( !result.message ) throw result.error || 'Unknown error';
-		if ( result.message !== 'Signed up.' ) throw result.message;
+		if ( !result.message ) throw result.error || "Unknown error";
+		if ( result.message !== "Signed up." ) throw result.message;
 	};
 
 	const onboarding = async form => {
@@ -50,11 +50,8 @@ export default function useAuth () {
 	};
 
 	const verification = async ( email, password, otp_attempt ) => {
-		const result = await authServer({ "path": "users/sign_in.json", "data": { user: {
-			email,
-			password,
-			otp_attempt
-		}}});
+		const user = { email, password, otp_attempt };
+		const result = await authServer({ "path": "users/sign_in.json", "data": { user }});
 		// @todo remove alert, add token saving and fetching user data
 		alert(`Auth token: ${result.auth_token}`);
 		if ( !result.auth_token ) throw "Invalid code";
