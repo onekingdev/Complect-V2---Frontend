@@ -41,7 +41,7 @@ import useAuth from "~/core/auth";
 import useForm from "~/store/Form.js";
 import cRadioCards from "~/components/Inputs/cRadioCards.vue";
 import { validates } from "~/core/utils.js";
-import { required, maxLength, email as emailValidator , minLength } from "@vuelidate/validators";
+import { required, maxLength, email as emailValidator, minLength } from "@vuelidate/validators";
 import { sameAsWith } from "~/core/customValidates.js";
 
 export default {
@@ -69,7 +69,7 @@ export default {
 		const nextStep = value => step.value += value;
 
 		const rules = {
-			"email": { required,  emailValidator },
+			"email": { required, emailValidator },
 			"first_name": { required, "maxLength": maxLength( 100 ) },
 			"last_name": { required, "maxLength": maxLength( 100 ) },
 			"password": { required, "minLength": minLength( 6 ) },
@@ -81,8 +81,8 @@ export default {
 			if ( Object.keys( errors.value ).length ) return;
 
 			try {
-				await registration({ user: form.value });
-				nextStep(1);
+				await registration({ "user": form.value });
+				nextStep( 1 );
 			} catch ( error ) {
 				// if ( error.includes( "Email" ) ) Object.assign( errors.value, { "email": [error] });
 				console.error( error );
