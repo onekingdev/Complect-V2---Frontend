@@ -152,14 +152,12 @@ export default {
 	margin: 1em 0
 .terms
 	font-size: 0.875em
-<<<<<<< HEAD
 .name-col
 	@media (max-width: 767px)
 		grid-column: 1 / -1
 .sign-in
 	&:hover
 		text-decoration: underline
-=======
 
 .error
 	font-size: 0.8em
@@ -186,5 +184,4 @@ svg.icon
 		border-radius: var(--v-border-radius)
 		&:focus
 			border-color: var(--c-selected)
->>>>>>> Refactor sign-up to API
 </style>
