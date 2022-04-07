@@ -1,14 +1,13 @@
 import { useRouter } from "vue-router";
 import { appState, setUserIdState } from "~/store/appState";
 import useProfile from "~/store/Profile";
-import { randomMongoId } from "~/core/utils.js";
 import UseData from "~/store/Data.js";
 
 
 const authServer = async ({ path, data }) => {
 	try {
 		const API_URI = import.meta.env.VITE_API_URI;
-		const apiUrl = `${API_URI}/auth/${path}`;
+		const apiUrl = `${API_URI}/${path}`;
 		const options = {
 			"method": "post",
 			"mode": "cors",
@@ -31,9 +30,9 @@ export default function useAuth () {
 
 
 	const registration = async data => {
-		data._id = randomMongoId();
-		const result = await authServer({ "path": "sign-up", data });
-		if ( !result.ok ) throw result.message;
+		const result = await authServer({ "path": "users", data });
+		if ( !result.message ) throw result.error || 'Unknown error';
+		if ( result.message !== 'Signed up.' ) throw result.message;
 	};
 
 	const onboarding = async form => {
@@ -50,9 +49,14 @@ export default function useAuth () {
 		if ( !result.ok ) throw result.message;
 	};
 
-	const verification = async ( email, otp ) => {
-		const result = await authServer({ "path": "otp", "data": { email, otp } });
+	const verification = async ( email, password, otp_attempt ) => {
+		const result = await authServer({ "path": "users/sign_in.json", "data": { user: {
+			email,
+			password,
+			otp_attempt
+		 }}});
 		if ( !result.ok ) throw result.message;
+		/* @todo
 		const userProfile = result.data.profile;
 		if ( result.data.profile.businessId ) {
 			const collection = new UseData( "business" );
@@ -65,9 +69,8 @@ export default function useAuth () {
 		}
 		setProfile( userProfile );
 		setUserIdState( userProfile._id );
-		sessionStorage.removeItem( "email" );
 		if ( userProfile.new ) router.push({ "name": "OnboardingForm" });
-		else router.push({ "name": "Dashboard" });
+		else */ router.push({ "name": "Dashboard" });
 	};
 
 	const newOtp = async email => {
@@ -83,13 +86,7 @@ export default function useAuth () {
 	const restoreSession = async () => {
 		const userId = appState.value.userId;
 		const result = await authServer({ "path": "profile", "data": { "_id": userId } });
-		if ( !result.ok ) {
-			setUserIdState( "" );
-			profile.value = {};
-			linkaccount.value = {};
-			window.location.href = "/";
-			return;
-		}
+		if ( !result.ok ) throw result.message;
 		profile.value = result.data;
 		if ( result.data.businessId ) {
 			const collection = new UseData( "business" );

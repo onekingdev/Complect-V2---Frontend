@@ -58,7 +58,7 @@ export default {
 <style lang="stylus" scoped>
 .c-button
 	user-select: none
-	font-size: 0.875em
+	font-size: 0.9em
 	border-radius: var(--v-inputs-border-radius)
 	transition: color 0.2s ease-in, background 0.2s ease-in, opacity 0.2s ease-in
 	padding: 0.5em 1em
@@ -197,7 +197,7 @@ export default {
 	&.small
 		font-size: 0.75em
 	&.regular
-		font-size: 0.875em
+		font-size: 0.9em
 	&.big
 		font-size: 1em
 	&.huge

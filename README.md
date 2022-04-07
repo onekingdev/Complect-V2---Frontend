@@ -51,3 +51,5 @@ docker-compose -f docker-compose.api.yml up
 * Connection String: `mongodb://user:password@mongo:27017`
 * Press **Add Connection**
 * Click **Connect** in right Action Tab, to enter.
+
+If you're on a M1 mac, use DOCKER_DEFAULT_PLATFORM=linux/amd64 docker-compose up
