@@ -58,6 +58,7 @@ export default function useAuth () {
 		// @todo remove alert, add token saving and fetching user data
 		alert(`Auth token: ${result.auth_token}`);
 		if ( !result.auth_token ) throw "Invalid code";
+		sessionStorage.setItem( "auth_token", JSON.stringify( result.auth_token ) );
 		/*
 		const userProfile = result.data.profile;
 		if ( result.data.profile.businessId ) {
