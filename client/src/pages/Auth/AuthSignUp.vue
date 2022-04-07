@@ -10,8 +10,8 @@ card-container
 			h1 Let's get you started!
 			h2 Create your FREE account
 			.form.grid-6
-				c-field.col-3(label="First Name" :errors="errors.first_name" v-model="form.first_name" required)
-				c-field.col-3(label="Last Name" :errors="errors.last_name" v-model="form.last_name" required)
+				c-field.name-col.col-3(label="First Name" :errors="errors.first_name" v-model="form.first_name" required)
+				c-field.name-col.col-3(label="Last Name" :errors="errors.last_name" v-model="form.last_name" required)
 				c-field(label="Email" :errors="errors.email" v-model="form.email" required)
 				c-field(label="Password" type="password" :errors="errors.password" v-model="form.password" required)
 				c-field(label="Repeat Password" type="password" :errors="errors.password2" v-model="password2" required)
@@ -30,7 +30,7 @@ card-container
 			c-button(title="Submit" type="primary" @click="submitCode()" fullwidth)
 	template(#footer)
 		p(v-if="step !== 3") Already have a Complect account?
-			router-link(:to="{name: 'AuthSignIn'}")  Sign In
+			router-link.sign-in(:to="{name: 'AuthSignIn'}") Sign In
 		c-button(v-else title="Send new code" type="link" @click="sendNewCode()")
 </template>
 
@@ -152,6 +152,14 @@ export default {
 	margin: 1em 0
 .terms
 	font-size: 0.875em
+<<<<<<< HEAD
+.name-col
+	@media (max-width: 767px)
+		grid-column: 1 / -1
+.sign-in
+	&:hover
+		text-decoration: underline
+=======
 
 .error
 	font-size: 0.8em
@@ -178,4 +186,5 @@ svg.icon
 		border-radius: var(--v-border-radius)
 		&:focus
 			border-color: var(--c-selected)
+>>>>>>> Refactor sign-up to API
 </style>

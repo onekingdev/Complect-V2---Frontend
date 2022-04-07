@@ -40,7 +40,7 @@ export default {
 	:deep(.dropdown)
 		border-radius: 5px
 		top: 2.5em
-		left: -100%
+		right: 0
 		min-width: 8em
 	:deep(.c-button)
 		padding: 0.6em 0.8em
