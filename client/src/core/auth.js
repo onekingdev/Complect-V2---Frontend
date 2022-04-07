@@ -54,9 +54,11 @@ export default function useAuth () {
 			email,
 			password,
 			otp_attempt
-		 }}});
-		if ( !result.ok ) throw result.message;
-		/* @todo
+		}}});
+		// @todo remove alert, add token saving and fetching user data
+		alert(`Auth token: ${result.auth_token}`);
+		if ( !result.auth_token ) throw "Invalid code";
+		/*
 		const userProfile = result.data.profile;
 		if ( result.data.profile.businessId ) {
 			const collection = new UseData( "business" );
@@ -70,7 +72,8 @@ export default function useAuth () {
 		setProfile( userProfile );
 		setUserIdState( userProfile._id );
 		if ( userProfile.new ) router.push({ "name": "OnboardingForm" });
-		else */ router.push({ "name": "Dashboard" });
+		else router.push({ "name": "Dashboard" });
+		*/
 	};
 
 	const newOtp = async email => {
