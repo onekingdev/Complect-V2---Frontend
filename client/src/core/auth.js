@@ -53,7 +53,7 @@ export default function useAuth () {
 		const user = { email, password, otp_attempt };
 		const result = await authServer({ "path": "users/sign_in.json", "data": { user } });
 		// @todo remove alert, add token saving and fetching user data
-		console.log( `Auth token: ${result.auth_token}` );
+		// console.log( `Auth token: ${result.auth_token}` );
 		if ( !result.auth_token ) throw "Invalid code";
 		sessionStorage.setItem( "auth_token", JSON.stringify( result.auth_token ) );
 		/*
