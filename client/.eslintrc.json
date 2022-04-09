@@ -146,7 +146,6 @@
 		"array-element-newline": ["error", { "minItems": 5 }],
 		"block-spacing": ["error", "never"],
 		"brace-style": "error",
-		"camelcase": "error",
 		"capitalized-comments": ["error", "never"],
 		"comma-dangle": ["error", "never"],
 		"comma-spacing": ["error", { "before": false, "after": true }],
