@@ -137,7 +137,7 @@
 		"no-undef": "error",
 		"no-undef-init": "error",
 		// "no-undefined": "error",
-		"no-unused-vars": "error",
+		// "no-unused-vars": "error",
 		"no-use-before-define": "error",
 
 		// Stylistic Issues
