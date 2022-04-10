@@ -52,10 +52,9 @@ export default function useAuth () {
 	const verification = async ( email, password, otp_attempt ) => {
 		const user = { email, password, otp_attempt };
 		const result = await authServer({ "path": "users/sign_in.json", "data": { user } });
-		// @todo remove alert, add token saving and fetching user data
-		// console.log( `Auth token: ${result.auth_token}` );
-		if ( !result.auth_token ) throw { "error": "Invalid code" };
-		sessionStorage.setItem( "auth_token", JSON.stringify( result.auth_token ) );
+		if ( !result.auth_token ) throw "Invalid code";
+		localStorage.setItem( "auth_token", result.auth_token );
+		router.push({ "name": "Dashboard" });
 		/*
 		const userProfile = result.data.profile;
 		if ( result.data.profile.businessId ) {
@@ -69,8 +68,6 @@ export default function useAuth () {
 		}
 		setProfile( userProfile );
 		setUserIdState( userProfile._id );
-		if ( userProfile.new ) router.push({ "name": "OnboardingForm" });
-		else router.push({ "name": "Dashboard" });
 		*/
 	};
 
@@ -85,16 +82,31 @@ export default function useAuth () {
 	};
 
 	const restoreSession = async () => {
-		const userId = appState.value.userId;
-		const result = await authServer({ "path": "profile", "data": { "_id": userId } });
-		if ( !result.ok ) {
-			setUserIdState( "" );
+		const authToken = localStorage.getItem("auth_token");
+		if (!authToken) {
+			window.location.href = "/";
+		}
+		const apiUrl = `${import.meta.env.VITE_API_URI}/api/profile`;
+		const options = {
+			"method": "get",
+			"mode": "cors",
+			"cache": "no-cache",
+			"headers": {
+				"Content-Type": "application/json;charset=utf-8",
+				"Authorization": `Bearer ${authToken}`
+			}
+		};
+		const response = await fetch( apiUrl, options );
+		const result = await response.json();
+		if ( !result.id ) {
+			// setUserIdState( "" );
 			profile.value = {};
 			linkaccount.value = {};
 			window.location.href = "/";
 			return;
 		}
-		profile.value = result.data;
+		setProfile(result);
+		/*
 		if ( result.data.businessId ) {
 			const collection = new UseData( "business" );
 			await collection.readDocuments( result.data.businessId );
@@ -104,6 +116,7 @@ export default function useAuth () {
 			await collection.readDocuments( result.data.specialistId );
 			linkaccount.value = collection.getDocument().value;
 		}
+		*/
 	};
 
 	const signOut = async () => {

@@ -79,9 +79,16 @@ export default {
 		const signUpUser = async () => {
 			errors.value = await validates( rules, { ...form.value, "password2": password2.value });
 			if ( Object.keys( errors.value ).length ) return;
-
 			try {
-				await registration({ "user": form.value });
+				await registration({ "user": {
+				email: form.value.email,
+				password: form.value.password,
+				kind: "employee",
+				profile_attributes: {
+					first_name: form.value.first_name,
+					last_name: form.value.last_name
+				}
+			}});
 				nextStep( 1 );
 			} catch ( error ) {
 				// if ( error.includes( "Email" ) ) Object.assign( errors.value, { "email": [error] });
