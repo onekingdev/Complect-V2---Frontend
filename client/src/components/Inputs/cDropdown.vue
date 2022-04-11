@@ -109,7 +109,6 @@ export default {
 		width: 100%
 		border-radius: 0 0 var(--v-inputs-border-radius) var(--v-inputs-border-radius)
 		box-shadow: 0 0 0 1px var(--c-border)
-		margin-top: 0.5em
 		&.toTop
 			bottom: calc(100% + 0.05em)
 		&.toBottom

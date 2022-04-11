@@ -11,14 +11,8 @@
 // card
 .medium-card
 	padding: 2em 10em;
-	@media (max-width: 900px)
-		padding: 2em 8em;
-	@media (max-width: 800px)
-		padding: 2em 6em;
 	@media (max-width: 700px)
-		padding: 2em 4em;
-	@media (max-width: 575px)
-		padding: 2em 1em;
+		padding: 2em;
 
 
 // Form
@@ -36,8 +30,6 @@ form.form-container
 	display: grid
 	grid-template-columns: repeat(6, 1fr)
 	gap: 1em
-	@media (max-width: 575px)
-		gap: 0.5em
 	.col-6, > *
 		grid-column: 1 / -1
 	.col-5
