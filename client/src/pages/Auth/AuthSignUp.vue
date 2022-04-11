@@ -10,8 +10,8 @@ card-container
 			h1 Let's get you started!
 			h2 Create your FREE account
 			.form.grid-6
-				c-field.col-3(label="First Name" :errors="errors.firstName" v-model="form.firstName" required)
-				c-field.col-3(label="Last Name" :errors="errors.lastName" v-model="form.lastName" required)
+				c-field.name-col.col-3(label="First Name" :errors="errors.firstName" v-model="form.firstName" required)
+				c-field.name-col.col-3(label="Last Name" :errors="errors.lastName" v-model="form.lastName" required)
 				c-field(label="Email" :errors="errors.email" v-model="form.email" required)
 				c-field(label="Password" type="password" :errors="errors.password" v-model="form.password" required)
 				c-field(label="Repeat Password" type="password" :errors="errors.password2" v-model="password2" required)
@@ -21,8 +21,8 @@ card-container
 				a(href="https://www.complect.com/privacy-policy" target="_blank" rel="noopener") Privacy Policy
 			c-button(title="Sign Up" type="primary" @click="signUpUser()" fullwidth)
 	template(#footer)
-		p Already have a Complect account?
-			router-link(:to="{name: 'AuthSignIn'}")  Sign In
+		p Already have a Complect account?&nbsp;
+			router-link.sign-in(:to="{name: 'AuthSignIn'}") Sign In
 </template>
 
 
@@ -102,4 +102,10 @@ export default {
 	margin: 1em 0
 .terms
 	font-size: 0.875em
+.name-col
+	@media (max-width: 767px)
+		grid-column: 1 / -1
+.sign-in
+	&:hover
+		text-decoration: underline
 </style>

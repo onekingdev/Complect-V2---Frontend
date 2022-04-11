@@ -83,7 +83,13 @@ export default function useAuth () {
 	const restoreSession = async () => {
 		const userId = appState.value.userId;
 		const result = await authServer({ "path": "profile", "data": { "_id": userId } });
-		if ( !result.ok ) throw result.message;
+		if ( !result.ok ) {
+			setUserIdState( "" );
+			profile.value = {};
+			linkaccount.value = {};
+			window.location.href = "/";
+			return;
+		}
 		profile.value = result.data;
 		if ( result.data.businessId ) {
 			const collection = new UseData( "business" );
