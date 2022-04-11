@@ -134,9 +134,6 @@ export default {
 			border-bottom: 1px solid var(--c-border)
 			.container-sections
 				border-top: 1px solid var(--c-border)
-	&.white-header
-		.container-content
-			background: var(--c-bg-z2)
 	&.full-width
 		width: 100%
 		.tabs
