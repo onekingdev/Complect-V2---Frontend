@@ -1,14 +1,13 @@
 import { useRouter } from "vue-router";
 import { appState, setUserIdState } from "~/store/appState";
 import useProfile from "~/store/Profile";
-import { randomMongoId } from "~/core/utils.js";
 import UseData from "~/store/Data.js";
 
 
 const authServer = async ({ path, data }) => {
 	try {
 		const API_URI = import.meta.env.VITE_API_URI;
-		const apiUrl = `${API_URI}/auth/${path}`;
+		const apiUrl = `${API_URI}/${path}`;
 		const options = {
 			"method": "post",
 			"mode": "cors",
@@ -31,9 +30,9 @@ export default function useAuth () {
 
 
 	const registration = async data => {
-		data._id = randomMongoId();
-		const result = await authServer({ "path": "sign-up", data });
-		if ( !result.ok ) throw result.message;
+		const result = await authServer({ "path": "users", data });
+		if ( !result.message ) throw result.error || "Unknown error";
+		if ( result.message !== "Signed up." ) throw result.message;
 	};
 
 	const onboarding = async form => {
@@ -46,13 +45,17 @@ export default function useAuth () {
 	};
 
 	const authentication = async data => {
-		const result = await authServer({ "path": "sign-in", data });
-		if ( !result.ok ) throw result.message;
+		const result = await authServer({ "path": "users/sign_in.json", data: { "user": data } });
+		if ( result.error ) throw result.error;
 	};
 
-	const verification = async ( email, otp ) => {
-		const result = await authServer({ "path": "otp", "data": { email, otp } });
-		if ( !result.ok ) throw result.message;
+	const verification = async ( email, password, otp_attempt ) => {
+		const user = { email, password, otp_attempt };
+		const result = await authServer({ "path": "users/sign_in.json", "data": { user } });
+		if ( !result.auth_token ) throw "Invalid code";
+		localStorage.setItem( "auth_token", result.auth_token );
+		router.push({ "name": "Dashboard" });
+		/*
 		const userProfile = result.data.profile;
 		if ( result.data.profile.businessId ) {
 			const collection = new UseData( "business" );
@@ -65,9 +68,7 @@ export default function useAuth () {
 		}
 		setProfile( userProfile );
 		setUserIdState( userProfile._id );
-		sessionStorage.removeItem( "email" );
-		if ( userProfile.new ) router.push({ "name": "OnboardingForm" });
-		else router.push({ "name": "Dashboard" });
+		*/
 	};
 
 	const newOtp = async email => {
@@ -81,16 +82,31 @@ export default function useAuth () {
 	};
 
 	const restoreSession = async () => {
-		const userId = appState.value.userId;
-		const result = await authServer({ "path": "profile", "data": { "_id": userId } });
-		if ( !result.ok ) {
-			setUserIdState( "" );
+		const authToken = localStorage.getItem("auth_token");
+		if (!authToken) {
+			window.location.href = "/sign-in";
+		}
+		const apiUrl = `${import.meta.env.VITE_API_URI}/api/profile`;
+		const options = {
+			"method": "get",
+			"mode": "cors",
+			"cache": "no-cache",
+			"headers": {
+				"Content-Type": "application/json;charset=utf-8",
+				"Authorization": `Bearer ${authToken}`
+			}
+		};
+		const response = await fetch( apiUrl, options );
+		const result = await response.json();
+		if ( !result.id ) {
+			// setUserIdState( "" );
 			profile.value = {};
 			linkaccount.value = {};
 			window.location.href = "/";
 			return;
 		}
-		profile.value = result.data;
+		setProfile(result);
+		/*
 		if ( result.data.businessId ) {
 			const collection = new UseData( "business" );
 			await collection.readDocuments( result.data.businessId );
@@ -100,9 +116,11 @@ export default function useAuth () {
 			await collection.readDocuments( result.data.specialistId );
 			linkaccount.value = collection.getDocument().value;
 		}
+		*/
 	};
 
 	const signOut = async () => {
+		localStorage.removeItem("auth_token");
 		setUserIdState( "" );
 		await router.push({ "name": "AuthSignIn" });
 		profile.value = {};

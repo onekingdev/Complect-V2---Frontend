@@ -99,9 +99,6 @@ const RecordsOverview = () => import( "~/pages/Records/RecordsOverview.vue" );
 const _OrganizationEntry = () => import( "~/pages/Organization/_OrganizationEntry.vue" );
 const OrganizationOverview = () => import( "~/pages/Organization/OrganizationOverview.vue" );
 
-// form library
-const _FormLibrary = () => import( "~/pages/FormLibrary/_FormLibrary.vue" );
-
 
 // settings
 const _SettingsEntry = () => import( "~/pages/Settings/_SettingsEntry.vue" );
@@ -618,12 +615,6 @@ const routes = [
 							"title": "Plan",
 							"sidebar": false
 						}
-					},
-					{
-						"path": "formLibrary",
-						"name": "FormLibrary",
-						"component": _FormLibrary,
-						"meta": { "title": "Form Library" }
 					},
 					{
 						"path": "settings",
