@@ -36,7 +36,7 @@ card-container
 
 
 <script>
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import useAuth from "~/core/auth";
 import useSignInOtp from "~/core/signInOtp";
 import useForm from "~/store/Form.js";
