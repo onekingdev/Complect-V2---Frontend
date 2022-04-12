@@ -6,7 +6,7 @@ card-container
 				.plan-header
 					.title Choose your plan
 					c-switcher(id="payment" :options="formOptions.payments" v-model="form.annually" type="primary" fullwidth)
-				c-plans(:plans="plans[userType]" :annually="form.annually" v-model="form.plan" @checkout="goToCheckout()" :currentPlan="document.amount" @downgrade="toggleCancelVisible()")
+				c-plans(:plans="plans[userType]" :annually="form.annually" v-model="form.plan" @checkout="goToCheckout()")
 			div.checkout-settings(:class="{'hide-setting': isPlan}")
 				.page-checkout
 					main
@@ -54,17 +54,6 @@ card-container
 								.price(v-else-if="promoInfo.amount_off") ${{plan.price - promoInfo.amount_off}}
 								.price(v-else) ${{plan.price}}
 							c-button.purchase-button(title="Complete Purchase" type="plan" @click="completePurchase()")
-c-modal(title="Cancel Plan" v-model="isCancelVisible")
-	template(#content)
-		.delete-container
-			div
-				icon(name="error" size="big")
-			.description
-				p You are canceling your subscription to Complect. This will terminate your access to our full suite of features on {{ formatDate(linkaccount.currentPlan.subscriptionEndAt * 1000) }} when your subscription ends.
-				p If you have more than 1GB of stored data or users, this will cause your account to be locked until you upgrade to a paid plan.
-				p.confirm Do you want to continue?
-	template(#footer)
-		c-button(title="Confirm" type="primary" @click="cancelPlan()")
 </template>
 <script>
 import { ref, inject, onMounted } from "vue";
@@ -81,9 +70,8 @@ import { manualApi } from "~/core/api.js";
 import { formatDate } from "~/core/utils";
 import useForm from "~/store/Form.js";
 import { plans } from "~/data/plans.js";
-import cModal from "~/components/Misc/cModal.vue";
 export default {
-	"components": { cSelect, cLabel, cBadge, cSwitcher, cPlans, cRadios, cModal },
+	"components": { cSelect, cLabel, cBadge, cSwitcher, cPlans, cRadios },
 	// eslint-disable-next-line
 	setup () {
 		const notification = inject( "notification" );
@@ -97,8 +85,6 @@ export default {
 		const promocode = ref();
 		const promoInfo = ref({ });
 		const planClass = ref( "plan-hide" );
-		const isCancelVisible = ref( false );
-		const toggleCancelVisible = () => isCancelVisible.value = !isCancelVisible.value;
 		const baseForm = {
 			"specialist": {
 				"crd": false,
@@ -147,7 +133,7 @@ export default {
 				"url": `payment/subscription/${businessId}`
 			});
 			subscription.value = subres.data;
-			subscription.value = subres.data?.filter( sub => sub.id === linkaccount.value.currentPlan?.subId )[0];
+			subscription.value = subres.data?.data.filter( sub => sub.id === linkaccount.value.currentPlan?.subId )[0];
 		};
 		const getPayments = async () => {
 			const response = await manualApi({
@@ -181,26 +167,6 @@ export default {
 				plan.value.price = findplan.perPrice;
 				plan.value.annually = form.value.annually;
 				plan.value._id = findplan._id;
-			}
-		};
-		const cancelPlan = async () => {
-			try {
-				await manualApi({
-					"method": "delete",
-					"url": `payment/subscription/${linkaccount.value._id}/${linkaccount.value.currentPlan.subId}`
-				});
-				isCancelVisible.value = !isCancelVisible.value;
-				notification({
-					"type": "success",
-					"title": "Success",
-					"message": "Subscription has been cancelled"
-				});
-			} catch ( error ) {
-				notification({
-					"type": "success",
-					"title": "Success",
-					"message": "Subscription has not been cancelled. Please try again."
-				});
 			}
 		};
 		const goBack = () => isPlan.value = true;
@@ -281,9 +247,7 @@ export default {
 			completePurchase,
 			promoInfo,
 			promocode,
-			applyPromo,
-			toggleCancelVisible,
-			cancelPlan
+			applyPromo
 		};
 	}
 };
@@ -304,7 +268,7 @@ export default {
 	display: flex
 	align-items: center
 	gap: 2em
-	overflow: auto
+	overflow: scroll
 	min-height: 100%
 	main
 		flex: 3 0 auto
