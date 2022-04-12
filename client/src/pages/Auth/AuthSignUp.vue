@@ -27,17 +27,18 @@ card-container
 			.confirmation-code
 				input(v-for="i in 6" :key="i" type="number" :ref="el => { if (el) inputs[i-1] = el }" v-model="numbers[i-1]" @keyup="event => keyupHandler(event, i)" @input="event => inputHandler(event, i)" required)
 			.error(v-if="errorMessage") {{ errorMessage }}
-			c-button(title="Submit" type="primary" @click="submitCode()" fullwidth)
+			c-button(title="Submit" type="primary" @click="submitCode(form.email, form.password, otp)" fullwidth)
 	template(#footer)
 		p(v-if="step !== 3") Already have a Complect account?
 			router-link.sign-in(:to="{name: 'AuthSignIn'}") Sign In
-		c-button(v-else title="Send new code" type="link" @click="sendNewCode()")
+		c-button(v-else title="Send new code" type="link" @click="sendNewCode(form.email)")
 </template>
 
 
 <script>
 import { ref, computed } from "vue";
 import useAuth from "~/core/auth";
+import useSignInOtp from "~/core/signInOtp";
 import useForm from "~/store/Form.js";
 import cRadioCards from "~/components/Inputs/cRadioCards.vue";
 import { validates } from "~/core/utils.js";
@@ -97,38 +98,16 @@ export default {
 		};
 
 		// step 3
-		const { verification, newOtp } = useAuth();
-		const inputs = ref([]);
-		const numbers = ref([]);
-		const otp = computed( () => numbers.value.join( "" ) );
-		const errorMessage = ref( "" );
-
-		const submitCode = async () => {
-			errorMessage.value = "";
-			if ( otp.value.length < 6 ) errorMessage.value = "Incomplete code";
-			else {
-				try {
-					await verification( form.value.email, password2.value, otp.value );
-				} catch ( error ) {
-					errorMessage.value = "Incorrect code";
-				}
-			}
-		};
-		const sendNewCode = async () => {
-			await newOtp( form.value.email );
-			numbers.value = [];
-		};
-
-		const keyupHandler = ( e, index ) => {
-			if ( e.keyCode === 8 && e.target.value === "" && inputs.value[index - 2] ) inputs.value[index - 2].focus();
-		};
-
-		const inputHandler = ( e, index ) => {
-			const [first] = e.target.value;
-			e.target.value = first ?? "";
-			if ( otp.value.length >= 6 ) inputs.value[index - 1].blur();
-			if ( index !== inputs.value.length && first !== undefined ) inputs.value[index].focus();
-		};
+		const {
+			inputs,
+			numbers,
+			otp,
+			errorMessage,
+			submitCode,
+			sendNewCode,
+			keyupHandler,
+			inputHandler,
+		} = useSignInOtp();
 
 		return {
 			errors,
