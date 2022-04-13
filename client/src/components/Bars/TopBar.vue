@@ -77,7 +77,6 @@ export default {
 		const reportLink = profile.value.type === "specialist" ? "/reports/financials" : "/reports/organizations";
 
 		const connect = () => {
-			messages.value = [];
 			websocket.value = new WebSocket( endpoint.value );
 			websocket.value.onclose = ({ wasClean, code, reason }) => {
 				console.error( `onclose:   ${JSON.stringify({ wasClean, code, reason })}` );
