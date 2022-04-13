@@ -10,8 +10,8 @@ card-container
 			h1 Let's get you started!
 			h2 Create your FREE account
 			.form.grid-6
-				c-field.name-col.col-3(label="First Name" :errors="errors.first_name" v-model="form.first_name" required)
-				c-field.name-col.col-3(label="Last Name" :errors="errors.last_name" v-model="form.last_name" required)
+				c-field.col-3(label="First Name" :errors="errors.firstName" v-model="form.firstName" required)
+				c-field.col-3(label="Last Name" :errors="errors.lastName" v-model="form.lastName" required)
 				c-field(label="Email" :errors="errors.email" v-model="form.email" required)
 				c-field(label="Password" type="password" :errors="errors.password" v-model="form.password" required)
 				c-field(label="Repeat Password" type="password" :errors="errors.password2" v-model="password2" required)
@@ -20,37 +20,28 @@ card-container
 				| and acknowledge the&nbsp;
 				a(href="https://www.complect.com/privacy-policy" target="_blank" rel="noopener") Privacy Policy
 			c-button(title="Sign Up" type="primary" @click="signUpUser()" fullwidth)
-		template(v-if="step === 3")
-			h1 Confirm Your Email
-			h3 We sent a 6 digit code to {{form.email}}. Please enter it below.
-			icon(name="mail")
-			.confirmation-code
-				input(v-for="i in 6" :key="i" type="number" :ref="el => { if (el) inputs[i-1] = el }" v-model="numbers[i-1]" @keyup="event => keyupHandler(event, i)" @input="event => inputHandler(event, i)" required)
-			.error(v-if="errorMessage") {{ errorMessage }}
-			c-button(title="Submit" type="primary" @click="submitCode(form.email, form.password, otp)" fullwidth)
 	template(#footer)
-		p(v-if="step !== 3") Already have a Complect account?
-			router-link.sign-in(:to="{name: 'AuthSignIn'}") Sign In
-		c-button(v-else title="Send new code" type="link" @click="sendNewCode(form.email)")
+		p Already have a Complect account?
+			router-link(:to="{name: 'AuthSignIn'}")  Sign In
 </template>
 
 
 <script>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import useAuth from "~/core/auth";
-import useSignInOtp from "~/core/signInOtp";
 import useForm from "~/store/Form.js";
 import cRadioCards from "~/components/Inputs/cRadioCards.vue";
 import { validates } from "~/core/utils.js";
-import { required, maxLength, email as emailValidator, minLength } from "@vuelidate/validators";
+import { required, maxLength, email, minLength } from "@vuelidate/validators";
 import { sameAsWith } from "~/core/customValidates.js";
 
 export default {
 	"components": { cRadioCards },
 	setup () {
-		// steps 1, 2
+		const router = useRouter();
 		const { registration } = useAuth();
-		const { form } = useForm( "registration" );
+		const { form, resetForm } = useForm( "registration" );
 		const accountTypes = [
 			{
 				"value": "business",
@@ -70,9 +61,9 @@ export default {
 		const nextStep = value => step.value += value;
 
 		const rules = {
-			"email": { required, emailValidator },
-			"first_name": { required, "maxLength": maxLength( 100 ) },
-			"last_name": { required, "maxLength": maxLength( 100 ) },
+			"email": { required, email },
+			"firstName": { required, "maxLength": maxLength( 100 ) },
+			"lastName": { required, "maxLength": maxLength( 100 ) },
 			"password": { required, "minLength": minLength( 6 ) },
 			"password2": { required, "sameAsPassword": sameAsWith( "password" ) }
 		};
@@ -80,34 +71,17 @@ export default {
 		const signUpUser = async () => {
 			errors.value = await validates( rules, { ...form.value, "password2": password2.value });
 			if ( Object.keys( errors.value ).length ) return;
+
 			try {
-				await registration({ "user": {
-				email: form.value.email,
-				password: form.value.password,
-				kind: "employee",
-				profile_attributes: {
-					first_name: form.value.first_name,
-					last_name: form.value.last_name
-				}
-			}});
-				nextStep( 1 );
+				await registration( form.value );
+				sessionStorage.setItem( "email", JSON.stringify( form.value.email ) ); // will be changed to sessionID
+				router.push({ "name": "AuthVerification" });
+				await resetForm();
 			} catch ( error ) {
-				// if ( error.includes( "Email" ) ) Object.assign( errors.value, { "email": [error] });
+				if ( error.includes( "Email" ) ) Object.assign( errors.value, { "email": [error] });
 				console.error( error );
 			}
 		};
-
-		// step 3
-		const {
-			inputs,
-			numbers,
-			otp,
-			errorMessage,
-			submitCode,
-			sendNewCode,
-			keyupHandler,
-			inputHandler,
-		} = useSignInOtp();
 
 		return {
 			errors,
@@ -116,15 +90,7 @@ export default {
 			step,
 			nextStep,
 			accountTypes,
-			signUpUser,
-			submitCode,
-			sendNewCode,
-			keyupHandler,
-			inputHandler,
-			errorMessage,
-			otp,
-			inputs,
-			numbers
+			signUpUser
 		};
 	}
 };
@@ -136,36 +102,4 @@ export default {
 	margin: 1em 0
 .terms
 	font-size: 0.875em
-.name-col
-	@media (max-width: 767px)
-		grid-column: 1 / -1
-.sign-in
-	&:hover
-		text-decoration: underline
-
-.error
-	font-size: 0.8em
-	color: red
-	text-align: center
-svg.icon
-	flex: 1
-	display: block
-	width: 12em
-	height: 8em
-	margin: 2em auto
-.confirmation-code
-	margin: 1em
-	display: flex
-	gap: 0.5em
-	font-size: 1.6em
-	input
-		flex: 1 1 0
-		width: 0
-		min-width: 0
-		padding: 1em 0
-		text-align: center
-		border: 1px solid var(--c-border)
-		border-radius: var(--v-border-radius)
-		&:focus
-			border-color: var(--c-selected)
 </style>

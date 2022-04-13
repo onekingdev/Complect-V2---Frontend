@@ -170,10 +170,7 @@ export default {
 			projectForm.value.endsAt = projects.getDocument().value.endsAt;
 			projectForm.value.description = projects.getDocument().value.description;
 		};
-		const closeProject = () => {
-			if ( profile.value.type === "specialist" ) router.push({ "name": "JobsOverview" });
-			else router.push({ "name": "ProjectsOverview" });
-		};
+		const closeProject = () => router.push({ "name": "ProjectsOverview" });
 		const updateProject = async updateDocument => {
 			try {
 				if ( updateDocument ) projectForm.value = updateDocument;

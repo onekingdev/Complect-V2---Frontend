@@ -6,31 +6,27 @@
 			c-form-wizard(v-if="userType === 'business'" :steps="wizardSteps.business")
 				template(#step1)
 					section
-						.header.crd-header Do you have a CRD number?
-							.crd-info
-								.tooltip You can find your CRD number on the&nbsp;
-									router-link(to="https://adviserinfo.sec.gov" target="_blank") IAPD site
-								icon(name="info-black" size="small")
+						.header Do you have a CRD number?
 						.intro The CRD number will be used to auto-populate information about your business
 						.inputs.grid-6
-							c-radios.crd-radio(id="crd" :data="radioOptions" v-model="form.crd")
-							c-field.col-3(id="crdValue" label="What is your CRD number?" placeholder="123456" v-if="form.crd" v-model="form.crdValue")
+							c-radios(id="crd" :data="radioOptions" v-model="form.crd")
+							c-field.col-3(id="crdValue" v-if="form.crd" v-model="form.crdValue")
 				template(#step2)
 					c-field(label="Company Name" type="text" placeholder="Company Name" :errors="errors.company" required v-model="form.company")
-					c-field.sub-col.col-3(label="AUM" type="text" placeholder="AUM" v-model="form.aum")
-					c-field.sub-col.col-3(label="Number of Accounts" type="number" placeholder="Number of Accounts" v-model="form.accounts")
-					c-select.sub-col.col-3(label="Industry" placeholder="Select Industry" :errors="errors.industries" :data="industries" v-model="form.industries" searchable multiple required)
-					c-select.sub-col.col-3(label="Sub-Industry" placeholder="Select Sub-Industry" :data="filteredSubIndustries" v-model="form.subIndustries" searchable multiple)
-					c-select.sub-col.col-3(label="Jurisdiction" placeholder="Select Jurisdiction" :errors="errors.jurisdictions" :data="jurisdictions" v-model="form.jurisdictions" searchable multiple required)
-					c-select.sub-col.col-3(label="Time Zone" placeholder="Select Time Zone" :errors="errors.timezone" :data="timezones" v-model="form.timezone" searchable required)
-					c-field.sub-col.col-3(label="Phone Number" type="tel" placeholder="Phone Number" v-model="form.tel")
-					c-field.sub-col.col-3(label="Company Website" type="url" placeholder="Company Website" v-model="form.website")
+					c-field.col-3(label="AUM" type="text" placeholder="AUM" v-model="form.aum")
+					c-field.col-3(label="Number of Accounts" type="number" placeholder="Number of Accounts" v-model="form.accounts")
+					c-select.col-3(label="Industry" placeholder="Select Industry" :errors="errors.industries" :data="industries" v-model="form.industries" searchable multiple required)
+					c-select.col-3(label="Sub-Industry" placeholder="Select Sub-Industry" :data="filteredSubIndustries" v-model="form.subIndustries" searchable multiple)
+					c-select.col-3(label="Jurisdiction" placeholder="Select Jurisdiction" :errors="errors.jurisdictions" :data="jurisdictions" v-model="form.jurisdictions" searchable multiple required)
+					c-select.col-3(label="Time Zone" placeholder="Select Time Zone" :errors="errors.timezone" :data="timezones" v-model="form.timezone" searchable required)
+					c-field.col-3(label="Phone Number" type="tel" placeholder="Phone Number" v-model="form.tel")
+					c-field.col-3(label="Company Website" type="url" placeholder="Company Website" v-model="form.website")
 					.divider
-					c-address.business-col.col-5(label="Business Address" :errors="errors.address" :value="form.address" placeholder="Business Address" @update="updateAddressChange" required)
-					c-field.apt-col.col-1(label="Apt/Unit" type="text" placeholder="Apt/Unit" v-model="form.apt")
-					c-field.city-col.col-2(label="City" type="text" placeholder="City" :errors="errors.city" v-model="form.city" required)
-					c-field.state-col.col-2(label="State" type="text" placeholder="State" :errors="errors.state" v-model="form.state")
-					c-field.zip-col.col-2(label="Zip code" type="number" placeholder="Zip code" :errors="errors.zip" v-model="form.zip" required)
+					c-address.col-5(label="Business Address" :errors="errors.address" :value="form.address" placeholder="Business Address" @update="updateAddressChange" required)
+					c-field.col-1(label="Apt/Unit" type="text" placeholder="Apt/Unit" v-model="form.apt")
+					c-field.col-2(label="City" type="text" placeholder="City" :errors="errors.city" v-model="form.city" required)
+					c-field.col-2(label="State" type="text" placeholder="State" :errors="errors.state" v-model="form.state")
+					c-field.col-2(label="Zip code" type="number" placeholder="Zip code" :errors="errors.zip" v-model="form.zip" required)
 				template(#step3)
 					.plan-header
 						.title Choose your plan
@@ -340,45 +336,6 @@ section
 	.header
 		font-size: 1.3em
 		line-height: 1.2
-	.crd-header
-		display: flex
-		align-items: center
-		gap: 0.5em
-		.crd-info
-			display: flex
-			align-items: center
-			position: relative
-			.tooltip
-				visibility: hidden
-				width: 17em
-				background: var(--c-tooltip-bgColor)
-				text-align: center
-				padding: 0.34em 0.68em
-				color: var(--c-tooltip-color)
-				position: absolute
-				bottom: 140%
-				left: -7.8em
-				opacity: 0
-				transition: opacity 0.3s
-				font-size: 0.577em
-				border-radius: 0.3em
-				box-shadow: 0 1rem 1rem -0.5rem rgba(0, 0, 0, 0.35)
-				@media (max-width: 450px)
-					left: -14em;
-				&:after
-					content: ""
-					position: absolute
-					top: 100%
-					left: 50%
-					margin-left: -5px
-					border-width: 5px
-					border-style: solid
-					border-color: var(--c-tooltip-bgColor) transparent transparent transparent
-					@media (max-width: 450px)
-						left: 86%
-			&:hover .tooltip
-				visibility: visible
-				opacity: 1
 	.intro
 		font-size: 0.9em
 		margin-top: 0.3em
@@ -386,24 +343,6 @@ section
 		color: #797b7e
 	.inputs
 		margin-top: 1em
-	.crd-radio
-		font-size: 0.875em
 .c-switcher
 	margin: 0 auto 1em
-.c-form-wizard
-	@media (max-width: 1000px)
-		.business-col
-			grid-column: 1 / -1
-		.apt-col
-			grid-column: 1 / -1
-		.city-col
-			grid-column: 1 / -1
-		.state-col
-			grid-column: 1 / -1
-		.zip-col
-			grid-column: 1 / -1
-	@media (max-width: 575px)
-		.sub-col
-			grid-column: 1 / -1
-
 </style>
