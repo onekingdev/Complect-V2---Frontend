@@ -100,7 +100,7 @@ export default {
 		const userType = profile.value.type;
 		const router = useRouter();
 		const notification = inject( "notification" );
-		const publishkey = ref( "pk_test_V4rItWDTqr1AWyskRsxH12ZE" );
+		const publishkey = ref( import.meta.env.VITE_STRIPE );
 		const tokenCreated = token => console.debug( token );
 		const elementRef = ref();
 		const payments = ref([]);

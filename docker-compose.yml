@@ -14,6 +14,7 @@ services:
         environment:
             HOST: 0.0.0.0
             VITE_API_URI: ${LOCAL_API_URI}
+            VITE_STRIPE: ${STRIPE_PUBLISH_KEY}
             VITE_STAGE: 'dev'
         volumes:
             - ./client:/home/app

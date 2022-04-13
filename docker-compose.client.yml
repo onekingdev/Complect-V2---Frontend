@@ -13,7 +13,8 @@ services:
         environment:
             HOST: 0.0.0.0
             VITE_API_URI: ${CLOUD_API_URI}
-            VITE_STAGE: 'dev'
+            VITE_STAGE: 'dev11'
+            VITE_STRIPE: ${STRIPE_PUBLISH_KEY}
         volumes:
             - ./client:/home/app
             - /home/app/node_modules

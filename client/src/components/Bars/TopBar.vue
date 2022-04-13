@@ -7,7 +7,7 @@
 		.buttons
 			c-button(title="Find an Expert" type="accent" @click="gotoMarket()" v-if="profile.type == 'business'")
 			c-button(title="Browse Jobs" type="accent" @click="gotoJobs()" v-else)
-			c-button.notification-icon(iconL="bell" type="transparent" @click="gotoNotification()" :class="{active: messages == true}")
+			c-button(iconL="bell" type="transparent")
 	.user-block(v-if="profile" @click="toggleUserDropDown()" ref="userDropDown" :class="{expanded: userDropDownExpanded}")
 		c-avatar(:avatar="profile.avatar" :firstName="profile.firstName" :lastName="profile.lastName" size="small")
 		.name {{profile.firstName}} {{profile.lastName}}
@@ -19,7 +19,7 @@
 
 
 <script>
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { onClickOutside } from "@vueuse/core";
 import useAuth from "~/core/auth.js";
@@ -27,7 +27,6 @@ import useProfile from "~/store/Profile.js";
 import cAvatar from "~/components/Misc/cAvatar.vue";
 export default {
 	"components": { cAvatar },
-	// eslint-disable-next-line max-statements
 	setup () {
 		const route = useRoute();
 		const router = useRouter();
@@ -35,9 +34,6 @@ export default {
 		const { profile } = useProfile();
 		const userDropDown = ref( null );
 		const userDropDownExpanded = ref( false );
-		const endpoint = ref( "ws://192.168.0.192:3000/cable" );
-		const messages = ref( false );
-		const websocket = ref();
 		const toggleUserDropDown = () => userDropDownExpanded.value = !userDropDownExpanded.value;
 		onClickOutside( userDropDown, () => userDropDownExpanded.value = false );
 
@@ -70,33 +66,7 @@ export default {
 		const toDashboard = () => simpleTopBar.value ? router.push({ "name": "Dashboard" }) : router.push({ "name": "OnboardingForm" });
 		const gotoMarket = () => router.push({ "name": "ExpertList" });
 		const gotoJobs = () => router.push({ "name": "JobBoard" });
-		const gotoNotification = () => {
-			router.push({ "name": "NotificationCenter" });
-			messages.value = false;
-		};
 		const reportLink = profile.value.type === "specialist" ? "/reports/financials" : "/reports/organizations";
-
-		const connect = () => {
-			websocket.value = new WebSocket( endpoint.value );
-			websocket.value.onclose = ({ wasClean, code, reason }) => {
-				console.error( `onclose:   ${JSON.stringify({ wasClean, code, reason })}` );
-			};
-			websocket.value.onerror = error => {
-				console.error( error );
-			};
-			websocket.value.onmessage = ({ data }) => {
-				if ( JSON.parse( data ).type !== "ping" ) messages.value = true;
-			};
-			websocket.value.onopen = () => {
-				websocket.value.send( JSON.stringify({
-					"command": "subscribe",
-					"identifier": "{\"channel\": \"NotificationChannel\"}"
-				}) );
-			};
-		};
-
-		onMounted( () => connect() );
-		onUnmounted( () => websocket.value.close() );
 
 		return {
 			reportLink,
@@ -111,8 +81,7 @@ export default {
 			simpleTopBar,
 			toDashboard,
 			gotoMarket,
-			gotoJobs,
-			gotoNotification
+			gotoJobs
 		};
 	}
 };
@@ -155,19 +124,6 @@ export default {
 			flex: 0 1 auto
 			button
 				margin-right: 0.5em
-			.notification-icon
-				position: relative;
-				&.active::before
-					content: ' ';
-					position: absolute
-					top: 0.375em
-					left: 1.5em
-					z-index: 2
-					width: 0.5em
-					height: 0.5em
-					background-image: linear-gradient(#54a3ff, #006eed)
-					background-clip: padding-box
-					border-radius: 50%
 	.user-block
 		position: relative
 		display: flex
