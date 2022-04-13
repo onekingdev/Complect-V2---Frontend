@@ -12,6 +12,9 @@
 						.title {{$locale(link.title)}}
 
 			.menu-section.bordered
+				router-link.link-item(:to="{name: 'FormLibrary'}")
+					icon.paper(name="paper")
+					.title {{$locale('Form Library')}}
 				router-link.link-item(:to="{name: 'SettingsGeneral'}")
 					icon(name="settings")
 					.title {{$locale('Settings')}}
@@ -33,7 +36,7 @@ import useProfile from "~/store/Profile.js";
 
 export default {
 	setup () {
-		const { sidebarHomeNavigation, sidebarDocumentsNavigation, sidebarReportsNavigation, sidebarReportsSpecialistNavigation } = useNavigation();
+		const { sidebarHomeNavigation, sidebarDocumentsNavigation, sidebarReportsNavigation, sidebarReportsSpecialistNavigation, sidebarSpecialistNavigation } = useNavigation();
 		const { profile } = useProfile();
 		const route = useRoute();
 		const userType = profile.value.type;
@@ -46,11 +49,13 @@ export default {
 		const sidebarNavigation = computed( () => {
 			switch ( route.meta.tab ) {
 				case "Documents":
+					if ( userType === "specialist" ) return sidebarSpecialistNavigation;
 					return sidebarDocumentsNavigation;
 				case "Reports":
 					if ( userType === "specialist" ) return sidebarReportsSpecialistNavigation;
 					return sidebarReportsNavigation;
 				default:
+					if ( userType === "specialist" ) return sidebarSpecialistNavigation;
 					return sidebarHomeNavigation;
 			}
 		});
@@ -128,6 +133,8 @@ $link-hover-color = #2F304F
 		&.router-link-active
 			color: #fff
 			font-weight: bold
+		.paper
+			fill: transparent
 	svg.icon
 		width: $icons-size
 		height: $icons-size

@@ -29,6 +29,13 @@ const _ProjectsEntry = () => import( "~/pages/Projects/_ProjectsEntry.vue" );
 const ProjectsOverview = () => import( "~/pages/Projects/ProjectsOverview.vue" );
 const ProjectsContacts = () => import( "~/pages/Projects/ProjectsContacts.vue" );
 const ProjectsRatings = () => import( "~/pages/Projects/ProjectsRatings.vue" );
+// jobs
+const _JobsEntry = () => import( "~/pages/Jobs/_JobsEntry.vue" );
+const JobsOverview = () => import( "~/pages/Jobs/JobsOverview.vue" );
+const JobsContacts = () => import( "~/pages/Jobs/JobsContacts.vue" );
+const JobsRatings = () => import( "~/pages/Jobs/JobsRatings.vue" );
+
+
 // project
 const _ProjectEntry = () => import( "~/pages/Project/_ProjectEntry.vue" );
 const ProjectDetail = () => import( "~/pages/Project/ProjectDetail.vue" );
@@ -38,9 +45,11 @@ const ProjectCollaborators = () => import( "~/pages/Project/ProjectCollaborators
 const ProjectPost = () => import( "~/pages/Project/ProjectPost.vue" );
 const ProjectContract = () => import( "~/pages/Project/ProjectContract.vue" );
 const ProjectPostForm = () => import( "~/pages/Project/ProjectPostForm.vue" );
+const ProjectTimesheet = () => import( "~/pages/Project/ProjectTimesheet.vue" );
 
 // proposal
 const ProposalForm = () => import( "~/pages/Proposal/ProposalForm.vue" );
+const ProposalFormView = () => import( "~/pages/Proposal/ProposalFormView.vue" );
 
 // policies
 const _PoliciesEntry = () => import( "~/pages/Policies/_PoliciesEntry.vue" );
@@ -89,6 +98,10 @@ const RecordsOverview = () => import( "~/pages/Records/RecordsOverview.vue" );
 // organization
 const _OrganizationEntry = () => import( "~/pages/Organization/_OrganizationEntry.vue" );
 const OrganizationOverview = () => import( "~/pages/Organization/OrganizationOverview.vue" );
+
+// form library
+const _FormLibrary = () => import( "~/pages/FormLibrary/_FormLibrary.vue" );
+const FormLibraryEntry = () => import( "~/pages/FormLibrary/FormLibraryEntry.vue" );
 
 
 // settings
@@ -200,6 +213,29 @@ const routes = [
 						]
 					},
 					{
+						"path": "jobs",
+						"component": _JobsEntry,
+						"meta": { "title": "Jobs" },
+						"children": [
+							{
+								"path": "",
+								"name": "JobsOverview",
+								"component": JobsOverview,
+								"meta": { "title": "My Jobs" }
+							}, {
+								"path": "contacts",
+								"name": "JobsContacts",
+								"component": JobsContacts,
+								"meta": { "title": "Contacts" }
+							}, {
+								"path": "ratings",
+								"name": "JobsRatings",
+								"component": JobsRatings,
+								"meta": { "title": "Ratings and Reviews" }
+							}
+						]
+					},
+					{
 						"path": "project/new",
 						"name": "ProjectPostNew",
 						"component": ProjectPostForm,
@@ -269,6 +305,12 @@ const routes = [
 								"name": "ProjectContract",
 								"component": ProjectContract,
 								"meta": { "title": "Project Contract" }
+							},
+							{
+								"path": "timesheets",
+								"name": "ProjectTimesheet",
+								"component": ProjectTimesheet,
+								"meta": { "title": "Time Sheet" }
 							}
 						]
 					},
@@ -485,13 +527,14 @@ const routes = [
 								"name": "ProposalEdit",
 								"component": ProposalForm,
 								"meta": { "title": "Job Board Detail" }
-							}, {
-								"path": "applications/view",
-								"name": "ProposalView",
-								"component": ProposalForm,
-								"meta": { "title": "Job Board Detail" }
 							}
 						]
+					},
+					{
+						"path": "job_board/:id/:specialist_id/view",
+						"name": "ProposalView",
+						"component": ProposalFormView,
+						"meta": { "sidebar": false }
 					},
 					{
 						"path": "specialistmarketplace",
@@ -576,6 +619,18 @@ const routes = [
 							"title": "Plan",
 							"sidebar": false
 						}
+					},
+					{
+						"path": "formLibrary",
+						"name": "FormLibrary",
+						"component": _FormLibrary,
+						"meta": { "title": "Form Library" }
+					},
+					{
+						"path": "formLibraryEntry",
+						"name": "FormLibraryEntry",
+						"component": FormLibraryEntry,
+						"meta": { "title": "Form Entry" }
 					},
 					{
 						"path": "settings",
