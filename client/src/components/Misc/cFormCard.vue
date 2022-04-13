@@ -25,9 +25,6 @@ export default {
 			"type": String,
 			"default": "Description"
 		},
-		"iconName": {
-			"type": String
-		},
 		"formCount": {
 			"type": Number,
 			"default": 0
@@ -37,7 +34,7 @@ export default {
 			"required": true
 		}
 	},
-	setup( props ) {
+	setup ( props ) {
 		const router = useRouter();
 		const btnTitle = computed( () => `View All (${props.formCount})` );
 		const selectFormType = () => router.push({
@@ -47,7 +44,7 @@ export default {
 				"title": props.title
 			}
 		});
-		return { selectFormType, btnTitle }
+		return { selectFormType, btnTitle };
 	}
 };
 </script>

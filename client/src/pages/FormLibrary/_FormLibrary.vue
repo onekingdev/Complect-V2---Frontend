@@ -9,33 +9,31 @@
 <script>
 import cFormCard from "~/components/Misc/cFormCard.vue";
 export default {
-	components: { cFormCard },
-	setup() {
+	"components": { cFormCard },
+	setup () {
 		const cards = [
 			{
-				type: "attestation",
-				title: "Attestation Forms",
-				description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna",
-				formCount: "1",
-				routeName: "FormLibraryEntry"
-			},
-			{
-				type: "logs",
-				title: "Employee Log Forms",
-				description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna",
-				formCount: "1",
-				routeName: "FormLibraryEntry"
-			},
-			{
-				type: "approval",
-				title: "Pre-Approval Forms",
-				description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna",
-				formCount: "1",
-				routeName: "FormLibraryEntry"
-			},
+				"type": "attestation",
+				"title": "Attestation Forms",
+				"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna",
+				"formCount": "1",
+				"routeName": "FormLibraryEntry"
+			}, {
+				"type": "logs",
+				"title": "Employee Log Forms",
+				"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna",
+				"formCount": "1",
+				"routeName": "FormLibraryEntry"
+			}, {
+				"type": "approval",
+				"title": "Pre-Approval Forms",
+				"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna",
+				"formCount": "1",
+				"routeName": "FormLibraryEntry"
+			}
 		];
 
-		return { cards }
+		return { cards };
 	}
 };
 </script>

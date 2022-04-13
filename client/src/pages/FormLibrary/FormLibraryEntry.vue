@@ -15,11 +15,12 @@ import { useRoute, useRouter } from "vue-router";
 import { computed } from "vue";
 
 export default {
-	setup() {
+	setup () {
 		const route = useRoute();
 		const router = useRouter();
 		const title = computed( () => route.query.title );
 		const handleClickEdit = () => {};
+		const handleClickDelete = () => {};
 		const goToHome = () => router.push({ "name": "FormLibrary" });
 
 		const columns = [
@@ -33,7 +34,7 @@ export default {
 			{
 				"title": "Status",
 				"key": "status",
-				"cell": "CellStatus",
+				"cell": "CellStatus"
 			},
 			{
 				"title": "Date Created",
@@ -52,7 +53,7 @@ export default {
 				"cell": "CellDropdown",
 				"meta": {
 					"actions": [
-						{ "title": "Edit", "action": handleClickEdit }
+						{ "title": "Edit", "action": handleClickEdit }, { "title": "Delete", "action": handleClickDelete }
 					]
 				},
 				"align": "right"
@@ -65,8 +66,7 @@ export default {
 				"status": "pending",
 				"dateCreated": 1647000337214,
 				"owner": "System"
-			},
-			{
+			}, {
 				"name": "new form1",
 				"status": "complete",
 				"dateCreated": 1647000337214,
