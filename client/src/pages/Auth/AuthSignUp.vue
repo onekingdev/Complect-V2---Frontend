@@ -94,8 +94,7 @@ export default {
 				});
 				nextStep( 1 );
 			} catch ( error ) {
-				// if ( error.includes( "Email" ) ) Object.assign( errors.value, { "email": [error] });
-				console.error( error );
+				if ( error ) Object.assign( errors.value, { "email": [error] });
 			}
 		};
 
