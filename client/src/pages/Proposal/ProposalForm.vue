@@ -83,7 +83,7 @@ card-container(title="Create Proposal")
 			.client-content
 				.client-info
 					.client-name-content
-						c-avatar(avatar="avatar.jpg" :firstName="business.firstName" :lastName="business.lastName" )
+						c-avatar(avatar="avatar.jpg" :firstName="business.first_name" :lastName="business.last_name" )
 						div
 							p.client-name(@click="toggleChatModal" ) {{ business.firstName }} {{ business.lastName }}
 							p.client-location {{ business.city }}, {{ business.state }}, {{ business.country }}
