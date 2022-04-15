@@ -65,7 +65,7 @@
 			p.client-title Client Details
 			.client-info
 				.client-name-content
-					c-avatar(avatar="avatar.jpg" :firstName="business.first_name" :lastName="business.last_name" )
+					c-avatar(avatar="avatar.jpg" :firstName="business.firstName" :lastName="business.lastName" )
 					div
 						p.client-name(@click="toggleChatModal" ) {{ business.firstName }} {{ business.lastName }}
 						p.client-location {{ business.city }}, {{ business.state }}, {{ business.country }}

@@ -8,7 +8,6 @@ const AuthenticatedLayer = () => import( "~/layers/AuthenticatedLayer.vue" );
 
 const AuthSignUp = () => import( "~/pages/Auth/AuthSignUp.vue" );
 const AuthSignIn = () => import( "~/pages/Auth/AuthSignIn.vue" );
-const AuthVerification = () => import( "~/pages/Auth/AuthVerification.vue" );
 const AuthResetPassword = () => import( "~/pages/Auth/AuthResetPassword.vue" );
 
 const _OnboardingEntry = () => import( "~/pages/Onboarding/_OnboardingEntry.vue" );
@@ -699,11 +698,6 @@ const routes = [
 				"name": "AuthSignIn",
 				"component": AuthSignIn,
 				"meta": { "title": "Sign In" }
-			}, {
-				"path": "verification",
-				"name": "AuthVerification",
-				"component": AuthVerification,
-				"meta": { "title": "Verification" }
 			}, {
 				"path": "reset-password",
 				"name": "AuthResetPassword",

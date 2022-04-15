@@ -18,7 +18,7 @@ card-container
 	template(#footer)
 		p(v-if="step !== 2") Don't have an account yet?&nbsp;
 			router-link.sign-up(:to="{name: 'AuthSignUp'}") Sign Up
-		c-button(v-else title="Send new code" type="link" @click="sendNewCode(form.email)")
+		c-button(v-else title="Send new code" type="link" @click="signIn()")
 </template>
 
 
@@ -36,7 +36,7 @@ export default {
 		const form = ref({});
 		const errors = ref({});
 		const step = ref( 1 );
-		const nextStep = () => step.value += 1;
+		const toStepTwo = () => step.value = 2;
 		const rules = {
 			"email": { required, email },
 			"password": { required }
@@ -51,7 +51,7 @@ export default {
 				sessionStorage.setItem( "email", JSON.stringify( form.value.email ) ); // will be changed to sessionID
 			} catch ( error ) {
 				// eslint-disable-next-line consistent-return
-				if ( error === "Missing OTP" ) return nextStep();
+				if ( error === "Missing OTP" ) return toStepTwo();
 				if ( error.includes( "email" ) ) Object.assign( errors.value, { "email": [error] });
 				if ( error.includes( "password" ) ) Object.assign( errors.value, { "password": [error] });
 				Object.assign( errors.value, { "password": [error] });
@@ -65,7 +65,6 @@ export default {
 			otp,
 			errorMessage,
 			submitCode,
-			sendNewCode,
 			keyupHandler,
 			inputHandler
 		} = useSignInOtp();
@@ -77,7 +76,6 @@ export default {
 
 			step,
 			submitCode,
-			sendNewCode,
 			keyupHandler,
 			inputHandler,
 			errorMessage,
