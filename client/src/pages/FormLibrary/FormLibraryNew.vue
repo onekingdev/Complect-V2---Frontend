@@ -30,7 +30,7 @@ export default {
 		const router = useRouter();
 		const form = ref({
 			"name": "",
-			"type": "",
+			"type": ""
 		});
 		const types = {
 			"attestation": [

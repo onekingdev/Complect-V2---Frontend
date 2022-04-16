@@ -20,7 +20,7 @@ import { computed } from "vue";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
 export default {
 	"components": { cDropdown },
-	setup() {
+	setup () {
 		const tabs = [
 			{
 				"title": "Form Builder",

@@ -641,8 +641,7 @@ const routes = [
 								"meta": { "title": "Form Library" },
 								"name": "FormLibraryEntry",
 								"component": FormLibraryEntry
-							},
-							{
+							}, {
 								"path": "new",
 								"meta": { "title": "New Form" },
 								"name": "FormLibraryNew",
