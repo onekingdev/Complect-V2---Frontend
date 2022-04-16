@@ -8,6 +8,7 @@ const AuthenticatedLayer = () => import( "~/layers/AuthenticatedLayer.vue" );
 
 const AuthSignUp = () => import( "~/pages/Auth/AuthSignUp.vue" );
 const AuthSignIn = () => import( "~/pages/Auth/AuthSignIn.vue" );
+const AuthVerification = () => import( "~/pages/Auth/AuthVerification.vue" );
 const AuthResetPassword = () => import( "~/pages/Auth/AuthResetPassword.vue" );
 
 const _OnboardingEntry = () => import( "~/pages/Onboarding/_OnboardingEntry.vue" );
@@ -97,6 +98,12 @@ const RecordsOverview = () => import( "~/pages/Records/RecordsOverview.vue" );
 // organization
 const _OrganizationEntry = () => import( "~/pages/Organization/_OrganizationEntry.vue" );
 const OrganizationOverview = () => import( "~/pages/Organization/OrganizationOverview.vue" );
+
+// form library
+const _FormLibrary = () => import( "~/pages/FormLibrary/_FormLibrary.vue" );
+const _FormLibraryEntry = () => import( "~/pages/FormLibrary/_FormLibraryEntry.vue" );
+const FormLibraryEntry = () => import( "~/pages/FormLibrary/FormLibraryEntry.vue" );
+const FormLibraryNew = () => import( "~/pages/FormLibrary/FormLibraryNew.vue" );
 
 
 // settings
@@ -616,6 +623,31 @@ const routes = [
 						}
 					},
 					{
+						"path": "formLibrary",
+						"name": "FormLibrary",
+						"component": _FormLibrary,
+						"meta": { "title": "Form Library" }
+					},
+					{
+						"path": "formEntry",
+						"component": _FormLibraryEntry,
+						"meta": { "title": "Form Entry" },
+						"children": [
+							{
+								"path": "",
+								"meta": { "title": "Form Library" },
+								"name": "FormLibraryEntry",
+								"component": FormLibraryEntry
+							},
+							{
+								"path": "new",
+								"meta": { "title": "New Form" },
+								"name": "FormLibraryNew",
+								"component": FormLibraryNew
+							}
+						]
+					},
+					{
 						"path": "settings",
 						"component": _SettingsEntry,
 						"meta": {
@@ -698,6 +730,11 @@ const routes = [
 				"name": "AuthSignIn",
 				"component": AuthSignIn,
 				"meta": { "title": "Sign In" }
+			}, {
+				"path": "verification",
+				"name": "AuthVerification",
+				"component": AuthVerification,
+				"meta": { "title": "Verification" }
 			}, {
 				"path": "reset-password",
 				"name": "AuthResetPassword",

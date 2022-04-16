@@ -12,6 +12,9 @@
 						.title {{$locale(link.title)}}
 
 			.menu-section.bordered
+				router-link.link-item(:to="{name: 'FormLibrary'}")
+					icon.paper(name="paper")
+					.title {{$locale('Form Library')}}
 				router-link.link-item(:to="{name: 'SettingsGeneral'}")
 					icon(name="settings")
 					.title {{$locale('Settings')}}
@@ -130,6 +133,8 @@ $link-hover-color = #2F304F
 		&.router-link-active
 			color: #fff
 			font-weight: bold
+		.paper
+			fill: transparent
 	svg.icon
 		width: $icons-size
 		height: $icons-size

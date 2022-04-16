@@ -1,6 +1,5 @@
 <template lang="pug">
-.cell-price(v-if="data && data >= 0") ${{ data }}
-.cell-price(v-if="data && data < 0") -${{ -data }}
+.cell-price(v-if="data") ${{ data }}
 </template>
 
 

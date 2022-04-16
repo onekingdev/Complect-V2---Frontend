@@ -8,13 +8,11 @@ const { profile } = useProfile();
 
 
 const useAuthGuard = async ( to, from, next ) => {
-	try {
+	if ( appState.value.userId ) {
 		const { restoreSession } = useAuth();
 		await restoreSession();
 		next();
-	} catch (error) {
-		next({ "name": "AuthSignIn" });
-	}
+	} else next({ "name": "AuthSignIn" });
 };
 
 const useOnboardingGuard = ( to, from, next ) => {
