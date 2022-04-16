@@ -20,7 +20,7 @@ export default {
 				"key": "name",
 				"cell": "CellTitle",
 				"width": "50%",
-				"meta": { "link": "ReviewDetail" }
+				"meta": { "link": "FormBuilder" }
 			},
 			{
 				"title": "Status",
@@ -53,12 +53,14 @@ export default {
 
 		const documents = [
 			{
-				"name": "new form",
+				"_id": "6253c8b84d0c24ae67e36161",
+				"name": "AAA",
 				"status": "pending",
 				"dateCreated": 1647000337214,
 				"owner": "System"
 			}, {
-				"name": "new form1",
+				"_id": "6253c8b84d0c24ae67e36162",
+				"name": "BBB",
 				"status": "complete",
 				"dateCreated": 1647000337214,
 				"owner": "System"
