@@ -13,7 +13,7 @@ test("should render default component", async () => {
 	expect(img.element.style.display).toBe("none")
 	await wrapper.setProps({ avatar: "https://example.com/avatar.jpg" });
 	expect(img.attributes("src")).toBe("https://example.com/avatar.jpg");
-	expect(wrapper.text()).toContain("JS");	
+	expect(wrapper.text()).toContain("AB");	
 	expect(wrapper.props("size")).toBe("regular");
 	expect(wrapper.classes("regular")).toBe(true);
 	expect(wrapper.props("shape")).toBe("circle");

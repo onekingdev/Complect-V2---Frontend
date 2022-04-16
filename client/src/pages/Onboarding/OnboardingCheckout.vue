@@ -132,7 +132,7 @@ export default {
 		const goBack = () => router.go( -1 );
 		const isAddButtonVisible = ref( true );
 		const isPurchaseVisible = ref( true );
-		const publishkey = ref( "pk_test_V4rItWDTqr1AWyskRsxH12ZE" );
+		const publishkey = ref( import.meta.env.VITE_STRIPE );
 		const instanceOptions = ref({ });
 		const elementsOptions = ref({ });
 		const cardOptions = ref({ "value": { "postalCode": "" } });
