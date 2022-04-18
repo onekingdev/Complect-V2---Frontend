@@ -11,7 +11,7 @@
 			c-button(title="Browse Jobs" type="accent" @click="gotoJobs()" v-else)
 			c-button(iconL="bell" type="transparent")
 	.user-block(v-if="profile" @click="toggleUserDropDown()" ref="userDropDown" :class="{expanded: userDropDownExpanded}")
-		c-avatar(:avatar="profile.avatar" :firstName="profile.firstName" :lastName="profile.lastName" size="small")
+		c-avatar(:avatar="profile.avatar" :firstName="profile.first_name" :lastName="profile.last_name" size="small")
 		.name {{profile.firstName}} {{profile.lastName}}
 		icon(name="chevron-down")
 		.dropdown-menu(v-if="userDropDownExpanded")

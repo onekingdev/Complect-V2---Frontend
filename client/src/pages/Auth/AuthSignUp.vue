@@ -29,9 +29,9 @@ card-container
 			.error(v-if="errorMessage") {{ errorMessage }}
 			c-button(title="Submit" type="primary" @click="submitCode(form.email, form.password, otp)" fullwidth)
 	template(#footer)
-		p(v-if="step !== 3") Already have a Complect account?
+		p(v-if="step !== 3") Already have a Complect account?&nbsp;
 			router-link.sign-in(:to="{name: 'AuthSignIn'}") Sign In
-		c-button(v-else title="Send new code" type="link" @click="sendNewCode(form.email)")
+		c-button(v-else title="Send new code" type="link" @click="sendNewCode()")
 </template>
 
 
@@ -49,7 +49,7 @@ export default {
 	"components": { cRadioCards },
 	setup () {
 		// steps 1, 2
-		const { registration } = useAuth();
+		const { registration, authentication } = useAuth();
 		const { form } = useForm( "registration" );
 		const accountTypes = [
 			{
@@ -81,20 +81,29 @@ export default {
 			errors.value = await validates( rules, { ...form.value, "password2": password2.value });
 			if ( Object.keys( errors.value ).length ) return;
 			try {
-				await registration({ "user": {
-				email: form.value.email,
-				password: form.value.password,
-				kind: "employee",
-				profile_attributes: {
-					first_name: form.value.first_name,
-					last_name: form.value.last_name
-				}
-			}});
+				await registration({
+					"user": {
+						"email": form.value.email,
+						"password": form.value.password,
+						"kind": "employee",
+						"profile_attributes": {
+							"first_name": form.value.first_name,
+							"last_name": form.value.last_name
+						}
+					}
+				});
 				nextStep( 1 );
 			} catch ( error ) {
-				// if ( error.includes( "Email" ) ) Object.assign( errors.value, { "email": [error] });
-				console.error( error );
+				if ( error ) Object.assign( errors.value, { "email": [error] });
 			}
+		};
+
+		const sendNewCode = async () => {
+			await authentication({
+				"email": form.value.email,
+				"password": form.value.password,
+				"otp_attempt": ""
+			});
 		};
 
 		// step 3
@@ -104,9 +113,8 @@ export default {
 			otp,
 			errorMessage,
 			submitCode,
-			sendNewCode,
 			keyupHandler,
-			inputHandler,
+			inputHandler
 		} = useSignInOtp();
 
 		return {

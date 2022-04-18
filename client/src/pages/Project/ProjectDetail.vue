@@ -53,7 +53,7 @@ div.grid-6.main-content
 				p No comments posted {{ projectDetail }}
 			.has-content(v-else)
 				.ind-comment(v-for="comment in projectDetail.comments")
-					c-avatar(:firstName="comment.creator.firstName" :lastName="comment.creator.lastName" :avatar="comment.creator.avatar")
+					c-avatar(:firstName="comment.creator.first_name" :lastName="comment.creator.last_name" :avatar="comment.creator.avatar")
 					.user-info
 						.name {{ comment.creator.firstName }} {{ comment.creator.lastName }} commented
 						.description {{ comment.description }}
