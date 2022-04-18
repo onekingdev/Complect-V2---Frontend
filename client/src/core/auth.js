@@ -45,7 +45,7 @@ export default function useAuth () {
 	};
 
 	const authentication = async data => {
-		const result = await authServer({ "path": "users/sign_in.json", data: { "user": data } });
+		const result = await authServer({ "path": "users/sign_in.json", "data": { "user": data } });
 		if ( result.error ) throw result.error;
 	};
 
