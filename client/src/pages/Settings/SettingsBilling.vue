@@ -56,7 +56,7 @@ card-container(title="Billing")
 c-modal(title="Add Billing Method" v-model="isNewMethodVisible")
 	template(#content)
 		.card-billing(@click="setBillingType(1)" v-if="billingType == 0")
-			plaid-link(clientName="Complect" env="sandbox" webhook="https://requestb.in" public_key="0185745b0c27203b513185a25ef5c3" :products="['auth','transactions']" :onSuccess="plaidSuccess" :onLoad="plaidLoad" :onExit="plaidExit" :onEvent="plaidEvent")
+			plaid-link(clientName="Complect" :env="plaidenv" :webhook="plaidwebhook" :public_key="plaidkey" :products="['auth','transactions']" :onSuccess="plaidSuccess" :onLoad="plaidLoad" :onExit="plaidExit" :onEvent="plaidEvent")
 				.grid-6
 					.col-1.billing-icon
 						icon(name="bank" size="huge")
@@ -100,7 +100,11 @@ export default {
 		const userType = profile.value.type;
 		const router = useRouter();
 		const notification = inject( "notification" );
-		const publishkey = ref( "pk_test_V4rItWDTqr1AWyskRsxH12ZE" );
+		const publishkey = ref( import.meta.env.VITE_STRIPE );
+		const plaidkey = ref( import.meta.env.PLAID_PUBLIC_KEY );
+		const plaidenv = ref( import.meta.env.PLAID_WEBHOOK );
+		const plaidwebhook = ref( import.meta.env.PLAID_ENVIRONMENT );
+
 		const tokenCreated = token => console.debug( token );
 		const elementRef = ref();
 		const payments = ref([]);
@@ -334,7 +338,10 @@ export default {
 			plaidSuccess,
 			plaidLoad,
 			plaidExit,
-			plaidEvent
+			plaidEvent,
+			plaidkey,
+			plaidenv,
+			plaidwebhook
 		};
 	}
 };

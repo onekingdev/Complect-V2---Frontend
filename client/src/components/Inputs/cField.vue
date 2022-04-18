@@ -122,14 +122,13 @@ export default {
 				fill: #777
 				margin-left: 0.4em
 		.field-input
-			font-size: 0.9em
+			font-size: 0.875em
 			flex: 1 0 auto
 			width: 1em
 			color: #000
 			background: transparent
 			border: none
 			outline: none
-			line-height: 1.3
 			padding: 0
 			margin: 0
 			&::placeholder

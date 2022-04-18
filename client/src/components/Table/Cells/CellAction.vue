@@ -1,15 +1,23 @@
 <template lang="pug">
 .cell-action(v-if="meta" @click="meta.action(id)")
-	icon(:name="meta.icon")
-	.title {{meta.title}}
+	icon(v-if="meta.icon" :name="meta.icon")
+	.title(v-if="meta.title") {{meta.title}}
+	.title(v-else) {{ meta.type === 'date' ? formatDate(data) : data }}
 </template>
 
 
 <script>
+import { formatDate } from "~/core/utils.js";
 export default {
 	"props": {
 		"id": {
 			"type": String,
+			"required": true
+		},
+		"data": {
+			"type": [
+				String, Number
+			],
 			"required": true
 		},
 		"meta": {
@@ -17,6 +25,9 @@ export default {
 			"default": () => {},
 			"required": false
 		}
+	},
+	setup () {
+		return { formatDate };
 	}
 };
 </script>

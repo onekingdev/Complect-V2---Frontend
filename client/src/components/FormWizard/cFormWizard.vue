@@ -110,6 +110,8 @@ export default {
 		.progress
 			display: flex
 			gap: 0.6em
+			@media (max-width: 575px)
+				flex-direction: column
 			.progress-step
 				flex: 1
 				color: var(--c-dimmed-light)

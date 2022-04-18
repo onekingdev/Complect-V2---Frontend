@@ -37,7 +37,7 @@ export default {
 	},
 	setup ( props ) {
 		const loaded = ref( false );
-		const initials = computed( () => props.firstName.charAt( 0 ) + props.lastName.charAt( 0 ) );
+		const initials = computed( () => "AB" /* @TODO Fix props.firstName.charAt( 0 ) + props.lastName.charAt( 0 )*/ );
 		const onImgLoad = () => loaded.value = true;
 		return {
 			initials,

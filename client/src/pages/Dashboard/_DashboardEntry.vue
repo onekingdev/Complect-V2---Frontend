@@ -1,10 +1,12 @@
 <template lang="pug">
-.view.dashboard
+.view
 	h1
 		b {{$locale("Welcome")}},&nbsp;
-		| {{profile.firstName}} {{profile.lastName}}
-	c-calendar(:events="documents")
-	card-container(title="Upcoming")
+		| {{profile.first_name}} {{profile.last_name}}
+	.dashboard
+		.calendar
+			//- c-calendar(:events="documents")
+		card-container.upcoming(title="Upcoming")
 </template>
 
 
@@ -18,24 +20,36 @@ import useProfile from "~/store/Profile.js";
 export default {
 	"components": { cCalendar },
 	setup () {
-		const projects = new UseData( "projects" );
+		// const projects = new UseData( "projects" );
 		const { profile } = useProfile();
 
-		onMounted( () => projects.readDocuments() );
-		onUnmounted( () => projects.clearStore() );
-		return { profile, "documents": projects.getDocuments() };
+		// onMounted( () => projects.readDocuments() );
+		// onUnmounted( () => projects.clearStore() );
+		return { profile };
 	}
 };
 </script>
 
 <style lang="stylus" scoped>
-.view.dashboard
+.view
 	padding: 2em
 	display: flex
-	gap: 2em
+	gap: 1.25em
 	flex-wrap: wrap
-	h1, .card-container
+	h1
 		flex: 1 0 auto
 	h1
 		width: 100%
+	.dashboard
+		display: flex
+		gap: 1.25em
+		@media (max-width: 1200px)
+			flex-direction: column
+		.calendar
+			min-width: 44em
+		.upcoming
+			flex: 1 3 22em
+			min-width: 22em
+			@media (max-width: 1200px)
+				flex: 1
 </style>
