@@ -4,8 +4,6 @@
 		.container-title
 			.page-collection(v-if="section") {{ $locale(section) }}
 			.page-name(v-if="title")
-				.quick-access
-					slot(name="quick-access")
 				icon.c-icon(v-if="hasHamberger" name="hamberger" @click="hasHamberger.action()")
 				c-badge(v-if="badge" :icon="badge.icon" :title="badge.title")
 				.title {{ title }}
@@ -71,7 +69,7 @@ export default {
 		flex-shrink: 0
 		display: flex
 		flex-wrap: wrap
-		align-items: center
+		align-items: flex-end
 		justify-content: space-between
 		.container-title
 			padding: 2em

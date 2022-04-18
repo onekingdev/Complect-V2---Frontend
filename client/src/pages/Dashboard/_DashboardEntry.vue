@@ -2,10 +2,10 @@
 .view
 	h1
 		b {{$locale("Welcome")}},&nbsp;
-		| {{profile.first_name}} {{profile.last_name}}
+		| {{profile.firstName}} {{profile.lastName}}
 	.dashboard
 		.calendar
-			//- c-calendar(:events="documents")
+			c-calendar(:events="documents")
 		card-container.upcoming(title="Upcoming")
 </template>
 
@@ -20,12 +20,12 @@ import useProfile from "~/store/Profile.js";
 export default {
 	"components": { cCalendar },
 	setup () {
-		// const projects = new UseData( "projects" );
+		const projects = new UseData( "projects" );
 		const { profile } = useProfile();
 
-		// onMounted( () => projects.readDocuments() );
-		// onUnmounted( () => projects.clearStore() );
-		return { profile };
+		onMounted( () => projects.readDocuments() );
+		onUnmounted( () => projects.clearStore() );
+		return { profile, "documents": projects.getDocuments() };
 	}
 };
 </script>
