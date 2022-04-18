@@ -45,7 +45,7 @@ export default function useAuth () {
 	};
 
 	const authentication = async data => {
-		const result = await authServer({ "path": "users/sign_in.json", "data": { "user": data } });
+		const result = await authServer({ "path": "users/sign_in.json", data: { "user": data } });
 		if ( result.error ) throw result.error;
 	};
 
@@ -83,7 +83,9 @@ export default function useAuth () {
 
 	const restoreSession = async () => {
 		const authToken = localStorage.getItem("auth_token");
-		if (!authToken) window.location.href = "/sign-in";
+		if (!authToken) {
+			window.location.href = "/sign-in";
+		}
 		const apiUrl = `${import.meta.env.VITE_API_URI}/api/profile`;
 		const options = {
 			"method": "get",

@@ -19,7 +19,7 @@ export default function useSignInOtp () {
 			}
 		}
 	};
-	const sendNewCode = async email => {
+	const sendNewCode = async ( email ) => {
 		await newOtp( email );
 		numbers.value = [];
 	};
@@ -43,6 +43,6 @@ export default function useSignInOtp () {
 		submitCode,
 		sendNewCode,
 		keyupHandler,
-		inputHandler
+		inputHandler,
 	};
 }
