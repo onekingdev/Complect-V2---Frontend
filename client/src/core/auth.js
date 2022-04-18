@@ -83,9 +83,7 @@ export default function useAuth () {
 
 	const restoreSession = async () => {
 		const authToken = localStorage.getItem("auth_token");
-		if (!authToken) {
-			window.location.href = "/sign-in";
-		}
+		if (!authToken) window.location.href = "/sign-in";
 		const apiUrl = `${import.meta.env.VITE_API_URI}/api/profile`;
 		const options = {
 			"method": "get",
