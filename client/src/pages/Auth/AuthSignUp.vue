@@ -70,7 +70,7 @@ export default {
 		const nextStep = value => step.value += value;
 
 		const rules = {
-			"email": { required, emailValidator },
+			"email": { required, "email": emailValidator },
 			"first_name": { required, "maxLength": maxLength( 100 ) },
 			"last_name": { required, "maxLength": maxLength( 100 ) },
 			"password": { required, "minLength": minLength( 6 ) },
