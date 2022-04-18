@@ -32,6 +32,7 @@
 		"vue": "3.2.26",
 		"vue-draggable-next": "^2.1.1",
 		"vue-google-autocomplete": "^1.1.2",
+		"vue-plaid-link2": "^0.2.2",
 		"vue-router": "4.0.12",
 		"vue-stripe-js": "^1.0.0",
 		"vue3-apexcharts": "^1.4.1",

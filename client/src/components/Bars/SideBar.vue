@@ -33,7 +33,7 @@ import useProfile from "~/store/Profile.js";
 
 export default {
 	setup () {
-		const { sidebarHomeNavigation, sidebarDocumentsNavigation, sidebarReportsNavigation, sidebarReportsSpecialistNavigation, sidebarSpecialistNavigation } = useNavigation();
+		const { sidebarHomeNavigation, sidebarDocumentsNavigation, sidebarReportsNavigation, sidebarReportsSpecialistNavigation } = useNavigation();
 		const { profile } = useProfile();
 		const route = useRoute();
 		const userType = profile.value.type;
@@ -46,13 +46,11 @@ export default {
 		const sidebarNavigation = computed( () => {
 			switch ( route.meta.tab ) {
 				case "Documents":
-					if ( userType === "specialist" ) return sidebarSpecialistNavigation;
 					return sidebarDocumentsNavigation;
 				case "Reports":
 					if ( userType === "specialist" ) return sidebarReportsSpecialistNavigation;
 					return sidebarReportsNavigation;
 				default:
-					if ( userType === "specialist" ) return sidebarSpecialistNavigation;
 					return sidebarHomeNavigation;
 			}
 		});

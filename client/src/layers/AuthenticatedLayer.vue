@@ -1,25 +1,24 @@
 <template lang="pug">
-.mobile-view(:class="isMobileType && !isOnboarding ? '' : 'hide'")
+.mobile-view(:class="isMobileType ? '' : 'hide'")
 	icon(name="logo")
 	.title Looks like you're on a mobile device.
 	.desktop(@click="goDeskTopMode()") Enter desktop site
 	.content
 		div This isn't available on mobile browsers.
 		div For full functionality, switch to desktop.
-.layout.layout-authenticated(:class="isMobileType && !isOnboarding ? 'hide' : ''")
+.layout.layout-authenticated(:class="isMobileType ? 'hide' : ''")
 	transition(appear name="pushTop")
 		TopBar
 	transition(appear name="pushLeft")
 		SideBar
-	main(:class="!isOnboarding ? 'mobile-main' : ''")
+	main
 		router-view
 	dev-bar
 </template>
 
 
 <script>
-import { ref, computed } from "vue";
-import { useRoute } from "vue-router";
+import { ref } from "vue";
 import TopBar from "~/components/Bars/TopBar.vue";
 import SideBar from "~/components/Bars/SideBar.vue";
 import DevBar from "~/_devmode/DevBar.vue";
@@ -30,11 +29,9 @@ export default {
 		DevBar
 	},
 	setup () {
-		const route = useRoute();
 		const isMobileType = ref( true );
-		const isOnboarding = computed( () => route.meta.topbar === "simple" );
 		const goDeskTopMode = () => isMobileType.value = !isMobileType.value;
-		return { goDeskTopMode, isMobileType, isOnboarding };
+		return { goDeskTopMode, isMobileType };
 	}
 };
 </script>
@@ -87,13 +84,12 @@ export default {
 		z-index: 10
 		grid-column: 1/-1
 	main
-		background: var(--c-bg-z1)
+		background: var(--c-bg-z2)
+		min-width: 600px
 		max-height: 100%
 		overflow-y: auto
 		overflow-x: hidden
 		grid-column: span 2
-	main.mobile-main
-		min-width: 600px
 .layout.layout-authenticated.hide
 	@media (max-width: 500px)
 		display: none

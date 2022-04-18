@@ -8,26 +8,26 @@
 		section
 			.title_container
 				.title_plan Plan
-				c-switcher(id="payment1" v-if="isBusiness" :options="paymentOptions" v-model="form.annually" type="primary")
+				c-switcher(id="payment1" v-if="userType === 'business'" :options="paymentOptions" v-model="form.annually" type="primary")
 			.content
 				.plan
-					.plan-name {{plan.name}}
+					.plan-name {{plan.title}}
 					.plan-description {{plan.intro}}
 				template(v-if="plan.price")
-					template(v-if="isBusiness")
+					template(v-if="userType === 'business'")
 						template(v-if="form.annually")
 							.plan
-								.plan-price ${{plan.price}}/year
-								.plan-description(v-if="plan.seatCount") {{plan.seatCount}} free users
+								.plan-price ${{plan.price[0] * 12}}/year
+								.plan-description(v-if="plan.users") {{plan.users[0]}}
 						template(v-else)
 							.plan
-								.plan-price ${{plan.price}}/mo
-								.plan-description(v-if="plan.seatCount") {{plan.seatCount}} free users
+								.plan-price ${{plan.price[1]}}/mo
+								.plan-description(v-if="plan.users") {{plan.users[1]}}
 					template(v-else)
 						.plan
-							.plan-price ${{plan.price}}/year
-					section(v-if="isBusiness")
-			.content(v-if="isBusiness")
+							.plan-price ${{plan.price[0]}}/year
+		section(v-if="userType === 'business'")
+			.content
 				.plan
 					.plan-name Users
 					.plan-description Enter the number of users (this is often your employee headcount)
@@ -55,28 +55,27 @@
 		template(#content)
 			.plan_content
 				.plan_item
+					.price {{plan.title}} plan
 					template(v-if="plan.price")
-						template(v-if="isBusiness")
-							.price {{plan.title}} Business Plan
+						template(v-if="userType === 'business'")
 							template(v-if="form.annually")
-								.price ${{plan.price}}/year
+								.price ${{plan.price[0] * 12}}/year
 							template(v-else)
-								.price ${{plan.price}}/mo
+								.price ${{plan.price[1]}}/mo
 						template(v-else)
-							.price {{plan.title}} Specialist Plan
 							.plan
-								.plan-price ${{plan.price}}/year
-				.plan_item(v-if="isBusiness")
+								.plan-price ${{plan.price[0]}}/year
+				.plan_item(v-if="userType === 'business'")
 					.title {{users}} Users ({{plan.freeUsers}} Free)
 					template(v-if="users > plan.freeUsers")
 						template(v-if="form.annually")
-							.price ${{ seatPrice }}
+							.price +${{(users - plan.freeUsers) * 120}}
 						template(v-else)
-							.price ${{ seatPrice }}
-				.plan_item.save(v-if="isBusiness")
+							.price +${{(users - plan.freeUsers) * 15}}
+				.plan_item.save(v-if="userType === 'business'")
 					template(v-if="form.annually && plan.price")
 						.title Billed Annually
-						.save_price You saved ${{ savedAmount }}
+						.save_price You saved ${{ (plan.price[1] - plan.price[0]) * 12 }}
 			.item(v-if="promoInfo.percent_off")
 				.title Discount
 				.price {{promoInfo.percent_off}}%
@@ -85,14 +84,23 @@
 				.price -${{promoInfo.amount_off}}
 			.total
 				.title Total
-				.price(v-if="promoInfo.percent_off") ${{discountAmount}}
+				.price(v-if="promoInfo.percent_off") ${{plan.price * ( 100 - promoInfo.percent_off ) / 100}}
 				.price(v-else-if="promoInfo.amount_off") ${{plan.price - promoInfo.amount_off}}
 				.price(v-else)
 					template(v-if="plan.price")
-						template(v-if="isBusiness && users > plan.freeUsers")
-							.price ${{plan.price + seatPrice}}
+						template(v-if="userType === 'business'")
+							template(v-if="users > plan.freeUsers")
+								template(v-if="form.annually")
+									.price ${{plan.price[0] * 12 + (users - plan.freeUsers) * 120}}
+								template(v-else)
+									.price ${{plan.price[1] + (users - plan.freeUsers) * 15}}
+							template(v-else)
+								template(v-if="form.annually")
+									.price ${{plan.price[0] * 12}}
+								template(v-else)
+									.price ${{plan.price[1]}}
 						template(v-else)
-							.price ${{plan.price}}
+							.price ${{plan.price[0]}}
 			c-button.purchase-button(title="Complete Purchase" type="primary" :disabled="isPurchaseVisible" @click="onBoard()")
 </template>
 
@@ -104,9 +112,9 @@ import useForm from "~/store/Form.js";
 import useAuth from "~/core/auth.js";
 import { loadStripe } from "@stripe/stripe-js";
 import { StripeElements, StripeElement } from "vue-stripe-js";
-import { onBeforeMount, onMounted, ref, inject, computed } from "vue";
+import { onBeforeMount, onMounted, ref, inject } from "vue";
 import UseData from "~/store/Data.js";
-// import { plans } from "~/data/plans.js";
+import { plans } from "~/data/plans.js";
 import cSwitcher from "~/components/Inputs/cSwitcher.vue";
 import { manualApi } from "~/core/api.js";
 export default {
@@ -117,7 +125,7 @@ export default {
 		const userType = profile.value.type;
 		const { form, resetForm } = useForm( "onboarding" );
 		const { onboarding } = useAuth();
-		const plans = new UseData( "plans" );
+		// const plans = new UseData( "plans" );
 		const notification = inject( "notification" );
 		const plan = ref({});
 		const router = useRouter();
@@ -135,13 +143,6 @@ export default {
 		const cardresult = ref({ });
 		const promocode = ref();
 		const promoInfo = ref({ });
-		const savedAmount = computed( () => plan.value.amount * 12 - plan.value.price + ( users.value - plan.value.freeUsers ) * 60 );
-		const discountAmount = computed( () => plan.value.price * ( 100 - promoInfo.value.percent_off ) / 100 );
-		const seatPrice = computed( () => {
-			if ( form.value.annually ) return ( users.value - plan.value?.freeUsers ) * 120;
-			return ( users.value - plan.value.freeUsers ) * 15;
-		});
-		const isBusiness = computed( () => userType === "business" );
 		const paymentOptions = ref([
 			{
 				"title": "Billed Annually",
@@ -154,15 +155,15 @@ export default {
 		const stripeChange = e => isPurchaseVisible.value = !e.complete;
 		const addPayment = () => {
 			const cardElement = card.value.stripeElement;
-			elms.value.instance.createToken( cardElement ).then( result => {
-				// const stripeToken = result.token.id;
+			elms.value.instance.createToken( cardElement ).then( async result => {
+				const stripeToken = result.token.id;
 				cardresult.value = result.token;
 				try {
-					// await manualApi({
-					// 	"method": "post",
-					// 	"url": `payment/method/${userType === "business" ? form.value.businessId : form.value.specialistId}`,
-					// 	"data": JSON.stringify({ stripeToken })
-					// });
+					await manualApi({
+						"method": "post",
+						"url": `payment/method/${userType === "business" ? form.value.businessId : form.value.specialistId}`,
+						"data": JSON.stringify({ stripeToken })
+					});
 					notification({
 						"type": "success",
 						"title": "Success",
@@ -191,11 +192,6 @@ export default {
 					// await onboarding({ "businessId": ids[0] });
 					// eslint-disable-next-line require-atomic-updates
 					form.value.businessId = ids[0];
-					await manualApi({
-						"method": "post",
-						"url": `payment/method/${userType === "business" ? form.value.businessId : form.value.specialistId}`,
-						"data": JSON.stringify({ "stripeToken": cardresult.value.id })
-					});
 				} else {
 					const specialist = new UseData( "specialist" );
 					const ids = await specialist.createDocuments([form.value]);
@@ -207,18 +203,13 @@ export default {
 					// await onboarding({ "specialistId": ids[0] });
 					// eslint-disable-next-line require-atomic-updates
 					form.value.specialistId = ids[0];
-					await manualApi({
-						"method": "post",
-						"url": `payment/method/${userType === "business" ? form.value.businessId : form.value.specialistId}`,
-						"data": JSON.stringify({ "stripeToken": cardresult.value.id })
-					});
 				}
 
 				await manualApi({
 					"method": "post",
 					"url": `payment/subscription/${userType === "business" ? form.value.businessId : form.value.specialistId}`,
 					"data": JSON.stringify({
-						"planId": plan.value._id,
+						// "planId": plan.value._id,
 						"promocode": promocode.value
 					})
 				});
@@ -252,31 +243,29 @@ export default {
 			const stripePromise = loadStripe( publishkey.value );
 			stripePromise.then( () => stripeLoaded.value = true );
 		});
-		onMounted( async () => {
-			// plan.value = plans[userType].find( item => item.key === form.value.plan );
-			await plans.readDocuments();
-			if ( userType === "business" ) {
-				const keywordMethod = form.value.annually ? "yearly" : "monthly";
-				const keywordTitle = `${form.value.plan} Plan`;
-				const findplan = plans.getDocuments().value.find( indplan => indplan.method === keywordMethod && indplan.title.toLowerCase() === keywordTitle.toLowerCase() );
-				plan.value.name = findplan.title;
-				plan.value.price = findplan.perPrice;
-				plan.value.annually = form.value.annually;
-				plan.value._id = findplan._id;
-				plan.value.amount = findplan.amount;
-				plan.value.seatCount = findplan.seatCount;
-			} else {
-				const keywordMethod = form.value.annually ? "yearly" : "all";
-				const findplan = plans.getDocuments().value.find( indplan => indplan.method === keywordMethod );
-				plan.value.name = findplan.title;
-				plan.value.price = findplan.perPrice;
-				plan.value.annually = form.value.annually;
-				plan.value._id = findplan._id;
-			}
+		onMounted( () => {
+			plan.value = plans[userType].find( item => item.key === form.value.plan );
+			// plans.readDocuments();
+			// if ( userType === "business" ) {
+			// 	const keywordMethod = form.value.annually ? "yearly" : "monthly";
+			// 	const keywordTitle = `${form.value.plan} Plan`;
+			// 	const findplan = plans.getDocuments().value.find( indplan => indplan.method === keywordMethod && indplan.title.toLowerCase() === keywordTitle.toLowerCase() );
+			// 	plan.value.name = findplan.title;
+			// 	plan.value.price = findplan.perPrice;
+			// 	plan.value.annually = form.value.annually;
+			// 	plan.value._id = findplan._id;
+			// } else {
+			// 	const keywordMethod = form.value.annually ? "yearly" : "all";
+			// 	const findplan = plans.getDocuments().value.find( indplan => indplan.method === keywordMethod );
+			// 	plan.value.name = findplan.title;
+			// 	plan.value.price = findplan.perPrice;
+			// 	plan.value.annually = form.value.annually;
+			// 	plan.value._id = findplan._id;
+			// }
 		});
 
 		// eslint-disable-next-line max-len
-		return { userType, plan, stripeChange, paymentOptions, users, goBack, profile, form, onBoard, publishkey, instanceOptions, elementsOptions, cardOptions, card, elms, stripeLoaded, addPayment, isAddButtonVisible, isPurchaseVisible, cardresult, promoInfo, promocode,	applyPromo, savedAmount, discountAmount, isBusiness, seatPrice };
+		return { userType, plan, stripeChange, paymentOptions, users, goBack, profile, form, onBoard, publishkey, instanceOptions, elementsOptions, cardOptions, card, elms, stripeLoaded, addPayment, isAddButtonVisible, isPurchaseVisible, cardresult, promoInfo, promocode,	applyPromo };
 	}
 };
 </script>
@@ -287,21 +276,14 @@ export default {
 	display: flex
 	align-items: center
 	gap: 2em
-	overflow: auto
+	overflow: scroll
 	min-height: 100%
-	@media (max-width: 800px)
-		flex-direction: column
 	main
 		flex: 3 0 auto
 		background: var(--c-bg-z2)
 		align-self: stretch
 		padding: 2em
-		border-top: 1px solid var(--c-border)
 		border-right: 1px solid var(--c-border)
-		@media (max-width: 950px)
-			flex: initial
-		@media (max-width: 575px)
-			padding: 2em 1em
 		.title
 			font-size: 1.6em
 		header
@@ -380,8 +362,6 @@ export default {
 		flex: 1 3 20em
 		min-width: 20em
 		// max-width: 28em
-		@media (max-width: 575px)
-			margin-right: 0
 		.apply-promo
 			align-self: end
 		.plan_content
