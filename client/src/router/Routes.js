@@ -98,6 +98,16 @@ const RecordsOverview = () => import( "~/pages/Records/RecordsOverview.vue" );
 const _OrganizationEntry = () => import( "~/pages/Organization/_OrganizationEntry.vue" );
 const OrganizationOverview = () => import( "~/pages/Organization/OrganizationOverview.vue" );
 
+// form library
+const _FormLibrary = () => import( "~/pages/FormLibrary/_FormLibrary.vue" );
+const _FormLibraryEntry = () => import( "~/pages/FormLibrary/_FormLibraryEntry.vue" );
+const FormLibraryEntry = () => import( "~/pages/FormLibrary/FormLibraryEntry.vue" );
+const FormLibraryNew = () => import( "~/pages/FormLibrary/FormLibraryNew.vue" );
+const _FormEntry = () => import( "~/pages/FormLibrary/_FormEntry.vue" );
+const FormBuilder = () => import( "~/pages/FormLibrary/FormBuilder.vue" );
+const FormPreview = () => import( "~/pages/FormLibrary/FormPreview.vue" );
+const FormSetting = () => import( "~/pages/FormLibrary/FormSetting.vue" );
+
 
 // settings
 const _SettingsEntry = () => import( "~/pages/Settings/_SettingsEntry.vue" );
@@ -614,6 +624,56 @@ const routes = [
 							"title": "Plan",
 							"sidebar": false
 						}
+					},
+					{
+						"path": "formLibrary",
+						"name": "FormLibrary",
+						"component": _FormLibrary,
+						"meta": { "title": "Form Library" }
+					},
+					{
+						"path": "formEntry",
+						"component": _FormLibraryEntry,
+						"meta": { "title": "Form Entry" },
+						"children": [
+							{
+								"path": "",
+								"meta": { "title": "Form Library" },
+								"name": "FormLibraryEntry",
+								"component": FormLibraryEntry
+							}, {
+								"path": "new",
+								"meta": { "title": "New Form" },
+								"name": "FormLibraryNew",
+								"component": FormLibraryNew
+							}
+						]
+					},
+					{
+						"path": "form/:id",
+						"component": _FormEntry,
+						"meta": {
+							"title": "Form Entry",
+							"sidebar": false
+						},
+						"children": [
+							{
+								"path": "",
+								"name": "FormBuilder",
+								"component": FormBuilder,
+								"meta": { "title": "Form Builder" }
+							}, {
+								"path": "preview",
+								"name": "FormPreview",
+								"component": FormPreview,
+								"meta": { "title": "Form Preview" }
+							}, {
+								"path": "setting",
+								"name": "FormSetting",
+								"component": FormSetting,
+								"meta": { "title": "Form Setting" }
+							}
+						]
 					},
 					{
 						"path": "settings",
