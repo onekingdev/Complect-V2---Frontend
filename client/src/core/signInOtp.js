@@ -2,7 +2,7 @@ import { ref, computed } from "vue";
 import useAuth from "~/core/auth";
 
 export default function useSignInOtp () {
-	const { verification } = useAuth();
+	const { verification, newOtp } = useAuth();
 	const inputs = ref([]);
 	const numbers = ref([]);
 	const otp = computed( () => numbers.value.join( "" ) );
@@ -18,6 +18,10 @@ export default function useSignInOtp () {
 				errorMessage.value = "Incorrect code";
 			}
 		}
+	};
+	const sendNewCode = async email => {
+		await newOtp( email );
+		numbers.value = [];
 	};
 
 	const keyupHandler = ( e, index ) => {
@@ -37,6 +41,7 @@ export default function useSignInOtp () {
 		otp,
 		errorMessage,
 		submitCode,
+		sendNewCode,
 		keyupHandler,
 		inputHandler
 	};

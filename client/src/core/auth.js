@@ -71,6 +71,11 @@ export default function useAuth () {
 		*/
 	};
 
+	const newOtp = async email => {
+		const result = await authServer({ "path": "new-otp", "data": { email } });
+		if ( !result.ok ) throw result.message;
+	};
+
 	const reset = async email => {
 		const result = await authServer({ "path": "reset", "data": { email } });
 		if ( !result.ok ) throw result.message;
@@ -133,6 +138,7 @@ export default function useAuth () {
 		onboarding,
 		authentication,
 		verification,
+		newOtp,
 		reset,
 		updateAuthenticationInfor
 	};

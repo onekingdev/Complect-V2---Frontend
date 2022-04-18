@@ -31,7 +31,7 @@ card-container
 	template(#footer)
 		p(v-if="step !== 3") Already have a Complect account?
 			router-link.sign-in(:to="{name: 'AuthSignIn'}") Sign In
-		c-button(v-else title="Send new code" type="link" @click="sendNewCode()")
+		c-button(v-else title="Send new code" type="link" @click="sendNewCode(form.email)")
 </template>
 
 
@@ -49,7 +49,7 @@ export default {
 	"components": { cRadioCards },
 	setup () {
 		// steps 1, 2
-		const { registration, authentication } = useAuth();
+		const { registration } = useAuth();
 		const { form } = useForm( "registration" );
 		const accountTypes = [
 			{
@@ -94,17 +94,8 @@ export default {
 				});
 				nextStep( 1 );
 			} catch ( error ) {
-				// if ( error.includes( "Email" ) ) Object.assign( errors.value, { "email": [error] });
-				console.error( error );
+				if ( error ) Object.assign( errors.value, { "email": [error] });
 			}
-		};
-
-		const sendNewCode = async () => {
-			await authentication({
-				"email": form.value.email,
-				"password": form.value.password,
-				"otp_attempt": ""
-			});
 		};
 
 		// step 3
@@ -114,6 +105,7 @@ export default {
 			otp,
 			errorMessage,
 			submitCode,
+			sendNewCode,
 			keyupHandler,
 			inputHandler
 		} = useSignInOtp();

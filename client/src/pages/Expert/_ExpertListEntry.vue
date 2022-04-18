@@ -54,7 +54,7 @@ market-container
 					c-select.col-1(label="Sort By" :data="sortOptions" v-model="sortValue")
 				.user-content.grid-6(v-for="(user, index) in users")
 					.col-1
-						c-avatar(avatar="avatar.jpg" :firstName="user.firstName" :lastName="user.lastName" size="huge")
+						c-avatar(avatar="avatar.jpg" :firstName="user.first_name" :lastName="user.last_name" size="huge")
 					.col-5
 						.user-detail
 							div
