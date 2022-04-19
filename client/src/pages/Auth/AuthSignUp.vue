@@ -29,7 +29,7 @@ card-container
 			.error(v-if="errorMessage") {{ errorMessage }}
 			c-button(title="Submit" type="primary" @click="submitCode(form.email, form.password, otp)" fullwidth)
 	template(#footer)
-		p(v-if="step !== 3") Already have a Complect account? 
+		p(v-if="step !== 3") Already have a Complect account?&nbsp;
 			router-link.sign-in(:to="{name: 'AuthSignIn'}") Sign In
 		c-button(v-else title="Send new code" type="link" @click="sendNewCode()")
 </template>

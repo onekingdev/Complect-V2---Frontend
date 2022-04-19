@@ -16,7 +16,7 @@ card-container
 		.error(v-if="errorMessage") {{ errorMessage }}
 		c-button(title="Submit" type="primary" @click="submitCode(form.email, form.password, otp)" fullwidth)
 	template(#footer)
-		p(v-if="step !== 2") Don't have an account yet? 
+		p(v-if="step !== 2") Don't have an account yet?&nbsp;
 			router-link.sign-up(:to="{name: 'AuthSignUp'}") Sign Up
 		c-button(v-else title="Send new code" type="link" @click="signIn()")
 </template>
