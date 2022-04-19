@@ -22,7 +22,7 @@ password: `preview`
 
 
 ## Run Project:
-To start complete project with *Client*, *API*, *MongoDB* and *MongoDB Admin* services, just run:
+To start complete project with *Client*, *API*, just run:
 ```sh
 docker-compose up
 ```
@@ -40,16 +40,3 @@ docker-compose -f docker-compose.api.yml up
 ### Ports:
 * [localhost:5000](http://localhost:5000/) - Client (*front-end*)
 * `localhost:5001` - API
-* `localhost:5002` - MongoDB
-* [localhost:5003](http://localhost:5003/) - MongoDB Admin ([more](#mongodb-admin))
-
----
-
-## MongoDB Admin
-* Navigate to: [localhost:5003](http://localhost:5003/)
-* Connection Name: `Any`
-* Connection String: `mongodb://user:password@mongo:27017`
-* Press **Add Connection**
-* Click **Connect** in right Action Tab, to enter.
-
-If you're on a M1 mac, use DOCKER_DEFAULT_PLATFORM=linux/amd64 docker-compose up
