@@ -4,9 +4,9 @@
 [![API Deploy (Dev)](https://github.com/complectco/complect-2.0/actions/workflows/api-dev-deploy.yml/badge.svg)](https://github.com/complectco/complect-2.0/actions/workflows/api-dev-deploy.yml)
 
 
-## Live versions
-* [Dev Stage](https://app.complect.dev)  
-* [Public Stage](https://app.complect.com)
+## StandardJS coding style
+We use https://standardjs.com/rules.html with some exceptions
+*One exception: it is natural to use camelCase on frontend js, but backend accepts underscore_style, so let's use camelCase for everything js, but for form properties and all data sent to backend use underscore (e.g. it's OK to write c-field(v-model="form.user_email" some-attribute="someJsVariable"))
 
 login: `dev`  
 password: `preview`
