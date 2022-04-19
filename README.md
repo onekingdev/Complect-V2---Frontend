@@ -8,6 +8,8 @@
 We use https://standardjs.com/rules.html with some exceptions
 *One exception: it is natural to use camelCase on frontend js, but backend accepts underscore_style, so let's use camelCase for everything js, but for form properties and all data sent to backend use underscore (e.g. it's OK to write c-field(v-model="form.user_email" some-attribute="someJsVariable"))
 
+## Demo Site
+app.complect.dev
 login: `dev`  
 password: `preview`
 
