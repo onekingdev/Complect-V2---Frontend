@@ -98,8 +98,6 @@ $link-hover-color = #2F304F
 	.menu-section
 		+ .menu-section
 			margin-top: 0.5rem
-		:deep(.icon-newspaper-white)
-			fill: none
 	.section-links
 		padding-bottom: 2rem
 		max-height: 15em

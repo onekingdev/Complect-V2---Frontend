@@ -37,13 +37,13 @@ export default {
 			{
 				"_id": "6253c8b84d0c24ae67e36161",
 				"name": "AAA",
-				"status": "draft",
+				"status": "pending",
 				"dateCreated": 1647000337214,
 				"owner": "System"
 			}, {
 				"_id": "6253c8b84d0c24ae67e36162",
 				"name": "BBB",
-				"status": "published",
+				"status": "complete",
 				"dateCreated": 1647000337214,
 				"owner": "System"
 			}
