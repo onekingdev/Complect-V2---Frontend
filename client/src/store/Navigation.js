@@ -84,6 +84,24 @@ const sidebarHomeNavigation = [
 				"view": "RisksOverview"
 			}
 		]
+	}, {
+		"title": "Code of ethics",
+		"icon": "newspaper-white",
+		"links": [
+			{
+				"title": "Personal Trade Monitoring",
+				"view": "Policies"
+			}, {
+				"title": "Attestations",
+				"view": "ReviewsOverview"
+			}, {
+				"title": "Logs",
+				"view": "RisksOverview"
+			}, {
+				"title": "Pre-Approvals",
+				"view": "RisksOverview"
+			}
+		]
 	}
 ];
 
