@@ -7,7 +7,7 @@ card-container.c-chat
 		.comments(v-if="activeTab === 'comments'")
 			template(v-if="comments && comments.length")
 				.comment(v-for="comment in comments" :key="comment.id")
-					c-avatar(:firstName="comment.author.first_name" :lastName="comment.author.last_name" :avatar="comment.author.avatar")
+					c-avatar(:firstName="comment.author.firstName" :lastName="comment.author.lastName" :avatar="comment.author.avatar")
 					.entry
 						.author {{comment.author.firstName}} {{comment.author.lastName}} commented.
 						.content
