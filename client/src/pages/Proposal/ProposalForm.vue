@@ -130,6 +130,8 @@ import cAvatar from "~/components/Misc/cAvatar.vue";
 import cChat from "~/components/Misc/cChat.vue";
 import cModal from "~/components/Misc/cModal.vue";
 import cDropzone from "~/components/Inputs/cDropzone.vue";
+import { notifyMessages } from "~/data/notifications.js";
+
 const business = ref({
 	"id": "3234234029384209384",
 	"firstName": "Manuel",
@@ -234,14 +236,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Proposal has been saved"
+					"message": notifyMessages.proposal.save.success
 				});
 				gotoJobBoard();
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Proposal has not been saved. Please try again."
+					"message": notifyMessages.proposal.save.error
 				});
 			}
 		};
@@ -256,14 +258,14 @@ export default {
 						notification({
 							"type": "success",
 							"title": "Success",
-							"message": "Proposal has been submitted."
+							"message": notifyMessages.proposal.submit.success
 						});
 					} else {
 						await proposals.updateDocument( form.value._id, form.value );
 						notification({
 							"type": "success",
 							"title": "Success",
-							"message": "Proposal has been submitted."
+							"message": notifyMessages.proposal.submit.success
 						});
 					}
 					gotoJobBoard();
@@ -272,7 +274,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Proposal has not been submitted. Please try again."
+					"message": notifyMessages.proposal.submit.error
 				});
 			}
 		};

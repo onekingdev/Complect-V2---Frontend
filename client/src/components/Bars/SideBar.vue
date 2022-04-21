@@ -37,9 +37,9 @@ import useProfile from "~/store/Profile.js";
 export default {
 	setup () {
 		const { sidebarHomeNavigation, sidebarDocumentsNavigation, sidebarReportsNavigation, sidebarReportsSpecialistNavigation, sidebarSpecialistNavigation } = useNavigation();
-		const { profile } = useProfile();
+		const { profile, isSpecialist } = useProfile();
 		const route = useRoute();
-		const userType = profile.value.type;
+
 
 		const renderSidebar = computed( () => {
 			if ( "sidebar" in route.meta ) return route.meta.sidebar; // check in sidebar key persist in meta object
@@ -49,13 +49,13 @@ export default {
 		const sidebarNavigation = computed( () => {
 			switch ( route.meta.tab ) {
 				case "Documents":
-					if ( userType === "specialist" ) return sidebarSpecialistNavigation;
+					if ( isSpecialist ) return sidebarSpecialistNavigation;
 					return sidebarDocumentsNavigation;
 				case "Reports":
-					if ( userType === "specialist" ) return sidebarReportsSpecialistNavigation;
+					if ( isSpecialist ) return sidebarReportsSpecialistNavigation;
 					return sidebarReportsNavigation;
 				default:
-					if ( userType === "specialist" ) return sidebarSpecialistNavigation;
+					if ( isSpecialist ) return sidebarSpecialistNavigation;
 					return sidebarHomeNavigation;
 			}
 		});

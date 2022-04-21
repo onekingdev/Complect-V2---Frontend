@@ -31,6 +31,7 @@ import UseData from "~/store/Data.js";
 import cBanner from "~/components/Misc/cBanner.vue";
 import cModal from "~/components/Misc/cModal.vue";
 import useProfile from "~/store/Profile.js";
+import { notifyMessages } from "~/data/notifications.js";
 
 export default {
 	"components": { cBanner, cModal },
@@ -58,14 +59,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Policy has been unarchived and republished."
+					"message": notifyMessages.policy.unarchive.success
 				});
 			} catch ( error ) {
 				console.error( error );
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Policy has not been unarchived and republished. Please try again."
+					"message": notifyMessages.policy.unarchive.error
 				});
 			}
 		};
@@ -76,14 +77,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Policy has been deleted."
+					"message": notifyMessages.policy.delete.success
 				});
 			} catch ( error ) {
 				console.error( error );
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Policy has not been deleted. Please try again."
+					"message": notifyMessages.policy.delete.error
 				});
 			}
 		};

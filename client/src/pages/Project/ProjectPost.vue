@@ -35,6 +35,8 @@ import { formatDate } from "~/core/utils.js";
 import { industries, jurisdictions } from "~/data/static.js";
 import { useRouter } from "vue-router";
 import UseData from "~/store/Data.js";
+import { notifyMessages } from "~/data/notifications.js";
+
 export default {
 	"components": {
 		cBanner,
@@ -76,7 +78,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Job posting has been deleted."
+					"message": notifyMessages.job.delete.success
 				});
 				isDeleteModalVisible.value = !isDeleteModalVisible.value;
 				props.reloadCollection();
@@ -85,7 +87,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Job posting has not been deleted. Please try again."
+					"message": notifyMessages.job.delete.error
 				});
 			}
 		};

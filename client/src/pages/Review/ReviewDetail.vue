@@ -80,6 +80,8 @@ import { ref, computed, inject } from "vue";
 import { useRouter } from "vue-router";
 import UseData from "~/store/Data.js";
 import VerticalDetail from "~/components/Containers/VerticalDetail.vue";
+import { notifyMessages } from "~/data/notifications.js";
+
 export default {
 	"components": { VerticalDetail },
 	setup () {
@@ -111,10 +113,10 @@ export default {
 		const updateReview = async () => {
 			try {
 				await reviews.updateDocument( reviews.getDocument().value._id, reviews.getDocument().value );
-				notification({ "type": "success", "title": "Success", "message": "Category has been updated." });
+				notification({ "type": "success", "title": "Success", "message": notifyMessages.review.category.update.success });
 			} catch ( error ) {
 				console.error( error );
-				notification({ "type": "error", "title": "Error", "message": "Category has not been updated. Please try again." });
+				notification({ "type": "error", "title": "Error", "message": notifyMessages.review.category.update.error });
 			}
 		};
 		const completeReview = async () => {
@@ -124,14 +126,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": `Category has been marked as ${timestamp ? "complete" : "incomplete"}.`
+					"message": timestamp ? notifyMessages.review.category.complete.success : notifyMessages.review.category.incomplete.success
 				});
 			} catch ( error ) {
 				console.error( error );
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": `Category has not been marked as ${timestamp ? "complete" : "incomplete"}. Please try again.`
+					"message": timestamp ? notifyMessages.review.category.complete.error : notifyMessages.review.category.incomplete.error
 				});
 			}
 		};
@@ -139,7 +141,7 @@ export default {
 		const addEmployeesInterviewed = () => reviews.getDocument().value.employeesInterviewed.push({ "name": "", "role": "", "department": "" });
 		const deleteRegulatoryChange = ( regulatoryChange, index ) => {
 			regulatoryChange.splice( index, 1 );
-			notification({ "type": "success", "title": "Success", "message": "Entry has been deleted." });
+			notification({ "type": "success", "title": "Success", "message": notifyMessages.review.category.entry.delete.success });
 		};
 		const deleteEmployeesInterviewed = ( employeesInterviewed, index ) => employeesInterviewed.splice( index, 1 );
 		const toggleCategory = () => state.value.isButton = !state.value.isButton;
@@ -149,7 +151,7 @@ export default {
 			state.value.categoryName = "";
 			try {
 				await reviews.updateDocument( reviews.getDocument().value._id, { "categories": reviews.getDocument().value.categories });
-				notification({ "type": "success", "title": "Success", "message": "Category has been added." });
+				notification({ "type": "success", "title": "Success", "message": notifyMessages.review.category.add.success });
 				isGeneral.value = false;
 				catId.value = reviews.getDocument().value.categories.length - 1;
 				reviewCategory.value = reviews.getDocument().value.categories[catId.value];
@@ -159,7 +161,7 @@ export default {
 				});
 			} catch ( error ) {
 				console.error( error );
-				notification({ "type": "error", "title": "Error", "message": "Category has not been added. Please try again." });
+				notification({ "type": "error", "title": "Error", "message": notifyMessages.review.category.add.error });
 			}
 		};
 		return {

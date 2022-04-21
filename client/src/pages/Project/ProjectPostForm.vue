@@ -58,6 +58,7 @@ import { industries, jurisdictions } from "~/data/static.js";
 import { validates } from "~/core/utils.js";
 import { required, requiredUnless } from "@vuelidate/validators";
 import { requireForArray, requireDate } from "~/core/customValidates.js";
+import { notifyMessages } from "~/data/notifications.js";
 
 const fieldsOptions = {
 	"locationType": [
@@ -268,7 +269,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Job posting has been saved."
+					"message": notifyMessages.job.save.success
 				});
 				if ( route.params.id )	router.push({ "name": "ProjectDetail", "params": { "id": route.params.id } });
 				else router.push({ "name": "ProjectsOverview" });
@@ -276,7 +277,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Job posting has not been saved. Please try again."
+					"message": notifyMessages.job.save.error
 				});
 			}
 		};
@@ -310,7 +311,7 @@ export default {
 					notification({
 						"type": "success",
 						"title": "Success",
-						"message": "Job has been posted."
+						"message": notifyMessages.job.post.success
 					});
 					// eslint-disable-next-line max-depth
 					if ( route.params.id )	router.push({ "name": "ProjectDetail", "params": { "id": route.params.id } });
@@ -320,7 +321,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Job has not been posted. Please try again."
+					"message": notifyMessages.job.post.error
 				});
 			}
 		};
