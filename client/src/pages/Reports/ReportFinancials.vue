@@ -34,7 +34,9 @@ import useProfile from "~/store/Profile.js";
 export default {
 	"components": { cDropdown, VueApexCharts },
 	setup () {
-		const { profile, isSpecialist } = useProfile();
+		const { profile } = useProfile();
+		const userType = profile.value.type;
+		const isSpecialist = userType === "specialist";
 		const paymentTitle = isSpecialist ? "Earnings" : "Payments";
 		const categories = isSpecialist ? [
 			"Earnings", "Goal"

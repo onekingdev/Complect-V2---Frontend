@@ -65,7 +65,6 @@ import { validates, validateFileSize } from "~/core/utils.js";
 import { required, maxLength } from "@vuelidate/validators";
 import useExamDetail from "~/store/Exam.js";
 import { manualApi } from "~/core/api.js";
-import { notifyMessages } from "~/data/notifications.js";
 
 const options = [
 	{ "title": "All", "value": "all" }, { "title": "Shared", "value": "shared" }
@@ -129,9 +128,9 @@ export default {
 			try {
 				await requests.createDocuments([data]);
 				isVisibleRequestModal.value = false;
-				notification({ "type": "success", "title": "Success", "message": notifyMessages.exam.request.add.success });
+				notification({ "type": "success", "title": "Success", "message": "Request has been added." });
 			} catch ( err ) {
-				notification({ "type": "error", "title": "Error", "message": notifyMessages.exam.request.add.error });
+				notification({ "type": "error", "title": "Error", "message": "Request has not been added. Please try again." });
 			}
 		};
 
@@ -160,8 +159,8 @@ export default {
 		const toggleShareRequest = request => {
 			request.shared = !request.shared;
 			const text = request.shared ? "shared" : "unshared";
-			const messageSuccess = notifyMessages.exam.request[text].success;
-			const errorMessage = notifyMessages.exam.request[text].error;
+			const messageSuccess = `Request has been ${text}`;
+			const errorMessage = `Request has not been ${text}`;
 			updateExamRequest( request, messageSuccess, errorMessage );
 		};
 
@@ -170,8 +169,8 @@ export default {
 			requestErrors.value = await validates( rules, requestForm.value );
 			if ( Object.keys( requestErrors.value ).length ) return;
 			if ( requestForm.value._id ) {
-				const messageSuccess = notifyMessages.exam.request.save.success;
-				const messageError = notifyMessages.exam.request.save.error;
+				const messageSuccess = "Request has been saved.";
+				const messageError = "Request has not been saved. Please try again.";
 				updateExamRequest( requestForm.value, messageSuccess, messageError );
 			} else createExamRequest();
 		};
@@ -179,8 +178,8 @@ export default {
 		const toggleMarkRequest = request => {
 			request.completed = !request.completed;
 			const complete = request.completed ? "complete" : "incomplete";
-			const messageSuccess = notifyMessages.exam.request[text].success;
-			const errorMessage = notifyMessages.exam.request[text].error;
+			const messageSuccess = `Request has been marked as ${complete}`;
+			const errorMessage = `Request has not been marked as ${complete}`;
 			updateExamRequest( request, messageSuccess, errorMessage );
 		};
 
@@ -224,13 +223,13 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.exam.request.note.success
+					"message": "Note has been deleted."
 				});
 			} catch (err) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.exam.request.note.error
+					"message": "Note has not been deleted. Please try again."
 				});
 			}
 		}
@@ -254,7 +253,7 @@ export default {
 				const file = fileInput.value.files[0];
 				const formData = new FormData();
 				if (!validateFileSize(file.size, MAX_FILE_SIZE)) {
-					notification({ "type": "error", "title": "Error", "message": notifyMessages.file.upload.error });
+					notification({ "type": "error", "title": "Error", "message": "Document has not been uploaded. File size must be less than 10MB." });
 					return false
 				}
 
@@ -275,10 +274,10 @@ export default {
 					uploadingReq.value.files.push(newFile)
 				} else uploadingReq.value.files = [newFile]
 				await requests.updateDocument( uploadingReq.value._id, { ...uploadingReq.value });
-				notification({ "type": "success", "title": "Success", "message": notifyMessages.file.upload.success });
+				notification({ "type": "success", "title": "Success", "message": "File has been uploaded." });
 			} catch ( error ) {
 				console.error( error );
-				notification({ "type": "error", "title": "Error", "message": notifyMessages.folder.upload.error });
+				notification({ "type": "error", "title": "Error", "message": "Folder has not been uploaded. Please try again." });
 			}
 		};
 

@@ -71,7 +71,6 @@ import { formatDate, validates } from "~/core/utils.js";
 import useProfile from "~/store/Profile.js";
 import { required } from "@vuelidate/validators";
 import { useRouter, useRoute } from "vue-router";
-import { notifyMessages } from "~/data/notifications.js";
 
 const roles = [
 	{
@@ -207,13 +206,13 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.project.role.success
+					"message": "Role has been updated"
 				});
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.project.role.error
+					"message": "Role has not been updated. Please try again."
 				});
 			}
 		};
@@ -227,14 +226,14 @@ export default {
 					notification({
 						"type": "success",
 						"title": "Success",
-						"message": notifyMessages.project.report.success
+						"message": "Issue has been escalated for review"
 					});
 				}
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.project.report.error
+					"message": "Issue has not been escalated for review. Please try again."
 				});
 			}
 		};
@@ -245,13 +244,13 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.contract.end.success
+					"message": "Contract early completion request has been submitted."
 				});
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.contract.end.error
+					"message": "Contract early completion request has not been submitted. Please try again."
 				});
 			}
 		};
@@ -294,7 +293,7 @@ export default {
 	padding: 1em
 .field-description
 	color: var(--c-grey-500)
-	font-size: 12px
+	font-size: 0.875em
 hr
 	border: 1px solid var(--c-border)
 .contract-detail

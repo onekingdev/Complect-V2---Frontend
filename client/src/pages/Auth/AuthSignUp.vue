@@ -29,7 +29,7 @@ card-container
 			.error(v-if="errorMessage") {{ errorMessage }}
 			c-button(title="Submit" type="primary" @click="submitCode(form.email, form.password, otp)" fullwidth)
 	template(#footer)
-		p(v-if="step !== 3") Already have a Complect account?&nbsp;
+		p(v-if="step !== 3") Already have a Complect account?
 			router-link.sign-in(:to="{name: 'AuthSignIn'}") Sign In
 		c-button(v-else title="Send new code" type="link" @click="sendNewCode()")
 </template>
@@ -70,7 +70,7 @@ export default {
 		const nextStep = value => step.value += value;
 
 		const rules = {
-			"email": { required, "email": emailValidator },
+			"email": { required, emailValidator },
 			"first_name": { required, "maxLength": maxLength( 100 ) },
 			"last_name": { required, "maxLength": maxLength( 100 ) },
 			"password": { required, "minLength": minLength( 6 ) },

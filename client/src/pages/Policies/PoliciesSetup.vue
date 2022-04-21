@@ -20,7 +20,6 @@ import UseData from "~/store/Data.js";
 import cBanner from "~/components/Misc/cBanner.vue";
 import cModal from "~/components/Misc/cModal.vue";
 import cUpload from "~/components/Inputs/cUpload.vue";
-import { notifyMessages } from "~/data/notifications.js";
 
 export default {
 	"components": { cBanner, cModal, cUpload },
@@ -49,13 +48,13 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.policy.setting.success
+					"message": "Setting has been updated."
 				});
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.policy.setting.error
+					"message": "Setting has not been updated. Please try again."
 				});
 			}
 		};
@@ -80,7 +79,7 @@ export default {
 	.logo-setting
 		margin-top: 10px
 	.setting-text
-		font-size: 14px
+		font-size: 0.875em
 		margin-bottom: 1rem
 	.display-setting
 		margin-top: 30px

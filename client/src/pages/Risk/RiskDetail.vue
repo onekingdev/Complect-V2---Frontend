@@ -51,8 +51,6 @@ import cLabel from "~/components/Misc/cLabel.vue";
 import cBadge from "~/components/Misc/cBadge.vue";
 import useProfile from "~/store/Profile.js";
 import cModal from "~/components/Misc/cModal.vue";
-import { notifyMessages } from "~/data/notifications.js";
-
 export default {
 	"components": { definitionList, cSelect, cLabel, cBadge, cModal },
 	// eslint-disable-next-line
@@ -89,14 +87,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.risk.control.delete.success
+					"message": "Control has been removed."
 				});
 				await risks.readDocuments( risks.getDocument().value._id );
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.risk.control.delete.error
+					"message": "Control has not been removed. Please try again."
 				});
 			}
 		};
@@ -117,7 +115,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.risk.update.success
+					"message": "Risk has been updated."
 				});
 				isEditRiskVisible.value = !isEditRiskVisible.value;
 				await risks.readDocuments( risks.getDocument().value._id );
@@ -125,7 +123,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.risk.update.error
+					"message": "Risk has not been updated. Please try again."
 				});
 			}
 		};

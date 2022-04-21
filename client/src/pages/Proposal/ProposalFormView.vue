@@ -122,8 +122,6 @@ import cAvatar from "~/components/Misc/cAvatar.vue";
 import cChat from "~/components/Misc/cChat.vue";
 import cModal from "~/components/Misc/cModal.vue";
 import cDropzone from "~/components/Inputs/cDropzone.vue";
-import { notifyMessages } from "~/data/notifications.js";
-
 const specialist = ref({
 	"id": "3234234029384209384",
 	"firstName": "Manuel",
@@ -203,14 +201,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.proposal.reject.success
+					"message": "Proposal has been rejected"
 				});
 				gotoJobBoard();
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.proposal.reject.error
+					"message": "Proposal has not been rejected. Please try again."
 				});
 			}
 		};
@@ -221,7 +219,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.proposal.accept.success
+					"message": "Proposal has been accepted"
 				});
 				router.push({
 					"name": "ProjectContract",
@@ -231,7 +229,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.proposal.accept.error
+					"message": "Proposal has not been accepted. Please try again."
 				});
 			}
 		};
@@ -293,10 +291,10 @@ export default {
 			.job-info-content
 				.job-info-title
 					color: var(--c-grey)
-					font-size: 14px
+					font-size: 0.875em
 				.job-info-value
 					color: var(--c-headers)
-					font-size: 16px
+					font-size: 1em
 			.job-info
 				margin-top: 2em
 				.border-left
@@ -316,7 +314,7 @@ export default {
 		.skill-content
 			padding: 2em 3em
 			.skill-title
-				font-size: 20px
+				font-size: 1.25em
 				font-weight: 700
 				margin-bottom: 1.25em
 			.skill-ind
@@ -325,11 +323,11 @@ export default {
 				display: inline-block
 				padding: 0.125em 0.3em
 				margin-right: 0.7em
-				font-size: 14px
+				font-size: 0.875em
 		.client-content
 			padding: 2em 3em
 			.client-title
-				font-size: 20px
+				font-size: 1.25em
 				font-weight: 700
 			.client-info
 				margin-top: 1rem
@@ -348,6 +346,6 @@ export default {
 					padding: 2rem;
 					.client-info-title
 						color: var(--c-grey)
-						font-size: 14px
+						font-size: 0.875em
 </style>
 

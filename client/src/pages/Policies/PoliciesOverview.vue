@@ -32,7 +32,6 @@ import cBanner from "~/components/Misc/cBanner.vue";
 import cModal from "~/components/Misc/cModal.vue";
 import { useRouter } from "vue-router";
 import useProfile from "~/store/Profile.js";
-import { notifyMessages } from "~/data/notifications.js";
 
 export default {
 	"components": { cBanner, cModal },
@@ -87,14 +86,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.policy.archive.success
+					"message": "Policy has been archived."
 				});
 			} catch ( error ) {
 				console.error( error );
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.policy.archive.error
+					"message": "Policy has not been archived. Please try again."
 				});
 			}
 		};
@@ -105,14 +104,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.policy.delete.success
+					"message": "Policy has been deleted"
 				});
 			} catch ( error ) {
 				console.error( error );
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.policy.delete.error
+					"message": "Policy has not been deleted. Please try again."
 				});
 			}
 		};
