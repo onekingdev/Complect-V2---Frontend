@@ -1,6 +1,7 @@
 import { ref, onMounted, onUnmounted, inject } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import UseData from "~/store/Data.js";
+import { notifyMessages } from "~/data/notifications.js";
 
 const exam = ref({});
 const requestDocuments = ref([]);
@@ -24,7 +25,7 @@ export default function useExamDetail () {
 			notification({
 				"type": "success",
 				"title": "Success",
-				"message": "Exam has been marked as incomplete."
+				"message": notifyMessages.exam.incomplete.success
 			});
 			exam.value.completed = false;
 		} catch ( error ) {
@@ -32,7 +33,7 @@ export default function useExamDetail () {
 			notification({
 				"type": "error",
 				"title": "Error",
-				"message": "Exam has not been marked as incomplete. Please try again."
+				"message": notifyMessages.exam.incomplete.error
 			});
 		}
 	};
@@ -49,14 +50,14 @@ export default function useExamDetail () {
 			notification({
 				"type": "success",
 				"title": "Success",
-				"message": "Exam has been saved."
+				"message": notifyMessages.exam.save.success
 			});
 			if ( exit ) exitExamDetail();
 		} catch ( err ) {
 			notification({
 				"type": "error",
 				"title": "Error",
-				"message": "Exam has not been saved. Please try again."
+				"message": notifyMessages.exam.save.error
 			});
 		}
 	};

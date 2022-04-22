@@ -86,13 +86,13 @@ export default {
 	position: relative
 	.version-info
 		font-weight: 600
-		font-size: 0.875em
+		font-size: 14px
 	.publish-info
 		font-weight: 600
-		font-size: 0.875em
+		font-size: 14px
 	.update-info
 		font-weight: 600
-		font-size: 0.875em
+		font-size: 14px
 		color: #919396
 	.download-button
 		position: absolute;

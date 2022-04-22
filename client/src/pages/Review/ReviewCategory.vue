@@ -91,6 +91,8 @@ import { computed, inject } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import UseData from "~/store/Data.js";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
+import { notifyMessages } from "~/data/notifications.js";
+
 export default {
 	"components": { cDropdown	},
 	"props": {
@@ -127,7 +129,7 @@ export default {
 			notification({
 				"type": "success",
 				"title": "Success",
-				"message": "Topic has been deleted."
+				"message": notifyMessages.review.category.topic.delete.success
 			});
 		};
 
@@ -136,7 +138,7 @@ export default {
 			notification({
 				"type": "success",
 				"title": "Success",
-				"message": "Item has been deleted."
+				"message": notifyMessages.review.category.item.delete.success
 			});
 		};
 
@@ -145,7 +147,7 @@ export default {
 			notification({
 				"type": "success",
 				"title": "Success",
-				"message": "Finding has been deleted."
+				"message": notifyMessages.review.category.finding.delete.success
 			});
 		};
 
@@ -157,7 +159,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Category has been deleted."
+					"message": notifyMessages.review.category.delete.success
 				});
 				router.push({
 					"name": "ReviewDetail",
@@ -168,7 +170,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Category has not been deleted. Please try again."
+					"message": notifyMessages.review.category.delete.error
 				});
 			}
 		};
@@ -181,14 +183,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Category has been updated."
+					"message": notifyMessages.review.category.update.success
 				});
 			} catch ( error ) {
 				console.error( error );
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Category has not been updated. Please try again."
+					"message": notifyMessages.review.category.update.error
 				});
 			}
 		};
@@ -202,14 +204,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": `Category has been marked as ${timestamp ? "complete" : "incomplete"}.`
+					"message": timestamp ? notifyMessages.review.category.complete.success : notifyMessages.review.category.incomplete.success
 				});
 			} catch ( error ) {
 				console.error( error );
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": `Category has not been marked as ${timestamp ? "complete" : "incomplete"}. Please try again.`
+					"message": timestamp ? notifyMessages.review.category.complete.error : notifyMessages.review.category.incomplete.error
 				});
 			}
 		};
@@ -281,7 +283,7 @@ export default {
 					border-radius: 3px
 					svg
 						fill: black
-						font-size: 1.25em
+						font-size: 20px
 						position: relative
 						top: -1px
 					&.checked
@@ -354,14 +356,14 @@ export default {
 		@media (min-width: 1200px)
 			grid-column: span 10
 		:deep(.field-body)
-			font-size: 1.125em
+			font-size: 18px
 	.topic-action
 		grid-column: span 3
 		@media (min-width: 1200px)
 			grid-column: span 2
 	.item-text
 		:deep(.field-body)
-			font-size: 1em
+			font-size: 16px
 	.delete-container, .complete-container
 		display: flex
 		gap: 1.25em

@@ -19,6 +19,7 @@ import useModals from "~/store/Modals.js";
 import { validates } from "~/core/utils.js";
 import { required } from "@vuelidate/validators";
 import { onClickOutside } from "@vueuse/core";
+import { notifyMessages } from "~/data/notifications.js";
 
 export default {
 	"props": {
@@ -78,7 +79,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Folder has been created."
+					"message": notifyMessages.folder.create.success
 				});
 				props.callback();
 			} catch ( error ) {
@@ -86,7 +87,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Folder has not been created. Please try again."
+					"message": notifyMessages.folder.create.error
 				});
 			}
 		};

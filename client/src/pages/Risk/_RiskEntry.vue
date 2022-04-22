@@ -23,6 +23,8 @@ import { useRoute, useRouter } from "vue-router";
 import UseData from "~/store/Data.js";
 import { calcRiskLevel } from "~/core/utils.js";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
+import { notifyMessages } from "~/data/notifications.js";
+
 export default {
 	"components": { cDropdown },
 	setup () {
@@ -41,14 +43,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Risk has been deleted."
+					"message": notifyMessages.risk.delete.success
 				});
 				closeRisk();
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Risk has not been deleted. Please try again."
+					"message": notifyMessages.risk.delete.error
 				});
 			}
 		};

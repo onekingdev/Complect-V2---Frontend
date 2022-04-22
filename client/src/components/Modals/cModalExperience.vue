@@ -26,6 +26,7 @@ import { onClickOutside } from "@vueuse/core";
 import { validates } from "~/core/utils.js";
 import { required, helpers } from "@vuelidate/validators";
 import { requireDate } from "~/core/customValidates.js";
+import { notifyMessages } from "~/data/notifications.js";
 
 const requireEndAt = ( endsAt, siblings ) => {
 	if ( siblings.isPresent ) return !endsAt;
@@ -61,7 +62,6 @@ export default {
 
 		const modalTitle = props.id ? "Edit Experience" : "Add Experience";
 		const btnTitle = props.id ? "Save" : "Add";
-		const action = props.id ? "updated" : "added";
 		const modalWindow = ref( null );
 		const form = ref({ "isPresent": false, "userId": profile.value._id });
 		const errors = ref({});
@@ -85,7 +85,7 @@ export default {
 
 				notification({
 					"title": "Success",
-					"message": `Experience has been ${action}.`
+					"message": props.id ? notifyMessages.experience.add.success : notifyMessages.experience.update.success
 				});
 
 				if ( props.callback ) props.callback( form.value );
@@ -96,7 +96,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": `Experience has not been ${action}. Please try again.`
+					"message": props.id ? notifyMessages.experience.add.error : notifyMessages.experience.update.error
 				});
 			}
 		};

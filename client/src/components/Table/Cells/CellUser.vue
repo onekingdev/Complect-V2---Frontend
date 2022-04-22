@@ -31,5 +31,5 @@ export default {
 		color: var(--c-grey)
 	.add-info
 		color: var(--c-grey)
-		font-size: 0.8em
+		font-size: 12px
 </style>

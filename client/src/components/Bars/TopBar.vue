@@ -5,11 +5,11 @@
 		icon(name="brandname")
 	.navigation(v-if="!simpleTopBar")
 		.menu
-			a(v-for="(tab, index) in tabs" :key="index" :class="{ active: activedTopbar === tab.title }" @click="goToRoute(tab.routeName)") {{ $locale(tab.title) }}
+			a(v-for="(tab, index) in tabs" :key="index" :class="{ active: activedTopbar == tab.title }" @click="goToRoute(tab.routeName)") {{ $locale(tab.title) }}
 		.buttons
 			c-button(title="Find an Expert" type="accent" @click="gotoMarket()" v-if="profile.type == 'business'")
 			c-button(title="Browse Jobs" type="accent" @click="gotoJobs()" v-else)
-			c-button.notification-icon(iconL="bell" type="transparent" @click="gotoNotification()" :class="{active: isNewNotification}")
+			c-button(iconL="bell" type="transparent")
 	.user-block(v-if="profile" @click="toggleUserDropDown()" ref="userDropDown" :class="{expanded: userDropDownExpanded}")
 		c-avatar(:avatar="profile.avatar" :firstName="profile.first_name" :lastName="profile.last_name" size="small")
 		.name {{profile.firstName}} {{profile.lastName}}
@@ -21,29 +21,14 @@
 
 
 <script>
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { onClickOutside } from "@vueuse/core";
 import useAuth from "~/core/auth.js";
 import useProfile from "~/store/Profile.js";
 import cAvatar from "~/components/Misc/cAvatar.vue";
-
-const tabs = [
-	{
-		"title": "Home",
-		"routeName": "Dashboard"
-	}, {
-		"title": "Documents",
-		"routeName": "RecordsOverview"
-	}, {
-		"title": "Reports",
-		"routeName": "ReportOrganizations"
-	}
-];
-
 export default {
 	"components": { cAvatar },
-	// eslint-disable-next-line max-statements
 	setup () {
 		const route = useRoute();
 		const router = useRouter();
@@ -51,11 +36,21 @@ export default {
 		const { profile } = useProfile();
 		const userDropDown = ref( null );
 		const userDropDownExpanded = ref( false );
-		const isNewNotification = ref( false );
-		const websocket = ref();
-		const WS_URI = import.meta.env.VITE_WS;
 		const toggleUserDropDown = () => userDropDownExpanded.value = !userDropDownExpanded.value;
 		onClickOutside( userDropDown, () => userDropDownExpanded.value = false );
+
+		const tabs = [
+			{
+				"title": "Home",
+				"routeName": "Dashboard"
+			}, {
+				"title": "Documents",
+				"routeName": "RecordsOverview"
+			}, {
+				"title": "Reports",
+				"routeName": "ReportOrganizations"
+			}
+		];
 
 		const goToRoute = routeName => router.push({ "name": routeName });
 
@@ -73,33 +68,7 @@ export default {
 		const toDashboard = () => simpleTopBar.value ? router.push({ "name": "Dashboard" }) : router.push({ "name": "OnboardingForm" });
 		const gotoMarket = () => router.push({ "name": "ExpertList" });
 		const gotoJobs = () => router.push({ "name": "JobBoard" });
-		const gotoNotification = () => {
-			router.push({ "name": "NotificationCenter" });
-			isNewNotification.value = false;
-		};
 		const reportLink = profile.value.type === "specialist" ? "/reports/financials" : "/reports/organizations";
-
-		const connect = () => {
-			websocket.value = new WebSocket( WS_URI );
-			websocket.value.onclose = ({ wasClean, code, reason }) => {
-				console.error( `onclose:   ${JSON.stringify({ wasClean, code, reason })}` );
-			};
-			websocket.value.onerror = error => {
-				console.error( error );
-			};
-			websocket.value.onmessage = ({ data }) => {
-				if ( JSON.parse( data ).type !== "ping" ) isNewNotification.value = true;
-			};
-			websocket.value.onopen = () => {
-				websocket.value.send( JSON.stringify({
-					"command": "subscribe",
-					"identifier": "{\"channel\": \"NotificationChannel\"}"
-				}) );
-			};
-		};
-
-		onMounted( () => connect() );
-		onUnmounted( () => websocket.value.close() );
 
 		return {
 			reportLink,
@@ -114,9 +83,7 @@ export default {
 			simpleTopBar,
 			toDashboard,
 			gotoMarket,
-			gotoJobs,
-			gotoNotification,
-			isNewNotification
+			gotoJobs
 		};
 	}
 };
@@ -167,19 +134,6 @@ export default {
 			flex: 0 1 auto
 			button
 				margin-right: 0.5em
-			.notification-icon
-				position: relative;
-				&.active::before
-					content: ' ';
-					position: absolute
-					top: 0.375em
-					left: 1.5em
-					z-index: 2
-					width: 0.5em
-					height: 0.5em
-					background: var(--c-yellow-500)
-					background-clip: padding-box
-					border-radius: 50%
 	.user-block
 		position: relative
 		display: flex

@@ -21,6 +21,8 @@ import cModal from "~/components/Misc/cModal.vue";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
 import { manualApi } from "~/core/api.js";
 import UseData from "~/store/Data.js";
+import { notifyMessages } from "~/data/notifications.js";
+
 export default {
 	"components": {
 		cBanner,
@@ -56,7 +58,7 @@ export default {
 			} catch ( error ) {
 				loading.value = false;
 				console.error( error );
-				notification({ "type": "error", "title": "Error", "message": "Folder has not been downloaded. Please try again." });
+				notification({ "type": "error", "title": "Error", "message": notifyMessages.folder.download.error });
 			}
 		};
 		const handleClickDelete = async id => {
@@ -98,11 +100,11 @@ export default {
 				await projects.updateDocument( props.projectDetail._id, { "documents": allDocuments });
 				props.reloadCollection();
 				await records.readDocuments( "", { folderId });
-				notification({ "type": "success", "title": "Success", "message": "File has been uploaded.." });
+				notification({ "type": "success", "title": "Success", "message": notifyMessages.file.upload.success });
 			} catch ( error ) {
 				loading.value = false;
 				console.error( error );
-				notification({ "type": "error", "title": "Error", "message": "Folder has not been uploaded. Please try again." });
+				notification({ "type": "error", "title": "Error", "message": notifyMessages.folder.upload.error });
 			}
 		};
 		const columns = [
@@ -144,7 +146,7 @@ export default {
 		margin-right: 0.5em
 	.user-info
 		.name
-			font-size: 1.25em
+			font-size: 20px
 			margin-top: 0.325em
 	.action
 		margin-left: auto
