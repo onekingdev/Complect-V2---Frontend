@@ -42,8 +42,6 @@ import cDropdown from "~/components/Inputs/cDropdown.vue";
 import cModal from "~/components/Misc/cModal.vue";
 import cCheckbox from "~/components/Inputs/cCheckbox.vue";
 import { manualApi } from "~/core/api.js";
-import { notifyMessages } from "~/data/notifications.js";
-
 export default {
 	"components": {
 		cDropdown,
@@ -79,7 +77,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.review.delete.success
+					"message": "Internal review has been deleted."
 				});
 				router.push({ "name": "ReviewsOverview" });
 			} catch ( error ) {
@@ -87,7 +85,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.review.delete.error
+					"message": "Internal review has not been deleted. Please try again."
 				});
 			}
 		};
@@ -125,7 +123,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.review.create.validate
+					"message": "Internal Review report cannot be generated until all categories have been marked as complete."
 				});
 			}
 		};
@@ -136,7 +134,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.review.save.success
+					"message": "Internal review has been saved."
 				});
 				router.push({ "name": "ReviewsOverview" });
 			} catch ( error ) {
@@ -144,7 +142,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.review.save.error
+					"message": "Internal review has not been saved. Please try again."
 				});
 			}
 		};

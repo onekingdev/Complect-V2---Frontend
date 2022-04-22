@@ -9,8 +9,6 @@
 import { computed, inject } from "vue";
 import cCheckbox from "~/components/Inputs/cCheckbox.vue";
 import UseData from "~/store/Data.js";
-import { notifyMessages } from "~/data/notifications.js";
-
 export default {
 	"components": { cCheckbox },
 	"props": {
@@ -43,13 +41,13 @@ export default {
 				else tasks.updateDocument( id, { "completedAt": Date.now() });
 				notification({
 					"title": "Success",
-					"message": completed ? notifyMessages.task.complete.success : notifyMessages.task.incomplete.success
+					"message": `Task has been marked as ${completed ? "incomplete" : "complete"}.`
 				});
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": completed ? notifyMessages.task.complete.success : notifyMessages.task.incomplete.success
+					"message": `Task has not been marked as ${completed ? "incomplete" : "complete"}. Please try again.`
 				});
 			}
 		};

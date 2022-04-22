@@ -3,7 +3,6 @@ import { ref } from "vue";
 const profile = ref( null );
 const linkaccount = ref( null );
 
-
 export default function useProfile () {
 	const saveForm = ( original, update ) => {
 		Object.keys( update ).forEach( key => original.value[key] = update[key]);
@@ -19,9 +18,7 @@ export default function useProfile () {
 		setProfile,
 		updateProfile,
 		setLinkAccount,
-		saveForm,
-		"isBusiness": profile.value.userType === "business",
-		"isSpecialist": profile.value.userType === "specialist"
+		saveForm
 	};
 }
 

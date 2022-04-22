@@ -33,7 +33,6 @@ import useAuth from "~/core/auth.js";
 import { validates } from "~/core/utils.js";
 import { sameAsWith } from "~/core/customValidates.js";
 import { required, email, minLength } from "@vuelidate/validators";
-import { notifyMessages } from "~/data/notifications.js";
 
 
 export default {
@@ -75,15 +74,14 @@ export default {
 				clearData( type );
 
 				notification({
-					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.profile[type.toLowerCase()].success
+					"message": `${type} has been updated.`
 				});
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.profile[type.toLowerCase()].error
+					"message": `${type} has not been updated. Please try again.`
 				});
 				console.error( error );
 				errors.value[type.toLowerCase()] = [error];

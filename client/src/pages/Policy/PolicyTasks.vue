@@ -13,7 +13,6 @@ import { onMounted, onUnmounted, ref, inject, computed } from "vue";
 import UseData from "~/store/Data.js";
 import cBanner from "~/components/Misc/cBanner.vue";
 import cSelect from "~/components/Inputs/cSelect.vue";
-import { notifyMessages } from "~/data/notifications.js";
 
 export default {
 	"components": { cBanner, cSelect },
@@ -110,20 +109,11 @@ export default {
 		];
 
 		const createTask = async () => {
-			try {
-				await tasks.createDocuments([newTask.value]);
-				notification({
-					"type": "success",
-					"title": "Success",
-					"message": notifyMessages.task.create.success
-				});
-			} catch ( error ) {
-				notification({
-					"type": "error",
-					"title": "Error",
-					"message": notifyMessages.task.create.error
-				});
-			}
+			await tasks.createDocuments([newTask.value]);
+			notification({
+				"type": "success",
+				"title": "New Risk has been Created"
+			});
 		};
 
 

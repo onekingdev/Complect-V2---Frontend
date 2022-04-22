@@ -43,7 +43,6 @@ import useProfile from "~/store/Profile.js";
 import cSelect from "~/components/Inputs/cSelect.vue";
 import cBadge from "~/components/Misc/cBadge.vue";
 import cLabel from "~/components/Misc/cLabel.vue";
-import { notifyMessages } from "~/data/notifications.js";
 
 export default {
 	"components": { cBanner, cModal, cSelect, cLabel, cBadge },
@@ -89,7 +88,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.risk.control.delete.success
+					"message": "Control has been removed."
 				});
 				await risks.readDocuments( risks.getDocument().value._id );
 			} catch ( error ) {
@@ -97,7 +96,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.risk.control.delete.error
+					"message": "Control has not been removed. Please try again."
 				});
 			}
 		};
@@ -109,7 +108,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.risk.update.success
+					"message": "Risk has been updated."
 				});
 				router.push({
 					"name": "RiskDetail",
@@ -119,7 +118,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.risk.update.error
+					"message": "Risk has not been updated. Please try again."
 				});
 			}
 		};
@@ -129,14 +128,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.risk.delete.success
+					"message": "Risk has been deleted."
 				});
 				isDeleteVisible.value = !isDeleteVisible.value;
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.risk.delete.error
+					"message": "Risk has not been deleted. Please try again."
 				});
 			}
 		};

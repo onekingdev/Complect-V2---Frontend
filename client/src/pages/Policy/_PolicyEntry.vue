@@ -102,8 +102,6 @@ import useProfile from "~/store/Profile.js";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
 import { manualApi } from "~/core/api.js";
 import cModal from "~/components/Misc/cModal.vue";
-import { notifyMessages } from "~/data/notifications.js";
-
 export default {
 	"components": { VerticalTabs, cDropdown, cModal },
 	"props": {
@@ -190,14 +188,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.policy.publish.success
+					"message": "Policy has been published."
 				});
 				togglePublishPolicy();
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.policy.publish.error
+					"message": "Policy has not been published. Please try again."
 				});
 			}
 		};
@@ -208,14 +206,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.policy.archive.success
+					"message": "Policy has been archived."
 				});
 				toPoliciePage();
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.policy.archive.error
+					"message": "Policy has not been archived. Please try again."
 				});
 			}
 		};
@@ -226,14 +224,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.policy.unarchive.success
+					"message": "Policy has been unarchived and republished."
 				});
 				toPoliciePage();
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.policy.unarchive.error
+					"message": "Policy has not been unarchived and republished. Please try again."
 				});
 			}
 		};
@@ -250,13 +248,13 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.policy.save.success
+					"message": "Policy has been saved."
 				});
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.policy.save.error
+					"message": "Policy has not been saved. Please try again."
 				});
 			}
 		};
@@ -276,7 +274,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.policy.create.success
+					"message": "New policy has been created."
 				});
 				router.push({
 					"name": "PolicyDetail",
@@ -288,7 +286,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.policy.save.error
+					"message": "Policy has not been created. Please try again."
 				});
 			}
 		};
@@ -360,7 +358,7 @@ export default {
 		margin-top: 10px
 		.ind-policy
 			padding: 1rem
-			font-size: 14px
+			font-size: 0.875em
 			border-bottom: 1px solid #ddd
 	.tabs
 		width: 100%
