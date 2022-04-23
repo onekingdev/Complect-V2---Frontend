@@ -33,15 +33,9 @@ const useNotOnboardedGuard = ( to, from, next ) => {
 	else next();
 };
 
-const useAppPagesGuard = ( to, from, next ) => {
-	if ( profile.value.new ) next({ "name": "OnboardingForm", "query": { "step": 1 } });
-	else next();
-};
-
-
 const businessPagesGuard = ( to, from, next ) => {
 	if ( profile.value.type === "business" ) next();
 	else next({ "name": "ErrorLayer" });
 };
 
-export { useAuthGuard, useOnboardingGuard, useNotOnboardedGuard, useAppPagesGuard, businessPagesGuard };
+export { useAuthGuard, useOnboardingGuard, useNotOnboardedGuard, businessPagesGuard };

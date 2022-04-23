@@ -1,5 +1,5 @@
 import { createWebHistory, createRouter } from "vue-router";
-import { useAuthGuard, useOnboardingGuard, useNotOnboardedGuard, useAppPagesGuard, businessPagesGuard } from "./Guards.js";
+import { useAuthGuard, useOnboardingGuard, useNotOnboardedGuard, businessPagesGuard } from "./Guards.js";
 
 // layers
 const ErrorLayer = () => import( "~/layers/ErrorLayer.vue" );
