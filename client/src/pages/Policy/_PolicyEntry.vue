@@ -358,7 +358,7 @@ export default {
 		margin-top: 10px
 		.ind-policy
 			padding: 1rem
-			font-size: 0.875em
+			font-size: 14px
 			border-bottom: 1px solid #ddd
 	.tabs
 		width: 100%

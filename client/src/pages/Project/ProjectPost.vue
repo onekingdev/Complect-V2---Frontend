@@ -192,7 +192,7 @@ export default {
 	flex-direction: column
 	padding-top: 2em
 	p
-		font-size: 1em
+		font-size: 16px
 		color: var(--c-grey)
 
 </style>

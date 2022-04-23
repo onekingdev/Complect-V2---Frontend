@@ -281,7 +281,7 @@ export default {
 					border-radius: 3px
 					svg
 						fill: black
-						font-size: 1.25em
+						font-size: 20px
 						position: relative
 						top: -1px
 					&.checked
@@ -354,14 +354,14 @@ export default {
 		@media (min-width: 1200px)
 			grid-column: span 10
 		:deep(.field-body)
-			font-size: 1.125em
+			font-size: 18px
 	.topic-action
 		grid-column: span 3
 		@media (min-width: 1200px)
 			grid-column: span 2
 	.item-text
 		:deep(.field-body)
-			font-size: 1em
+			font-size: 16px
 	.delete-container, .complete-container
 		display: flex
 		gap: 1.25em

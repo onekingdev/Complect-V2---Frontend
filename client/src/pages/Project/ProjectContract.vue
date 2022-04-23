@@ -293,7 +293,7 @@ export default {
 	padding: 1em
 .field-description
 	color: var(--c-grey-500)
-	font-size: 0.875em
+	font-size: 12px
 hr
 	border: 1px solid var(--c-border)
 .contract-detail

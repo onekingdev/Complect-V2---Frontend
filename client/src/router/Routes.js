@@ -1,5 +1,5 @@
 import { createWebHistory, createRouter } from "vue-router";
-import { useAuthGuard, useOnboardingGuard, useAppPagesGuard, businessPagesGuard } from "./Guards.js";
+import { useAuthGuard, useOnboardingGuard, useNotOnboardedGuard, useAppPagesGuard, businessPagesGuard } from "./Guards.js";
 
 // layers
 const ErrorLayer = () => import( "~/layers/ErrorLayer.vue" );
@@ -142,11 +142,6 @@ const ExamDetailDocuments = () => import( "~/pages/Exam/ExamDetailDocuments.vue"
 const ExamDetailTasks = () => import( "~/pages/Exam/ExamDetailTasks.vue" );
 const ExamPortal = () => import( "~/pages/Exam/ExamPortal.vue" );
 
-// notification
-const _NotificationEntry = () => import( "~/pages/Notification/_NotificationEntry.vue" );
-const NotificationCenter = () => import( "~/pages/Notification/NotificationCenter.vue" );
-const NotificationMessage = () => import( "~/pages/Notification/NotificationMessage.vue" );
-
 import { devRoutes } from "~/_devmode/Routes.js";
 
 // ––––––––––––––– Routes ––––––––––––––– //
@@ -179,7 +174,7 @@ const routes = [
 				]
 			}, {
 				"path": "",
-				"beforeEnter": useAppPagesGuard,
+				"beforeEnter": useNotOnboardedGuard,
 				"component": _PagesEntry,
 				"children": [
 					{
@@ -496,27 +491,6 @@ const routes = [
 							"component": RecordsOverview,
 							"meta": { "title": "Records", "tab": "Documents" }
 						}]
-					},
-					{
-						"path": "notifications",
-						"component": _NotificationEntry,
-						"meta": {
-							"title": "Notification",
-							"sidebar": false
-						},
-						"children": [
-							{
-								"path": "center",
-								"name": "NotificationCenter",
-								"component": NotificationCenter,
-								"meta": { "title": "Notification Center" }
-							}, {
-								"path": "message",
-								"name": "NotificationMessage",
-								"component": NotificationMessage,
-								"meta": { "title": "Notification Message" }
-							}
-						]
 					},
 					{
 						"path": "organization",

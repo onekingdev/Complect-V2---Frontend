@@ -381,5 +381,5 @@ export default {
 		justify-content: center
 		display: flex
 	h4
-		font-size: 0.875em
+		font-size: 13px
 </style>

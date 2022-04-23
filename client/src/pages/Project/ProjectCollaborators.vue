@@ -156,7 +156,7 @@ export default {
 		margin-right: 0.5em
 	.user-info
 		.name
-			font-size: 1.25px
+			font-size: 20px
 			margin-top: 0.325em
 	.action
 		margin-left: auto
