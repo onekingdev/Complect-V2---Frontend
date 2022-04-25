@@ -4,9 +4,13 @@
 [![API Deploy (Dev)](https://github.com/complectco/complect-2.0/actions/workflows/api-dev-deploy.yml/badge.svg)](https://github.com/complectco/complect-2.0/actions/workflows/api-dev-deploy.yml)
 
 
-## Live versions
-* [Dev Stage](https://app.complect.dev)  
-* [Public Stage](https://app.complect.com)
+## StandardJS coding style
+We use https://standardjs.com/rules.html with some exceptions
+
+*One exception: it is natural to use camelCase on frontend js, but backend accepts underscore_style, so let's use camelCase for everything js, but for form properties and all data sent to backend use underscore (e.g. it's OK to write c-field(v-model="form.user_email" some-attribute="someJsVariable"))
+
+## Demo Site
+app.complect.dev
 
 login: `dev`  
 password: `preview`
@@ -22,7 +26,7 @@ password: `preview`
 
 
 ## Run Project:
-To start complete project with *Client*, *API*, *MongoDB* and *MongoDB Admin* services, just run:
+To start complete project with *Client*, *API*, just run:
 ```sh
 docker-compose up
 ```
@@ -40,16 +44,3 @@ docker-compose -f docker-compose.api.yml up
 ### Ports:
 * [localhost:5000](http://localhost:5000/) - Client (*front-end*)
 * `localhost:5001` - API
-* `localhost:5002` - MongoDB
-* [localhost:5003](http://localhost:5003/) - MongoDB Admin ([more](#mongodb-admin))
-
----
-
-## MongoDB Admin
-* Navigate to: [localhost:5003](http://localhost:5003/)
-* Connection Name: `Any`
-* Connection String: `mongodb://user:password@mongo:27017`
-* Press **Add Connection**
-* Click **Connect** in right Action Tab, to enter.
-
-If you're on a M1 mac, use DOCKER_DEFAULT_PLATFORM=linux/amd64 docker-compose up

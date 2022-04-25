@@ -10,6 +10,7 @@ export default defineConfig({
 			base: "/",
 			includeAssets: ["img/**/*.*", "fonts/**/*.*"],
 			useCredentials: true,
+			registerType: 'autoUpdate',
 			manifest: {
 				"name": "Complect App",
 				"short_name": "Complect",
