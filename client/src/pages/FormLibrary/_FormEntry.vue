@@ -37,6 +37,7 @@ export default {
 		const documents = formLibraryData;
 		const route = useRoute();
 		const router = useRouter();
+		const formDetails = computed( () => documents.find( document => document._id === route.params.id ) );
 		const saveDraft = () => {};
 		const publishFormLibrary = () => {};
 		const closeFormLibrary = () => router.push({
@@ -50,7 +51,6 @@ export default {
 		const deleteForm = () => {};
 		const doHamberger = () => {};
 		const hasHamberger = { "action": doHamberger };
-		const formDetails = computed( () => documents.find( document => document._id === route.params.id ) );
 		return {
 			saveDraft,
 			publishFormLibrary,

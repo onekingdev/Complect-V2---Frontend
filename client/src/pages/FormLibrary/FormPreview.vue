@@ -7,15 +7,6 @@ card-container(title="Form Name")
 			.sub-text Drag and drop item from the form builder to begin.
 </template>
 
-<script>
-export default {
-	setup () {
-
-		return {};
-	}
-};
-</script>
-
 <style lang="stylus" scoped>
 .card-container
 	width: 45em

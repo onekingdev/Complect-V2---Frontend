@@ -28,35 +28,40 @@ const formLibraryData = [
 		"status": "draft",
 		"dateCreated": 1647000337214,
 		"owner": "Alex Lim"
-	}, {
+	},
+	{
 		"_id": "6253c8b84d0c24ae67e36162",
 		"name": "Attestation Form 2",
 		"type": "attestation",
 		"status": "published",
 		"dateCreated": 1647000337214,
 		"owner": "Alex Lim"
-	}, {
+	},
+	{
 		"_id": "6253c8b84d0c24ae67e36163",
 		"name": "Employee Log 1",
 		"type": "logs",
 		"status": "draft",
 		"dateCreated": 1647000337214,
 		"owner": "Alex Lim"
-	}, {
+	},
+	{
 		"_id": "6253c8b84d0c24ae67e36164",
 		"name": "Employee Log 2",
 		"type": "logs",
 		"status": "published",
 		"dateCreated": 1647000337214,
 		"owner": "Alex Lim"
-	}, {
+	},
+	{
 		"_id": "6253c8b84d0c24ae67e36163",
 		"name": "Pre-Approval 1",
 		"type": "approval",
 		"status": "draft",
 		"dateCreated": 1647000337214,
 		"owner": "Alex Lim"
-	}, {
+	},
+	{
 		"_id": "6253c8b84d0c24ae67e36164",
 		"name": "Pre-Approval 2",
 		"type": "approval",

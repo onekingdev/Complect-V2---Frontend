@@ -79,7 +79,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": `Form has been updated.`
+					"message": "Form has been updated."
 				});
 				props.callback();
 			} catch ( error ) {
@@ -87,7 +87,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": `Form has not been updated. Please try again.`
+					"message": "Form has not been updated. Please try again."
 				});
 			}
 		};
@@ -110,9 +110,7 @@ export default {
 			if ( props.duplicate ) {
 				modalTitle.value = "Duplicate Form";
 				form.value.name = `${form.value.name}(copy)`;
-			} else {
-				modalTitle.value = "Edit Form";
-			}
+			} else modalTitle.value = "Edit Form";
 		});
 
 		return { modalWindow, modalTitle, btnTitle, errors, saveRecord, form, closeModal };

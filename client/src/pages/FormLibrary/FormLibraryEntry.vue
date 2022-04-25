@@ -15,10 +15,10 @@ export default {
 	},
 	setup ( props ) {
 		const modal = inject("modal");
+		const updateForm = () => { };
 		const handleClickEdit = id => modal({ "name": "cModalForm", "callback": updateForm, id });
 		const handleClickDelete = id => modal({ "name": "cModalDelete", id, "title": "Form", "description": "Deleting this form will make it no longer available as a template.", "callback": updateForm });
 		const handleClickDuplicate = id => modal({ "name": "cModalForm", "callback": updateForm, id, "duplicate": true });
-		const updateForm = () => { };
 		const columns = [
 			{
 				"title": "Form Name",
@@ -56,7 +56,7 @@ export default {
 			}
 		];
 
-		const documents = formLibraryData.filter( doc => doc.type === props.type );;
+		const documents = formLibraryData.filter( doc => doc.type === props.type );
 
 		return { columns, documents };
 	}
