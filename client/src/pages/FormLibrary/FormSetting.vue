@@ -75,18 +75,15 @@ export default {
 			{ "title": "Option 9", "value": "option-9" },
 			{ "title": "Option 10", "value": "option-10" }
 		];
-		const reviewerValue = ref(["option-1", "option-2", "option-3"]);
+		const reviewerValue = ref([
+			"option-1", "option-2", "option-3"
+		]);
 		const repeatValues = [
-			{ "title": "None", "value": "none" },
-			{ "title": "Monthly", "value": "monthly" },
-			{ "title": "Annually", "value": "annually" }
+			{ "title": "None", "value": "none" }, { "title": "Monthly", "value": "monthly" }, { "title": "Annually", "value": "annually" }
 		];
 		const repeatValue = ref( "none" );
 		const monthValues = [
-			{ "title": "1 month", "value": 1 },
-			{ "title": "2 months", "value": 2 },
-			{ "title": "3 months", "value": 3 },
-			{ "title": "6 months", "value": 6 }
+			{ "title": "1 month", "value": 1 }, { "title": "2 months", "value": 2 }, { "title": "3 months", "value": 3 }, { "title": "6 months", "value": 6 }
 		];
 		const dateValues = [
 			{ "title": "January", "value": 1 },
@@ -105,9 +102,7 @@ export default {
 		const everyValues = computed( () => repeatValue.value === "monthly" ? monthValues : dateValues );
 		const everyValue = ref( 1 );
 		const dayValues = [
-			{ "title": "1", "value": 1 },
-			{ "title": "2", "value": 2 },
-			{ "title": "3", "value": 3 }
+			{ "title": "1", "value": 1 }, { "title": "2", "value": 2 }, { "title": "3", "value": 3 }
 		];
 		const dayValue = ref( 1 );
 		const within = ref(30);
@@ -115,11 +110,9 @@ export default {
 		const isRepeatNone = computed( () => repeatValue.value === "none" );
 		// employee Log Setting
 		const respondentValues = [
-			{ "title": "All Users", "value": "all" },
-			{ "title": "User 1", "value": "user-1" },
-			{ "title": "User 2", "value": "user-2" }
+			{ "title": "All Users", "value": "all" }, { "title": "User 1", "value": "user-1" }, { "title": "User 2", "value": "user-2" }
 		];
-		const respondentValue = ref([ "all" ]);
+		const respondentValue = ref(["all"]);
 		return {
 			document,
 			reviewerValues,
