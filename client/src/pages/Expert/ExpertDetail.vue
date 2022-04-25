@@ -10,7 +10,7 @@ page-container(section="Specialist Marketplace" type="document")
 			template(#content)
 				.user-content.grid-6(v-if="document._id")
 					.col-1
-						c-avatar(avatar="avatar.jpg" :firstName="document.first_name" :lastName="document.last_name" size="huge")
+						c-avatar(avatar="avatar.jpg" :firstName="document.firstName" :lastName="document.lastName" size="huge")
 					.col-5
 						.user-detail
 							div

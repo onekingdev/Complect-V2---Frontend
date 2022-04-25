@@ -14,7 +14,7 @@ c-modal(title="Edit Role" v-model="isEditRoleModalVisible")
 		p Please confirm the role you whish assign the specialist
 		div.border
 			.cell-user
-				c-avatar(:firstName="userData.first_name" :lastName="userData.last_name" :avatar="userData.avatar")
+				c-avatar(:firstName="userData.firstName" :lastName="userData.lastName" :avatar="userData.avatar")
 				.info
 					.name {{ userData.firstName }} {{ userData.lastName }}
 					c-rating(:max="5" v-model="userData.rating" :readonly="true")
@@ -30,7 +30,7 @@ c-modal(title="End Contract" v-model="isEndModalVisible")
 			b Do you want to continue?
 		div.border
 			.cell-user.padding-inside
-				c-avatar(:firstName="userData.first_name" :lastName="userData.last_name" :avatar="userData.avatar")
+				c-avatar(:firstName="userData.firstName" :lastName="userData.lastName" :avatar="userData.avatar")
 				.info
 					.name {{ userData.firstName }} {{ userData.lastName }}
 					.address {{ userData.city }} {{ userData.state }}

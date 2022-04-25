@@ -1,5 +1,5 @@
 <template lang="pug">
-c-field(label="Form Name" placeholder="Enter form name" v-model="form.name" required )
+c-field(label="Form Name" v-model="form.name" required )
 .t-header
 	.t-title Select Template
 	.t-sub Create your own form from scratch or select from pre-made templates

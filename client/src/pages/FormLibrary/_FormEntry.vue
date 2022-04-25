@@ -15,9 +15,10 @@ page-container(:badge="{title: formDetails.status }" :title="formDetails.name" t
 </template>
 
 <script>
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { computed } from "vue";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
+import { formLibraryData, formCards } from "~/data/data.js";
 export default {
 	"components": { cDropdown },
 	setup () {
@@ -33,25 +34,18 @@ export default {
 				"routeName": "FormSetting"
 			}
 		];
-		const documents = [
-			{
-				"_id": "6253c8b84d0c24ae67e36161",
-				"name": "AAA",
-				"status": "pending",
-				"dateCreated": 1647000337214,
-				"owner": "System"
-			}, {
-				"_id": "6253c8b84d0c24ae67e36162",
-				"name": "BBB",
-				"status": "complete",
-				"dateCreated": 1647000337214,
-				"owner": "System"
-			}
-		];
+		const documents = formLibraryData;
 		const route = useRoute();
+		const router = useRouter();
 		const saveDraft = () => {};
 		const publishFormLibrary = () => {};
-		const closeFormLibrary = () => {};
+		const closeFormLibrary = () => router.push({
+			"name": "FormLibraryEntry",
+			"query": {
+				"type": formDetails.value.type,
+				"title": formCards.find( card => card.type === formDetails.value.type )
+			}
+		});
 		const archiveForm = () => {};
 		const deleteForm = () => {};
 		const doHamberger = () => {};
