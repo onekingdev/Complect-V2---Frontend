@@ -50,7 +50,7 @@ export default {
 	setup () {
 		// steps 1, 2
 		const { registration, authentication } = useAuth();
-		const { form } = useForm( "registration" );
+		const { form, resetForm } = useForm( "registration" );
 		const accountTypes = [
 			{
 				"value": "business",
@@ -93,6 +93,7 @@ export default {
 					}
 				});
 				nextStep( 1 );
+				resetForm();
 			} catch ( error ) {
 				if ( error ) Object.assign( errors.value, { "email": [error] });
 			}
