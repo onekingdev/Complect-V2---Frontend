@@ -9,7 +9,7 @@ card-container
 		template(v-if="step === 2")
 			h1 Let's get you started!
 			h2 Create your FREE account
-			.form.grid-6
+			.form.grid-6(@keypress.enter="signUpUser()")
 				c-field.name-col.col-3(label="First Name" :errors="errors.first_name" v-model="form.first_name" required)
 				c-field.name-col.col-3(label="Last Name" :errors="errors.last_name" v-model="form.last_name" required)
 				c-field(label="Email" :errors="errors.email" v-model="form.email" required)
@@ -24,9 +24,9 @@ card-container
 			h1 Confirm Your Email
 			h3 We sent a 6 digit code to {{form.email}}. Please enter it below.
 			icon(name="mail")
-			.confirmation-code
+			.confirmation-code(@keypress.enter="submitCode(form.email, form.password, otp)")
 				input(v-for="i in 6" :key="i" type="number" :ref="el => { if (el) inputs[i-1] = el }" v-model="numbers[i-1]" @keyup="event => keyupHandler(event, i)" @input="event => inputHandler(event, i)" required)
-			.error(v-if="errorMessage") {{ errorMessage }}
+			.error {{ errorMessage }}
 			c-button(title="Submit" type="primary" @click="submitCode(form.email, form.password, otp)" fullwidth)
 	template(#footer)
 		p(v-if="step !== 3") Already have a Complect account?&nbsp;
@@ -154,6 +154,7 @@ export default {
 
 .error
 	font-size: 0.8em
+	height: 1em
 	color: red
 	text-align: center
 svg.icon
@@ -164,6 +165,7 @@ svg.icon
 	margin: 2em auto
 .confirmation-code
 	margin: 1em
+	margin-bottom: 0
 	display: flex
 	gap: 0.5em
 	font-size: 1.6em

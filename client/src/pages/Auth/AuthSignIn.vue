@@ -2,16 +2,16 @@
 card-container
 	template(#content v-if="step === 1")
 		h1 Let's get you started!
-		.form.grid-6
+		.form.grid-6(@keypress.enter="signIn()")
 			c-field(label="Email" type="email" :errors="errors.email" v-model="form.email" fullwidth required)
-			c-field(label="Password" type="password" @keypress.enter="signIn()" :errors="errors.password" v-model="form.password" fullwidth required)
+			c-field(label="Password" type="password" :errors="errors.password" v-model="form.password" fullwidth required)
 			c-button(title="Sign In" type="primary" @click="signIn()" fullwidth)
 			router-link.forgot-password(:to="{name: 'AuthResetPassword'}") Forgot Password
 	template(#content v-if="step === 2")
 		h1 Confirm Your Email
 		h3 We sent a 6 digit code to {{form.email}}. Please enter it below.
 		icon(name="mail")
-		.confirmation-code
+		.confirmation-code(@keypress.enter="submitCode(form.email, form.password, otp)")
 			input(v-for="i in 6" :key="i" type="number" :ref="el => { if (el) inputs[i-1] = el }" v-model="numbers[i-1]" @keyup="event => keyupHandler(event, i)" @input="event => inputHandler(event, i)" required)
 		.error {{ errorMessage }}
 		c-button(title="Submit" type="primary" @click="submitCode(form.email, form.password, otp)" fullwidth)
