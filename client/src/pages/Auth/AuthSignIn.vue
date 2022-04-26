@@ -12,7 +12,7 @@ card-container
 		h3 We sent a 6 digit code to {{form.email}}. Please enter it below.
 		icon(name="mail")
 		.confirmation-code(@keypress.enter="submitCode(form.email, form.password, otp)")
-			input(v-for="i in 6" :key="i" type="number" :ref="el => { if (el) inputs[i-1] = el }" v-model="numbers[i-1]" @keyup="event => keyupHandler(event, i)" @input="event => inputHandler(event, i)" required)
+			input(v-for="i in 6" @paste="onPaste" @paste.prevent :key="i" type="number" :ref="el => { if (el) inputs[i-1] = el }" v-model="numbers[i-1]" @keyup="event => keyupHandler(event, i)" @input="event => inputHandler(event, i)" required)
 		.error {{ errorMessage }}
 		c-button(title="Submit" type="primary" @click="submitCode(form.email, form.password, otp)" fullwidth)
 	template(#footer)
@@ -41,6 +41,11 @@ export default {
 			"email": { required, email },
 			"password": { required }
 		};
+
+		const onPaste = event => {
+			let paste = (event.clipboardData || window.clipboardData).getData('text');
+			numbers.value = [...paste]
+		}
 
 		const signIn = async () => {
 			errors.value = await validates( rules, form.value );
@@ -72,6 +77,7 @@ export default {
 		return {
 			errors,
 			form,
+			onPaste,
 			signIn,
 
 			step,
