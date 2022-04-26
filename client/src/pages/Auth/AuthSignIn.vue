@@ -13,7 +13,7 @@ card-container
 		icon(name="mail")
 		.confirmation-code
 			input(v-for="i in 6" :key="i" type="number" :ref="el => { if (el) inputs[i-1] = el }" v-model="numbers[i-1]" @keyup="event => keyupHandler(event, i)" @input="event => inputHandler(event, i)" required)
-		.error(v-if="errorMessage") {{ errorMessage }}
+		.error {{ errorMessage }}
 		c-button(title="Submit" type="primary" @click="submitCode(form.email, form.password, otp)" fullwidth)
 	template(#footer)
 		p(v-if="step !== 2") Don't have an account yet?&nbsp;
@@ -96,6 +96,7 @@ export default {
 
 .error
 	font-size: 0.8em
+	height: 1em
 	color: red
 	text-align: center
 svg.icon
@@ -106,6 +107,7 @@ svg.icon
 	margin: 2em auto
 .confirmation-code
 	margin: 1em
+	margin-bottom: 0
 	display: flex
 	gap: 0.5em
 	font-size: 1.6em

@@ -1,6 +1,7 @@
 import { useRouter } from "vue-router";
 import { appState, setUserIdState } from "~/store/appState";
 import useProfile from "~/store/Profile";
+import useBusiness from "~/store/Business";
 import UseData from "~/store/Data.js";
 
 
@@ -27,7 +28,7 @@ const authServer = async ({ path, data }) => {
 export default function useAuth () {
 	const router = useRouter();
 	const { profile, setProfile, linkaccount, setLinkAccount, updateProfile } = useProfile();
-
+	const { setBusiness } = useBusiness();
 
 	const registration = async data => {
 		const result = await authServer({ "path": "users", data });
@@ -79,7 +80,6 @@ export default function useAuth () {
 	const restoreSession = async () => {
 		const authToken = localStorage.getItem("auth_token");
 		if (!authToken) window.location.href = "/sign-in";
-		const apiUrl = `${import.meta.env.VITE_API_URI}/api/profile`;
 		const options = {
 			"method": "get",
 			"mode": "cors",
@@ -89,16 +89,19 @@ export default function useAuth () {
 				"Authorization": `Bearer ${authToken}`
 			}
 		};
-		const response = await fetch( apiUrl, options );
-		const result = await response.json();
-		if ( !result.id ) {
+		const responseProfile = await fetch( `${import.meta.env.VITE_API_URI}/api/profile`, options );
+		const responseBusiness = await fetch( `${import.meta.env.VITE_API_URI}/api/business`, options );
+		const resultProfile = await responseProfile.json();
+		const resultBusiness = await responseBusiness.json();
+		if ( !resultProfile.id ) {
 			// setUserIdState( "" );
 			profile.value = {};
 			linkaccount.value = {};
 			window.location.href = "/";
 			return;
 		}
-		setProfile(result);
+		setProfile(resultProfile);
+		setBusiness(resultBusiness);
 		/*
 		if ( result.data.businessId ) {
 			const collection = new UseData( "business" );

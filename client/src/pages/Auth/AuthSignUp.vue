@@ -29,7 +29,7 @@ card-container
 			.error(v-if="errorMessage") {{ errorMessage }}
 			c-button(title="Submit" type="primary" @click="submitCode(form.email, form.password, otp)" fullwidth)
 	template(#footer)
-		p(v-if="step !== 3") Already have a Complect account?
+		p(v-if="step !== 3") Already have a Complect account?&nbsp;
 			router-link.sign-in(:to="{name: 'AuthSignIn'}") Sign In
 		c-button(v-else title="Send new code" type="link" @click="sendNewCode()")
 </template>
@@ -70,7 +70,7 @@ export default {
 		const nextStep = value => step.value += value;
 
 		const rules = {
-			"email": { required, emailValidator },
+			"email": { required, "email": emailValidator },
 			"first_name": { required, "maxLength": maxLength( 100 ) },
 			"last_name": { required, "maxLength": maxLength( 100 ) },
 			"password": { required, "minLength": minLength( 6 ) },
@@ -94,8 +94,7 @@ export default {
 				});
 				nextStep( 1 );
 			} catch ( error ) {
-				// if ( error.includes( "Email" ) ) Object.assign( errors.value, { "email": [error] });
-				console.error( error );
+				if ( error ) Object.assign( errors.value, { "email": [error] });
 			}
 		};
 
