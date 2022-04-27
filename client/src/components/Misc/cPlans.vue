@@ -2,10 +2,12 @@
 .c-plans
 	.plan-card.card-style(v-for="(plan, index) in plans" :key="index" :class="[plan.key]")
 
-		template(v-if="modelValue === plan.key")
-			c-button(title="Current Plan" type="primary" @click="selectPlan(plan.key)")
+		template(v-if="currentPlan == plan.price[0] || currentPlan == plan.price[1]")
+			c-button(title="Current Plan" type="primary")
+		template(v-else-if="currentPlan < plan.price[0] || currentPlan < plan.price[1]")
+			c-button(title="Upgrade Plan" type="plan" @click="selectPlan(plan.key, true)")
 		template(v-else)
-			c-button(title="Select Plan" type="plan" @click="selectPlan(plan.key)")
+			c-button(title="Downgrade Plan" type="plan" @click="selectPlan(plan.key)")
 
 		.header
 			.title {{plan.title}}
@@ -41,7 +43,7 @@ export default {
 	"props": {
 		"type": {
 			"type": String,
-			"required": true
+			"default": ""
 		},
 		"plans": {
 			"type": Array,
@@ -51,15 +53,22 @@ export default {
 			"type": String,
 			"default": ""
 		},
-		"annually": Boolean
+		"annually": Boolean,
+		"currentPlan": {
+			"type": [
+				String, Number
+			],
+			"default": "0"
+		}
 	},
 	"emits": [
-		"update:modelValue", "checkout"
+		"update:modelValue", "checkout", "downgrade"
 	],
 	setup ( props, context ) {
-		const selectPlan = plan => {
+		const selectPlan = ( plan, upgrade ) => {
 			context.emit( "update:modelValue", plan );
-			context.emit( "checkout" );
+			if ( upgrade ) context.emit( "checkout" );
+			else context.emit( "downgrade" );
 		};
 		return { selectPlan };
 	}

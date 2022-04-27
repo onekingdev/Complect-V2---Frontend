@@ -70,6 +70,7 @@ import cCheckbox from "~/components/Inputs/cCheckbox.vue";
 import useProfile from "~/store/Profile.js";
 import { manualApi } from "~/core/api.js";
 import cModal from "~/components/Misc/cModal.vue";
+import { notifyMessages } from "~/data/notifications.js";
 
 const tabs = [
 	{
@@ -146,7 +147,7 @@ export default {
 		const notification = inject( "notification" );
 		const route = useRoute();
 		const router = useRouter();
-		const { profile, linkaccount } = useProfile();
+		const { profile, linkaccount, isBusiness } = useProfile();
 		const isCompleteModalVisible = ref( false );
 		const isIncompleteModalVisible = ref( false );
 		const isEditModalVisible = ref( false );
@@ -204,7 +205,7 @@ export default {
 					notification({
 						"type": "error",
 						"title": "Error",
-						"message": "Project has not been marked as complete. There is still an active contract for this project. Please end the contract to mark this project as complete."
+						"message": notifyMessages.project.complete.validate
 					});
 					isCompleteModalVisible.value = !isCompleteModalVisible.value;
 				} else {
@@ -215,7 +216,7 @@ export default {
 					notification({
 						"type": "success",
 						"title": "Success",
-						"message": "Project has been marked as complete."
+						"message": notifyMessages.project.complete.success
 					});
 					closeProject();
 				}
@@ -223,7 +224,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Project has not been marked as complete. Please try again."
+					"message": notifyMessages.project.complete.error
 				});
 			}
 		};
@@ -237,13 +238,13 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Project has been reactivated."
+					"message": notifyMessages.project.reactive.success
 				});
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Project has not been reactivated. Please try again."
+					"message": notifyMessages.project.reactive.error
 				});
 			}
 		};
@@ -261,7 +262,7 @@ export default {
 					notification({
 						"type": "error",
 						"title": "Error",
-						"message": "Project has not been deleted. There is still an active contract for this project. Please end the contract to delete this project."
+						"message": notifyMessages.project.delete.validate
 					});
 					isDeleteModalVisible.value = !isDeleteModalVisible.value;
 				} else {
@@ -269,7 +270,7 @@ export default {
 					notification({
 						"type": "success",
 						"title": "Success",
-						"message": "Project has been deleted."
+						"message": notifyMessages.project.delete.success
 					});
 					closeProject();
 				}
@@ -277,15 +278,14 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Project has not been deleted. Please try again."
+					"message": notifyMessages.project.delete.error
 				});
 			}
 		};
 		const postProject = async () => {
-			const userType = profile.value.type;
 			const response = await manualApi({
 				"method": "get",
-				"url": `payment/method/${userType === "business" ? profile.value.businessId : profile.value.specialistId}`
+				"url": `payment/method/${isBusiness ? profile.value.businessId : profile.value.specialistId}`
 			});
 			if ( response.data && response.data.length > 0 ) router.push({ "name": "ProjectPostJob", "params": { "id": projects.getDocument().value._id } });
 			else {
@@ -293,7 +293,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Job posting cannot be created until a valid payment method is added to your account."
+					"message": notifyMessages.job.post.validatte
 				});
 			}
 		};

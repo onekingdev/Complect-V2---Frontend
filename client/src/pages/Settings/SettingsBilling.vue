@@ -1,7 +1,7 @@
 <template lang="pug">
 card-container(title="Billing")
 	template(#content)
-		template(v-if="userType == 'business'")
+		template(v-if="isBusiness")
 			div.grid-6.sub-header
 				h4.col-3 Payment Method
 				div.col-2
@@ -80,7 +80,7 @@ c-modal(title="Add Billing Method" v-model="isNewMethodVisible")
 		c-button(title="Save" type="primary" @click="addPayment()")
 </template>
 <script>
-import { ref, onMounted, onBeforeMount, inject } from "vue";
+import { ref, onMounted, onBeforeMount, inject, computed } from "vue";
 import cSelect from "~/components/Inputs/cSelect.vue";
 import { loadStripe } from "@stripe/stripe-js";
 import { StripeElements, StripeElement } from "vue-stripe-js";
@@ -91,13 +91,13 @@ import useProfile from "~/store/Profile.js";
 import cModal from "~/components/Misc/cModal.vue";
 import { useRouter } from "vue-router";
 import { manualApi } from "~/core/api.js";
+import { notifyMessages } from "~/data/notifications.js";
 
 export default {
 	"components": { cSelect, cLabel, cBadge, StripeElements, StripeElement, cModal, PlaidLink },
 	// eslint-disable-next-line
 	setup () {
-		const { profile, linkaccount } = useProfile();
-		const userType = profile.value.type;
+		const { profile, linkaccount, isBusiness } = useProfile();
 		const router = useRouter();
 		const notification = inject( "notification" );
 		const publishkey = ref( import.meta.env.VITE_STRIPE );
@@ -113,14 +113,14 @@ export default {
 		const getPayments = async () => {
 			const response = await manualApi({
 				"method": "get",
-				"url": `payment/method/${userType === "business" ? profile.value.businessId : profile.value.specialistId}`
+				"url": `payment/method/${isBusiness ? profile.value.businessId : profile.value.specialistId}`
 			});
 			payments.value = response.data;
 		};
 		const getCustomer = async () => {
 			const customres = await manualApi({
 				"method": "get",
-				"url": `payment/customer/${userType === "business" ? profile.value.businessId : profile.value.specialistId}`
+				"url": `payment/customer/${isBusiness ? profile.value.businessId : profile.value.specialistId}`
 			});
 			customer.value = customres;
 		};
@@ -128,20 +128,20 @@ export default {
 			try {
 				await manualApi({
 					"method": "put",
-					"url": `payment/customer/${userType === "business" ? profile.value.businessId : profile.value.specialistId}`,
+					"url": `payment/customer/${isBusiness ? profile.value.businessId : profile.value.specialistId}`,
 					"data": JSON.stringify({ "invoice_settings": { "default_payment_method": id } })
 				});
 				await getCustomer();
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Payment method has been made the primary payment source."
+					"message": notifyMessages.payment.primary.success
 				});
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Payment method has not been made the primary payment source. Please try again."
+					"message": notifyMessages.payment.primary.error
 				});
 			}
 		};
@@ -163,13 +163,13 @@ export default {
 				try {
 					await manualApi({
 						"method": "post",
-						"url": `payment/method/${userType === "business" ? profile.value.businessId : profile.value.specialistId}`,
+						"url": `payment/method/${isBusiness ? profile.value.businessId : profile.value.specialistId}`,
 						"data": JSON.stringify({ stripeToken })
 					});
 					notification({
 						"type": "success",
 						"title": "Success",
-						"message": "New payment method has been added."
+						"message": notifyMessages.payment.add.success
 					});
 					isNewMethodVisible.value = !isNewMethodVisible.value;
 					await getPayments();
@@ -177,7 +177,7 @@ export default {
 					notification({
 						"type": "error",
 						"title": "Error",
-						"message": "New payment method has not been added. Please try again."
+						"message": notifyMessages.payment.add.error
 					});
 				}
 			});
@@ -197,17 +197,17 @@ export default {
 					notification({
 						"type": "error",
 						"title": "Error",
-						"message": "Primary payment method cannot be deleted without adding an alternative payment method first."
+						"message": notifyMessages.payment.delete.validate
 					});
 				} else {
 					await manualApi({
 						"method": "delete",
-						"url": `payment/method/${userType === "business" ? profile.value.businessId : profile.value.specialistId}/${id}`
+						"url": `payment/method/${isBusiness ? profile.value.businessId : profile.value.specialistId}/${id}`
 					});
 					notification({
 						"type": "success",
 						"title": "Success",
-						"message": "New payment method has been deleted."
+						"message": notifyMessages.payment.delete.success
 					});
 					await getPayments();
 				}
@@ -215,7 +215,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Payment method has not been deleted. Please try again."
+					"message": notifyMessages.payment.delete.error
 				});
 			}
 		};
@@ -328,7 +328,6 @@ export default {
 			stripeLoaded,
 			isNewMethodVisible,
 			toggleNewMethod,
-			userType,
 			clientBilling,
 			billingType,
 			setBillingType,
@@ -341,7 +340,8 @@ export default {
 			plaidEvent,
 			plaidkey,
 			plaidenv,
-			plaidwebhook
+			plaidwebhook,
+			isBusiness
 		};
 	}
 };

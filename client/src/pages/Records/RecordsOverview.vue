@@ -18,6 +18,8 @@ import UseData from "~/store/Data.js";
 import { manualApi } from "~/core/api.js";
 import cModalRecord from "~/components/Modals/cModalRecord.vue";
 import cModalDelete from "~/components/Modals/cModalDelete.vue";
+import { notifyMessages } from "~/data/notifications.js";
+
 export default {
 	"components": { cModalDelete, cModalRecord },
 	// eslint-disable-next-line
@@ -36,7 +38,7 @@ export default {
 			} catch ( error ) {
 				loading.value = false;
 				console.error( error );
-				notification({ "type": "error", "title": "Error", "message": "Folder has not been downloaded. Please try again." });
+				notification({ "type": "error", "title": "Error", "message": notifyMessages.folder.download.error });
 			}
 		};
 		const updateRecords = async () => {
@@ -74,11 +76,11 @@ export default {
 				if ( selectedFolder.value._id ) await records.updateDocument( selectedFolder.value._id, { "size": selectedFolder.value.size + file.size });
 				loading.value = false;
 				await records.readDocuments( "", { folderId });
-				notification({ "type": "success", "title": "Success", "message": "File has been uploaded.." });
+				notification({ "type": "success", "title": "Success", "message": notifyMessages.folder.upload.success });
 			} catch ( error ) {
 				loading.value = false;
 				console.error( error );
-				notification({ "type": "error", "title": "Error", "message": "Folder has not been uploaded. Please try again." });
+				notification({ "type": "error", "title": "Error", "message": notifyMessages.folder.upload.error });
 			}
 		};
 		const createNewFolder = () => {

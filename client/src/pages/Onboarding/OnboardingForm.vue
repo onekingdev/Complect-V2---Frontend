@@ -3,7 +3,7 @@
 	card-container(title="Set Up Your Account")
 		template(#content)
 			//- Business
-			c-form-wizard(v-if="userType === 'business'" :steps="wizardSteps.business")
+			c-form-wizard(v-if="isBusiness" :steps="wizardSteps.business")
 				template(#step1)
 					section
 						.header.crd-header Do you have a CRD number?
@@ -156,7 +156,7 @@ export default {
 	// eslint-disable-next-line max-lines-per-function
 	setup () {
 		const router = useRouter();
-		const { profile } = useProfile();
+		const { profile, isBusiness, isSpecialist } = useProfile();
 		const userType = profile.value.type;
 		const { form, resetForm } = useForm( "onboarding", baseForm[userType]);
 		const errors = ref({});
@@ -229,7 +229,7 @@ export default {
 
 		const goToCheckout = async () => {
 			try {
-				if ( userType === "business" && form.value.plan === "starter" ) {
+				if ( isBusiness && form.value.plan === "starter" ) {
 					const business = new UseData( "business" );
 					const ids = await business.createDocuments([form.value]);
 					// eslint-disable-next-line require-atomic-updates
@@ -238,7 +238,7 @@ export default {
 					profile.value.new = false;
 					await resetForm();
 					router.push({ "name": "Dashboard" });
-				} else if ( userType === "specialist" && form.value.plan === "standard" ) {
+				} else if ( isSpecialist && form.value.plan === "standard" ) {
 					const specialist = new UseData( "specialist" );
 					const ids = await specialist.createDocuments([form.value]);
 					// eslint-disable-next-line require-atomic-updates
@@ -250,7 +250,7 @@ export default {
 				} else {
 					form.value.email = profile.value.email;
 					// eslint-disable-next-line max-depth
-					if ( userType === "specialist" ) form.value.company = `${profile.value.firstName} ${profile.value.lastName}`;
+					if ( isSpecialist ) form.value.company = `${profile.value.firstName} ${profile.value.lastName}`;
 					router.push({ "name": "OnboardingCheckout" });
 				}
 			} catch ( error ) {
@@ -314,7 +314,8 @@ export default {
 			timezones,
 			plans,
 			goToCheckout,
-			updateAddressChange
+			updateAddressChange,
+			isBusiness
 		};
 	}
 };
