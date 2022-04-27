@@ -53,7 +53,7 @@ div.grid-6.main-content
 				p No comments posted {{ projectDetail }}
 			.has-content(v-else)
 				.ind-comment(v-for="comment in projectDetail.comments")
-					c-avatar(:firstName="comment.creator.first_name" :lastName="comment.creator.last_name" :avatar="comment.creator.avatar")
+					c-avatar(:firstName="comment.creator.firstName" :lastName="comment.creator.lastName" :avatar="comment.creator.avatar")
 					.user-info
 						.name {{ comment.creator.firstName }} {{ comment.creator.lastName }} commented
 						.description {{ comment.description }}
@@ -89,8 +89,6 @@ import { formatDate } from "~/core/utils.js";
 import { useRouter } from "vue-router";
 import useProfile from "~/store/Profile.js";
 import UseData from "~/store/Data.js";
-import { notifyMessages } from "~/data/notifications.js";
-
 export default {
 	"components": {
 		cBanner,
@@ -156,13 +154,13 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.project.collaborator.remove.success
+					"message": "User has been removed from the project."
 				});
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.project.collaborator.remove.error
+					"message": "User has been not removed from the project. Please try again."
 				});
 			}
 		};

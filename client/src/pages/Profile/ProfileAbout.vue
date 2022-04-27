@@ -68,7 +68,6 @@ import { industries, jurisdictions, timezones } from "~/data/static.js";
 import { filterSubIndustries, validates } from "~/core/utils.js";
 import { maxLength, required } from "@vuelidate/validators";
 import { requireForArray } from "~/core/customValidates.js";
-import { notifyMessages } from "~/data/notifications.js";
 
 const COMMON_FIELDS = {
 	"industries": [],
@@ -170,7 +169,7 @@ export default {
 		const avatar = ref( "" );
 		const companyImg = ref( "" );
 		const { onboarding } = useAuth();
-		const { profile, updateProfile, saveForm, isBusiness } = useProfile();
+		const { profile, updateProfile, saveForm } = useProfile();
 		const userType = profile.value.type;
 		const errors = ref({});
 
@@ -179,6 +178,7 @@ export default {
 
 		// computed
 		const filteredSubIndustries = computed( () => filterSubIndustries( form.value.industries, userType ) );
+		const isBusiness = computed( () => userType === "business" );
 		const profileObject = isBusiness.value ? MY_PROFILE : SPECIALIST_PROFILE;
 
 		// function
@@ -202,15 +202,14 @@ export default {
 				await onboarding( newData );
 				updateProfile( newData );
 				notification({
-					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.profile.save.success
+					"message": "Information has been saved."
 				});
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.profile.save.error
+					"message": "Information has not been saved."
 				});
 				console.error( error );
 			}
@@ -229,6 +228,7 @@ export default {
 			tabs,
 			errors,
 			skills,
+			userType,
 			avatar,
 			companyImg,
 			industries,

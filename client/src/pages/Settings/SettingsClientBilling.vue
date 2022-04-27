@@ -55,7 +55,6 @@ import UseData from "~/store/Data.js";
 
 import { selectCountries } from "~/data/static.js";
 import { plans } from "~/data/plans.js";
-import { notifyMessages } from "~/data/notifications.js";
 
 export default {
 	"components": {
@@ -166,14 +165,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.bank.add.success
+					"message": "Receiving bank has been added."
 				});
 				router.push({ "name": "SettingsBilling" });
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.bank.add.error
+					"message": "Receiving bank has not been added. Please try again."
 				});
 			}
 		};

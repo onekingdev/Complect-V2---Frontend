@@ -91,8 +91,6 @@ import { computed, inject } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import UseData from "~/store/Data.js";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
-import { notifyMessages } from "~/data/notifications.js";
-
 export default {
 	"components": { cDropdown	},
 	"props": {
@@ -129,7 +127,7 @@ export default {
 			notification({
 				"type": "success",
 				"title": "Success",
-				"message": notifyMessages.review.category.topic.delete.success
+				"message": "Topic has been deleted."
 			});
 		};
 
@@ -138,7 +136,7 @@ export default {
 			notification({
 				"type": "success",
 				"title": "Success",
-				"message": notifyMessages.review.category.item.delete.success
+				"message": "Item has been deleted."
 			});
 		};
 
@@ -147,7 +145,7 @@ export default {
 			notification({
 				"type": "success",
 				"title": "Success",
-				"message": notifyMessages.review.category.finding.delete.success
+				"message": "Finding has been deleted."
 			});
 		};
 
@@ -159,7 +157,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.review.category.delete.success
+					"message": "Category has been deleted."
 				});
 				router.push({
 					"name": "ReviewDetail",
@@ -170,7 +168,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.review.category.delete.error
+					"message": "Category has not been deleted. Please try again."
 				});
 			}
 		};
@@ -183,14 +181,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.review.category.update.success
+					"message": "Category has been updated."
 				});
 			} catch ( error ) {
 				console.error( error );
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.review.category.update.error
+					"message": "Category has not been updated. Please try again."
 				});
 			}
 		};
@@ -204,14 +202,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": timestamp ? notifyMessages.review.category.complete.success : notifyMessages.review.category.incomplete.success
+					"message": `Category has been marked as ${timestamp ? "complete" : "incomplete"}.`
 				});
 			} catch ( error ) {
 				console.error( error );
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": timestamp ? notifyMessages.review.category.complete.error : notifyMessages.review.category.incomplete.error
+					"message": `Category has not been marked as ${timestamp ? "complete" : "incomplete"}. Please try again.`
 				});
 			}
 		};

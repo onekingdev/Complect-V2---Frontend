@@ -47,7 +47,6 @@ import cBadge from "~/components/Misc/cBadge.vue";
 import { calcRiskLevel } from "~/core/utils.js";
 import cModal from "~/components/Misc/cModal.vue";
 import useProfile from "~/store/Profile.js";
-import { notifyMessages } from "~/data/notifications.js";
 
 export default {
 	"components": { cBanner, cSelect, cLabel, cBadge, cModal },
@@ -193,7 +192,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.risk.create.success
+					"message": "Risk has been created."
 				});
 				toggleNewRisk();
 			} catch ( error ) {
@@ -201,7 +200,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.risk.create.error
+					"message": "Risk has not been deleted. Please try again."
 				});
 			}
 		};
@@ -212,7 +211,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.risk.update.success
+					"message": "Risk has been created."
 				});
 				isRiskEditVisible.value = !isRiskEditVisible.value;
 			} catch ( error ) {
@@ -220,7 +219,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.risk.update.error
+					"message": "Risk has not been deleted. Please try again."
 				});
 			}
 		};
@@ -230,14 +229,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.risk.delete.success
+					"message": "Risk has been deleted."
 				});
 				isRiskDeleteVisible.value = !isRiskDeleteVisible.value;
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.risk.delete.error
+					"message": "Risk has not been deleted. Please try again."
 				});
 			}
 		};

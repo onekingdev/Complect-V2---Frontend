@@ -46,7 +46,6 @@ import { validates } from "~/core/utils.js";
 import { required, email } from "@vuelidate/validators";
 import useExam from "~/core/exams.js";
 import useExamDetail from "~/store/Exam.js";
-import { notifyMessages } from "~/data/notifications.js";
 
 const tabs = [
 	{
@@ -133,7 +132,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.exam.access.success
+					"message": "Access has been revoked."
 				});
 				resetAfterRevoke();
 			} catch ( error ) {
@@ -141,7 +140,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.exam.access.error
+					"message": "Access has not been revoked. Please try again."
 				});
 			}
 		};
@@ -169,13 +168,13 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.exam.invite.success
+					"message": "Invitation has been sent."
 				});
 			} catch ( err ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.exam.invite.error
+					"message": "Invitation has not been sent. Please try again."
 				});
 			}
 		};

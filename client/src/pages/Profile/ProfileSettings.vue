@@ -21,7 +21,6 @@ import useAuth from "~/core/auth.js";
 import useProfile from "~/store/Profile.js";
 import { validates } from "~/core/utils.js";
 import { numberGreaterThanZero } from "~/core/customValidates.js";
-import { notifyMessages } from "~/data/notifications.js";
 
 export default {
 	"components": {
@@ -59,15 +58,14 @@ export default {
 				await onboarding( data );
 				updateProfile( data );
 				notification({
-					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.profile.save.success
+					"message": "Information has been saved."
 				});
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.profile.save.error
+					"message": "Information has not been saved."
 				});
 				console.error( error );
 			}

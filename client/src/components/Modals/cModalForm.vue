@@ -13,13 +13,11 @@ card-container.c-modal-review(:title="modalTitle" ref="modalWindow")
 
 <script>
 import { ref, inject, computed, onMounted } from "vue";
-import useProfile from "~/store/Profile.js";
-import UseData from "~/store/Data.js";
 import useModals from "~/store/Modals.js";
 import { validates } from "~/core/utils.js";
 import { required } from "@vuelidate/validators";
 import { onClickOutside } from "@vueuse/core";
-
+import { formLibraryData } from "~/data/data.js";
 export default {
 	"props": {
 		"modalId": {
@@ -36,49 +34,34 @@ export default {
 			"default": () => 1,
 			"required": false
 		},
-		"folderId": {
-			"type": String,
-			"default": "root",
-			"required": false
-		},
-		"folderKey": {
-			"type": String,
-			"default": "",
-			"required": false
+		"duplicate": {
+			"type": Boolean,
+			"default": false
 		}
 	},
 	setup ( props ) {
 		const notification = inject( "notification" );
 		const modalWindow = ref( null );
-		const records = new UseData( "records" );
-		const { profile } = useProfile();
 		const { deleteModal } = useModals();
 		const modalTitle = ref( "" );
 		const errors = ref({});
-		const btnTitle = computed( () => props.id ? "Save" : "Create" );
+		const btnTitle = computed( () => props.duplicate ? "Duplicate" : "Edit" );
 		const form = ref({
 			"name": "",
-			"status": "folder",
-			"owner": `${profile.value.firstName} ${profile.value.lastName}`,
-			"ownerId": profile.value._id,
-			"size": 0,
-			"dateCreated": Date.now(),
-			"lastModified": Date.now(),
-			"folderId": props.folderId,
-			"key": ""
+			"owner": "Alex Lim",
+			"status": "draft",
+			"dateCreated": Date.now()
 		});
 		const rule = { "name": { required } };
 		const closeModal = () => deleteModal( props.modalId );
 		onClickOutside( modalWindow, () => closeModal() );
 
-		const createRecord = async () => {
+		const duplicateForm = () => {
 			try {
-				if ( form.value.status === "folder" ) form.value.key = `${props.folderKey}${form.value.name}/`;
-				await records.createDocuments([form.value]);
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": "Folder has been created."
+					"message": "Form has been duplicated."
 				});
 				props.callback();
 			} catch ( error ) {
@@ -86,20 +69,17 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": "Folder has not been created. Please try again."
+					"message": "Form has not been duplicated. Please try again."
 				});
 			}
 		};
 
-		const updateRecord = async () => {
-			const title = form.value.status;
+		const updateForm = () => {
 			try {
-				if ( form.value.status === "folder" ) form.value.key = `${props.folderKey}${form.value.name}`;
-				await records.updateDocument( form.value._id, form.value );
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": `${title} has been updated`
+					"message": "Form has been updated."
 				});
 				props.callback();
 			} catch ( error ) {
@@ -107,7 +87,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": `${title} has not been updated. Please try again.`
+					"message": "Form has not been updated. Please try again."
 				});
 			}
 		};
@@ -116,8 +96,8 @@ export default {
 			errors.value = await validates( rule, form.value );
 			if ( Object.keys( errors.value ).length > 0 ) return;
 			try {
-				if ( !props.id ) await createRecord();
-				else if ( props.id ) await updateRecord();
+				if ( props.duplicate ) duplicateForm();
+				else updateForm();
 			} catch ( error ) {
 				console.error( error );
 			} finally {
@@ -125,12 +105,12 @@ export default {
 			}
 		};
 
-		onMounted( async () => {
-			if ( props.id ) {
-				await records.readDocuments( props.id );
-				form.value = records.getDocument().value;
-				modalTitle.value = form.value.status === "folder" ? "Edit Folder Name" : "Edit File Name";
-			} else modalTitle.value = "New Folder";
+		onMounted( () => {
+			form.value = formLibraryData.find( document => document._id === props.id );
+			if ( props.duplicate ) {
+				modalTitle.value = "Duplicate Form";
+				form.value.name = `${form.value.name}(copy)`;
+			} else modalTitle.value = "Edit Form";
 		});
 
 		return { modalWindow, modalTitle, btnTitle, errors, saveRecord, form, closeModal };

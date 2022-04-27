@@ -81,7 +81,7 @@ card-container(title="View Proposal")
 			.client-content
 				.client-info
 					.client-name-content
-						c-avatar(avatar="avatar.jpg" :firstName="specialist.first_name" :lastName="specialist.last_name" )
+						c-avatar(avatar="avatar.jpg" :firstName="specialist.firstName" :lastName="specialist.lastName" )
 						div
 							p.client-name(@click="toggleChatModal" ) {{ specialist.firstName }} {{ specialist.lastName }}
 							p.client-location {{ specialist.city }}, {{ specialist.state }}, {{ specialist.country }}
@@ -122,8 +122,6 @@ import cAvatar from "~/components/Misc/cAvatar.vue";
 import cChat from "~/components/Misc/cChat.vue";
 import cModal from "~/components/Misc/cModal.vue";
 import cDropzone from "~/components/Inputs/cDropzone.vue";
-import { notifyMessages } from "~/data/notifications.js";
-
 const specialist = ref({
 	"id": "3234234029384209384",
 	"firstName": "Manuel",
@@ -203,14 +201,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.proposal.reject.success
+					"message": "Proposal has been rejected"
 				});
 				gotoJobBoard();
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.proposal.reject.error
+					"message": "Proposal has not been rejected. Please try again."
 				});
 			}
 		};
@@ -221,7 +219,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.proposal.accept.success
+					"message": "Proposal has been accepted"
 				});
 				router.push({
 					"name": "ProjectContract",
@@ -231,7 +229,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.proposal.accept.error
+					"message": "Proposal has not been accepted. Please try again."
 				});
 			}
 		};

@@ -31,8 +31,6 @@ import cModal from "~/components/Misc/cModal.vue";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
 import UseData from "~/store/Data.js";
 import { formatDate } from "~/core/utils";
-import { notifyMessages } from "~/data/notifications.js";
-
 const documents = [
 	{
 		"_id": "1234234234234",
@@ -189,14 +187,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.timesheet.submit.success
+					"message": "Timesheet has been submitted."
 				});
 				isLogModalVisible.value = !isLogModalVisible.value;
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.timesheet.submit.error
+					"message": "Timesheet has not been submitted. Please try again."
 				});
 			}
 		};
@@ -209,48 +207,48 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.timesheet.save.success
+					"message": "Timesheet has been saved."
 				});
 				isLogModalVisible.value = !isLogModalVisible.value;
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.timesheet.save.error
+					"message": "Timesheet has not been saved. Please try again."
 				});
 			}
 		};
 		const approveTimeSheet = id => {
 			try {
-				timesheet.updateDocument( id, { "status": "accepted" });
+				timesheet.updateDocument( id, { "status": "rejected" });
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.timesheet.approve.success
+					"message": "Timesheet has been approved."
 				});
 				isLogModalVisible.value = !isLogModalVisible.value;
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.timesheet.approve.error
+					"message": "Timesheet has not been approved. Please try again."
 				});
 			}
 		};
 		const rejectTimeSheet = id => {
 			try {
-				timesheet.updateDocument( id, { "status": "rejected" });
+				timesheet.updateDocument( id, { "status": "accepted" });
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.timesheet.reject.success
+					"message": "Timesheet has been rejected."
 				});
 				isLogModalVisible.value = !isLogModalVisible.value;
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.timesheet.reject.error
+					"message": "Timesheet has not been rejected. Please try again."
 				});
 			}
 		};

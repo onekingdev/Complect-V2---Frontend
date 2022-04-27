@@ -4,7 +4,7 @@ card-container(title="Collaborators")
 		c-button(title="Add Collaborator" type="default" @click="toggleAddModal()")
 	template(#content)
 		.ind-collaborator(v-for="collaborator in projectDetail?.collaborators")
-			c-avatar(:firstName="collaborator.first_name" :lastName="collaborator.last_name" :avatar="collaborator.avatar")
+			c-avatar(:firstName="collaborator.firstName" :lastName="collaborator.lastName" :avatar="collaborator.avatar")
 			.user-info
 				.name {{ collaborator.firstName }} {{ collaborator.lastName }}
 			.action
@@ -39,7 +39,6 @@ import cModal from "~/components/Misc/cModal.vue";
 import cAvatar from "~/components/Misc/cAvatar.vue";
 import cSelect from "~/components/Inputs/cSelect.vue";
 import UseData from "~/store/Data.js";
-import { notifyMessages } from "~/data/notifications.js";
 export default {
 	"components": {
 		cBanner,
@@ -101,13 +100,13 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.project.collaborator.add.success
+					"message": "User has been added to the project."
 				});
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.project.collaborator.add.error
+					"message": "User has been not added to the project. Please try again."
 				});
 			}
 		};
@@ -120,13 +119,13 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.project.collaborator.remove.success
+					"message": "User has been removed from the project."
 				});
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.project.collaborator.remove.error
+					"message": "User has been not removed from the project. Please try again."
 				});
 			}
 		};

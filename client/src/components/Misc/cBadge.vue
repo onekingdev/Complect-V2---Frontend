@@ -52,6 +52,12 @@ export default {
 	&.complete, &.available, &.active
 		color: #1bb380
 		background: #d5fbef
+	&.new
+		background: #FFF9EA
+		color: #AD841D
+	&.reviewed
+		background: #E8FBF5
+		color: #0EA472
 	&.risk0
 		background: #1ab27f
 		color: #fff

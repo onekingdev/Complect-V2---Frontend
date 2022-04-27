@@ -24,7 +24,6 @@ import useAuth from "~/core/auth.js";
 
 import { validates } from "~/core/utils.js";
 import { required } from "@vuelidate/validators";
-import { notifyMessages } from "~/data/notifications.js";
 
 const INIT_FORM = {
 	"timezone": "",
@@ -60,13 +59,13 @@ export default {
 				await onboarding( newData );
 				notification({
 					"title": "Success",
-					"message": notifyMessages.profile.save.success
+					"message": "Information has been saved."
 				});
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.profile.save.error
+					"message": "Information has not been saved."
 				});
 				console.error( error );
 			}

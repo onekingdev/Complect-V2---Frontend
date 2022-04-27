@@ -1,6 +1,6 @@
 <template lang="pug">
 .cell-user
-	c-avatar(:firstName="data.first_name" :lastName="data.last_name" :avatar="data.avatar")
+	c-avatar(:firstName="data.firstName" :lastName="data.lastName" :avatar="data.avatar")
 	.info
 		.name {{ data.firstName }} {{ data.lastName }}
 		.email {{ data.email }}

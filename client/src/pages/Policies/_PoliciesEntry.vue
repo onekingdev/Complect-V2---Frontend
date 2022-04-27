@@ -25,7 +25,6 @@ import { useRouter } from "vue-router";
 import useProfile from "~/store/Profile.js";
 import UseData from "~/store/Data.js";
 import { manualApi } from "~/core/api.js";
-import { notifyMessages } from "~/data/notifications.js";
 
 export default {
 	setup () {
@@ -76,7 +75,7 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.policy.create.success
+					"message": "New policy has been created."
 				});
 				router.push({
 					"name": "PolicyDetail",
@@ -87,7 +86,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.policy.create.error
+					"message": "Policy has not been created. Please try again."
 				});
 			}
 		};

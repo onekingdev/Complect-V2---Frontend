@@ -83,7 +83,7 @@ card-container(title="Create Proposal")
 			.client-content
 				.client-info
 					.client-name-content
-						c-avatar(avatar="avatar.jpg" :firstName="business.first_name" :lastName="business.last_name" )
+						c-avatar(avatar="avatar.jpg" :firstName="business.firstName" :lastName="business.lastName" )
 						div
 							p.client-name(@click="toggleChatModal" ) {{ business.firstName }} {{ business.lastName }}
 							p.client-location {{ business.city }}, {{ business.state }}, {{ business.country }}
@@ -130,8 +130,6 @@ import cAvatar from "~/components/Misc/cAvatar.vue";
 import cChat from "~/components/Misc/cChat.vue";
 import cModal from "~/components/Misc/cModal.vue";
 import cDropzone from "~/components/Inputs/cDropzone.vue";
-import { notifyMessages } from "~/data/notifications.js";
-
 const business = ref({
 	"id": "3234234029384209384",
 	"firstName": "Manuel",
@@ -236,14 +234,14 @@ export default {
 				notification({
 					"type": "success",
 					"title": "Success",
-					"message": notifyMessages.proposal.save.success
+					"message": "Proposal has been saved"
 				});
 				gotoJobBoard();
 			} catch ( error ) {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.proposal.save.error
+					"message": "Proposal has not been saved. Please try again."
 				});
 			}
 		};
@@ -258,14 +256,14 @@ export default {
 						notification({
 							"type": "success",
 							"title": "Success",
-							"message": notifyMessages.proposal.submit.success
+							"message": "Proposal has been submitted."
 						});
 					} else {
 						await proposals.updateDocument( form.value._id, form.value );
 						notification({
 							"type": "success",
 							"title": "Success",
-							"message": notifyMessages.proposal.submit.success
+							"message": "Proposal has been submitted."
 						});
 					}
 					gotoJobBoard();
@@ -274,7 +272,7 @@ export default {
 				notification({
 					"type": "error",
 					"title": "Error",
-					"message": notifyMessages.proposal.submit.error
+					"message": "Proposal has not been submitted. Please try again."
 				});
 			}
 		};
