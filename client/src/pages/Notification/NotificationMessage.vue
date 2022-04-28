@@ -116,17 +116,16 @@ export default {
 				console.debug( error );
 			};
 			websocket.onmessage = ({ data }) => {
-				if ( JSON.parse( data ).type !== "ping" ) {
-					const messageData = JSON.parse( data ).message;
-					if ( messageData && messageData.receiver_id === profile.value._id ) {
-						// eslint-disable-next-line max-depth
-						if ( messageData.sender_id === currentMessageUserId.value ) {
-							messageList.value.push( messageData );
-							scrollToBottom( "smooth" );
-						} else {
-							receiverList.value.find( user => user.userId === messageData.sender_id ).newMessage = true;
-							receiverList.value.find( user => user.userId === messageData.sender_id ).lastMessage = `${messageData.message.slice( 0, 15 )}...`;
-						}
+				if ( JSON.parse( data ).type === "ping" ) return;
+				const messageData = JSON.parse( data ).message;
+				if ( messageData && messageData.receiver_id === profile.value._id ) {
+					if ( messageData.sender_id === currentMessageUserId.value ) {
+						messageList.value.push( messageData );
+						scrollToBottom( "smooth" );
+					} else {
+						const receiverUser = receiverList.value.find( user => user.userId === messageData.sender_id );
+						receiverUser.newMessage = true;
+						receiverUser.lastMessage = `${messageData.message.slice( 0, 15 )}...`;
 					}
 				}
 			};
