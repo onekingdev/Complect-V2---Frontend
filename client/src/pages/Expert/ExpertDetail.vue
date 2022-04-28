@@ -97,7 +97,7 @@ export default {
   margin-bottom: 1.25em
   cursor: pointer
   .link-ind
-    font-size: 16px
+    font-size: 1em
     margin-right: 0.7em
 .user-content
   padding: 2em 3em
@@ -109,7 +109,7 @@ export default {
     .user-type
       color: var(--c-grey-500)
       .user-indsutry
-        font-size: 14px
+        font-size: 0.875em
         margin-right: 0.7em
     .message-button
       margin-left: auto
@@ -140,7 +140,7 @@ export default {
   padding: 2em 3em
   border-top: 1px solid var(--c-border)
   .skill-title
-    font-size: 20px
+    font-size: 1.25em
     font-weight: 700
     margin-bottom: 1.25em
   .skill-ind
@@ -149,5 +149,5 @@ export default {
     display: inline-block
     padding: 0.125em 0.3em
     margin-right: 0.7em
-    font-size: 14px
+    font-size: 0.875em
 </style>

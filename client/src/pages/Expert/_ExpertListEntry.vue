@@ -222,7 +222,7 @@ export default {
       float: right
   .filter-value
     margin-top: 0.7em
-    font-size: 14px
+    font-size: 0.875em
   .slider-primary
     margin-top: 2em
     --slider-connect-bg: #2e304f;
@@ -238,7 +238,7 @@ export default {
     .user-type
       color: var(--c-grey-500)
       .user-indsutry
-        font-size: 14px
+        font-size: 0.875em
         margin-right: 0.7em
     .message-button
       margin-left: auto
@@ -252,7 +252,7 @@ export default {
         display: inline-block
         padding: 0.125em 0.3em
         margin-right: 0.7em
-        font-size: 14px
+        font-size: 0.875em
   .user-info
     margin-top: 2em
     .border-left

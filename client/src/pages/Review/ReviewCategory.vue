@@ -280,7 +280,7 @@ export default {
           border-radius: 3px
           svg
             fill: black
-            font-size: 20px
+            font-size: 1.25em
             position: relative
             top: -1px
           &.checked
@@ -353,14 +353,14 @@ export default {
     @media (min-width: 1200px)
       grid-column: span 10
     :deep(.field-body)
-      font-size: 18px
+      font-size: 1.125em
   .topic-action
     grid-column: span 3
     @media (min-width: 1200px)
       grid-column: span 2
   .item-text
     :deep(.field-body)
-      font-size: 16px
+      font-size: 1em
   .delete-container, .complete-container
     display: flex
     gap: 1.25em
@@ -369,5 +369,4 @@ export default {
       .confirm
         padding-top: 0.625em
         font-weight: bold
-
 </style>
