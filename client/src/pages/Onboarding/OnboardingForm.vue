@@ -271,7 +271,7 @@ export default {
 			if ( zip ) form.value.zip = zip;
 		};
 
-		const filteredSubIndustries = computed( () => filterSubIndustries( form.value.industries, userType ) );
+		const filteredSubIndustries = computed( () => filterSubIndustries( form.value.industry_ids, userType ) );
 
 		const resetValues = () => {
 			form.value.company = "";
