@@ -1,14 +1,14 @@
 <template lang="pug">
 .bar.topbar
 	.logo
-		icon(name="logo" @click="toDashboard()")
+		icon(name="logo" @click="goToRoute('Dashboard')")
 		icon(name="brandname")
 	.navigation(v-if="!simpleTopBar")
 		.menu
 			a(v-for="(tab, index) in tabs" :key="index" :class="{ active: activedTopbar === tab.title }" @click="goToRoute(tab.routeName)") {{ $locale(tab.title) }}
 		.buttons
-			c-button(title="Find an Expert" type="accent" @click="gotoMarket()" v-if="profile.type == 'business'")
-			c-button(title="Browse Jobs" type="accent" @click="gotoJobs()" v-else)
+			c-button(title="Find an Expert" type="accent" @click="goToRoute('ExpertList')" v-if="profile.type == 'business'")
+			c-button(title="Browse Jobs" type="accent" @click="goToRoute('JobBoard')" v-else)
 			c-button.notification-icon(iconL="bell" type="transparent" @click="gotoNotification()" :class="{active: isNewNotification}")
 	.user-block(v-if="profile" @click="toggleUserDropDown()" ref="userDropDown" :class="{expanded: userDropDownExpanded}")
 		c-avatar(:avatar="profile.avatar" :firstName="profile.first_name" :lastName="profile.last_name" size="small")
@@ -43,7 +43,6 @@ const tabs = [
 
 export default {
 	"components": { cAvatar },
-	// eslint-disable-next-line max-statements
 	setup () {
 		const route = useRoute();
 		const router = useRouter();
@@ -53,7 +52,6 @@ export default {
 		const userDropDownExpanded = ref( false );
 		const isNewNotification = ref( false );
 		let websocket;
-		const WS_URI = import.meta.env.VITE_WS;
 		const toggleUserDropDown = () => userDropDownExpanded.value = !userDropDownExpanded.value;
 		onClickOutside( userDropDown, () => userDropDownExpanded.value = false );
 
@@ -70,9 +68,6 @@ export default {
 			return "Home";
 		});
 
-		const toDashboard = () => router.push({ "name": "Dashboard" });
-		const gotoMarket = () => router.push({ "name": "ExpertList" });
-		const gotoJobs = () => router.push({ "name": "JobBoard" });
 		const gotoNotification = () => {
 			router.push({ "name": "NotificationCenter" });
 			isNewNotification.value = false;
@@ -80,7 +75,7 @@ export default {
 		const reportLink = profile.value.type === "specialist" ? "/reports/financials" : "/reports/organizations";
 
 		const connect = () => {
-			websocket = new WebSocket( WS_URI );
+			websocket = new WebSocket( import.meta.env.VITE_WS );
 			websocket.onclose = ({ wasClean, code, reason }) => {
 				console.error( `onclose:   ${JSON.stringify({ wasClean, code, reason })}` );
 			};
@@ -112,9 +107,6 @@ export default {
 			toggleUserDropDown,
 			activedTopbar,
 			simpleTopBar,
-			toDashboard,
-			gotoMarket,
-			gotoJobs,
 			gotoNotification,
 			isNewNotification
 		};
