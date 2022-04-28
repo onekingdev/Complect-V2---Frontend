@@ -53,7 +53,7 @@ export default {
 		const { form } = useForm( "registration" );
 		const accountTypes = [
 			{
-				"value": "business",
+				"value": "employee",
 				"title": "I am a business",
 				"image": "business",
 				"description": "Looking to effectively manage my compliance program and find expertise"
@@ -85,7 +85,7 @@ export default {
 					"user": {
 						"email": form.value.email,
 						"password": form.value.password,
-						"kind": "employee",
+						"kind": form.value.type,
 						"profile_attributes": {
 							"first_name": form.value.first_name,
 							"last_name": form.value.last_name

@@ -7,6 +7,7 @@ export default function useBusiness () {
 
 	return {
 		business,
+		"isBusiness": business.value && business.value?.owner,
 		setBusiness
 	};
 }
