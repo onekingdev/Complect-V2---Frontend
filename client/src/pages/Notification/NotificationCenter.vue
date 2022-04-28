@@ -1,28 +1,28 @@
 <template lang="pug">
 .notification-center
-	h2.ncenter-title Today
-	.ncenter-content
-		template(v-for="(document, index) in documents")
-			.ncenter-ind-content(:class="{ 'border-bottom': index !== documents.length - 1 }")
-				c-avatar(:firstName="document.firstName" :lastName="document.lastName" size="small")
-				.ncenter-description
-					p {{ document.description }}
-					p.ncenter-time {{ document.createdAt }}
-				.ncenter-button
-					c-button(title="View")
-					c-button(type="icon" iconL="close" size="small" @click="closeModal(index, true)")
+  h2.ncenter-title Today
+  .ncenter-content
+    template(v-for="(document, index) in documents")
+      .ncenter-ind-content(:class="{ 'border-bottom': index !== documents.length - 1 }")
+        c-avatar(:firstName="document.firstName" :lastName="document.lastName" size="small")
+        .ncenter-description
+          p {{ document.description }}
+          p.ncenter-time {{ document.createdAt }}
+        .ncenter-button
+          c-button(title="View")
+          c-button(type="icon" iconL="close" size="small" @click="closeModal(index, true)")
 
-	h2.ncenter-title Previous
-	.ncenter-content
-		template(v-for="(document, index) in previousDocuments")
-			.ncenter-ind-content(:class="{ 'border-bottom': index !== previousDocuments.length - 1 }")
-				c-avatar(:firstName="document.firstName" :lastName="document.lastName" size="small")
-				.ncenter-description
-					p {{ document.description }}
-					p.ncenter-time {{ document.createdAt }}
-				.ncenter-button
-					c-button(title="View")
-					c-button(type="icon" iconL="close" size="small" @click="closeModal(index, false)")
+  h2.ncenter-title Previous
+  .ncenter-content
+    template(v-for="(document, index) in previousDocuments")
+      .ncenter-ind-content(:class="{ 'border-bottom': index !== previousDocuments.length - 1 }")
+        c-avatar(:firstName="document.firstName" :lastName="document.lastName" size="small")
+        .ncenter-description
+          p {{ document.description }}
+          p.ncenter-time {{ document.createdAt }}
+        .ncenter-button
+          c-button(title="View")
+          c-button(type="icon" iconL="close" size="small" @click="closeModal(index, false)")
 </template>
 
 <script>
@@ -106,27 +106,27 @@ export default {
 
 <style lang="stylus" scoped>
 .notification-center
-	.ncenter-title
-		font-weight: 700
-		font-size: 0.875em
-		margin: 1.25em 0
-	.ncenter-content
-		border: 1px solid var(--c-border)
-		border-radius: 5px
-		.ncenter-ind-content
-			display: flex
-			padding: 1em
-			flex-direction: row
-			gap: 0.6em
-			align-items: center
-			&.border-bottom
-				border-bottom: 1px solid var(--c-border)
-			.ncenter-description
-				.ncenter-time
-					color: var(--c-grey-500)
-			.ncenter-button
-				margin-left: auto
-				display: flex
-				flex-direction: row
-				gap: 0.6em
+  .ncenter-title
+    font-weight: 700
+    font-size: 0.875em
+    margin: 1.25em 0
+  .ncenter-content
+    border: 1px solid var(--c-border)
+    border-radius: 5px
+    .ncenter-ind-content
+      display: flex
+      padding: 1em
+      flex-direction: row
+      gap: 0.6em
+      align-items: center
+      &.border-bottom
+        border-bottom: 1px solid var(--c-border)
+      .ncenter-description
+        .ncenter-time
+          color: var(--c-grey-500)
+      .ncenter-button
+        margin-left: auto
+        display: flex
+        flex-direction: row
+        gap: 0.6em
 </style>

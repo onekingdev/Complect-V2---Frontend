@@ -1,33 +1,33 @@
 <template lang="pug">
 .notification-message
-	.nm-userlist
-		template(v-for="user in receiverList")
-			.nm-individual(@click="viewMessage(user.userId)" :class="{'active': currentMessageUserId === user.userId}")
-				c-avatar(:firstName="user.firstName" :lastName="user.lastName" size="small")
-				.nm-individual-info
-					p.info-name {{ user.firstName }} {{ user.lastName }}
-					p.info-message {{ user.lastMessage }}
-				.nm-individual-day
-					p.nm-new-notify(v-if="user.newMessage") New
-					p.nm-date {{ user.last_on }}
-	.nm-messagebox
-		.nm-messagebox-content
-			.nm-messagebox-message(v-for="message in messageList")
-				c-avatar(:firstName="message.firstName" :lastName="message.lastName")
-				.nm-message-info
-					p.info-name {{ message.firstName }} {{ message.lastName }}
-					p.info-message(v-html="message.message")
-					p.info-file(v-if="message.file")
-						icon(name="document")
-						.info-file-main
-							p {{ message.file.name }}
-							a(:href="message.file.link") Download
-						icon.info-file-more(name="more")
-				.nm-message-day
-					p.nm-date {{ message.date }}
-		.mm-messagebox-input
-			Editor.field-body(v-model="newMessage" :init="{ height: 200, plugins: [ 'advlist autolink lists link image charmap print preview anchor' ], toolbar: 'bullist numlist outdent indent | removeformat | help'}")
-			c-button.send-button(title="Send" type="primary" @click="send()")
+  .nm-userlist
+    template(v-for="user in receiverList")
+      .nm-individual(@click="viewMessage(user.userId)" :class="{'active': currentMessageUserId === user.userId}")
+        c-avatar(:firstName="user.firstName" :lastName="user.lastName" size="small")
+        .nm-individual-info
+          p.info-name {{ user.firstName }} {{ user.lastName }}
+          p.info-message {{ user.lastMessage }}
+        .nm-individual-day
+          p.nm-new-notify(v-if="user.newMessage") New
+          p.nm-date {{ user.last_on }}
+  .nm-messagebox
+    .nm-messagebox-content
+      .nm-messagebox-message(v-for="message in messageList")
+        c-avatar(:firstName="message.firstName" :lastName="message.lastName")
+        .nm-message-info
+          p.info-name {{ message.firstName }} {{ message.lastName }}
+          p.info-message(v-html="message.message")
+          p.info-file(v-if="message.file")
+            icon(name="document")
+            .info-file-main
+              p {{ message.file.name }}
+              a(:href="message.file.link") Download
+            icon.info-file-more(name="more")
+        .nm-message-day
+          p.nm-date {{ message.date }}
+    .mm-messagebox-input
+      Editor.field-body(v-model="newMessage" :init="{ height: 200, plugins: [ 'advlist autolink lists link image charmap print preview anchor' ], toolbar: 'bullist numlist outdent indent | removeformat | help'}")
+      c-button.send-button(title="Send" type="primary" @click="send()")
 </template>
 
 <script>
@@ -183,84 +183,84 @@ export default {
 
 <style lang="stylus" scoped>
 .notification-message
-	border: 1px solid var(--c-border)
-	border-radius: 5px
-	display: flex
-	flex-direction: row
-	.nm-userlist
-		width: 25%
-		border-right: 1px solid var(--c-border)
-		.nm-individual
-			cursor: pointer
-			border-bottom: 1px solid var(--c-border)
-			display: flex
-			flex-direction: row
-			gap: 0.6em
-			padding: 0.6em
-			align-items: center
-			&.active
-				background: var(--c-grey-100)
-			.nm-individual-info
-				.info-name
-					font-size: 1em
-					font-weight: 700
-				.info-message
-					font-size: 0.875em
-					color: var(--c-grey-500)
-			.nm-individual-day
-				margin-left: auto;
-				text-align: right;
-				.nm-date
-					font-size: 0.875em
-					color: var(--c-grey-500)
-				.nm-new-notify
-					font-size: 0.875em
-					padding: 0.25em 0.75em
-					background: var(--c-yellow-100)
-					color: var(--c-yellow-700)
-					display: inline-block
-	.nm-messagebox
-		width: 75%
-		height: 48em
-		.nm-messagebox-content
-			border-bottom: 1px solid var(--c-border)
-			height: 30em
-			padding: 0em 1em 0.5em 1em
-			overflow: auto
-			.nm-messagebox-message
-				border-bottom: 1px solid var(--c-border)
-				padding: 1.25em 0
-				display: flex
-				flex-direction: row
-				gap: 0.6em
-				.nm-message-info
-					.info-name
-						font-size: 1em
-						font-weight: 700
-					.info-message
-						font-size: 0.875em
-						color: var(--c-grey-900)
-					.info-file
-						display: flex
-						flex-direction: row
-						gap: 1em
-						padding: 0.6em
-						border: 1px solid var(--c-border)
-						border-radius: 5px
-						background: var(--c-blue-100)
-						max-width: 15em
-						.info-file-more
-							margin-left: auto
-				.nm-message-day
-					margin-left: auto;
-					.nm-date
-						font-size: 0.875em
-						color: var(--c-grey-500)
-		.mm-messagebox-input
-			padding: 1em
-			height: 18em
-			.send-button
-				margin-left: auto;
-				margin-top: 1.5em
+  border: 1px solid var(--c-border)
+  border-radius: 5px
+  display: flex
+  flex-direction: row
+  .nm-userlist
+    width: 25%
+    border-right: 1px solid var(--c-border)
+    .nm-individual
+      cursor: pointer
+      border-bottom: 1px solid var(--c-border)
+      display: flex
+      flex-direction: row
+      gap: 0.6em
+      padding: 0.6em
+      align-items: center
+      &.active
+        background: var(--c-grey-100)
+      .nm-individual-info
+        .info-name
+          font-size: 1em
+          font-weight: 700
+        .info-message
+          font-size: 0.875em
+          color: var(--c-grey-500)
+      .nm-individual-day
+        margin-left: auto;
+        text-align: right;
+        .nm-date
+          font-size: 0.875em
+          color: var(--c-grey-500)
+        .nm-new-notify
+          font-size: 0.875em
+          padding: 0.25em 0.75em
+          background: var(--c-yellow-100)
+          color: var(--c-yellow-700)
+          display: inline-block
+  .nm-messagebox
+    width: 75%
+    height: 48em
+    .nm-messagebox-content
+      border-bottom: 1px solid var(--c-border)
+      height: 30em
+      padding: 0em 1em 0.5em 1em
+      overflow: auto
+      .nm-messagebox-message
+        border-bottom: 1px solid var(--c-border)
+        padding: 1.25em 0
+        display: flex
+        flex-direction: row
+        gap: 0.6em
+        .nm-message-info
+          .info-name
+            font-size: 1em
+            font-weight: 700
+          .info-message
+            font-size: 0.875em
+            color: var(--c-grey-900)
+          .info-file
+            display: flex
+            flex-direction: row
+            gap: 1em
+            padding: 0.6em
+            border: 1px solid var(--c-border)
+            border-radius: 5px
+            background: var(--c-blue-100)
+            max-width: 15em
+            .info-file-more
+              margin-left: auto
+        .nm-message-day
+          margin-left: auto;
+          .nm-date
+            font-size: 0.875em
+            color: var(--c-grey-500)
+    .mm-messagebox-input
+      padding: 1em
+      height: 18em
+      .send-button
+        margin-left: auto;
+        margin-top: 1.5em
 
 </style>

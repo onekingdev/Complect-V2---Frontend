@@ -82,6 +82,8 @@
 </template>
 
 <script>
+/* eslint-disable no-unused-vars */
+
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import useProfile from '~/store/Profile.js'

@@ -105,6 +105,7 @@
 </template>
 
 <script>
+/* eslint-disable no-unused-vars */
 import { useRouter } from 'vue-router'
 import useProfile from '~/store/Profile.js'
 import useBusiness from '~/store/Business.js'
