@@ -2,14 +2,14 @@
 card-container
 	template(#content)
 		template(v-if="step === 1")
-			h1 Let's get you started!!
+			h1 Let's get you started!
 			h2 Select your account type
 			c-radio-cards.account-types(id="user-type" :data="accountTypes" :alignCenter="true" v-model="form.type")
 			c-button(title="Next" type="primary" @click="nextStep(1)" fullwidth)
 		template(v-if="step === 2")
 			h1 Let's get you started!
 			h2 Create your FREE account
-			.form.grid-6(@keypress.enter="signUpUser()")
+			.form.grid-6
 				c-field.name-col.col-3(label="First Name" :errors="errors.first_name" v-model="form.first_name" required)
 				c-field.name-col.col-3(label="Last Name" :errors="errors.last_name" v-model="form.last_name" required)
 				c-field(label="Email" :errors="errors.email" v-model="form.email" required)
@@ -24,9 +24,9 @@ card-container
 			h1 Confirm Your Email
 			h3 We sent a 6 digit code to {{form.email}}. Please enter it below.
 			icon(name="mail")
-			.confirmation-code(@keypress.enter="submitCode(form.email, form.password, otp)")
-				input(v-for="i in 6" :key="i" type="number" @paste="onPaste" @paste.prevent :ref="el => { if (el) inputs[i-1] = el }" v-model="numbers[i-1]" @keyup="event => keyupHandler(event, i)" @input="event => inputHandler(event, i)" required)
-			.error {{ errorMessage }}
+			.confirmation-code
+				input(v-for="i in 6" :key="i" type="number" :ref="el => { if (el) inputs[i-1] = el }" v-model="numbers[i-1]" @keyup="event => keyupHandler(event, i)" @input="event => inputHandler(event, i)" required)
+			.error(v-if="errorMessage") {{ errorMessage }}
 			c-button(title="Submit" type="primary" @click="submitCode(form.email, form.password, otp)" fullwidth)
 	template(#footer)
 		p(v-if="step !== 3") Already have a Complect account?&nbsp;
@@ -50,7 +50,7 @@ export default {
 	setup () {
 		// steps 1, 2
 		const { registration, authentication } = useAuth();
-		const { form, resetForm } = useForm( "registration" );
+		const { form } = useForm( "registration" );
 		const accountTypes = [
 			{
 				"value": "business",
@@ -93,7 +93,6 @@ export default {
 					}
 				});
 				nextStep( 1 );
-				resetForm();
 			} catch ( error ) {
 				if ( error ) Object.assign( errors.value, { "email": [error] });
 			}
@@ -118,14 +117,8 @@ export default {
 			inputHandler
 		} = useSignInOtp();
 
-		const onPaste = event => {
-			const paste = (event.clipboardData || window.clipboardData).getData("text");
-			numbers.value = [...paste];
-		};
-
 		return {
 			errors,
-			onPaste,
 			form,
 			password2,
 			step,
@@ -160,7 +153,6 @@ export default {
 
 .error
 	font-size: 0.8em
-	height: 1em
 	color: red
 	text-align: center
 svg.icon
@@ -171,7 +163,6 @@ svg.icon
 	margin: 2em auto
 .confirmation-code
 	margin: 1em
-	margin-bottom: 0
 	display: flex
 	gap: 0.5em
 	font-size: 1.6em

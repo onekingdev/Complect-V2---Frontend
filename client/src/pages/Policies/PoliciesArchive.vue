@@ -31,7 +31,6 @@ import UseData from "~/store/Data.js";
 import cBanner from "~/components/Misc/cBanner.vue";
 import cModal from "~/components/Misc/cModal.vue";
 import useProfile from "~/store/Profile.js";
-
 export default {
 	"components": { cBanner, cModal },
 	setup () {

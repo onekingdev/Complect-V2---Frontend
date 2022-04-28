@@ -1,3 +1,5 @@
+const generateQuery = query => query ? `?${Object.keys( query ).map( key => `${key}=${query[key]}` ).join( "&" )}` : "";
+
 const endpoint = ( collectionName, documentId, query ) => {
 	let base;
 	const API_URI = import.meta.env.VITE_API_URI;
@@ -52,23 +54,22 @@ const deleteDocumentsFromCloudDb = async ( collectionName, documentId ) => {
 };
 
 const manualApi = async ({ method, url, data }) => {
-	try {
-		const API_URI = import.meta.env.VITE_API_URI;
-		const apiUrl = `${API_URI}/${url}`;
-		const options = {
-			method,
-			"mode": "cors",
-			"cache": "no-cache",
-			"body": data
-		};
-		const serverAnswer = await fetch( apiUrl, options );
-		const parsedServerAnswer = await serverAnswer.json();
-		if ( !parsedServerAnswer.ok ) throw new Error( serverAnswer.message );
-		return parsedServerAnswer.data;
-	} catch ( error ) {
-		console.error( error );
-		return { "error": error.message };
-	}
+	const API_URI = import.meta.env.VITE_API_URI;
+	const apiUrl = `${API_URI}/api/${url}`;
+	const options = {
+		method,
+		"mode": "cors",
+		"cache": "no-cache",
+		"headers": {
+			"Content-Type": "application/json;charset=utf-8",
+			"Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwic2NwIjoidXNlciIsImF1ZCI6bnVsbCwiaWF0IjoxNjQ5OTU2OTYyLCJleHAiOjE2NTEyNTI5NjIsImp0aSI6IjRiZjIzNGU3LTliMDMtNDE5Yi1hNzEzLTNlZjIyODBlNGRmYiJ9.yc6cdI8NX2JBIMCnsNVsDxv1CCXdJzXPN6K604DnRnI"
+		},
+		"body": JSON.stringify( data )
+	};
+	const serverAnswer = await fetch( apiUrl, options );
+	const parsedServerAnswer = await serverAnswer.json();
+	if ( !parsedServerAnswer.ok ) throw new Error( serverAnswer.message );
+	return parsedServerAnswer.data;
 };
 
-export { createDocumentsInCloudDb, readDocumentsFromCloudDb, updateDocumentInCloudDb, deleteDocumentsFromCloudDb, manualApi };
+export { createDocumentsInCloudDb, readDocumentsFromCloudDb, updateDocumentInCloudDb, deleteDocumentsFromCloudDb, manualApi, generateQuery };
