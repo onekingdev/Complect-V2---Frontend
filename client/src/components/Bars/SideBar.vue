@@ -8,7 +8,7 @@
 					.title {{$locale(section.title)}}
 					icon(name="chevron-up")
 				.section-links
-					router-link.link-item(v-for="(link, index) in section.links" :key="index" :to="{name: link.view, query: {type: link.type}}" :class="{'active': !link.active || (link.active && link.type===queryType) }")
+					router-link.link-item(v-for="(link, index) in section.links" :key="index" :to="{name: link.view}")
 						.title {{$locale(link.title)}}
 
 			.menu-section.bordered
@@ -40,11 +40,12 @@ export default {
 		const { profile } = useProfile();
 		const route = useRoute();
 		const userType = profile.value.type;
-		const queryType = computed( () => route.query.type );
+
 		const renderSidebar = computed( () => {
 			if ( "sidebar" in route.meta ) return route.meta.sidebar; // check in sidebar key persist in meta object
 			return true;
 		});
+
 		const sidebarNavigation = computed( () => {
 			switch ( route.meta.tab ) {
 				case "Documents":
@@ -64,8 +65,7 @@ export default {
 			sidebarNavigation,
 			renderSidebar,
 			collapseSidebar,
-			collapseSidebarSections,
-			queryType
+			collapseSidebarSections
 		};
 	}
 };
@@ -98,8 +98,6 @@ $link-hover-color = #2F304F
 	.menu-section
 		+ .menu-section
 			margin-top: 0.5rem
-		:deep(.icon-newspaper-white)
-			fill: none
 	.section-links
 		padding-bottom: 2rem
 		max-height: 15em
@@ -130,9 +128,9 @@ $link-hover-color = #2F304F
 			margin-top: 0.5rem
 		.title
 			letter-spacing: 0.03em
-		&:hover, &.router-link-active.active
+		&:hover, &.router-link-active
 			background: $link-hover-color
-		&.router-link-active.active
+		&.router-link-active
 			color: #fff
 			font-weight: bold
 		.paper

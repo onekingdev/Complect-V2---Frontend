@@ -1,11 +1,17 @@
 import { appState } from "~/store/appState.js";
 import useProfile from "~/store/Profile.js";
+import useBusiness from "~/store/Business";
 // import { restoreSession } from "~/core/restore.js"; // temp
 import useAuth from "~/core/auth.js";
 
 
 const { profile } = useProfile();
+const { business } = useBusiness();
 
+const isOnboarded = () => {
+	if ( business && business.value?.owner ) return business.value?.onboarding_passed;
+	return profile.value?.onboarding_passed;
+};
 
 const useAuthGuard = async ( to, from, next ) => {
 	try {
@@ -18,19 +24,18 @@ const useAuthGuard = async ( to, from, next ) => {
 };
 
 const useOnboardingGuard = ( to, from, next ) => {
-	if ( profile.value.new ) next();
-	else next({ "name": "Dashboard" });
-};
-
-const useAppPagesGuard = ( to, from, next ) => {
-	if ( profile.value.new ) next({ "name": "OnboardingForm", "query": { "step": 1 } });
+	if ( isOnboarded() ) next({ "name": "Dashboard" });
 	else next();
 };
 
+const useNotOnboardedGuard = ( to, from, next ) => {
+	if ( isOnboarded() ) next();
+	else next({ "name": "OnboardingForm", "query": { "step": 1 } });
+};
 
 const businessPagesGuard = ( to, from, next ) => {
 	if ( profile.value.type === "business" ) next();
 	else next({ "name": "ErrorLayer" });
 };
 
-export { useAuthGuard, useOnboardingGuard, useAppPagesGuard, businessPagesGuard };
+export { useAuthGuard, useOnboardingGuard, useNotOnboardedGuard, businessPagesGuard };

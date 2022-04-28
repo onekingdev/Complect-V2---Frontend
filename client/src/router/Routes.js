@@ -1,5 +1,5 @@
 import { createWebHistory, createRouter } from "vue-router";
-import { useAuthGuard, useOnboardingGuard, useAppPagesGuard, businessPagesGuard } from "./Guards.js";
+import { useAuthGuard, useOnboardingGuard, useNotOnboardedGuard, businessPagesGuard } from "./Guards.js";
 
 // layers
 const ErrorLayer = () => import( "~/layers/ErrorLayer.vue" );
@@ -98,10 +98,6 @@ const RecordsOverview = () => import( "~/pages/Records/RecordsOverview.vue" );
 const _OrganizationEntry = () => import( "~/pages/Organization/_OrganizationEntry.vue" );
 const OrganizationOverview = () => import( "~/pages/Organization/OrganizationOverview.vue" );
 
-// code of ethics
-const _EthicsEntries = () => import( "~/pages/Ethics/_EthicsEntries.vue" );
-const EthicsEntries = () => import( "~/pages/Ethics/EthicsEntries.vue" );
-
 // form library
 const _FormLibrary = () => import( "~/pages/FormLibrary/_FormLibrary.vue" );
 const _FormLibraryEntry = () => import( "~/pages/FormLibrary/_FormLibraryEntry.vue" );
@@ -178,7 +174,7 @@ const routes = [
 				]
 			}, {
 				"path": "",
-				"beforeEnter": useAppPagesGuard,
+				"beforeEnter": useNotOnboardedGuard,
 				"component": _PagesEntry,
 				"children": [
 					{
@@ -628,19 +624,6 @@ const routes = [
 							"title": "Plan",
 							"sidebar": false
 						}
-					},
-					{
-						"path": "ethicsEntries",
-						"component": _EthicsEntries,
-						"meta": { "title": "Ethics Entries" },
-						"children": [
-							{
-								"path": "",
-								"meta": { "title": "Code Of Ethics" },
-								"name": "EthicsEntries",
-								"component": EthicsEntries
-							}
-						]
 					},
 					{
 						"path": "formLibrary",
