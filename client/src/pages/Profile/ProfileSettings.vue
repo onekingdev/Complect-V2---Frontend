@@ -14,74 +14,73 @@ section.grid-6
 </template>
 
 <script>
-import { ref, inject } from "vue";
-import cRadioCards from "~/components/Inputs/cRadioCards.vue";
-import cRadios from "~/components/Inputs/cRadios.vue";
-import useAuth from "~/core/auth.js";
-import useProfile from "~/store/Profile.js";
-import { validates } from "~/core/utils.js";
-import { numberGreaterThanZero } from "~/core/customValidates.js";
+import { ref, inject } from 'vue'
+import cRadioCards from '~/components/Inputs/cRadioCards.vue'
+import cRadios from '~/components/Inputs/cRadios.vue'
+import useAuth from '~/core/auth.js'
+import useProfile from '~/store/Profile.js'
+import { validates } from '~/core/utils.js'
+import { numberGreaterThanZero } from '~/core/customValidates.js'
 
 export default {
-	"components": {
-		cRadios,
-		cRadioCards
-	},
-	setup () {
-		const experienceOptions = [
-			{ "value": 0, "title": "Junior", "description": "Beginner consultant with some industry experience." }, { "value": 1, "title": "Intermediate", "description": "Good experience and solid knowledge of the industry." }, { "value": 2, "title": "Expert", "description": "Deep understanding of industry with varied experience." }
-		];
+  components: {
+    cRadios,
+    cRadioCards
+  },
+  setup () {
+    const experienceOptions = [
+      { value: 0, title: 'Junior', description: 'Beginner consultant with some industry experience.' }, { value: 1, title: 'Intermediate', description: 'Good experience and solid knowledge of the industry.' }, { value: 2, title: 'Expert', description: 'Deep understanding of industry with varied experience.' }
+    ]
 
-		const radioOptions = [
-			{ "title": "Show my full name (ex. John Doe)", "value": true }, { "title": "Show my first name and first letter of my last (ex. John D.)", "value": false }
-		];
+    const radioOptions = [
+      { title: 'Show my full name (ex. John Doe)', value: true }, { title: 'Show my first name and first letter of my last (ex. John D.)', value: false }
+    ]
 
-		const { onboarding } = useAuth();
-		const notification = inject( "notification" );
-		const { profile, updateProfile } = useProfile();
-		const form = ref({ ...profile.value });
-		const errors = ref({});
+    const { onboarding } = useAuth()
+    const notification = inject('notification')
+    const { profile, updateProfile } = useProfile()
+    const form = ref({ ...profile.value })
+    const errors = ref({})
 
-		const rules = { "rate": { "validateRate": numberGreaterThanZero } };
+    const rules = { rate: { validateRate: numberGreaterThanZero } }
 
-		const saveInformation = async () => {
-			errors.value = await validates( rules, form.value );
-			if ( Object.keys( errors.value ).length > 0 ) return;
+    const saveInformation = async () => {
+      errors.value = await validates(rules, form.value)
+      if (Object.keys(errors.value).length > 0) return
 
-			const data = {
-				"rate": form.value.rate,
-				"experience": form.value.experience,
-				"showFullName": form.value.showFullName
-			};
+      const data = {
+        rate: form.value.rate,
+        experience: form.value.experience,
+        showFullName: form.value.showFullName
+      }
 
-			try {
-				await onboarding( data );
-				updateProfile( data );
-				notification({
-					"title": "Success",
-					"message": "Information has been saved."
-				});
-			} catch ( error ) {
-				notification({
-					"type": "error",
-					"title": "Error",
-					"message": "Information has not been saved."
-				});
-				console.error( error );
-			}
-		};
+      try {
+        await onboarding(data)
+        updateProfile(data)
+        notification({
+          title: 'Success',
+          message: 'Information has been saved.'
+        })
+      } catch (error) {
+        notification({
+          type: 'error',
+          title: 'Error',
+          message: 'Information has not been saved.'
+        })
+        console.error(error)
+      }
+    }
 
-		return {
-			errors,
-			form,
-			experienceOptions,
-			radioOptions,
-			saveInformation
-		};
-	}
-};
+    return {
+      errors,
+      form,
+      experienceOptions,
+      radioOptions,
+      saveInformation
+    }
+  }
+}
 </script>
-
 
 <style lang="stylus" scoped>
 .perhour
