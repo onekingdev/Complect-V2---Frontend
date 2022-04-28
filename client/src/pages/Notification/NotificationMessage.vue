@@ -30,158 +30,156 @@
 			c-button.send-button(title="Send" type="primary" @click="send()")
 </template>
 
-
 <script>
-import { onMounted, onUnmounted, ref, nextTick } from "vue";
-import cBanner from "~/components/Misc/cBanner.vue";
-import cModal from "~/components/Misc/cModal.vue";
-import cUpload from "~/components/Inputs/cUpload.vue";
-import cAvatar from "~/components/Misc/cAvatar.vue";
-import useProfile from "~/store/Profile.js";
-import { formatDate } from "~/core/utils";
+import { onMounted, onUnmounted, ref, nextTick } from 'vue'
+import cBanner from '~/components/Misc/cBanner.vue'
+import cModal from '~/components/Misc/cModal.vue'
+import cUpload from '~/components/Inputs/cUpload.vue'
+import cAvatar from '~/components/Misc/cAvatar.vue'
+import useProfile from '~/store/Profile.js'
+import { formatDate } from '~/core/utils'
 
 const receiverList = ref([
-	{
-		"firstName": "Andrew",
-		"lastName": "Gomez",
-		"lastMessage": "Hey John, Lorem ipsum ...",
-		"last_on": "10:00 AM",
-		"userId": 1
-	}, {
-		"firstName": "John",
-		"lastName": "Smith",
-		"lastMessage": "I don't believe this is ...",
-		"last_on": "2 days ago",
-		"userId": 2
-	}, {
-		"firstName": "Manuel1",
-		"lastName": "Test3",
-		"lastMessage": "Hey John, thought I'd ...",
-		"last_on": "10 days ago",
-		"userId": "622b3a70707898214ac277a8"
-	}, {
-		"firstName": "Manuel",
-		"lastName": "Online 6",
-		"lastMessage": "Hey John, thought I'd ...",
-		"last_on": "10 days ago",
-		"userId": "6253a3f8c84dff21a809acbc"
-	}
-]);
+  {
+    firstName: 'Andrew',
+    lastName: 'Gomez',
+    lastMessage: 'Hey John, Lorem ipsum ...',
+    last_on: '10:00 AM',
+    userId: 1
+  }, {
+    firstName: 'John',
+    lastName: 'Smith',
+    lastMessage: "I don't believe this is ...",
+    last_on: '2 days ago',
+    userId: 2
+  }, {
+    firstName: 'Manuel1',
+    lastName: 'Test3',
+    lastMessage: "Hey John, thought I'd ...",
+    last_on: '10 days ago',
+    userId: '622b3a70707898214ac277a8'
+  }, {
+    firstName: 'Manuel',
+    lastName: 'Online 6',
+    lastMessage: "Hey John, thought I'd ...",
+    last_on: '10 days ago',
+    userId: '6253a3f8c84dff21a809acbc'
+  }
+])
 const messageList = ref([
-	{
-		"firstName": "Hahn",
-		"lastName": "Nguyen",
-		"message": "<p>Hey John,</p><br/><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
-		"date": "10 days ago",
-		"file": {
-			"name": "document.pdf",
-			"link": "...."
-		}
-	}, {
-		"firstName": "Andrew",
-		"lastName": "Gomez",
-		"message": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>",
-		"date": "10 days ago"
-	}, {
-		"firstName": "Hahn",
-		"lastName": "Nguyen",
-		"message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>",
-		"file": {
-			"name": "document.pdf",
-			"link": "...."
-		},
-		"date": "10 days ago"
-	}
-]);
+  {
+    firstName: 'Hahn',
+    lastName: 'Nguyen',
+    message: '<p>Hey John,</p><br/><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>',
+    date: '10 days ago',
+    file: {
+      name: 'document.pdf',
+      link: '....'
+    }
+  }, {
+    firstName: 'Andrew',
+    lastName: 'Gomez',
+    message: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>',
+    date: '10 days ago'
+  }, {
+    firstName: 'Hahn',
+    lastName: 'Nguyen',
+    message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>',
+    file: {
+      name: 'document.pdf',
+      link: '....'
+    },
+    date: '10 days ago'
+  }
+])
 export default {
-	"components": { cBanner, cModal, cUpload, cAvatar },
-	setup () {
-		const newMessage = ref( "" );
-		const { profile } = useProfile();
-		let websocket;
-		const currentMessageUserId = ref( "" );
-		const WS_URI = import.meta.env.VITE_WS;
-		const scrollToBottom = ( behavior = "auto" ) => {
-			nextTick( () => {
-				const container = document.getElementsByClassName( "nm-messagebox-content" )[0];
-				container.scrollTo({ "top": container.scrollHeight, behavior });
-			});
-		};
-		const connect = () => {
-			websocket = new WebSocket( WS_URI );
-			websocket.onclose = ({ wasClean, code, reason }) => {
-				console.debug( `onclose:   ${JSON.stringify({ wasClean, code, reason })}` );
-			};
-			websocket.onerror = error => {
-				console.debug( error );
-			};
-			websocket.onmessage = ({ data }) => {
-				if ( JSON.parse( data ).type === "ping" ) return;
-				const messageData = JSON.parse( data ).message;
-				if ( messageData && messageData.receiver_id === profile.value._id ) {
-					if ( messageData.sender_id === currentMessageUserId.value ) {
-						messageList.value.push( messageData );
-						scrollToBottom( "smooth" );
-					} else {
-						const receiverUser = receiverList.value.find( user => user.userId === messageData.sender_id );
-						receiverUser.newMessage = true;
-						receiverUser.lastMessage = `${messageData.message.slice( 0, 15 )}...`;
-					}
-				}
-			};
-			websocket.onopen = () => {
-				websocket.send( JSON.stringify({
-					"command": "subscribe",
-					"identifier": "{\"channel\": \"MessageChannel\"}"
-				}) );
-			};
-		};
-		const send = () => {
-			const data = {
-				"sender_id": profile.value._id,
-				"receiver_id": currentMessageUserId.value,
-				"firstName": profile.value.firstName,
-				"lastName": profile.value.lastName,
-				"message": newMessage.value,
-				"action": "my_method",
-				"date": "1:44 PM"
-			};
-			messageList.value.push( data );
-			websocket.send( JSON.stringify({
-				"command": "message",
-				"identifier": "{\"channel\": \"MessageChannel\"}",
-				"data": JSON.stringify( data )
-			}) );
-			newMessage.value = "";
+  components: { cBanner, cModal, cUpload, cAvatar },
+  setup () {
+    const newMessage = ref('')
+    const { profile } = useProfile()
+    let websocket
+    const currentMessageUserId = ref('')
+    const WS_URI = import.meta.env.VITE_WS
+    const scrollToBottom = (behavior = 'auto') => {
+      nextTick(() => {
+        const container = document.getElementsByClassName('nm-messagebox-content')[0]
+        container.scrollTo({ top: container.scrollHeight, behavior })
+      })
+    }
+    const connect = () => {
+      websocket = new WebSocket(WS_URI)
+      websocket.onclose = ({ wasClean, code, reason }) => {
+        console.debug(`onclose:   ${JSON.stringify({ wasClean, code, reason })}`)
+      }
+      websocket.onerror = error => {
+        console.debug(error)
+      }
+      websocket.onmessage = ({ data }) => {
+        if (JSON.parse(data).type === 'ping') return
+        const messageData = JSON.parse(data).message
+        if (messageData && messageData.receiver_id === profile.value._id) {
+          if (messageData.sender_id === currentMessageUserId.value) {
+            messageList.value.push(messageData)
+            scrollToBottom('smooth')
+          } else {
+            const receiverUser = receiverList.value.find(user => user.userId === messageData.sender_id)
+            receiverUser.newMessage = true
+            receiverUser.lastMessage = `${messageData.message.slice(0, 15)}...`
+          }
+        }
+      }
+      websocket.onopen = () => {
+        websocket.send(JSON.stringify({
+          command: 'subscribe',
+          identifier: '{"channel": "MessageChannel"}'
+        }))
+      }
+    }
+    const send = () => {
+      const data = {
+        sender_id: profile.value._id,
+        receiver_id: currentMessageUserId.value,
+        firstName: profile.value.firstName,
+        lastName: profile.value.lastName,
+        message: newMessage.value,
+        action: 'my_method',
+        date: '1:44 PM'
+      }
+      messageList.value.push(data)
+      websocket.send(JSON.stringify({
+        command: 'message',
+        identifier: '{"channel": "MessageChannel"}',
+        data: JSON.stringify(data)
+      }))
+      newMessage.value = ''
 
-			scrollToBottom( "smooth" );
-		};
-		const disconnect = () => {
-			websocket.close();
-		};
+      scrollToBottom('smooth')
+    }
+    const disconnect = () => {
+      websocket.close()
+    }
 
-		const viewMessage = id => {
-			currentMessageUserId.value = id;
-			receiverList.value.find( user => user.userId === id ).newMessage = false;
-			newMessage.value = "";
-			scrollToBottom( "smooth" );
-		};
-		onMounted( () => connect() );
-		onUnmounted( () => disconnect() );
+    const viewMessage = id => {
+      currentMessageUserId.value = id
+      receiverList.value.find(user => user.userId === id).newMessage = false
+      newMessage.value = ''
+      scrollToBottom('smooth')
+    }
+    onMounted(() => connect())
+    onUnmounted(() => disconnect())
 
-		return {
-			newMessage,
-			send,
-			receiverList,
-			messageList,
-			viewMessage,
-			formatDate,
-			currentMessageUserId
-		};
-	}
-};
+    return {
+      newMessage,
+      send,
+      receiverList,
+      messageList,
+      viewMessage,
+      formatDate,
+      currentMessageUserId
+    }
+  }
+}
 </script>
-
 
 <style lang="stylus" scoped>
 .notification-message

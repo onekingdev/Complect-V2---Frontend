@@ -45,27 +45,27 @@ import { required, maxLength, email as emailValidator, minLength } from '@vuelid
 import { sameAsWith } from '~/core/customValidates.js'
 
 export default {
-  "components": { cRadioCards },
+  components: { cRadioCards },
   setup () {
     // steps 1, 2
     const { registration, authentication } = useAuth()
-    const { form } = useForm( "registration" )
+    const { form } = useForm('registration')
     const accountTypes = [
       {
-        "value": "employee",
-        "title": "I am a business",
-        "image": "business",
-        "description": "Looking to effectively manage my compliance program and find expertise"
+        value: 'employee',
+        title: 'I am a business',
+        image: 'business',
+        description: 'Looking to effectively manage my compliance program and find expertise'
       }, {
-        "value": "specialist",
-        "title": "I am a specialist",
-        "image": "briefcase",
-        "description": "Looking to work with potential clients on compliance projects"
+        value: 'specialist',
+        title: 'I am a specialist',
+        image: 'briefcase',
+        description: 'Looking to work with potential clients on compliance projects'
       }
-    ];
+    ]
     const errors = ref({})
-    const password2 = ref( "" )
-    const step = ref( 1 )
+    const password2 = ref('')
+    const step = ref(1)
     const nextStep = value => step.value += value
 
     const rules = {
@@ -77,23 +77,23 @@ export default {
     }
 
     const signUpUser = async () => {
-      errors.value = await validates( rules, { ...form.value, "password2": password2.value })
-      if ( Object.keys( errors.value ).length ) return
+      errors.value = await validates(rules, { ...form.value, password2: password2.value })
+      if (Object.keys(errors.value).length) return
       try {
         await registration({
-          "user": {
-            "email": form.value.email,
-            "password": form.value.password,
-            "kind": form.value.type,
-            "profile_attributes": {
-              "first_name": form.value.first_name,
-              "last_name": form.value.last_name
+          user: {
+            email: form.value.email,
+            password: form.value.password,
+            kind: form.value.type,
+            profile_attributes: {
+              first_name: form.value.first_name,
+              last_name: form.value.last_name
             }
           }
-        });
+        })
         nextStep(1)
       } catch (error) {
-        if (error) Object.assign( errors.value, { "email": [error] })
+        if (error) Object.assign(errors.value, { email: [error] })
       }
     }
 

@@ -20,41 +20,41 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onUnmounted } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { onClickOutside } from "@vueuse/core";
-import useAuth from "~/core/auth.js";
-import useProfile from "~/store/Profile.js";
-import cAvatar from "~/components/Misc/cAvatar.vue";
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { onClickOutside } from '@vueuse/core'
+import useAuth from '~/core/auth.js'
+import useProfile from '~/store/Profile.js'
+import cAvatar from '~/components/Misc/cAvatar.vue'
 
 const tabs = [
   {
-    "title": "Home",
-    "routeName": "Dashboard"
+    title: 'Home',
+    routeName: 'Dashboard'
   }, {
-    "title": "Documents",
-    "routeName": "RecordsOverview"
+    title: 'Documents',
+    routeName: 'RecordsOverview'
   }, {
-    "title": "Reports",
-    "routeName": "ReportOrganizations"
+    title: 'Reports',
+    routeName: 'ReportOrganizations'
   }
-];
+]
 
 export default {
-  "components": { cAvatar },
+  components: { cAvatar },
   setup () {
-    const route = useRoute();
-    const router = useRouter();
-    const { signOut } = useAuth();
-    const { profile } = useProfile();
-    const userDropDown = ref( null );
-    const userDropDownExpanded = ref( false );
-    const isNewNotification = ref( false );
-    let websocket;
-    const toggleUserDropDown = () => userDropDownExpanded.value = !userDropDownExpanded.value;
-    onClickOutside( userDropDown, () => userDropDownExpanded.value = false );
+    const route = useRoute()
+    const router = useRouter()
+    const { signOut } = useAuth()
+    const { profile } = useProfile()
+    const userDropDown = ref(null)
+    const userDropDownExpanded = ref(false)
+    const isNewNotification = ref(false)
+    let websocket
+    const toggleUserDropDown = () => userDropDownExpanded.value = !userDropDownExpanded.value
+    onClickOutside(userDropDown, () => userDropDownExpanded.value = false)
 
-    const goToRoute = routeName => router.push({ "name": routeName });
+    const goToRoute = routeName => router.push({ name: routeName })
 
     // render topbar style, depend on route meta
     const simpleTopBar = computed(() => {
@@ -68,32 +68,32 @@ export default {
     })
 
     const gotoNotification = () => {
-      router.push({ "name": "NotificationCenter" });
-      isNewNotification.value = false;
-    };
-    const reportLink = profile.value.type === "specialist" ? "/reports/financials" : "/reports/organizations";
+      router.push({ name: 'NotificationCenter' })
+      isNewNotification.value = false
+    }
+    const reportLink = profile.value.type === 'specialist' ? '/reports/financials' : '/reports/organizations'
 
     const connect = () => {
-      websocket = new WebSocket( import.meta.env.VITE_WS );
+      websocket = new WebSocket(import.meta.env.VITE_WS)
       websocket.onclose = ({ wasClean, code, reason }) => {
-        console.error( `onclose:   ${JSON.stringify({ wasClean, code, reason })}` );
-      };
+        console.error(`onclose:   ${JSON.stringify({ wasClean, code, reason })}`)
+      }
       websocket.onerror = error => {
-        console.error( error );
-      };
+        console.error(error)
+      }
       websocket.onmessage = ({ data }) => {
-        if ( JSON.parse( data ).type !== "ping" ) isNewNotification.value = true;
-      };
+        if (JSON.parse(data).type !== 'ping') isNewNotification.value = true
+      }
       websocket.onopen = () => {
-        websocket.send( JSON.stringify({
-          "command": "subscribe",
-          "identifier": "{\"channel\": \"NotificationChannel\"}"
-        }) );
-      };
-    };
+        websocket.send(JSON.stringify({
+          command: 'subscribe',
+          identifier: '{"channel": "NotificationChannel"}'
+        }))
+      }
+    }
 
-    onMounted( () => connect() );
-    onUnmounted( () => websocket.close() );
+    onMounted(() => connect())
+    onUnmounted(() => websocket.close())
 
     return {
       reportLink,
@@ -108,9 +108,9 @@ export default {
       simpleTopBar,
       gotoNotification,
       isNewNotification
-    };
+    }
   }
-};
+}
 </script>
 
 <style lang="stylus" scoped>

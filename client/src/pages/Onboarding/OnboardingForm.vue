@@ -82,26 +82,26 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onUnmounted, watch } from "vue";
-import { useRouter } from "vue-router";
-import useProfile from "~/store/Profile.js";
-import useBusiness from "~/store/Business.js";
-import useForm from "~/store/Form.js";
-import cFormWizard from "~/components/FormWizard/cFormWizard.vue";
-import cRadios from "~/components/Inputs/cRadios.vue";
-import cRadioCards from "~/components/Inputs/cRadioCards.vue";
-import cSelect from "~/components/Inputs/cSelect.vue";
-import cDropzone from "~/components/Inputs/cDropzone.vue";
-import cSwitcher from "~/components/Inputs/cSwitcher.vue";
-import cPlans from "~/components/Misc/cPlans.vue";
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import useProfile from '~/store/Profile.js'
+import useBusiness from '~/store/Business.js'
+import useForm from '~/store/Form.js'
+import cFormWizard from '~/components/FormWizard/cFormWizard.vue'
+import cRadios from '~/components/Inputs/cRadios.vue'
+import cRadioCards from '~/components/Inputs/cRadioCards.vue'
+import cSelect from '~/components/Inputs/cSelect.vue'
+import cDropzone from '~/components/Inputs/cDropzone.vue'
+import cSwitcher from '~/components/Inputs/cSwitcher.vue'
+import cPlans from '~/components/Misc/cPlans.vue'
 
 // import { manualApi } from "~/core/api.js";
 // import UseData from "~/store/Data.js";
-import BusinessService from "~/services/business.js";
-import ProfileService from "~/services/profile.js";
+import BusinessService from '~/services/business.js'
+import ProfileService from '~/services/profile.js'
 
-import useAuth from "~/core/auth.js";
-import cAddress from "~/components/Inputs/cAddress.vue";
+import useAuth from '~/core/auth.js'
+import cAddress from '~/components/Inputs/cAddress.vue'
 
 import { industries, jurisdictions, timezones } from '~/data/static.js'
 import { plans } from '~/data/plans.js'
@@ -146,7 +146,7 @@ const baseForm = {
 }
 
 export default {
-  "components": {
+  components: {
     cFormWizard,
     cRadios,
     cAddress,
@@ -158,63 +158,63 @@ export default {
   },
   // eslint-disable-next-line max-lines-per-function
   setup () {
-    const router = useRouter();
-    const { profile } = useProfile();
-    const { business, isBusiness } = useBusiness();
-    const userType = isBusiness ? "business" : "specialist";
-    const { form, resetForm } = useForm( "onboarding", baseForm[userType]);
-    const errors = ref({});
-    const { onboarding, restoreSession } = useAuth();
+    const router = useRouter()
+    const { profile } = useProfile()
+    const { business, isBusiness } = useBusiness()
+    const userType = isBusiness ? 'business' : 'specialist'
+    const { form, resetForm } = useForm('onboarding', baseForm[userType])
+    const errors = ref({})
+    const { onboarding, restoreSession } = useAuth()
     // const potentials = new UseData( "potential_businesses" );
 
-    const validateInfor = computed( () => ({
-      "specialist": {
-        "1": {
-          "rules": {
-            "jurisdiction_ids": { "required": requireForArray },
-            "industry_ids": { "required": requireForArray },
-            "time_zone": { "required": requireForArray }
+    const validateInfor = computed(() => ({
+      specialist: {
+        1: {
+          rules: {
+            jurisdiction_ids: { required: requireForArray },
+            industry_ids: { required: requireForArray },
+            time_zone: { required: requireForArray }
           },
-          "data": {
-            "jurisdiction_ids": form.value.jurisdiction_ids,
-            "time_zone": form.value.time_zone,
-            "industry_ids": form.value.industry_ids
+          data: {
+            jurisdiction_ids: form.value.jurisdiction_ids,
+            time_zone: form.value.time_zone,
+            industry_ids: form.value.industry_ids
           }
         },
-        "2": {
-          "rules": {
-            "hourly_rate": { "validateRate": numberGreaterThanZero },
-            "experience": { "required": requiredUnless( form.value.experience >= 0 ) }
+        2: {
+          rules: {
+            hourly_rate: { validateRate: numberGreaterThanZero },
+            experience: { required: requiredUnless(form.value.experience >= 0) }
           },
-          "data": {
-            "hourly_rate": form.value.hourly_rate,
-            "experience": form.value.experience
+          data: {
+            hourly_rate: form.value.hourly_rate,
+            experience: form.value.experience
           }
         }
       },
-      "business": {
-        "2": {
-          "rules": {
-            "company": { required },
-            "industry_ids": { "required": requireForArray },
-            "jurisdiction_ids": { "required": requireForArray },
-            "time_zone": { "required": requireForArray },
-            "address": { required },
-            "city": { required },
-            "zip": { required }
+      business: {
+        2: {
+          rules: {
+            company: { required },
+            industry_ids: { required: requireForArray },
+            jurisdiction_ids: { required: requireForArray },
+            time_zone: { required: requireForArray },
+            address: { required },
+            city: { required },
+            zip: { required }
           },
-          "data": {
-            "company": form.value.company,
-            "industry_ids": form.value.industry_ids,
-            "jurisdiction_ids": form.value.jurisdiction_ids,
-            "time_zone": form.value.time_zone,
-            "address": form.value.address,
-            "city": form.value.city,
-            "zip": form.value.zip
+          data: {
+            company: form.value.company,
+            industry_ids: form.value.industry_ids,
+            jurisdiction_ids: form.value.jurisdiction_ids,
+            time_zone: form.value.time_zone,
+            address: form.value.address,
+            city: form.value.city,
+            zip: form.value.zip
           }
         }
       }
-    }) );
+    }))
 
     const stepValidate = async currentStep => {
       const step = validateInfor.value[userType][currentStep]
@@ -233,34 +233,34 @@ export default {
 
     const goToCheckout = async () => {
       try {
-        if ( userType === "business" && form.value.plan === "starter" ) {
-          const businessService = new BusinessService();
-          const ids = await businessService.updateDocument([form.value]);
+        if (userType === 'business' && form.value.plan === 'starter') {
+          const businessService = new BusinessService()
+          const ids = await businessService.updateDocument([form.value])
           // eslint-disable-next-line require-atomic-updates
           // form.value.businessId = ids[0];
           // await onboarding( form.value );
-          await restoreSession();
-          await resetForm();
-          router.push({ "name": "Dashboard" });
-        } else if ( userType === "specialist" && form.value.plan === "standard" ) {
-          const specialistService = new ProfileService();
-          const ids = await specialistService.updateDocument(form.value);
+          await restoreSession()
+          await resetForm()
+          router.push({ name: 'Dashboard' })
+        } else if (userType === 'specialist' && form.value.plan === 'standard') {
+          const specialistService = new ProfileService()
+          const ids = await specialistService.updateDocument(form.value)
           // eslint-disable-next-line require-atomic-updates
           // form.value.specialistId = ids[0];
           // await onboarding( form.value );
-          await restoreSession();
-          await resetForm();
-          router.push({ "name": "Dashboard" });
+          await restoreSession()
+          await resetForm()
+          router.push({ name: 'Dashboard' })
         } else {
-          form.value.email = profile.value.email;
+          form.value.email = profile.value.email
           // eslint-disable-next-line max-depth
-          if ( userType === "specialist" ) form.value.company = `${profile.value.firstName} ${profile.value.lastName}`;
-          router.push({ "name": "OnboardingCheckout" });
+          if (userType === 'specialist') form.value.company = `${profile.value.firstName} ${profile.value.lastName}`
+          router.push({ name: 'OnboardingCheckout' })
         }
-      } catch ( error ) {
-        console.error( error );
+      } catch (error) {
+        console.error(error)
       }
-    };
+    }
 
     const updateAddressChange = data => {
       const { address, city, state, zip } = data
@@ -270,20 +270,20 @@ export default {
       if (zip) form.value.zip = zip
     }
 
-    const filteredSubIndustries = computed( () => filterSubIndustries( form.value.industry_ids, userType ) );
+    const filteredSubIndustries = computed(() => filterSubIndustries(form.value.industry_ids, userType))
 
     const resetValues = () => {
-      form.value.company = "";
-      form.value.website = "";
-      form.value.aum = "";
-      form.value.accounts = "";
-      form.value.phone_number = "";
-      form.value.address = "";
-      form.value.apt = "";
-      form.value.city = "";
-      form.value.state = "";
-      form.value.zip = "";
-    };
+      form.value.company = ''
+      form.value.website = ''
+      form.value.aum = ''
+      form.value.accounts = ''
+      form.value.phone_number = ''
+      form.value.address = ''
+      form.value.apt = ''
+      form.value.city = ''
+      form.value.state = ''
+      form.value.zip = ''
+    }
 
     // onMounted( () => potentials.readDocuments() );
     // onUnmounted( () => potentials.clearStore() );

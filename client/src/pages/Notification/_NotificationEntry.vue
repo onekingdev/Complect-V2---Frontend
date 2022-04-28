@@ -7,23 +7,22 @@
 			router-view
 </template>
 
-
 <script>
 export default {
-	setup () {
-		const tabs = [
-			{
-				"title": "Notification",
-				"routeName": "NotificationCenter"
-			}, {
-				"title": "Message",
-				"routeName": "NotificationMessage"
-			}
-		];
+  setup () {
+    const tabs = [
+      {
+        title: 'Notification',
+        routeName: 'NotificationCenter'
+      }, {
+        title: 'Message',
+        routeName: 'NotificationMessage'
+      }
+    ]
 
-		return { tabs };
-	}
-};
+    return { tabs }
+  }
+}
 </script>
 <style lang="stylus" scoped>
 .container

@@ -105,89 +105,89 @@
 </template>
 
 <script>
-import { useRouter } from "vue-router";
-import useProfile from "~/store/Profile.js";
-import useBusiness from "~/store/Business.js";
-import useForm from "~/store/Form.js";
-import useAuth from "~/core/auth.js";
-import { loadStripe } from "@stripe/stripe-js";
-import { StripeElements, StripeElement } from "vue-stripe-js";
-import { onBeforeMount, onMounted, ref, inject } from "vue";
+import { useRouter } from 'vue-router'
+import useProfile from '~/store/Profile.js'
+import useBusiness from '~/store/Business.js'
+import useForm from '~/store/Form.js'
+import useAuth from '~/core/auth.js'
+import { loadStripe } from '@stripe/stripe-js'
+import { StripeElements, StripeElement } from 'vue-stripe-js'
+import { onBeforeMount, onMounted, ref, inject } from 'vue'
 // import UseData from "~/store/Data.js";
-import BusinessService from "~/services/business.js";
-import ProfileService from "~/services/profile.js";
+import BusinessService from '~/services/business.js'
+import ProfileService from '~/services/profile.js'
 
-import { plans } from "~/data/plans.js";
-import cSwitcher from "~/components/Inputs/cSwitcher.vue";
-import { manualApi } from "~/core/api.js";
+import { plans } from '~/data/plans.js'
+import cSwitcher from '~/components/Inputs/cSwitcher.vue'
+import { manualApi } from '~/core/api.js'
 export default {
-  "components": { StripeElements, StripeElement, cSwitcher },
+  components: { StripeElements, StripeElement, cSwitcher },
   // eslint-disable-next-line
   setup () {
-    const { profile } = useProfile();
-    const { business, isBusiness } = useBusiness();
-    const userType = isBusiness ? "business" : "specialist";
-    const { form, resetForm } = useForm( "onboarding" );
-    const { onboarding, restoreSession } = useAuth();
+    const { profile } = useProfile()
+    const { business, isBusiness } = useBusiness()
+    const userType = isBusiness ? 'business' : 'specialist'
+    const { form, resetForm } = useForm('onboarding')
+    const { onboarding, restoreSession } = useAuth()
     // const plans = new UseData( "plans" );
-    const notification = inject( "notification" );
-    const plan = ref({});
-    const router = useRouter();
-    const goBack = () => router.go( -1 );
-    const isAddButtonVisible = ref( true );
-    const isPurchaseVisible = ref( true );
-    const publishkey = ref( import.meta.env.VITE_STRIPE );
-    const instanceOptions = ref({ });
-    const elementsOptions = ref({ });
-    const cardOptions = ref({ "value": { "postalCode": "" } });
-    const stripeLoaded = ref( false );
-    const card = ref();
-    const elms = ref();
-    const users = ref( 0 );
-    const cardresult = ref({ });
-    const promocode = ref();
-    const promoInfo = ref({ });
+    const notification = inject('notification')
+    const plan = ref({})
+    const router = useRouter()
+    const goBack = () => router.go(-1)
+    const isAddButtonVisible = ref(true)
+    const isPurchaseVisible = ref(true)
+    const publishkey = ref(import.meta.env.VITE_STRIPE)
+    const instanceOptions = ref({ })
+    const elementsOptions = ref({ })
+    const cardOptions = ref({ value: { postalCode: '' } })
+    const stripeLoaded = ref(false)
+    const card = ref()
+    const elms = ref()
+    const users = ref(0)
+    const cardresult = ref({ })
+    const promocode = ref()
+    const promoInfo = ref({ })
     const paymentOptions = ref([
       {
-        "title": "Billed Annually",
-        "value": true
+        title: 'Billed Annually',
+        value: true
       }, {
-        "title": "Billed Monthly",
-        "value": false
+        title: 'Billed Monthly',
+        value: false
       }
-    ]);
-    const stripeChange = e => isPurchaseVisible.value = !e.complete;
+    ])
+    const stripeChange = e => isPurchaseVisible.value = !e.complete
     const addPayment = () => {
-      const cardElement = card.value.stripeElement;
-      elms.value.instance.createToken( cardElement ).then( async result => {
-        const stripeToken = result.token.id;
-        cardresult.value = result.token;
+      const cardElement = card.value.stripeElement
+      elms.value.instance.createToken(cardElement).then(async result => {
+        const stripeToken = result.token.id
+        cardresult.value = result.token
         try {
           await manualApi({
-            "method": "post",
-            "url": `payment/method/${userType === "business" ? form.value.businessId : form.value.specialistId}`,
-            "data": JSON.stringify({ stripeToken })
-          });
+            method: 'post',
+            url: `payment/method/${userType === 'business' ? form.value.businessId : form.value.specialistId}`,
+            data: JSON.stringify({ stripeToken })
+          })
           notification({
-            "type": "success",
-            "title": "Success",
-            "message": "New Payment Method has been added successfully."
-          });
-          isAddButtonVisible.value = !isAddButtonVisible.value;
-        } catch ( error ) {
+            type: 'success',
+            title: 'Success',
+            message: 'New Payment Method has been added successfully.'
+          })
+          isAddButtonVisible.value = !isAddButtonVisible.value
+        } catch (error) {
           notification({
-            "type": "error",
-            "title": "Error",
-            "message": "New Payment Method has not been added. Please try again."
-          });
+            type: 'error',
+            title: 'Error',
+            message: 'New Payment Method has not been added. Please try again.'
+          })
         }
-      });
-    };
+      })
+    }
     const onBoard = async () => {
       try {
-        if ( userType === "business" ) {
-          const businessService = new BusinessService();
-          const ids = await businessService.updateDocument( form.value );
+        if (userType === 'business') {
+          const businessService = new BusinessService()
+          const ids = await businessService.updateDocument(form.value)
           // await manualApi({
           //   "method": "post",
           //   "url": `payment/customer/${ids[0]}`,
@@ -197,8 +197,8 @@ export default {
           // eslint-disable-next-line require-atomic-updates
           // form.value.businessId = ids[0];
         } else {
-          const specialistService = new ProfileService();
-          const ids = await specialistService.updateDocument( form.value );
+          const specialistService = new ProfileService()
+          const ids = await specialistService.updateDocument(form.value)
           // await manualApi({
           //   "method": "post",
           //   "url": `payment/customer/${ids[0]}`,
@@ -217,36 +217,36 @@ export default {
         //     "promocode": promocode.value
         //   })
         // });
-        await restoreSession();
-        await resetForm();
-        router.push({ "name": "Dashboard" });
-      } catch ( error ) {
-        console.error( error );
+        await restoreSession()
+        await resetForm()
+        router.push({ name: 'Dashboard' })
+      } catch (error) {
+        console.error(error)
       }
-    };
+    }
     const applyPromo = async () => {
       try {
-        if ( promocode.value ) {
+        if (promocode.value) {
           const response = await manualApi({
-            "method": "post",
-            "url": "payment/promocode",
-            "data": JSON.stringify({ "promocode": promocode.value })
-          });
-          promoInfo.value = response.data;
+            method: 'post',
+            url: 'payment/promocode',
+            data: JSON.stringify({ promocode: promocode.value })
+          })
+          promoInfo.value = response.data
         }
-      } catch ( error ) {
+      } catch (error) {
         notification({
-          "type": "error",
-          "title": "Error",
-          "message": "You have inputted wrong promo code. Please try again."
-        });
+          type: 'error',
+          title: 'Error',
+          message: 'You have inputted wrong promo code. Please try again.'
+        })
       }
-    };
-    onBeforeMount( () => {
-      const stripePromise = loadStripe( publishkey.value );
-      stripePromise.then( () => stripeLoaded.value = true );
-    });
-    onMounted( () => {
+    }
+    onBeforeMount(() => {
+      const stripePromise = loadStripe(publishkey.value)
+      stripePromise.then(() => stripeLoaded.value = true)
+    })
+    onMounted(() => {
       // plan.value = plans[userType].find( item => item.key === form.value.plan );
       // plans.readDocuments();
       // if ( userType === "business" ) {
@@ -265,7 +265,7 @@ export default {
       //   plan.value.annually = form.value.annually;
       //   plan.value._id = findplan._id;
       // }
-    });
+    })
 
     // eslint-disable-next-line max-len
     return { userType, plan, stripeChange, paymentOptions, users, goBack, profile, form, onBoard, publishkey, instanceOptions, elementsOptions, cardOptions, card, elms, stripeLoaded, addPayment, isAddButtonVisible, isPurchaseVisible, cardresult, promoInfo, promocode, applyPromo }
