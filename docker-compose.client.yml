@@ -13,6 +13,7 @@ services:
         environment:
             HOST: 0.0.0.0
             VITE_API_URI: ${CLOUD_API_URI}
+            VITE_WS: ${LOCAL_WS_URI}
             VITE_STAGE: 'dev11'
             VITE_STRIPE: ${STRIPE_PUBLISH_KEY}
             PLAID_ENVIRONMENT: ${PLAID_ENVIRONMENT}

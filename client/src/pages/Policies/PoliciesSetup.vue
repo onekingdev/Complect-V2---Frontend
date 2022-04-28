@@ -79,7 +79,7 @@ export default {
 	.logo-setting
 		margin-top: 10px
 	.setting-text
-		font-size: 14px
+		font-size: 0.875em
 		margin-bottom: 1rem
 	.display-setting
 		margin-top: 30px
