@@ -70,7 +70,7 @@ export default {
 			return "Home";
 		});
 
-		const toDashboard = () => simpleTopBar.value ? router.push({ "name": "Dashboard" }) : router.push({ "name": "OnboardingForm" });
+		const toDashboard = () => router.push({ "name": "Dashboard" });
 		const gotoMarket = () => router.push({ "name": "ExpertList" });
 		const gotoJobs = () => router.push({ "name": "JobBoard" });
 		const gotoNotification = () => {
