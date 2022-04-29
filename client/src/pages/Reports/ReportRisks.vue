@@ -30,49 +30,51 @@
       c-table.risk-summary(v-bind="{columns, documents}")
 </template>
 
+
 <script>
 export default {
-  setup () {
-    const columns = [
-      {
-        title: 'Risk Level',
-        key: 'risk-level',
-        cell: 'CellRiskWarningLevel'
-      }, {
-        title: 'Count',
-        key: 'count',
-        cell: 'CellDefault'
-      }, {
-        title: '%',
-        key: 'percent',
-        cell: 'CellDefault'
-      }
-    ]
+	setup () {
+		const columns = [
+			{
+				"title": "Risk Level",
+				"key": "risk-level",
+				"cell": "CellRiskWarningLevel"
+			}, {
+				"title": "Count",
+				"key": "count",
+				"cell": "CellDefault"
+			}, {
+				"title": "%",
+				"key": "percent",
+				"cell": "CellDefault"
+			}
+		];
 
-    const documents = [
-      {
-        'risk-level': 'high',
-        count: 0,
-        percent: '0%'
-      }, {
-        'risk-level': 'medium',
-        count: 0,
-        percent: '0%'
-      }, {
-        'risk-level': 'low',
-        count: 0,
-        percent: '0%'
-      }, {
-        'risk-level': 'total',
-        count: 0,
-        percent: '0%'
-      }
-    ]
+		const documents = [
+			{
+				"risk-level": "high",
+				"count": 0,
+				"percent": "0%"
+			}, {
+				"risk-level": "medium",
+				"count": 0,
+				"percent": "0%"
+			}, {
+				"risk-level": "low",
+				"count": 0,
+				"percent": "0%"
+			}, {
+				"risk-level": "total",
+				"count": 0,
+				"percent": "0%"
+			}
+		];
 
-    return { columns, documents }
-  }
-}
+		return { columns, documents };
+	}
+};
 </script>
+
 
 <style lang="stylus" scoped>
 .risks-heatmap
