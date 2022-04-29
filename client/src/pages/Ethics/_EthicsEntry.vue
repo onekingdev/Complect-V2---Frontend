@@ -31,9 +31,7 @@ export default {
 		const reviewEthicsEntry = () => {};
 		const closeEthicsEntry = () => router.push({
 			"name": "EthicsEntries",
-			"query": {
-				"type": ethicsDetails.value.type
-			}
+			"query": { "type": ethicsDetails.value.type }
 		});
 		return {
 			reviewEthicsEntry,

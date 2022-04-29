@@ -22,7 +22,7 @@ export default {
 		const updateEthics = () => {};
 		const handleClickEdit = id => modal({ "name": "cModalEthics", "callback": updateEthics, id });
 		const handleClickDelete = id => modal({ "name": "cModalDelete", id, "title": "Entry", "description": "Deleting the entry will permanently remove it from your log.", "callback": updateEthics });
-		const newEthicsEntry = () => modal({ "name": "cModalEthics", "callback": updateEthics });;
+		const newEthicsEntry = () => modal({ "name": "cModalEthics", "callback": updateEthics });
 
 		const columns = [
 			{
@@ -82,26 +82,22 @@ export default {
 			}
 		];
 
-		const filters = [
-			{
-				"title": "Sort By:",
-				"field": "status",
-				"keys": [
-					{
-						"title": "Date Submitted",
-						"key": ""
-					},
-					{
-						"title": "Date Reviewed",
-						"key": "draft"
-					},
-					{
-						"title": "Date of Transaction",
-						"key": "inprogress"
-					}
-				]
-			}
-		];
+		const filters = [{
+			"title": "Sort By:",
+			"field": "status",
+			"keys": [
+				{
+					"title": "Date Submitted",
+					"key": ""
+				}, {
+					"title": "Date Reviewed",
+					"key": "draft"
+				}, {
+					"title": "Date of Transaction",
+					"key": "inprogress"
+				}
+			]
+		}];
 
 		const documents = ethicsAllEntriesData.filter( doc => doc.ethics_id === props.ethicsDetails._id );
 

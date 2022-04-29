@@ -13,7 +13,7 @@ import { ethicsData } from "~/data/data.js";
 export default {
 	setup () {
 		const route = useRoute();
-		const titles = { "trade": "Personal Trade Monitoring", "attestation": "Attestation", "logs": "Logs" , "approval": "Pre-Approval" };
+		const titles = { "trade": "Personal Trade Monitoring", "attestation": "Attestation", "logs": "Logs", "approval": "Pre-Approval" };
 		const title = computed( () => titles[route.query.type] );
 		const columns = [
 			{
@@ -45,22 +45,19 @@ export default {
 			}
 		];
 
-		const filters = [
-			{
-				"title": "Sort By:",
-				"field": "status",
-				"keys": [
-					{
-						"title": "Last Modified",
-						"key": ""
-					},
-					{
-						"title": "Date Created",
-						"key": "inprogress"
-					}
-				]
-			}
-		];
+		const filters = [{
+			"title": "Sort By:",
+			"field": "status",
+			"keys": [
+				{
+					"title": "Last Modified",
+					"key": ""
+				}, {
+					"title": "Date Created",
+					"key": "inprogress"
+				}
+			]
+		}];
 
 		const documents = computed( () => ethicsData.filter( doc => doc.type === route.query.type ));
 

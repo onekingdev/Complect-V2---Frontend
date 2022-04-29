@@ -636,14 +636,12 @@ const routes = [
 						"path": "ethicsEntries",
 						"component": _EthicsEntries,
 						"meta": { "title": "Ethics Entries" },
-						"children": [
-							{
-								"path": "",
-								"meta": { "title": "Code Of Ethics" },
-								"name": "EthicsEntries",
-								"component": EthicsEntries
-							}
-						]
+						"children": [{
+							"path": "",
+							"meta": { "title": "Code Of Ethics" },
+							"name": "EthicsEntries",
+							"component": EthicsEntries
+						}]
 					},
 					{
 						"path": "ethics/:id",
