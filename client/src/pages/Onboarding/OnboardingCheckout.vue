@@ -108,12 +108,16 @@
 <script>
 import { useRouter } from "vue-router";
 import useProfile from "~/store/Profile.js";
+import useBusiness from "~/store/Business.js";
 import useForm from "~/store/Form.js";
 import useAuth from "~/core/auth.js";
 import { loadStripe } from "@stripe/stripe-js";
 import { StripeElements, StripeElement } from "vue-stripe-js";
 import { onBeforeMount, onMounted, ref, inject } from "vue";
-import UseData from "~/store/Data.js";
+// import UseData from "~/store/Data.js";
+import BusinessService from "~/services/business.js";
+import ProfileService from "~/services/profile.js";
+
 import { plans } from "~/data/plans.js";
 import cSwitcher from "~/components/Inputs/cSwitcher.vue";
 import { manualApi } from "~/core/api.js";
@@ -122,9 +126,10 @@ export default {
 	// eslint-disable-next-line
 	setup () {
 		const { profile } = useProfile();
-		const userType = profile.value.type;
+		const { business, isBusiness } = useBusiness();
+		const userType = isBusiness ? "business" : "specialist";
 		const { form, resetForm } = useForm( "onboarding" );
-		const { onboarding } = useAuth();
+		const { onboarding, restoreSession } = useAuth();
 		// const plans = new UseData( "plans" );
 		const notification = inject( "notification" );
 		const plan = ref({});
@@ -182,39 +187,38 @@ export default {
 		const onBoard = async () => {
 			try {
 				if ( userType === "business" ) {
-					const business = new UseData( "business" );
-					const ids = await business.createDocuments([form.value]);
-					await manualApi({
-						"method": "post",
-						"url": `payment/customer/${ids[0]}`,
-						"data": JSON.stringify({})
-					});
+					const businessService = new BusinessService();
+					const ids = await businessService.updateDocument( form.value );
+					// await manualApi({
+					// 	"method": "post",
+					// 	"url": `payment/customer/${ids[0]}`,
+					// 	"data": JSON.stringify({})
+					// });
 					// await onboarding({ "businessId": ids[0] });
 					// eslint-disable-next-line require-atomic-updates
-					form.value.businessId = ids[0];
+					// form.value.businessId = ids[0];
 				} else {
-					const specialist = new UseData( "specialist" );
-					const ids = await specialist.createDocuments([form.value]);
-					await manualApi({
-						"method": "post",
-						"url": `payment/customer/${ids[0]}`,
-						"data": JSON.stringify({})
-					});
+					const specialistService = new ProfileService();
+					const ids = await specialistService.updateDocument( form.value );
+					// await manualApi({
+					// 	"method": "post",
+					// 	"url": `payment/customer/${ids[0]}`,
+					// 	"data": JSON.stringify({})
+					// });
 					// await onboarding({ "specialistId": ids[0] });
 					// eslint-disable-next-line require-atomic-updates
-					form.value.specialistId = ids[0];
+					// form.value.specialistId = ids[0];
 				}
 
-				await manualApi({
-					"method": "post",
-					"url": `payment/subscription/${userType === "business" ? form.value.businessId : form.value.specialistId}`,
-					"data": JSON.stringify({
-						// "planId": plan.value._id,
-						"promocode": promocode.value
-					})
-				});
-				await onboarding( form.value );
-				profile.value.new = false;
+				// await manualApi({
+				// 	"method": "post",
+				// 	"url": `payment/subscription/${userType === "business" ? form.value.businessId : form.value.specialistId}`,
+				// 	"data": JSON.stringify({
+				// 		// "planId": plan.value._id,
+				// 		"promocode": promocode.value
+				// 	})
+				// });
+				await restoreSession();
 				await resetForm();
 				router.push({ "name": "Dashboard" });
 			} catch ( error ) {
@@ -244,7 +248,7 @@ export default {
 			stripePromise.then( () => stripeLoaded.value = true );
 		});
 		onMounted( () => {
-			plan.value = plans[userType].find( item => item.key === form.value.plan );
+			// plan.value = plans[userType].find( item => item.key === form.value.plan );
 			// plans.readDocuments();
 			// if ( userType === "business" ) {
 			// 	const keywordMethod = form.value.annually ? "yearly" : "monthly";

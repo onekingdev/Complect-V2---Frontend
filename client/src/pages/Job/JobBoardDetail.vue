@@ -65,7 +65,7 @@
 			p.client-title Client Details
 			.client-info
 				.client-name-content
-					c-avatar(avatar="avatar.jpg" :firstName="business.firstName" :lastName="business.lastName" )
+					c-avatar(avatar="avatar.jpg" :firstName="business.first_name" :lastName="business.last_name" )
 					div
 						p.client-name(@click="toggleChatModal" ) {{ business.firstName }} {{ business.lastName }}
 						p.client-location {{ business.city }}, {{ business.state }}, {{ business.country }}
@@ -202,10 +202,10 @@ export default {
 				font-size: 14px
 				.job-info-title
 					color: var(--c-grey-500)
-					font-size: 14px
+					font-size: 0.875em
 				.job-info-value
 					color: var(--c-headers)
-					font-size: 16px
+					font-size: 1em
 			.job-info
 				margin-top: 2em
 				.border-left
@@ -226,7 +226,7 @@ export default {
 		.skill-content
 			padding: 2em 3em
 			.skill-title
-				font-size: 20px
+				font-size: 1.25em
 				font-weight: 700
 				margin-bottom: 1.25em
 			.skill-ind
@@ -235,11 +235,11 @@ export default {
 				display: inline-block
 				padding: 0.125em 0.3em
 				margin-right: 0.7em
-				font-size: 14px
+				font-size: 0.875em
 		.client-content
 			padding: 2em 3em
 			.client-title
-				font-size: 20px
+				font-size: 1.25em
 				font-weight: 700
 			.client-info
 				margin-top: 1rem

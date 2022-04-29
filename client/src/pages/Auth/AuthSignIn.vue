@@ -2,18 +2,18 @@
 card-container
 	template(#content v-if="step === 1")
 		h1 Let's get you started!
-		.form.grid-6
+		.form.grid-6(@keypress.enter="signIn()")
 			c-field(label="Email" type="email" :errors="errors.email" v-model="form.email" fullwidth required)
-			c-field(label="Password" type="password" @keypress.enter="signIn()" :errors="errors.password" v-model="form.password" fullwidth required)
+			c-field(label="Password" type="password" :errors="errors.password" v-model="form.password" fullwidth required)
 			c-button(title="Sign In" type="primary" @click="signIn()" fullwidth)
 			router-link.forgot-password(:to="{name: 'AuthResetPassword'}") Forgot Password
 	template(#content v-if="step === 2")
 		h1 Confirm Your Email
 		h3 We sent a 6 digit code to {{form.email}}. Please enter it below.
 		icon(name="mail")
-		.confirmation-code
-			input(v-for="i in 6" :key="i" type="number" :ref="el => { if (el) inputs[i-1] = el }" v-model="numbers[i-1]" @keyup="event => keyupHandler(event, i)" @input="event => inputHandler(event, i)" required)
-		.error(v-if="errorMessage") {{ errorMessage }}
+		.confirmation-code(@keypress.enter="submitCode(form.email, form.password, otp)")
+			input(v-for="i in 6" @paste="onPaste" @paste.prevent :key="i" type="number" :ref="el => { if (el) inputs[i-1] = el }" v-model="numbers[i-1]" @keyup="event => keyupHandler(event, i)" @input="event => inputHandler(event, i)" required)
+		.error {{ errorMessage }}
 		c-button(title="Submit" type="primary" @click="submitCode(form.email, form.password, otp)" fullwidth)
 	template(#footer)
 		p(v-if="step !== 2") Don't have an account yet?&nbsp;
@@ -35,7 +35,7 @@ export default {
 		const { authentication } = useAuth();
 		const form = ref({});
 		const errors = ref({});
-		const step = ref( 1 );
+		const step = ref( 2 );
 		const toStepTwo = () => step.value = 2;
 		const rules = {
 			"email": { required, email },
@@ -69,9 +69,15 @@ export default {
 			inputHandler
 		} = useSignInOtp();
 
+		const onPaste = event => {
+			const paste = (event.clipboardData || window.clipboardData).getData("text").slice(0, 6);
+			numbers.value = [...paste];
+		};
+
 		return {
 			errors,
 			form,
+			onPaste,
 			signIn,
 
 			step,
@@ -96,6 +102,7 @@ export default {
 
 .error
 	font-size: 0.8em
+	height: 1em
 	color: red
 	text-align: center
 svg.icon
@@ -106,6 +113,7 @@ svg.icon
 	margin: 2em auto
 .confirmation-code
 	margin: 1em
+	margin-bottom: 0
 	display: flex
 	gap: 0.5em
 	font-size: 1.6em

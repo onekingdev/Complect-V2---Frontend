@@ -1,6 +1,6 @@
 <template lang="pug">
 .cell-user
-	c-avatar(:firstName="data.firstName" :lastName="data.lastName" :avatar="data.avatar")
+	c-avatar(:firstName="data.first_name" :lastName="data.last_name" :avatar="data.avatar")
 	.info
 		.name {{ data.firstName }} {{ data.lastName }}
 		.email {{ data.email }}
@@ -31,5 +31,5 @@ export default {
 		color: var(--c-grey)
 	.add-info
 		color: var(--c-grey)
-		font-size: 12px
+		font-size: 0.8em
 </style>

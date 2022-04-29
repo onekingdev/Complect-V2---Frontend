@@ -261,29 +261,6 @@
 				<path d="M33 54H48" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
 			</symbol>
 
-			<!-- newspaper -->
-			<symbol id="icon_newspaper" viewBox="0 0 96 96">
-				<path d="M69 77.9737V13.5C68.9965 12.3076 68.5213 11.165 67.6782 10.3218C66.835 9.47868 65.6924 9.00346 64.5 9H13.5C12.3076 9.00346 11.165 9.47868 10.3218 10.3218C9.47868 11.165 9.00346 12.3076 9 13.5V79.5C9.00594 81.4873 9.79802 83.3915 11.2033 84.7967C12.6085 86.202 14.5127 86.9941 16.5 87H78" stroke="#343741" stroke-width="6" stroke-linejoin="round"/>
-				<path d="M78 87C75.6131 87 73.3239 86.0518 71.636 84.364C69.9482 82.6761 69 80.3869 69 78V24H82.5C83.6935 24 84.8381 24.4741 85.682 25.318C86.5259 26.1619 87 27.3065 87 28.5V78C87 80.3869 86.0518 82.6761 84.364 84.364C82.6761 86.0518 80.3869 87 78 87Z" stroke="#343741" stroke-width="6" stroke-linejoin="round"/>
-				<path d="M45 24H57" stroke="#343741" stroke-width="6" stro ke-linecap="round" stroke-linejoin="round"/>
-				<path d="M45 36H57" stroke="#343741" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-				<path d="M21 48H57" stroke="#343741" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-				<path d="M21 60H57" stroke="#343741" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-				<path d="M21 72H57" stroke="#343741" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-				<path d="M33 39H21C20.2044 39 19.4413 38.6839 18.8787 38.1213C18.3161 37.5587 18 36.7956 18 36V24C18 23.2043 18.3161 22.4413 18.8787 21.8787C19.4413 21.3161 20.2044 21 21 21H33C33.7956 21 34.5587 21.3161 35.1213 21.8787C35.6839 22.4413 36 23.2043 36 24V36C36 36.7956 35.6839 37.5587 35.1213 38.1213C34.5587 38.6839 33.7956 39 33 39Z" fill="#343741"/>
-			</symbol>
-
-			<!-- newspaper-white -->
-			<symbol id="icon_newspaper-white" viewBox="0 0 96 96">
-				<path d="M69 77.9737V13.5C68.9965 12.3076 68.5213 11.165 67.6782 10.3218C66.835 9.47868 65.6924 9.00346 64.5 9H13.5C12.3076 9.00346 11.165 9.47868 10.3218 10.3218C9.47868 11.165 9.00346 12.3076 9 13.5V79.5C9.00594 81.4873 9.79802 83.3915 11.2033 84.7967C12.6085 86.202 14.5127 86.9941 16.5 87H78" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
-				<path d="M78 87C75.6131 87 73.3239 86.0518 71.636 84.364C69.9482 82.6761 69 80.3869 69 78V24H82.5C83.6935 24 84.8381 24.4741 85.682 25.318C86.5259 26.1619 87 27.3065 87 28.5V78C87 80.3869 86.0518 82.6761 84.364 84.364C82.6761 86.0518 80.3869 87 78 87Z" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
-				<path d="M45 24H57" stroke="#fff" stroke-width="6" stro ke-linecap="round" stroke-linejoin="round"/>
-				<path d="M45 36H57" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-				<path d="M21 48H57" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-				<path d="M21 60H57" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-				<path d="M21 72H57" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-				<path d="M33 39H21C20.2044 39 19.4413 38.6839 18.8787 38.1213C18.3161 37.5587 18 36.7956 18 36V24C18 23.2043 18.3161 22.4413 18.8787 21.8787C19.4413 21.3161 20.2044 21 21 21H33C33.7956 21 34.5587 21.3161 35.1213 21.8787C35.6839 22.4413 36 23.2043 36 24V36C36 36.7956 35.6839 37.5587 35.1213 38.1213C34.5587 38.6839 33.7956 39 33 39Z" fill="#fff"/>
-			</symbol>
 
 			<!-- folder -->
 			<symbol id="icon_folder" viewBox="0 0 96 96">

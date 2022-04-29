@@ -4,7 +4,7 @@ card-container(title="Collaborators")
 		c-button(title="Add Collaborator" type="default" @click="toggleAddModal()")
 	template(#content)
 		.ind-collaborator(v-for="collaborator in projectDetail?.collaborators")
-			c-avatar(:firstName="collaborator.firstName" :lastName="collaborator.lastName" :avatar="collaborator.avatar")
+			c-avatar(:firstName="collaborator.first_name" :lastName="collaborator.last_name" :avatar="collaborator.avatar")
 			.user-info
 				.name {{ collaborator.firstName }} {{ collaborator.lastName }}
 			.action
@@ -156,7 +156,7 @@ export default {
 		margin-right: 0.5em
 	.user-info
 		.name
-			font-size: 20px
+			font-size: 1.25px
 			margin-top: 0.325em
 	.action
 		margin-left: auto
