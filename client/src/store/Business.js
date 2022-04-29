@@ -1,14 +1,13 @@
-import { ref } from "vue";
+import { ref } from 'vue'
 
-const business = ref( null );
+const business = ref(null)
 
 export default function useBusiness () {
-	const setBusiness = data => business.value = data;
+  const setBusiness = data => business.value = data
 
-	return {
-		business,
-		"isBusiness": business.value && business.value?.owner,
-		setBusiness
-	};
+  return {
+    business,
+    isBusiness: business.value && business.value?.owner,
+    setBusiness
+  }
 }
-
