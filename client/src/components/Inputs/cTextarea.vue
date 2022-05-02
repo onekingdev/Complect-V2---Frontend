@@ -77,40 +77,40 @@ export default {
 
 <style lang="stylus" scoped>
 .c-textarea
-	min-width: 8em
-	.field-label
-		font-size: 0.8em
-		margin-bottom: 0.2em
-		color: #666
-		span.required
-			color: var(--c-red)
-			line-height: 1
-			font-weight: bold
-			margin-left: 0.2em
-	.field-body
-		background: var(--c-bg-z2)
-		box-shadow: 0 0 0 1px var(--c-border)
-		border-radius: var(--v-inputs-border-radius)
-		border: none
-		overflow: auto
-		font-size: 0.9em
-		width: 100%
-		padding: 0.35em 0.5em
-		outline: none
-		line-height: 1.3
-		min-height: 5em
-		resize: vertical
-		max-height: 4em
-		&::placeholder
-			color: #999
-			font-size: 0.9em
-		&.errors
-			box-shadow: 0 0 0 1px #f00
-	.field-info
-		font-size: 0.7em
-		margin-top: 0.3em
-		&.error
-			color: red
-	&.fullwidth
-		width: 100%
+  min-width: 8em
+  .field-label
+    font-size: 0.8em
+    margin-bottom: 0.2em
+    color: #666
+    span.required
+      color: var(--c-red)
+      line-height: 1
+      font-weight: bold
+      margin-left: 0.2em
+  .field-body
+    background: var(--c-bg-z2)
+    box-shadow: 0 0 0 1px var(--c-border)
+    border-radius: var(--v-inputs-border-radius)
+    border: none
+    overflow: auto
+    font-size: 0.9em
+    width: 100%
+    padding: 0.35em 0.5em
+    outline: none
+    line-height: 1.3
+    min-height: 5em
+    resize: vertical
+    max-height: 4em
+    &::placeholder
+      color: #999
+      font-size: 0.9em
+    &.errors
+      box-shadow: 0 0 0 1px #f00
+  .field-info
+    font-size: 0.7em
+    margin-top: 0.3em
+    &.error
+      color: red
+  &.fullwidth
+    width: 100%
 </style>

@@ -54,63 +54,63 @@ const sidebarSpecialistNavigation = [{
 }]
 
 const sidebarHomeNavigation = [
-	{
-		"title": "Overview",
-		"icon": "list-outline",
-		"links": [
-			{
-				"title": "Dashboard",
-				"view": "Dashboard"
-			}, {
-				"title": "Tasks",
-				"view": "TasksOverview"
-			}, {
-				"title": "Projects",
-				"view": "ProjectsOverview"
-			}
-		]
-	}, {
-		"title": "Program Management",
-		"icon": "document",
-		"links": [
-			{
-				"title": "Policies and Procedures",
-				"view": "Policies"
-			}, {
-				"title": "Internal Reviews",
-				"view": "ReviewsOverview"
-			}, {
-				"title": "Risk Register",
-				"view": "RisksOverview"
-			}
-		]
-	}, {
-		"title": "Code of ethics",
-		"icon": "newspaper-white",
-		"links": [
-			{
-				"title": "Personal Trade Monitoring",
-				"view": "EthicsEntries",
-				"active": true,
-				"type": "trade"
-			}, {
-				"title": "Attestations",
-				"view": "EthicsEntries",
-				"active": true,
-				"type": "attestation"
-			}, {
-				"title": "Logs",
-				"view": "EthicsEntries",
-				"active": true,
-				"type": "logs"
-			}, {
-				"title": "Pre-Approvals",
-				"view": "EthicsEntries",
-				"active": true,
-				"type": "approval"
-			}
-		]
-	}
+  {
+    "title": "Overview",
+    "icon": "list-outline",
+    "links": [
+      {
+        "title": "Dashboard",
+        "view": "Dashboard"
+      }, {
+        "title": "Tasks",
+        "view": "TasksOverview"
+      }, {
+        "title": "Projects",
+        "view": "ProjectsOverview"
+      }
+    ]
+  }, {
+    "title": "Program Management",
+    "icon": "document",
+    "links": [
+      {
+        "title": "Policies and Procedures",
+        "view": "Policies"
+      }, {
+        "title": "Internal Reviews",
+        "view": "ReviewsOverview"
+      }, {
+        "title": "Risk Register",
+        "view": "RisksOverview"
+      }
+    ]
+  }, {
+    "title": "Code of ethics",
+    "icon": "newspaper-white",
+    "links": [
+      {
+        "title": "Personal Trade Monitoring",
+        "view": "EthicsEntries",
+        "active": true,
+        "type": "trade"
+      }, {
+        "title": "Attestations",
+        "view": "EthicsEntries",
+        "active": true,
+        "type": "attestation"
+      }, {
+        "title": "Logs",
+        "view": "EthicsEntries",
+        "active": true,
+        "type": "logs"
+      }, {
+        "title": "Pre-Approvals",
+        "view": "EthicsEntries",
+        "active": true,
+        "type": "approval"
+      }
+    ]
+  }
 ];
 
 const sidebarDocumentsNavigation = [{
