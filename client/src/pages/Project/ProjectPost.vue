@@ -64,13 +64,13 @@ export default {
     const notification = inject('notification')
     const toggleDeleteModal = () => isDeleteModalVisible.value = !isDeleteModalVisible.value
     const gotoProposal = id => {
-      const findProposal = proposals.getDocuments().value.find(proposal => proposal._id === id)
-      router.push({ name: 'ProposalView', params: { id: findProposal.job_id, specialist_id: findProposal.owner_id } })
+      const findProposal = proposals.getDocuments().value.find(proposal => proposal.id === id)
+      router.push({ name: 'ProposalView', params: { id: findProposal.jobid, specialistid: findProposal.ownerid } })
     }
     const deleteJobPost = async () => {
       try {
         await jobs.deleteDocuments(props.projectDetail.jobId)
-        await projects.updateDocument(props.projectDetail._id, { jobId: '' })
+        await projects.updateDocument(props.projectDetail.id, { jobId: '' })
         notification({
           type: 'success',
           title: 'Success',
@@ -144,16 +144,16 @@ export default {
       for (let i = 0; i < props.projectDetail?.collaborators?.length && i < 5; i++) {
         const userinfo = props.projectDetail?.collaborators[i]
         userinfo.info = userinfo.role
-        if (userinfo._id === props.projectDetail.creator && props.projectDetail.creator) userinfo.info += '& Project Creator'
+        if (userinfo.id === props.projectDetail.creator && props.projectDetail.creator) userinfo.info += '& Project Creator'
         returnValue.push({ user: props.projectDetail?.collaborators[i] })
       }
       return returnValue
     })
     const projectStatus = computed(() => props.projectDetail?.status)
-    const editJobPost = () => router.push({ name: 'ProjectPostEdit', params: { id: props.projectDetail._id } })
+    const editJobPost = () => router.push({ name: 'ProjectPostEdit', params: { id: props.projectDetail.id } })
     const applicants = computed(() => {
       const returnProposals = proposals.getDocuments().value.map(proposal => {
-        const findUser = users.getDocuments().value.find(user => user._id === proposal.owner_id)
+        const findUser = users.getDocuments().value.find(user => user.id === proposal.ownerid)
         const returnProposal = { ...proposal, user: findUser }
         return returnProposal
       })
@@ -163,7 +163,7 @@ export default {
     onMounted(() => {
       jobs.readDocuments(props.projectDetail.jobId)
       users.readDocuments()
-      proposals.readDocuments('', { job_id: props.projectDetail.jobId })
+      proposals.readDocuments('', { jobid: props.projectDetail.jobId })
     })
     onUnmounted(() => jobs.clearStore())
 

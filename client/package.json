@@ -13,7 +13,10 @@
 		"check": "vite build && eslint 'src/**/*.{js,vue}' --fix && node --experimental-vm-modules node_modules/.bin/jest"
 	},
 	"standard": {
-		"globals": ["expect", "test"]
+		"globals": [
+			"expect",
+			"test"
+		]
 	},
 	"dependencies": {
 		"@stripe/stripe-js": "^1.23.0",

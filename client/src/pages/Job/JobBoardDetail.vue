@@ -100,10 +100,10 @@ c-modal(:title="`Message with ${business.firstName} ${business.lastName}`" v-mod
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { formatDate } from '~/core/utils.js'
-import UseData from '~/store/Data.js'
+import JobPostingService from '~/services/job_postings.js'
+import ProposalService from '~/services/proposals.js'
 import { industries, jurisdictions, minExperience, paymentType, locationType } from '~/data/static.js'
 import cSelect from '~/components/Inputs/cSelect.vue'
-import useProfile from '~/store/Profile.js'
 import cLabel from '~/components/Misc/cLabel.vue'
 import cBadge from '~/components/Misc/cBadge.vue'
 import cAvatar from '~/components/Misc/cAvatar.vue'
@@ -113,9 +113,8 @@ export default {
   components: { cSelect, cLabel, cBadge, cAvatar, cChat, cModal },
   setup () {
     const route = useRoute()
-    const jobs = new UseData('jobs')
-    const proposals = new UseData('proposals')
-    const { profile } = useProfile()
+    const jobs = new JobPostingService()
+    const proposals = new ProposalService(route.params.id)
     const business = ref({
       id: '3234234029384209384',
       firstName: 'Manuel',
@@ -139,7 +138,7 @@ export default {
 
     onMounted(() => {
       jobs.readDocuments(route.params.id)
-      proposals.readDocuments('', { job_id: route.params.id, owner_id: profile.value._id })
+      proposals.readDocuments()
     })
     const closeDetail = () => router.push({ name: 'JobBoard' })
     const applyJob = () => router.push({ name: 'ProposalNew', params: { id: route.params.id } })

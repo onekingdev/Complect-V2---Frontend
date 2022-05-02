@@ -75,16 +75,17 @@ vertical-detail
 </template>
 
 <script>
-import { ref, computed, inject } from 'vue'
-import { useRouter } from 'vue-router'
-import UseData from '~/store/Data.js'
+import { ref, computed, inject, onMounted, onUnmounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import ReviewService from '~/services/reviews.js'
 import VerticalDetail from '~/components/Containers/VerticalDetail.vue'
 export default {
   components: { VerticalDetail },
   setup () {
-    const reviews = new UseData('reviews')
+    const route = useRoute()
     const notification = inject('notification')
     const router = useRouter()
+    const reviews = new ReviewService()
     const reviewCategory = ref({})
     const isGeneral = ref(true)
     const catId = ref(null)
@@ -98,7 +99,7 @@ export default {
       isGeneral.value = true
       router.push({
         name: 'ReviewDetail',
-        params: { id: reviews.getDocument().value._id }
+        params: { id: reviews.getDocument().value.id }
       })
     }
     const selectCategory = id => {
@@ -109,7 +110,7 @@ export default {
     }
     const updateReview = async () => {
       try {
-        await reviews.updateDocument(reviews.getDocument().value._id, reviews.getDocument().value)
+        await reviews.updateDocument(reviews.getDocument().value.id, reviews.getDocument().value)
         notification({ type: 'success', title: 'Success', message: 'Category has been updated.' })
       } catch (error) {
         console.error(error)
@@ -119,7 +120,7 @@ export default {
     const completeReview = async () => {
       const timestamp = reviews.getDocument().value.completedAt ? null : Date.now()
       try {
-        await reviews.updateDocument(reviews.getDocument().value._id, { completedAt: timestamp })
+        await reviews.updateDocument(reviews.getDocument().value.id, { completedAt: timestamp })
         notification({
           type: 'success',
           title: 'Success',
@@ -147,7 +148,7 @@ export default {
       reviews.getDocument().value.categories.push({ title: state.value.categoryName, content: [], completedAt: null })
       state.value.categoryName = ''
       try {
-        await reviews.updateDocument(reviews.getDocument().value._id, { categories: reviews.getDocument().value.categories })
+        await reviews.updateDocument(reviews.getDocument().value.id, { categories: reviews.getDocument().value.categories })
         notification({ type: 'success', title: 'Success', message: 'Category has been added.' })
         isGeneral.value = false
         catId.value = reviews.getDocument().value.categories.length - 1
@@ -161,6 +162,10 @@ export default {
         notification({ type: 'error', title: 'Error', message: 'Category has not been added. Please try again.' })
       }
     }
+    onMounted(() => {
+      reviews.readDocuments(route.params.id)
+    })
+    onUnmounted(() => reviews.clearStore())
     return {
       document: reviews.getDocument(),
       state,

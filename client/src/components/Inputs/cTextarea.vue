@@ -92,7 +92,7 @@ export default {
     box-shadow: 0 0 0 1px var(--c-border)
     border-radius: var(--v-inputs-border-radius)
     border: none
-    overflow: auto
+    overflow: hidden
     font-size: 0.9em
     width: 100%
     padding: 0.35em 0.5em
@@ -101,6 +101,7 @@ export default {
     min-height: 5em
     resize: vertical
     max-height: 4em
+    overflow-y: scroll
     &::placeholder
       color: #999
       font-size: 0.9em

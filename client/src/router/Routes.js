@@ -94,13 +94,6 @@ const RecordsOverview = () => import('~/pages/Records/RecordsOverview.vue')
 const _OrganizationEntry = () => import('~/pages/Organization/_OrganizationEntry.vue')
 const OrganizationOverview = () => import('~/pages/Organization/OrganizationOverview.vue')
 
-// code of ethics
-const _EthicsEntries = () => import('~/pages/Ethics/_EthicsEntries.vue')
-const EthicsEntries = () => import('~/pages/Ethics/EthicsEntries.vue')
-const _EthicsEntry = () => import('~/pages/Ethics/_EthicsEntry.vue')
-const EthicsEntry = () => import('~/pages/Ethics/EthicsEntry.vue')
-const EthicsSetting = () => import('~/pages/Ethics/EthicsSetting.vue')
-
 // form library
 const _FormLibrary = () => import('~/pages/FormLibrary/_FormLibrary.vue')
 const _FormLibraryEntry = () => import('~/pages/FormLibrary/_FormLibraryEntry.vue')
@@ -143,6 +136,11 @@ const ExamDetail = () => import('~/pages/Exam/ExamDetail.vue')
 const ExamDetailDocuments = () => import('~/pages/Exam/ExamDetailDocuments.vue')
 const ExamDetailTasks = () => import('~/pages/Exam/ExamDetailTasks.vue')
 const ExamPortal = () => import('~/pages/Exam/ExamPortal.vue')
+
+// notification
+const _NotificationEntry = () => import('~/pages/Notification/_NotificationEntry.vue')
+const NotificationCenter = () => import('~/pages/Notification/NotificationCenter.vue')
+const NotificationMessage = () => import('~/pages/Notification/NotificationMessage.vue')
 
 // ––––––––––––––– Routes ––––––––––––––– //
 const routes = [
@@ -493,6 +491,27 @@ const routes = [
             }]
           },
           {
+            path: 'notifications',
+            component: _NotificationEntry,
+            meta: {
+              title: 'Notification',
+              sidebar: false
+            },
+            children: [
+              {
+                path: 'center',
+                name: 'NotificationCenter',
+                component: NotificationCenter,
+                meta: { title: 'Notification Center' }
+              }, {
+                path: 'message',
+                name: 'NotificationMessage',
+                component: NotificationMessage,
+                meta: { title: 'Notification Message' }
+              }
+            ]
+          },
+          {
             path: 'organization',
             component: _OrganizationEntry,
             children: [{
@@ -624,38 +643,6 @@ const routes = [
               title: 'Plan',
               sidebar: false
             }
-          },
-          {
-            path: 'ethicsEntries',
-            component: _EthicsEntries,
-            meta: { title: 'Ethics Entries' },
-            children: [{
-              path: '',
-              meta: { title: 'Code Of Ethics' },
-              name: 'EthicsEntries',
-              component: EthicsEntries
-            }]
-          },
-          {
-            path: 'ethics/:id',
-            component: _EthicsEntry,
-            meta: {
-              title: 'Ethics Entry',
-              sidebar: false
-            },
-            children: [
-              {
-                path: '',
-                name: 'EthicsEntry',
-                component: EthicsEntry,
-                meta: { title: 'Ethics Entry' }
-              }, {
-                path: 'setting',
-                name: 'EthicsSetting',
-                component: EthicsSetting,
-                meta: { title: 'Ethics Setting' }
-              }
-            ]
           },
           {
             path: 'formLibrary',
@@ -805,7 +792,7 @@ const routes = [
     props: {
       code: 404,
       title: 'No page found',
-      message: 'The page you are looking for is either missing of can\'t be found.'
+      message: "The page you are looking for is either missing of can't be found."
     }
   },
   {

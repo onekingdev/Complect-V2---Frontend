@@ -33,7 +33,7 @@ c-modal(title="Unlink Policy" v-model="isUnlinkVisible")
 
 <script>
 import { onMounted, onUnmounted, ref, inject, computed } from 'vue'
-import UseData from '~/store/Data.js'
+import RiskService from '~/services/risks.js'
 import { calcRiskLevel } from '~/core/utils.js'
 import cBanner from '~/components/Misc/cBanner.vue'
 import { useRouter } from 'vue-router'
@@ -45,9 +45,8 @@ import cLabel from '~/components/Misc/cLabel.vue'
 
 export default {
   components: { cBanner, cModal, cSelect, cLabel, cBadge },
-  // eslint-disable-next-line
   setup () {
-    const risks = new UseData('risks')
+    const risks = new RiskService()
     const router = useRouter()
     const notification = inject('notification')
     const { profile } = useProfile()
@@ -81,15 +80,15 @@ export default {
         const policyId = clickId.value.policyId
         // await policies.deleteDocuments( policyId );
         await risks.readDocuments(riskId)
-        const controls = risks.getDocument().value.controls.filter(doc => doc._id !== policyId)
-        await risks.updateDocument(risks.getDocument().value._id, { controls })
+        const controls = risks.getDocument().value.controls.filter(doc => doc.id !== policyId)
+        await risks.updateDocument(risks.getDocument().value.id, { controls })
         isUnlinkVisible.value = !isUnlinkVisible.value
         notification({
           type: 'success',
           title: 'Success',
           message: 'Control has been removed.'
         })
-        await risks.readDocuments(risks.getDocument().value._id)
+        await risks.readDocuments(risks.getDocument().value.id)
       } catch (error) {
         console.error(error)
         notification({

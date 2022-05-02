@@ -60,7 +60,7 @@ export default {
     }
     const handleClickDelete = async id => {
       const allDocuments = props.projectDetail.documents.filter(docId => docId !== id) || []
-      await projects.updateDocument(props.projectDetail._id, { documents: allDocuments })
+      await projects.updateDocument(props.projectDetail.id, { documents: allDocuments })
       props.reloadCollection()
       const folderId = 'root'
       await records.readDocuments('', { folderId })
@@ -80,7 +80,7 @@ export default {
           name: file.name,
           status: 'file',
           owner: `${profile.value.firstName} ${profile.value.lastName}`,
-          ownerId: profile.value._id,
+          ownerId: profile.value.id,
           size: file.size,
           dateCreated: Date.now(),
           lastModified: Date.now(),
@@ -88,13 +88,13 @@ export default {
           folderId,
           key: uploadRes.Key
         })
-        await records.createDocuments([newFile.value])
+        await records.createDocuments(newFile.value)
         loading.value = false
         await records.readDocuments('', { folderId })
         const newDocument = records.getDocuments().value.find(record => record.name === file.name)
         const allDocuments = props.projectDetail.documents || []
-        allDocuments.push(newDocument._id)
-        await projects.updateDocument(props.projectDetail._id, { documents: allDocuments })
+        allDocuments.push(newDocument.id)
+        await projects.updateDocument(props.projectDetail.id, { documents: allDocuments })
         props.reloadCollection()
         await records.readDocuments('', { folderId })
         notification({ type: 'success', title: 'Success', message: 'File has been uploaded..' })
@@ -120,7 +120,7 @@ export default {
         }
       }
     ]
-    const documents = computed(() => records.getDocuments().value.filter(record => props.projectDetail.documents.indexOf(record._id) > -1))
+    const documents = computed(() => records.getDocuments().value.filter(record => props.projectDetail.documents.indexOf(record.id) > -1))
     onMounted(() => records.readDocuments())
     return {
       columns,
