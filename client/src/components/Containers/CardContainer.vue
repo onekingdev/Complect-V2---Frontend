@@ -1,27 +1,27 @@
 <template lang="pug">
 .card-container.card-style
-  .card-header(v-if="title || $slots['header'] || $slots['controls']")
-    .card-title(v-if="title") {{ $locale(title) }}
-    .header-content(v-if="$slots['header']")
-      slot(name="header")
-    slot(v-if="$slots['controls']" name="controls")
-  .card-sub-header.grid-6(v-if="$slots['sub-header']")
-    slot(name="sub-header")
-  .card-content.grid-6(v-if="$slots.content")
-    slot(name="content")
-  .card-footer(v-if="$slots.footer")
-    slot(name="footer")
+	.card-header(v-if="title || $slots['header'] || $slots['controls']")
+		.card-title(v-if="title") {{ $locale(title) }}
+		.header-content(v-if="$slots['header']")
+			slot(name="header")
+		slot(v-if="$slots['controls']" name="controls")
+	.card-sub-header.grid-6(v-if="$slots['sub-header']")
+		slot(name="sub-header")
+	.card-content.grid-6(v-if="$slots.content")
+		slot(name="content")
+	.card-footer(v-if="$slots.footer")
+		slot(name="footer")
 </template>
 
 <script>
 export default {
-  props: {
-    title: {
-      type: String,
-      default: '',
-      required: false
-    }
-  }
+	props: {
+		title: {
+			type: String,
+			default: '',
+			required: false
+		}
+	}
 }
 </script>
 
