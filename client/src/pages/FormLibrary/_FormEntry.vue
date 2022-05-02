@@ -15,23 +15,23 @@ page-container(:badge="{title: formDetails.status }" :title="formDetails.name" t
 </template>
 
 <script>
-import { useRoute, useRouter } from "vue-router"
-import { computed } from "vue"
-import cDropdown from "~/components/Inputs/cDropdown.vue"
-import { formLibraryData, formCards } from "~/data/data.js"
+import { useRoute, useRouter } from 'vue-router'
+import { computed } from 'vue'
+import cDropdown from '~/components/Inputs/cDropdown.vue'
+import { formLibraryData, formCards } from '~/data/data.js'
 export default {
   components: { cDropdown },
   setup () {
     const tabs = [
       {
-        title: "Form Builder",
-        routeName: "FormBuilder"
+        title: 'Form Builder',
+        routeName: 'FormBuilder'
       }, {
-        title: "Preview",
-        routeName: "FormPreview"
+        title: 'Preview',
+        routeName: 'FormPreview'
       }, {
-        title: "Setting",
-        routeName: "FormSetting"
+        title: 'Setting',
+        routeName: 'FormSetting'
       }
     ]
     const documents = formLibraryData
@@ -41,7 +41,7 @@ export default {
     const saveDraft = () => {}
     const publishFormLibrary = () => {}
     const closeFormLibrary = () => router.push({
-      name: "FormLibraryEntry",
+      name: 'FormLibraryEntry',
       query: {
         type: formDetails.value.type,
         title: formCards.find(card => card.type === formDetails.value.type)

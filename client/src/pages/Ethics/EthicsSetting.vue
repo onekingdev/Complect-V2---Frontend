@@ -16,31 +16,31 @@ card-container(title="Settings")
 </template>
 
 <script>
-import { ref } from "vue"
-import cSelect from "~/components/Inputs/cSelect.vue"
+import { ref } from 'vue'
+import cSelect from '~/components/Inputs/cSelect.vue'
 export default {
   components: { cSelect },
   setup () {
     // attestation Form Setting
     const reviewerValues = [
-      { title: "Option 1", value: "option-1" },
-      { title: "Option 2", value: "option-2" },
-      { title: "Option 3", value: "option-3" },
-      { title: "Option 4", value: "option-4" },
-      { title: "Option 5", value: "option-5" },
-      { title: "Option 6", value: "option-6" },
-      { title: "Option 7", value: "option-7" },
-      { title: "Option 8", value: "option-8" },
-      { title: "Option 9", value: "option-9" },
-      { title: "Option 10", value: "option-10" }
+      { title: 'Option 1', value: 'option-1' },
+      { title: 'Option 2', value: 'option-2' },
+      { title: 'Option 3', value: 'option-3' },
+      { title: 'Option 4', value: 'option-4' },
+      { title: 'Option 5', value: 'option-5' },
+      { title: 'Option 6', value: 'option-6' },
+      { title: 'Option 7', value: 'option-7' },
+      { title: 'Option 8', value: 'option-8' },
+      { title: 'Option 9', value: 'option-9' },
+      { title: 'Option 10', value: 'option-10' }
     ]
     const reviewerValue = ref([
-      "option-1", "option-2", "option-3"
+      'option-1', 'option-2', 'option-3'
     ])
     const respondentValues = [
-      { title: "All Users", value: "all" }, { title: "User 1", value: "user-1" }, { title: "User 2", value: "user-2" }
+      { title: 'All Users', value: 'all' }, { title: 'User 1', value: 'user-1' }, { title: 'User 2', value: 'user-2' }
     ]
-    const respondentValue = ref(["all"])
+    const respondentValue = ref(['all'])
     return {
       reviewerValues,
       reviewerValue,

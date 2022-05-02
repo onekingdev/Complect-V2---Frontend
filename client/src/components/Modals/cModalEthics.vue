@@ -15,12 +15,12 @@ card-container.c-modal-review(:title="modalTitle" ref="modalWindow")
 </template>
 
 <script>
-import { ref, inject, onMounted } from "vue"
-import useModals from "~/store/Modals.js"
-import { validates } from "~/core/utils.js"
-import { required } from "@vuelidate/validators"
-import { onClickOutside } from "@vueuse/core"
-import { ethicsAllEntriesData } from "~/data/data.js"
+import { ref, inject, onMounted } from 'vue'
+import useModals from '~/store/Modals.js'
+import { validates } from '~/core/utils.js'
+import { required } from '@vuelidate/validators'
+import { onClickOutside } from '@vueuse/core'
+import { ethicsAllEntriesData } from '~/data/data.js'
 export default {
   props: {
     modalId: {
@@ -29,7 +29,7 @@ export default {
     },
     id: {
       type: String,
-      default: "",
+      default: '',
       required: false
     },
     callback: {
@@ -39,17 +39,17 @@ export default {
     }
   },
   setup (props) {
-    const notification = inject("notification")
+    const notification = inject('notification')
     const modalWindow = ref(null)
     const { deleteModal } = useModals()
-    const modalTitle = ref("")
+    const modalTitle = ref('')
     const errors = ref({})
     const form = ref({
       dateOfTransaction: Date.now(),
-      giftType: "",
-      externalOrganization: "",
+      giftType: '',
+      externalOrganization: '',
       costOfTransaction: 0,
-      reasonForGift: ""
+      reasonForGift: ''
     })
     const rule = {
       dateOfTransaction: { required },
@@ -64,17 +64,17 @@ export default {
     const createEthics = () => {
       try {
         notification({
-          type: "success",
-          title: "Success",
-          message: "Entry has been created."
+          type: 'success',
+          title: 'Success',
+          message: 'Entry has been created.'
         })
         props.callback()
       } catch (error) {
         console.error(error)
         notification({
-          type: "error",
-          title: "Error",
-          message: "Entry has not been created. Please try again."
+          type: 'error',
+          title: 'Error',
+          message: 'Entry has not been created. Please try again.'
         })
       }
     }
@@ -82,17 +82,17 @@ export default {
     const updateEthics = () => {
       try {
         notification({
-          type: "success",
-          title: "Success",
-          message: "Entry has been updated."
+          type: 'success',
+          title: 'Success',
+          message: 'Entry has been updated.'
         })
         props.callback()
       } catch (error) {
         console.error(error)
         notification({
-          type: "error",
-          title: "Error",
-          message: "Entry has not been updated. Please try again."
+          type: 'error',
+          title: 'Error',
+          message: 'Entry has not been updated. Please try again.'
         })
       }
     }
@@ -113,8 +113,8 @@ export default {
     onMounted(() => {
       if (props.id) {
         form.value = ethicsAllEntriesData.find(doc => doc._id === props.id)
-        modalTitle.value = "Edit Entry"
-      } else modalTitle.value = "New Entry"
+        modalTitle.value = 'Edit Entry'
+      } else modalTitle.value = 'New Entry'
     })
 
     return { modalWindow, modalTitle, errors, saveEthics, form, closeModal }

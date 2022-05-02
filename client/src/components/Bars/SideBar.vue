@@ -41,19 +41,19 @@ export default {
     const userType = profile.value.type
     const queryType = computed(() => route.query.type)
     const renderSidebar = computed(() => {
-      if ("sidebar" in route.meta) return route.meta.sidebar // check in sidebar key persist in meta object
+      if ('sidebar' in route.meta) return route.meta.sidebar // check in sidebar key persist in meta object
       return true
     })
     const sidebarNavigation = computed(() => {
       switch (route.meta.tab) {
-        case "Documents":
-          if (userType === "specialist") return sidebarSpecialistNavigation
+        case 'Documents':
+          if (userType === 'specialist') return sidebarSpecialistNavigation
           return sidebarDocumentsNavigation
         case "Reports":
-          if (userType === "specialist") return sidebarReportsSpecialistNavigation
+          if (userType === 'specialist') return sidebarReportsSpecialistNavigation
           return sidebarReportsNavigation
         default:
-          if (userType === "specialist") return sidebarSpecialistNavigation
+          if (userType === 'specialist') return sidebarSpecialistNavigation
           return sidebarHomeNavigation
       }
     })
