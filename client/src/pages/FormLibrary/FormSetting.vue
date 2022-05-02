@@ -61,7 +61,7 @@ export default {
     }
   },
   setup (props) {
-    const document = ref( props.formDetails )
+    const document = ref(props.formDetails)
     // attestation Form Setting
     const reviewerValues = [
       { title: 'Option 1', value: 'option-1' },
@@ -81,7 +81,7 @@ export default {
     const repeatValues = [
       { title: 'None', value: 'none' }, { title: 'Monthly', value: 'monthly' }, { title: 'Annually', value: 'annually' }
     ]
-    const repeatValue = ref( 'none' )
+    const repeatValue = ref('none')
     const monthValues = [
       { title: '1 month', value: 1 }, { title: '2 months', value: 2 }, { title: '3 months', value: 3 }, { title: '6 months', value: 6 }
     ]

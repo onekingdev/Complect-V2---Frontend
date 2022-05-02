@@ -10,7 +10,6 @@ card-container.c-modal-review(:title="modalTitle" ref="modalWindow")
     c-button(:title="btnTitle" type="primary" @click="saveForm()")
 </template>
 
-
 <script>
 import { ref, inject, computed, onMounted } from 'vue'
 import useModals from '~/store/Modals.js'

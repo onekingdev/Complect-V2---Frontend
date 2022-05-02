@@ -111,7 +111,7 @@ const sidebarHomeNavigation = [
       }
     ]
   }
-];
+]
 
 const sidebarDocumentsNavigation = [{
   title: 'Files',

@@ -95,11 +95,11 @@ const _OrganizationEntry = () => import('~/pages/Organization/_OrganizationEntry
 const OrganizationOverview = () => import('~/pages/Organization/OrganizationOverview.vue')
 
 // code of ethics
-const _EthicsEntries = () => import("~/pages/Ethics/_EthicsEntries.vue")
-const EthicsEntries = () => import("~/pages/Ethics/EthicsEntries.vue")
-const _EthicsEntry = () => import("~/pages/Ethics/_EthicsEntry.vue")
-const EthicsEntry = () => import("~/pages/Ethics/EthicsEntry.vue")
-const EthicsSetting = () => import("~/pages/Ethics/EthicsSetting.vue")
+const _EthicsEntries = () => import('~/pages/Ethics/_EthicsEntries.vue')
+const EthicsEntries = () => import('~/pages/Ethics/EthicsEntries.vue')
+const _EthicsEntry = () => import('~/pages/Ethics/_EthicsEntry.vue')
+const EthicsEntry = () => import('~/pages/Ethics/EthicsEntry.vue')
+const EthicsSetting = () => import('~/pages/Ethics/EthicsSetting.vue')
 
 // form library
 const _FormLibrary = () => import('~/pages/FormLibrary/_FormLibrary.vue')

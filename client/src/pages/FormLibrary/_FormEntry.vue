@@ -37,7 +37,7 @@ export default {
     const documents = formLibraryData
     const route = useRoute()
     const router = useRouter()
-    const formDetails = computed(() => documents.find( document => document._id === route.params.id ))
+    const formDetails = computed(() => documents.find(document => document._id === route.params.id))
     const saveDraft = () => {}
     const publishFormLibrary = () => {}
     const closeFormLibrary = () => router.push({

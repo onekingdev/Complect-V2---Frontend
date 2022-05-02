@@ -49,7 +49,7 @@ export default {
         case 'Documents':
           if (userType === 'specialist') return sidebarSpecialistNavigation
           return sidebarDocumentsNavigation
-        case "Reports":
+        case 'Reports':
           if (userType === 'specialist') return sidebarReportsSpecialistNavigation
           return sidebarReportsNavigation
         default:
