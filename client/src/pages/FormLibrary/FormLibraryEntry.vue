@@ -58,7 +58,7 @@ export default {
 
 		const documents = formLibraryData.filter( doc => doc.type === props.type );
 
-		return { columns, documents };
-	}
-};
+    return { columns, documents }
+  }
+}
 </script>

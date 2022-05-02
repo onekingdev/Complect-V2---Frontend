@@ -1,26 +1,24 @@
 <template lang="pug">
 .c-badge(:class="title")
-	icon(v-if="icon" :name="icon")
-	.title {{ $locale(title) }}
+  icon(v-if="icon" :name="icon")
+  .title {{ $locale(title) }}
 </template>
-
 
 <script>
 export default {
-	"props": {
-		"icon": {
-			"type": String,
-			"default": "",
-			"required": false
-		},
-		"title": {
-			"type": String,
-			"required": true
-		}
-	}
-};
+  props: {
+    icon: {
+      type: String,
+      default: '',
+      required: false
+    },
+    title: {
+      type: String,
+      required: true
+    }
+  }
+}
 </script>
-
 
 <style lang="stylus" scoped>
 .c-badge

@@ -18,96 +18,94 @@ c-label.c-input.c-field(v-bind="{label, required}" ref="selectComponent")
             label {{ child.title }}
 </template>
 
-
 <script>
-import { ref, computed, onMounted } from "vue";
-import { onClickOutside } from "@vueuse/core";
-import cLabel from "~/components/Misc/cLabel.vue";
+import { ref, computed, onMounted } from 'vue'
+import { onClickOutside } from '@vueuse/core'
+import cLabel from '~/components/Misc/cLabel.vue'
 
 export default {
-	"components": { cLabel },
-	"props": {
-		"value": {
-			"type": Object,
-			"default": () => {}
-		},
-		"options": {
-			"type": Array,
-			"default": () => [],
-			"required": true
-		},
-		"label": {
-			"type": String,
-			"default": ""
-		},
-		"placeholder": {
-			"type": String,
-			"default": ""
-		},
-		"required": Boolean
-	},
-	"emits": ["updateValue"],
-	setup ( props, context ) {
-		const isShowDropList = ref( false );
-		const activeItems = ref([]);
-		const selected = ref( null );
-		const selectComponent = ref( null );
+  components: { cLabel },
+  props: {
+    value: {
+      type: Object,
+      default: () => {}
+    },
+    options: {
+      type: Array,
+      default: () => [],
+      required: true
+    },
+    label: {
+      type: String,
+      default: ''
+    },
+    placeholder: {
+      type: String,
+      default: ''
+    },
+    required: Boolean
+  },
+  emits: ['updateValue'],
+  setup (props, context) {
+    const isShowDropList = ref(false)
+    const activeItems = ref([])
+    const selected = ref(null)
+    const selectComponent = ref(null)
 
-		const hasValue = computed( () => Boolean( selected.value ) );
+    const hasValue = computed(() => Boolean(selected.value))
 
-		const showDropdownList = () => {
-			isShowDropList.value = true;
-		};
+    const showDropdownList = () => {
+      isShowDropList.value = true
+    }
 
-		const canShowOptionItem = optionIndex => activeItems.value.includes( optionIndex );
+    const canShowOptionItem = optionIndex => activeItems.value.includes(optionIndex)
 
-		const hideDropdownList = () => {
-			isShowDropList.value = false;
-		};
+    const hideDropdownList = () => {
+      isShowDropList.value = false
+    }
 
-		const emitValue = () => context.emit( "updateValue", selected.value );
+    const emitValue = () => context.emit('updateValue', selected.value)
 
-		const openItemList = optionIndex => {
-			if ( activeItems.value.includes( optionIndex ) ) {
-				const index = activeItems.value.indexOf( optionIndex );
-				if ( index > -1 ) activeItems.value.splice( index, 1 );
-			} else activeItems.value.push( optionIndex );
-		};
+    const openItemList = optionIndex => {
+      if (activeItems.value.includes(optionIndex)) {
+        const index = activeItems.value.indexOf(optionIndex)
+        if (index > -1) activeItems.value.splice(index, 1)
+      } else activeItems.value.push(optionIndex)
+    }
 
-		const selectItem = ( index, childIndex ) => {
-			const item = props.options[index];
-			selected.value = { ...item.children[childIndex], "label": item.label };
-			emitValue();
-			hideDropdownList();
-		};
+    const selectItem = (index, childIndex) => {
+      const item = props.options[index]
+      selected.value = { ...item.children[childIndex], label: item.label }
+      emitValue()
+      hideDropdownList()
+    }
 
-		const clearValue = () => {
-			selected.value = null;
-			emitValue();
-		};
+    const clearValue = () => {
+      selected.value = null
+      emitValue()
+    }
 
-		onClickOutside( selectComponent, () => hideDropdownList() );
+    onClickOutside(selectComponent, () => hideDropdownList())
 
-		onMounted( () => {
-			if ( props.value ) selected.value = props.value;
-		});
+    onMounted(() => {
+      if (props.value) selected.value = props.value
+    })
 
-		return {
-			hasValue,
-			selectComponent,
-			selected,
-			activeItems,
-			isShowDropList,
-			selectItem,
-			showDropdownList,
-			openItemList,
-			clearValue,
-			canShowOptionItem
-		};
-	}
-};
+    return {
+      hasValue,
+      selectComponent,
+      selected,
+      activeItems,
+      isShowDropList,
+      selectItem,
+      showDropdownList,
+      openItemList,
+      clearValue,
+      canShowOptionItem
+    }
+  }
+}
 </script>
-
 
 <style lang="stylus" scoped>
 .c-tree-select

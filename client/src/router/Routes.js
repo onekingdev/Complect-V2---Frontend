@@ -1,102 +1,98 @@
-import { createWebHistory, createRouter } from "vue-router";
-import { useAuthGuard, useOnboardingGuard, useAppPagesGuard, businessPagesGuard } from "./Guards.js";
+import { createWebHistory, createRouter } from 'vue-router'
+import { useAuthGuard, useOnboardingGuard, useNotOnboardedGuard, businessPagesGuard } from './Guards.js'
+
+import { devRoutes } from '~/_devmode/Routes.js'
 
 // layers
-const ErrorLayer = () => import( "~/layers/ErrorLayer.vue" );
-const UnauthenticatedLayer = () => import( "~/layers/UnauthenticatedLayer.vue" );
-const AuthenticatedLayer = () => import( "~/layers/AuthenticatedLayer.vue" );
+const ErrorLayer = () => import('~/layers/ErrorLayer.vue')
+const UnauthenticatedLayer = () => import('~/layers/UnauthenticatedLayer.vue')
+const AuthenticatedLayer = () => import('~/layers/AuthenticatedLayer.vue')
 
-const AuthSignUp = () => import( "~/pages/Auth/AuthSignUp.vue" );
-const AuthSignIn = () => import( "~/pages/Auth/AuthSignIn.vue" );
-const AuthResetPassword = () => import( "~/pages/Auth/AuthResetPassword.vue" );
+const AuthSignUp = () => import('~/pages/Auth/AuthSignUp.vue')
+const AuthSignIn = () => import('~/pages/Auth/AuthSignIn.vue')
+const AuthResetPassword = () => import('~/pages/Auth/AuthResetPassword.vue')
 
-const _OnboardingEntry = () => import( "~/pages/Onboarding/_OnboardingEntry.vue" );
-const OnboardingForm = () => import( "~/pages/Onboarding/OnboardingForm.vue" );
-const OnboardingCheckout = () => import( "~/pages/Onboarding/OnboardingCheckout.vue" );
+const _OnboardingEntry = () => import('~/pages/Onboarding/_OnboardingEntry.vue')
+const OnboardingForm = () => import('~/pages/Onboarding/OnboardingForm.vue')
+const OnboardingCheckout = () => import('~/pages/Onboarding/OnboardingCheckout.vue')
 
-const _PagesEntry = () => import( "~/pages/_PagesEntry.vue" );
-const _DashboardEntry = () => import( "~/pages/Dashboard/_DashboardEntry.vue" );
-
+const _PagesEntry = () => import('~/pages/_PagesEntry.vue')
+const _DashboardEntry = () => import('~/pages/Dashboard/_DashboardEntry.vue')
 
 // tasks
-const _TasksEntry = () => import( "~/pages/Tasks/_TasksEntry.vue" );
-const TasksOverview = () => import( "~/pages/Tasks/TasksOverview.vue" );
-
+const _TasksEntry = () => import('~/pages/Tasks/_TasksEntry.vue')
+const TasksOverview = () => import('~/pages/Tasks/TasksOverview.vue')
 
 // projects
-const _ProjectsEntry = () => import( "~/pages/Projects/_ProjectsEntry.vue" );
-const ProjectsOverview = () => import( "~/pages/Projects/ProjectsOverview.vue" );
-const ProjectsContacts = () => import( "~/pages/Projects/ProjectsContacts.vue" );
-const ProjectsRatings = () => import( "~/pages/Projects/ProjectsRatings.vue" );
+const _ProjectsEntry = () => import('~/pages/Projects/_ProjectsEntry.vue')
+const ProjectsOverview = () => import('~/pages/Projects/ProjectsOverview.vue')
+const ProjectsContacts = () => import('~/pages/Projects/ProjectsContacts.vue')
+const ProjectsRatings = () => import('~/pages/Projects/ProjectsRatings.vue')
 // jobs
-const _JobsEntry = () => import( "~/pages/Jobs/_JobsEntry.vue" );
-const JobsOverview = () => import( "~/pages/Jobs/JobsOverview.vue" );
-const JobsContacts = () => import( "~/pages/Jobs/JobsContacts.vue" );
-const JobsRatings = () => import( "~/pages/Jobs/JobsRatings.vue" );
-
+const _JobsEntry = () => import('~/pages/Jobs/_JobsEntry.vue')
+const JobsOverview = () => import('~/pages/Jobs/JobsOverview.vue')
+const JobsContacts = () => import('~/pages/Jobs/JobsContacts.vue')
+const JobsRatings = () => import('~/pages/Jobs/JobsRatings.vue')
 
 // project
-const _ProjectEntry = () => import( "~/pages/Project/_ProjectEntry.vue" );
-const ProjectDetail = () => import( "~/pages/Project/ProjectDetail.vue" );
-const ProjectTasks = () => import( "~/pages/Project/ProjectTasks.vue" );
-const ProjectDocuments = () => import( "~/pages/Project/ProjectDocuments.vue" );
-const ProjectCollaborators = () => import( "~/pages/Project/ProjectCollaborators.vue" );
-const ProjectPost = () => import( "~/pages/Project/ProjectPost.vue" );
-const ProjectContract = () => import( "~/pages/Project/ProjectContract.vue" );
-const ProjectPostForm = () => import( "~/pages/Project/ProjectPostForm.vue" );
-const ProjectTimesheet = () => import( "~/pages/Project/ProjectTimesheet.vue" );
+const _ProjectEntry = () => import('~/pages/Project/_ProjectEntry.vue')
+const ProjectDetail = () => import('~/pages/Project/ProjectDetail.vue')
+const ProjectTasks = () => import('~/pages/Project/ProjectTasks.vue')
+const ProjectDocuments = () => import('~/pages/Project/ProjectDocuments.vue')
+const ProjectCollaborators = () => import('~/pages/Project/ProjectCollaborators.vue')
+const ProjectPost = () => import('~/pages/Project/ProjectPost.vue')
+const ProjectContract = () => import('~/pages/Project/ProjectContract.vue')
+const ProjectPostForm = () => import('~/pages/Project/ProjectPostForm.vue')
+const ProjectTimesheet = () => import('~/pages/Project/ProjectTimesheet.vue')
 
 // proposal
-const ProposalForm = () => import( "~/pages/Proposal/ProposalForm.vue" );
-const ProposalFormView = () => import( "~/pages/Proposal/ProposalFormView.vue" );
+const ProposalForm = () => import('~/pages/Proposal/ProposalForm.vue')
+const ProposalFormView = () => import('~/pages/Proposal/ProposalFormView.vue')
 
 // policies
-const _PoliciesEntry = () => import( "~/pages/Policies/_PoliciesEntry.vue" );
-const PoliciesOverview = () => import( "~/pages/Policies/PoliciesOverview.vue" );
-const PoliciesArchive = () => import( "~/pages/Policies/PoliciesArchive.vue" );
-const PoliciesSetup = () => import( "~/pages/Policies/PoliciesSetup.vue" );
+const _PoliciesEntry = () => import('~/pages/Policies/_PoliciesEntry.vue')
+const PoliciesOverview = () => import('~/pages/Policies/PoliciesOverview.vue')
+const PoliciesArchive = () => import('~/pages/Policies/PoliciesArchive.vue')
+const PoliciesSetup = () => import('~/pages/Policies/PoliciesSetup.vue')
 // policy
-const _PolicyEntry = () => import( "~/pages/Policy/_PolicyEntry.vue" );
-const PolicyDetail = () => import( "~/pages/Policy/PolicyDetail.vue" );
-const PolicyRisks = () => import( "~/pages/Policy/PolicyRisks.vue" );
-const PolicyTasks = () => import( "~/pages/Policy/PolicyTasks.vue" );
-const PolicyHistory = () => import( "~/pages/Policy/PolicyHistory.vue" );
-
+const _PolicyEntry = () => import('~/pages/Policy/_PolicyEntry.vue')
+const PolicyDetail = () => import('~/pages/Policy/PolicyDetail.vue')
+const PolicyRisks = () => import('~/pages/Policy/PolicyRisks.vue')
+const PolicyTasks = () => import('~/pages/Policy/PolicyTasks.vue')
+const PolicyHistory = () => import('~/pages/Policy/PolicyHistory.vue')
 
 // reviews
-const _ReviewsEntry = () => import( "~/pages/Reviews/_ReviewsEntry.vue" );
-const ReviewsOverview = () => import( "~/pages/Reviews/ReviewsOverview.vue" );
+const _ReviewsEntry = () => import('~/pages/Reviews/_ReviewsEntry.vue')
+const ReviewsOverview = () => import('~/pages/Reviews/ReviewsOverview.vue')
 // review
-const _ReviewEntry = () => import( "~/pages/Review/_ReviewEntry.vue" );
-const ReviewDetail = () => import( "~/pages/Review/ReviewDetail.vue" );
-const ReviewCategory = () => import( "~/pages/Review/ReviewCategory.vue" );
-const ReviewTasks = () => import( "~/pages/Review/ReviewTasks.vue" );
-const ReviewDocuments = () => import( "~/pages/Review/ReviewDocuments.vue" );
-
+const _ReviewEntry = () => import('~/pages/Review/_ReviewEntry.vue')
+const ReviewDetail = () => import('~/pages/Review/ReviewDetail.vue')
+const ReviewCategory = () => import('~/pages/Review/ReviewCategory.vue')
+const ReviewTasks = () => import('~/pages/Review/ReviewTasks.vue')
+const ReviewDocuments = () => import('~/pages/Review/ReviewDocuments.vue')
 
 // risks
-const _RisksEntry = () => import( "~/pages/Risks/_RisksEntry.vue" );
-const RisksOverview = () => import( "~/pages/Risks/RisksOverview.vue" );
+const _RisksEntry = () => import('~/pages/Risks/_RisksEntry.vue')
+const RisksOverview = () => import('~/pages/Risks/RisksOverview.vue')
 // risk
-const _RiskEntry = () => import( "~/pages/Risk/_RiskEntry.vue" );
-const RiskDetail = () => import( "~/pages/Risk/RiskDetail.vue" );
+const _RiskEntry = () => import('~/pages/Risk/_RiskEntry.vue')
+const RiskDetail = () => import('~/pages/Risk/RiskDetail.vue')
 
 // jobs
-const _JobBoardEntry = () => import( "~/pages/Job/_JobBoardEntry.vue" );
-const JobBoardDetail = () => import( "~/pages/Job/JobBoardDetail.vue" );
+const _JobBoardEntry = () => import('~/pages/Job/_JobBoardEntry.vue')
+const JobBoardDetail = () => import('~/pages/Job/JobBoardDetail.vue')
 
 // expoert
-const _ExpertListEntry = () => import( "~/pages/Expert/_ExpertListEntry.vue" );
-const ExpertDetail = () => import( "~/pages/Expert/ExpertDetail.vue" );
-
+const _ExpertListEntry = () => import('~/pages/Expert/_ExpertListEntry.vue')
+const ExpertDetail = () => import('~/pages/Expert/ExpertDetail.vue')
 
 // records
-const _RecordsEntry = () => import( "~/pages/Records/_RecordsEntry.vue" );
-const RecordsOverview = () => import( "~/pages/Records/RecordsOverview.vue" );
+const _RecordsEntry = () => import('~/pages/Records/_RecordsEntry.vue')
+const RecordsOverview = () => import('~/pages/Records/RecordsOverview.vue')
 
 // organization
-const _OrganizationEntry = () => import( "~/pages/Organization/_OrganizationEntry.vue" );
-const OrganizationOverview = () => import( "~/pages/Organization/OrganizationOverview.vue" );
+const _OrganizationEntry = () => import('~/pages/Organization/_OrganizationEntry.vue')
+const OrganizationOverview = () => import('~/pages/Organization/OrganizationOverview.vue')
 
 // code of ethics
 const _EthicsEntries = () => import( "~/pages/Ethics/_EthicsEntries.vue" );
@@ -106,50 +102,52 @@ const EthicsEntry = () => import( "~/pages/Ethics/EthicsEntry.vue" );
 const EthicsSetting = () => import( "~/pages/Ethics/EthicsSetting.vue" );
 
 // form library
-const _FormLibrary = () => import( "~/pages/FormLibrary/_FormLibrary.vue" );
-const _FormLibraryEntry = () => import( "~/pages/FormLibrary/_FormLibraryEntry.vue" );
-const FormLibraryEntry = () => import( "~/pages/FormLibrary/FormLibraryEntry.vue" );
-const FormLibraryNew = () => import( "~/pages/FormLibrary/FormLibraryNew.vue" );
-const _FormEntry = () => import( "~/pages/FormLibrary/_FormEntry.vue" );
-const FormBuilder = () => import( "~/pages/FormLibrary/FormBuilder.vue" );
-const FormPreview = () => import( "~/pages/FormLibrary/FormPreview.vue" );
-const FormSetting = () => import( "~/pages/FormLibrary/FormSetting.vue" );
-
+const _FormLibrary = () => import('~/pages/FormLibrary/_FormLibrary.vue')
+const _FormLibraryEntry = () => import('~/pages/FormLibrary/_FormLibraryEntry.vue')
+const FormLibraryEntry = () => import('~/pages/FormLibrary/FormLibraryEntry.vue')
+const FormLibraryNew = () => import('~/pages/FormLibrary/FormLibraryNew.vue')
+const _FormEntry = () => import('~/pages/FormLibrary/_FormEntry.vue')
+const FormBuilder = () => import('~/pages/FormLibrary/FormBuilder.vue')
+const FormPreview = () => import('~/pages/FormLibrary/FormPreview.vue')
+const FormSetting = () => import('~/pages/FormLibrary/FormSetting.vue')
 
 // settings
-const _SettingsEntry = () => import( "~/pages/Settings/_SettingsEntry.vue" );
-const SettingsGeneral = () => import( "~/pages/Settings/SettingsGeneral.vue" );
-const SettingsUsers = () => import( "~/pages/Settings/SettingsUsers.vue" );
-const SettingsUsersDirectory = () => import( "~/pages/Settings/SettingsUsersDirectory.vue" );
-const SettingsUsersDisabled = () => import( "~/pages/Settings/SettingsUsersDisabled.vue" );
-const SettingsRoles = () => import( "~/pages/Settings/SettingsRoles.vue" );
-const SettingsSecurity = () => import( "~/pages/Settings/SettingsSecurity.vue" );
-const SettingsSubscriptions = () => import( "~/pages/Settings/SettingsSubscriptions.vue" );
-const SettingsBilling = () => import( "~/pages/Settings/SettingsBilling.vue" );
-const SettingsBillingPlan = () => import( "~/pages/Settings/SettingsBillingPlan.vue" );
-const SettingsClientBilling = () => import( "~/pages/Settings/SettingsClientBilling.vue" );
+const _SettingsEntry = () => import('~/pages/Settings/_SettingsEntry.vue')
+const SettingsGeneral = () => import('~/pages/Settings/SettingsGeneral.vue')
+const SettingsUsers = () => import('~/pages/Settings/SettingsUsers.vue')
+const SettingsUsersDirectory = () => import('~/pages/Settings/SettingsUsersDirectory.vue')
+const SettingsUsersDisabled = () => import('~/pages/Settings/SettingsUsersDisabled.vue')
+const SettingsRoles = () => import('~/pages/Settings/SettingsRoles.vue')
+const SettingsSecurity = () => import('~/pages/Settings/SettingsSecurity.vue')
+const SettingsSubscriptions = () => import('~/pages/Settings/SettingsSubscriptions.vue')
+const SettingsBilling = () => import('~/pages/Settings/SettingsBilling.vue')
+const SettingsBillingPlan = () => import('~/pages/Settings/SettingsBillingPlan.vue')
+const SettingsClientBilling = () => import('~/pages/Settings/SettingsClientBilling.vue')
 
 // profiles
-const _ProfileEntry = () => import( "~/pages/Profile/_ProfileEntry.vue" );
-const ProfileAbout = () => import( "~/pages/Profile/ProfileAbout.vue" );
-const ProfileSettings = () => import( "~/pages/Profile/ProfileSettings.vue" );
+const _ProfileEntry = () => import('~/pages/Profile/_ProfileEntry.vue')
+const ProfileAbout = () => import('~/pages/Profile/ProfileAbout.vue')
+const ProfileSettings = () => import('~/pages/Profile/ProfileSettings.vue')
 
 // report
-const ReportEntry = () => import( "~/pages/Reports/ReportEntry.vue" );
-const ReportOrganizations = () => import( "~/pages/Reports/ReportOrganizations.vue" );
-const ReportRisks = () => import( "~/pages/Reports/ReportRisks.vue" );
-const ReportFinancials = () => import( "~/pages/Reports/ReportFinancials.vue" );
+const ReportEntry = () => import('~/pages/Reports/ReportEntry.vue')
+const ReportOrganizations = () => import('~/pages/Reports/ReportOrganizations.vue')
+const ReportRisks = () => import('~/pages/Reports/ReportRisks.vue')
+const ReportFinancials = () => import('~/pages/Reports/ReportFinancials.vue')
 
 // exams
-const _ExamsEntry = () => import( "~/pages/Exams/_ExamsEntry.vue" );
-const ExamsOverview = () => import( "~/pages/Exams/ExamsOverview.vue" );
-const _ExamEntry = () => import( "~/pages/Exam/_ExamEntry.vue" );
-const ExamDetail = () => import( "~/pages/Exam/ExamDetail.vue" );
-const ExamDetailDocuments = () => import( "~/pages/Exam/ExamDetailDocuments.vue" );
-const ExamDetailTasks = () => import( "~/pages/Exam/ExamDetailTasks.vue" );
-const ExamPortal = () => import( "~/pages/Exam/ExamPortal.vue" );
+const _ExamsEntry = () => import('~/pages/Exams/_ExamsEntry.vue')
+const ExamsOverview = () => import('~/pages/Exams/ExamsOverview.vue')
+const _ExamEntry = () => import('~/pages/Exam/_ExamEntry.vue')
+const ExamDetail = () => import('~/pages/Exam/ExamDetail.vue')
+const ExamDetailDocuments = () => import('~/pages/Exam/ExamDetailDocuments.vue')
+const ExamDetailTasks = () => import('~/pages/Exam/ExamDetailTasks.vue')
+const ExamPortal = () => import('~/pages/Exam/ExamPortal.vue')
 
-import { devRoutes } from "~/_devmode/Routes.js";
+// notification
+const _NotificationEntry = () => import('~/pages/Notification/_NotificationEntry.vue')
+const NotificationCenter = () => import('~/pages/Notification/NotificationCenter.vue')
+const NotificationMessage = () => import('~/pages/Notification/NotificationMessage.vue')
 
 // ––––––––––––––– Routes ––––––––––––––– //
 const routes = [
@@ -181,7 +179,7 @@ const routes = [
 				]
 			}, {
 				"path": "",
-				"beforeEnter": useAppPagesGuard,
+				"beforeEnter": useNotOnboardedGuard,
 				"component": _PagesEntry,
 				"children": [
 					{
@@ -830,13 +828,13 @@ const routes = [
 if ( import.meta.env.VITE_STAGE === "dev" ) routes[1].children.push( ...devRoutes );
 
 const router = createRouter({
-	"history": createWebHistory(),
-	routes
-});
+  history: createWebHistory(),
+  routes
+})
 
-router.beforeEach( ( to, from, next ) => {
-	document.title = `${to.meta.title} | Complect`;
-	next();
-});
+router.beforeEach((to, from, next) => {
+  document.title = `${to.meta.title} | Complect`
+  next()
+})
 
-export default router;
+export default router

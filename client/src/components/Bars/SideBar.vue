@@ -26,13 +26,12 @@
 				icon(name="login")
 </template>
 
-
 <script>
-import { computed } from "vue";
-import { useRoute } from "vue-router";
-import { appState, collapseSidebar, collapseSidebarSections } from "~/store/appState.js";
-import useNavigation from "~/store/Navigation";
-import useProfile from "~/store/Profile.js";
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { appState, collapseSidebar, collapseSidebarSections } from '~/store/appState.js'
+import useNavigation from '~/store/Navigation'
+import useProfile from '~/store/Profile.js'
 
 export default {
 	setup () {
@@ -70,7 +69,6 @@ export default {
 	}
 };
 </script>
-
 
 <style lang="stylus" scoped>
 
