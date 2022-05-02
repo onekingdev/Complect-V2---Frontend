@@ -15,42 +15,42 @@ page-container(:badge="{title: formDetails.status }" :title="formDetails.name" t
 </template>
 
 <script>
-import { useRoute, useRouter } from "vue-router";
-import { computed } from "vue";
-import cDropdown from "~/components/Inputs/cDropdown.vue";
-import { formLibraryData, formCards } from "~/data/data.js";
+import { useRoute, useRouter } from "vue-router"
+import { computed } from "vue"
+import cDropdown from "~/components/Inputs/cDropdown.vue"
+import { formLibraryData, formCards } from "~/data/data.js"
 export default {
-  "components": { cDropdown },
+  components: { cDropdown },
   setup () {
     const tabs = [
       {
-        "title": "Form Builder",
-        "routeName": "FormBuilder"
+        title: "Form Builder",
+        routeName: "FormBuilder"
       }, {
-        "title": "Preview",
-        "routeName": "FormPreview"
+        title: "Preview",
+        routeName: "FormPreview"
       }, {
-        "title": "Setting",
-        "routeName": "FormSetting"
+        title: "Setting",
+        routeName: "FormSetting"
       }
-    ];
-    const documents = formLibraryData;
-    const route = useRoute();
-    const router = useRouter();
-    const formDetails = computed( () => documents.find( document => document._id === route.params.id ) );
-    const saveDraft = () => {};
-    const publishFormLibrary = () => {};
+    ]
+    const documents = formLibraryData
+    const route = useRoute()
+    const router = useRouter()
+    const formDetails = computed(() => documents.find( document => document._id === route.params.id ))
+    const saveDraft = () => {}
+    const publishFormLibrary = () => {}
     const closeFormLibrary = () => router.push({
-      "name": "FormLibraryEntry",
-      "query": {
-        "type": formDetails.value.type,
-        "title": formCards.find( card => card.type === formDetails.value.type )
+      name: "FormLibraryEntry",
+      query: {
+        type: formDetails.value.type,
+        title: formCards.find(card => card.type === formDetails.value.type)
       }
-    });
-    const archiveForm = () => {};
-    const deleteForm = () => {};
-    const doHamberger = () => {};
-    const hasHamberger = { "action": doHamberger };
+    })
+    const archiveForm = () => {}
+    const deleteForm = () => {}
+    const doHamberger = () => {}
+    const hasHamberger = { action: doHamberger }
     return {
       saveDraft,
       publishFormLibrary,
@@ -60,9 +60,9 @@ export default {
       hasHamberger,
       tabs,
       formDetails
-    };
+    }
   }
-};
+}
 </script>
 
 <style lang="stylus" scoped>

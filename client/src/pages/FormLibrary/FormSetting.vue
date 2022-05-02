@@ -50,69 +50,69 @@ card-container(title="Settings")
 </template>
 
 <script>
-import { ref, computed } from "vue";
-import cSelect from "~/components/Inputs/cSelect.vue";
+import { ref, computed } from "vue"
+import cSelect from "~/components/Inputs/cSelect.vue"
 export default {
-  "components": { cSelect },
-  "props": {
-    "formDetails": {
-      "type": String,
-      "required": true
+  components: { cSelect },
+  props: {
+    formDetails: {
+      type: String,
+      required: true
     }
   },
-  setup ( props ) {
-    const document = ref( props.formDetails );
+  setup (props) {
+    const document = ref( props.formDetails )
     // attestation Form Setting
     const reviewerValues = [
-      { "title": "Option 1", "value": "option-1" },
-      { "title": "Option 2", "value": "option-2" },
-      { "title": "Option 3", "value": "option-3" },
-      { "title": "Option 4", "value": "option-4" },
-      { "title": "Option 5", "value": "option-5" },
-      { "title": "Option 6", "value": "option-6" },
-      { "title": "Option 7", "value": "option-7" },
-      { "title": "Option 8", "value": "option-8" },
-      { "title": "Option 9", "value": "option-9" },
-      { "title": "Option 10", "value": "option-10" }
-    ];
+      { title: "Option 1", value: "option-1" },
+      { title: "Option 2", value: "option-2" },
+      { title: "Option 3", value: "option-3" },
+      { title: "Option 4", value: "option-4" },
+      { title: "Option 5", value: "option-5" },
+      { title: "Option 6", value: "option-6" },
+      { title: "Option 7", value: "option-7" },
+      { title: "Option 8", value: "option-8" },
+      { title: "Option 9", value: "option-9" },
+      { title: "Option 10", value: "option-10" }
+    ]
     const reviewerValue = ref([
       "option-1", "option-2", "option-3"
-    ]);
+    ])
     const repeatValues = [
-      { "title": "None", "value": "none" }, { "title": "Monthly", "value": "monthly" }, { "title": "Annually", "value": "annually" }
-    ];
-    const repeatValue = ref( "none" );
+      { title: "None", value: "none" }, { title: "Monthly", value: "monthly" }, { title: "Annually", value: "annually" }
+    ]
+    const repeatValue = ref( "none" )
     const monthValues = [
-      { "title": "1 month", "value": 1 }, { "title": "2 months", "value": 2 }, { "title": "3 months", "value": 3 }, { "title": "6 months", "value": 6 }
-    ];
+      { title: "1 month", value: 1 }, { title: "2 months", value: 2 }, { title: "3 months", value: 3 }, { title: "6 months", value: 6 }
+    ]
     const dateValues = [
-      { "title": "January", "value": 1 },
-      { "title": "February", "value": 2 },
-      { "title": "March", "value": 3 },
-      { "title": "April", "value": 4 },
-      { "title": "May", "value": 5 },
-      { "title": "June", "value": 6 },
-      { "title": "July", "value": 7 },
-      { "title": "August", "value": 8 },
-      { "title": "September", "value": 9 },
-      { "title": "October", "value": 10 },
-      { "title": "November", "value": 11 },
-      { "title": "December", "value": 12 }
-    ];
-    const everyValues = computed( () => repeatValue.value === "monthly" ? monthValues : dateValues );
-    const everyValue = ref( 1 );
+      { title: "January", value: 1 },
+      { title: "February", value: 2 },
+      { title: "March", value: 3 },
+      { title: "April", value: 4 },
+      { title: "May", value: 5 },
+      { title: "June", value: 6 },
+      { title: "July", value: 7 },
+      { title: "August", value: 8 },
+      { title: "September", value: 9 },
+      { title: "October", value: 10 },
+      { title: "November", value: 11 },
+      { title: "December", value: 12 }
+    ]
+    const everyValues = computed(() => repeatValue.value === "monthly" ? monthValues : dateValues)
+    const everyValue = ref(1)
     const dayValues = [
-      { "title": "1", "value": 1 }, { "title": "2", "value": 2 }, { "title": "3", "value": 3 }
-    ];
-    const dayValue = ref( 1 );
-    const within = ref(30);
-    const every = ref(3);
-    const isRepeatNone = computed( () => repeatValue.value === "none" );
+      { title: "1", value: 1 }, { title: "2", value: 2 }, { title: "3", value: 3 }
+    ]
+    const dayValue = ref(1)
+    const within = ref(30)
+    const every = ref(3)
+    const isRepeatNone = computed(() => repeatValue.value === "none")
     // employee Log Setting
     const respondentValues = [
-      { "title": "All Users", "value": "all" }, { "title": "User 1", "value": "user-1" }, { "title": "User 2", "value": "user-2" }
-    ];
-    const respondentValue = ref(["all"]);
+      { title: "All Users", value: "all" }, { title: "User 1", value: "user-1" }, { title: "User 2", value: "user-2" }
+    ]
+    const respondentValue = ref(["all"])
     return {
       document,
       reviewerValues,
@@ -128,9 +128,9 @@ export default {
       isRepeatNone,
       respondentValues,
       respondentValue
-    };
+    }
   }
-};
+}
 </script>
 
 <style lang="stylus" scoped>

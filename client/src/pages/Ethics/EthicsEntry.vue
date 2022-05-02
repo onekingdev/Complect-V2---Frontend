@@ -7,108 +7,107 @@ card-container(title="All Entries")
 </template>
 
 <script>
-import { useRoute, useRouter } from "vue-router";
-import { inject } from "vue";
-import { ethicsData, ethicsAllEntriesData } from "~/data/data.js";
+import { inject } from "vue"
+import { ethicsAllEntriesData } from "~/data/data.js"
 export default {
-  "props": {
-    "ethicsDetails": {
-      "type": String,
-      "required": true
+  props: {
+    ethicsDetails: {
+      type: String,
+      required: true
     }
   },
-  setup ( props ) {
-    const modal = inject("modal");
-    const updateEthics = () => {};
-    const handleClickEdit = id => modal({ "name": "cModalEthics", "callback": updateEthics, id });
-    const handleClickDelete = id => modal({ "name": "cModalDelete", id, "title": "Entry", "description": "Deleting the entry will permanently remove it from your log.", "callback": updateEthics });
-    const newEthicsEntry = () => modal({ "name": "cModalEthics", "callback": updateEthics });
+  setup (props) {
+    const modal = inject("modal")
+    const updateEthics = () => {}
+    const handleClickEdit = id => modal({ name: "cModalEthics", callback: updateEthics, id })
+    const handleClickDelete = id => modal({ name: "cModalDelete", id, title: "Entry", description: "Deleting the entry will permanently remove it from your log.", callback: updateEthics })
+    const newEthicsEntry = () => modal({ name: "cModalEthics", callback: updateEthics })
 
     const columns = [
       {
-        "title": "Date Submitted",
-        "key": "dateSubmitted",
-        "cell": "CellDate"
+        title: "Date Submitted",
+        key: "dateSubmitted",
+        cell: "CellDate"
       },
       {
-        "title": "Respondent",
-        "key": "respondent",
-        "cell": "CellDefault"
+        title: "Respondent",
+        key: "respondent",
+        cell: "CellDefault"
       },
       {
-        "title": "Status",
-        "key": "status",
-        "cell": "CellStatus"
+        title: "Status",
+        key: "status",
+        cell: "CellStatus"
       },
       {
-        "title": "Date Reviewed",
-        "key": "dateReviewed",
-        "cell": "CellDate"
+        title: "Date Reviewed",
+        key: "dateReviewed",
+        cell: "CellDate"
       },
       {
-        "title": "Date of Transaction",
-        "key": "dateOfTransaction",
-        "cell": "CellDate"
+        title: "Date of Transaction",
+        key: "dateOfTransaction",
+        cell: "CellDate"
       },
       {
-        "title": "Gift Type",
-        "key": "giftType",
-        "cell": "CellDefault"
+        title: "Gift Type",
+        key: "giftType",
+        cell: "CellDefault"
       },
       {
-        "title": "External Organization",
-        "key": "externalOrganization",
-        "cell": "CellDefault"
+        title: "External Organization",
+        key: "externalOrganization",
+        cell: "CellDefault"
       },
       {
-        "title": "Cost of Transaction",
-        "key": "costOfTransaction",
-        "cell": "CellDefault"
+        title: "Cost of Transaction",
+        key: "costOfTransaction",
+        cell: "CellDefault"
       },
       {
-        "title": "Cost of Transaction",
-        "key": "reasonForGift",
-        "cell": "CellDefault"
+        title: "Cost of Transaction",
+        key: "reasonForGift",
+        cell: "CellDefault"
       },
       {
-        "unsortable": true,
-        "cell": "CellDropdown",
-        "meta": {
-          "actions": [
-            { "title": "Edit", "action": handleClickEdit }, { "title": "Delete", "action": handleClickDelete }
+        unsortable: true,
+        cell: "CellDropdown",
+        meta: {
+          actions: [
+            { title: "Edit", action: handleClickEdit }, { title: "Delete", action: handleClickDelete }
           ]
         },
-        "align": "right"
+        align: "right"
       }
-    ];
+    ]
 
     const filters = [{
-      "title": "Sort By:",
-      "field": "status",
-      "keys": [
+      title: "Sort By:",
+      field: "status",
+      keys: [
         {
-          "title": "Date Submitted",
-          "key": ""
+          title: "Date Submitted",
+          key: ""
         }, {
-          "title": "Date Reviewed",
-          "key": "draft"
+          title: "Date Reviewed",
+          key: "draft"
         }, {
-          "title": "Date of Transaction",
-          "key": "inprogress"
+          title: "Date of Transaction",
+          key: "inprogress"
         }
       ]
-    }];
+    }]
 
-    const documents = ethicsAllEntriesData.filter( doc => doc.ethics_id === props.ethicsDetails._id );
+    const documents = ethicsAllEntriesData.filter(doc => doc.ethics_id === props.ethicsDetails._id)
 
     return {
       documents,
       columns,
       filters,
       newEthicsEntry
-    };
+    }
   }
-};
+}
 </script>
 
 <style lang="stylus" scoped>

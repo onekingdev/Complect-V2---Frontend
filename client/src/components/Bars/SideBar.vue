@@ -35,28 +35,28 @@ import useProfile from '~/store/Profile.js'
 
 export default {
   setup () {
-    const { sidebarHomeNavigation, sidebarDocumentsNavigation, sidebarReportsNavigation, sidebarReportsSpecialistNavigation, sidebarSpecialistNavigation } = useNavigation();
-    const { profile } = useProfile();
-    const route = useRoute();
-    const userType = profile.value.type;
-    const queryType = computed( () => route.query.type );
-    const renderSidebar = computed( () => {
-      if ( "sidebar" in route.meta ) return route.meta.sidebar; // check in sidebar key persist in meta object
-      return true;
-    });
-    const sidebarNavigation = computed( () => {
-      switch ( route.meta.tab ) {
+    const { sidebarHomeNavigation, sidebarDocumentsNavigation, sidebarReportsNavigation, sidebarReportsSpecialistNavigation, sidebarSpecialistNavigation } = useNavigation()
+    const { profile } = useProfile()
+    const route = useRoute()
+    const userType = profile.value.type
+    const queryType = computed(() => route.query.type)
+    const renderSidebar = computed(() => {
+      if ("sidebar" in route.meta) return route.meta.sidebar // check in sidebar key persist in meta object
+      return true
+    })
+    const sidebarNavigation = computed(() => {
+      switch (route.meta.tab) {
         case "Documents":
-          if ( userType === "specialist" ) return sidebarSpecialistNavigation;
-          return sidebarDocumentsNavigation;
+          if (userType === "specialist") return sidebarSpecialistNavigation
+          return sidebarDocumentsNavigation
         case "Reports":
-          if ( userType === "specialist" ) return sidebarReportsSpecialistNavigation;
-          return sidebarReportsNavigation;
+          if (userType === "specialist") return sidebarReportsSpecialistNavigation
+          return sidebarReportsNavigation
         default:
-          if ( userType === "specialist" ) return sidebarSpecialistNavigation;
-          return sidebarHomeNavigation;
+          if (userType === "specialist") return sidebarSpecialistNavigation
+          return sidebarHomeNavigation
       }
-    });
+    })
 
     return {
       appState,
@@ -65,9 +65,9 @@ export default {
       collapseSidebar,
       collapseSidebarSections,
       queryType
-    };
+    }
   }
-};
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -103,8 +103,6 @@ $link-hover-color = #2F304F
     max-height: 15em
     overflow: hidden
     transition: max-height var(--fx-duration-short, .15s) ease-in-out, padding var(--fx-duration-short, .15s) ease-in-out
-
-
   .header-item, .link-item
     display: flex
     align-items: center
@@ -153,11 +151,9 @@ $link-hover-color = #2F304F
       width: $icons-size
       height: $icons-size
       transform: rotate(180deg)
-
   .bordered
     border-top: 1px solid #2e304f
     padding: 0.7em 0
-
 .bar.sidebar
   &.sidebar-collapsed
     .header-item
@@ -175,12 +171,10 @@ $link-hover-color = #2F304F
       padding: 0
       a
         display: none
-
   .section-collapsed
     svg.icon-chevron-up
       transform: rotate(180deg)
     .section-links
       max-height: 0em
       padding: 0
-
 </style>

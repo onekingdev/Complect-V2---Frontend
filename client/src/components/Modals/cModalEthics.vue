@@ -14,113 +14,112 @@ card-container.c-modal-review(:title="modalTitle" ref="modalWindow")
     c-button(title="Submit" type="primary" @click="saveEthics()")
 </template>
 
-
 <script>
-import { ref, inject, computed, onMounted } from "vue";
-import useModals from "~/store/Modals.js";
-import { validates } from "~/core/utils.js";
-import { required } from "@vuelidate/validators";
-import { onClickOutside } from "@vueuse/core";
-import { ethicsAllEntriesData } from "~/data/data.js";
+import { ref, inject, onMounted } from "vue"
+import useModals from "~/store/Modals.js"
+import { validates } from "~/core/utils.js"
+import { required } from "@vuelidate/validators"
+import { onClickOutside } from "@vueuse/core"
+import { ethicsAllEntriesData } from "~/data/data.js"
 export default {
-  "props": {
-    "modalId": {
-      "type": String,
-      "required": true
+  props: {
+    modalId: {
+      type: String,
+      required: true
     },
-    "id": {
-      "type": String,
-      "default": "",
-      "required": false
+    id: {
+      type: String,
+      default: "",
+      required: false
     },
-    "callback": {
-      "type": Function,
-      "default": () => 1,
-      "required": false
+    callback: {
+      type: Function,
+      default: () => 1,
+      required: false
     }
   },
-  setup ( props ) {
-    const notification = inject( "notification" );
-    const modalWindow = ref( null );
-    const { deleteModal } = useModals();
-    const modalTitle = ref( "" );
-    const errors = ref({});
+  setup (props) {
+    const notification = inject("notification")
+    const modalWindow = ref(null)
+    const { deleteModal } = useModals()
+    const modalTitle = ref("")
+    const errors = ref({})
     const form = ref({
-      "dateOfTransaction": Date.now(),
-      "giftType": "",
-      "externalOrganization": "",
-      "costOfTransaction": 0,
-      "reasonForGift": ""
-    });
+      dateOfTransaction: Date.now(),
+      giftType: "",
+      externalOrganization: "",
+      costOfTransaction: 0,
+      reasonForGift: ""
+    })
     const rule = {
-      "dateOfTransaction": { required },
-      "giftType": { required },
-      "externalOrganization": { required },
-      "costOfTransaction": { required },
-      "reasonForGift": { required }
-    };
-    const closeModal = () => deleteModal( props.modalId );
-    onClickOutside( modalWindow, () => closeModal() );
+      dateOfTransaction: { required },
+      giftType: { required },
+      externalOrganization: { required },
+      costOfTransaction: { required },
+      reasonForGift: { required }
+    }
+    const closeModal = () => deleteModal(props.modalId)
+    onClickOutside(modalWindow, () => closeModal())
 
     const createEthics = () => {
       try {
         notification({
-          "type": "success",
-          "title": "Success",
-          "message": "Entry has been created."
-        });
-        props.callback();
-      } catch ( error ) {
-        console.error( error );
+          type: "success",
+          title: "Success",
+          message: "Entry has been created."
+        })
+        props.callback()
+      } catch (error) {
+        console.error(error)
         notification({
-          "type": "error",
-          "title": "Error",
-          "message": "Entry has not been created. Please try again."
-        });
+          type: "error",
+          title: "Error",
+          message: "Entry has not been created. Please try again."
+        })
       }
-    };
+    }
 
     const updateEthics = () => {
       try {
         notification({
-          "type": "success",
-          "title": "Success",
-          "message": "Entry has been updated."
-        });
-        props.callback();
-      } catch ( error ) {
-        console.error( error );
+          type: "success",
+          title: "Success",
+          message: "Entry has been updated."
+        })
+        props.callback()
+      } catch (error) {
+        console.error(error)
         notification({
-          "type": "error",
-          "title": "Error",
-          "message": "Entry has not been updated. Please try again."
-        });
+          type: "error",
+          title: "Error",
+          message: "Entry has not been updated. Please try again."
+        })
       }
-    };
+    }
 
     const saveEthics = async () => {
-      errors.value = await validates( rule, form.value );
-      if ( Object.keys( errors.value ).length > 0 ) return;
+      errors.value = await validates(rule, form.value)
+      if (Object.keys(errors.value).length > 0) return
       try {
-        if ( !props.id ) await createEthics();
-        else if ( props.id ) await updateEthics();
-      } catch ( error ) {
-        console.error( error );
+        if (!props.id) await createEthics()
+        else if (props.id) await updateEthics()
+      } catch (error) {
+        console.error(error)
       } finally {
-        closeModal();
+        closeModal()
       }
-    };
+    }
 
-    onMounted( () => {
-      if ( props.id ) {
-        form.value = ethicsAllEntriesData.find( doc => doc._id === props.id );
-        modalTitle.value = "Edit Entry";
-      } else modalTitle.value = "New Entry";
-    });
+    onMounted(() => {
+      if (props.id) {
+        form.value = ethicsAllEntriesData.find(doc => doc._id === props.id)
+        modalTitle.value = "Edit Entry"
+      } else modalTitle.value = "New Entry"
+    })
 
-    return { modalWindow, modalTitle, errors, saveEthics, form, closeModal };
+    return { modalWindow, modalTitle, errors, saveEthics, form, closeModal }
   }
-};
+}
 </script>
 
 <style lang="stylus" scoped>
