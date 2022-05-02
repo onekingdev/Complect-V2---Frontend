@@ -4,23 +4,23 @@ span
   router-link(:to="`/compliance_policies/${id}`") {{ title }}
 </template>
 <script>
-import { toRefs } from '@vue/reactivity'
+import { toRefs } from "@vue/reactivity";
 export default {
-  props: {
-    data: {
-      type: Object,
-      required: true
-    }
-  },
-  setup (props) {
-    const { id, title } = toRefs(props.data)
+	"props": {
+		"data": {
+			"type": Object,
+			"required": true
+		}
+	},
+	setup ( props ) {
+		const { id, title } = toRefs( props.data );
 
-    return {
-      id,
-      title
-    }
-  }
-}
+		return {
+			id,
+			title
+		};
+	}
+};
 </script>
 <style lang="stylus" scoped>
 .icon

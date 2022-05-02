@@ -4,70 +4,61 @@ c-table(v-bind="{columns, documents}")
 
 <script>
 
+import { inject } from "vue";
+import { formLibraryData } from "~/data/data.js";
 export default {
-  props: {
-    type: {
-      type: String,
-      default: 'attestation'
-    }
-  },
-  setup () {
-    const handleClickEdit = () => {}
-    const handleClickDelete = () => {}
-    const columns = [
-      {
-        title: 'Form Name',
-        key: 'name',
-        cell: 'CellTitle',
-        width: '50%',
-        meta: { link: 'FormBuilder' }
-      },
-      {
-        title: 'Status',
-        key: 'status',
-        cell: 'CellStatus'
-      },
-      {
-        title: 'Date Created',
-        key: 'dateCreated',
-        cell: 'CellDate',
-        align: 'right'
-      },
-      {
-        title: 'Created By',
-        key: 'owner',
-        cell: 'CellDefault',
-        align: 'right'
-      },
-      {
-        unsortable: true,
-        cell: 'CellDropdown',
-        meta: {
-          actions: [
-            { title: 'Edit', action: handleClickEdit }, { title: 'Delete', action: handleClickDelete }
-          ]
-        },
-        align: 'right'
-      }
-    ]
+	"props": {
+		"type": {
+			"type": String,
+			"default": "attestation"
+		}
+	},
+	setup ( props ) {
+		const modal = inject("modal");
+		const updateForm = () => { };
+		const handleClickEdit = id => modal({ "name": "cModalForm", "callback": updateForm, id });
+		const handleClickDelete = id => modal({ "name": "cModalDelete", id, "title": "Form", "description": "Deleting this form will make it no longer available as a template.", "callback": updateForm });
+		const handleClickDuplicate = id => modal({ "name": "cModalForm", "callback": updateForm, id, "duplicate": true });
+		const columns = [
+			{
+				"title": "Form Name",
+				"key": "name",
+				"cell": "CellTitle",
+				"width": "50%",
+				"meta": { "link": "FormBuilder" }
+			},
+			{
+				"title": "Status",
+				"key": "status",
+				"cell": "CellStatus"
+			},
+			{
+				"title": "Date Created",
+				"key": "dateCreated",
+				"cell": "CellDate",
+				"align": "right"
+			},
+			{
+				"title": "Created By",
+				"key": "owner",
+				"cell": "CellDefault",
+				"align": "right"
+			},
+			{
+				"unsortable": true,
+				"cell": "CellDropdown",
+				"meta": {
+					"actions": [
+						{ "title": "Edit", "action": handleClickEdit }, { "title": "Duplicate", "action": handleClickDuplicate }, { "title": "Delete", "action": handleClickDelete }
+					]
+				},
+				"align": "right"
+			}
+		];
 
-    const documents = [
-      {
-        _id: '6253c8b84d0c24ae67e36161',
-        name: 'AAA',
-        status: 'pending',
-        dateCreated: 1647000337214,
-        owner: 'System'
-      }, {
-        _id: '6253c8b84d0c24ae67e36162',
-        name: 'BBB',
-        status: 'complete',
-        dateCreated: 1647000337214,
-        owner: 'System'
-      }
-    ]
+		const documents = formLibraryData.filter( doc => doc.type === props.type );
 
-    return { columns, documents }
-  }
-}
+		return { columns, documents };
+	}
+};
 </script>

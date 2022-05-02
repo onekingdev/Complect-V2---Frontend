@@ -8,19 +8,21 @@
     c-button(title="Delete" type="transparent")
 </template>
 
+
 <script>
-import cDropdown from '~/components/Inputs/cDropdown.vue'
+import cDropdown from "~/components/Inputs/cDropdown.vue";
 
 export default {
-  components: { cDropdown },
-  props: {
-    file: {
-      type: Object,
-      required: true
-    }
-  }
-}
+	"components": { cDropdown },
+	"props": {
+		"file": {
+			"type": Object,
+			"required": true
+		}
+	}
+};
 </script>
+
 
 <style lang="stylus" scoped>
 .file

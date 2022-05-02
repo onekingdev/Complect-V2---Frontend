@@ -1,7 +1,7 @@
-import tooltipDirective from './Tooltip/'
+import tooltipDirective from "./Tooltip/";
 
 const directives = app => {
-  tooltipDirective(app)
-}
+	tooltipDirective( app );
+};
 
-export default directives
+export default directives;
