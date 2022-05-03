@@ -53,13 +53,13 @@ export default {
 
     const documents = [
       {
-        id: '6253c8b84d0c24ae67e36161',
+        _id: '6253c8b84d0c24ae67e36161',
         name: 'AAA',
         status: 'pending',
         dateCreated: 1647000337214,
         owner: 'System'
       }, {
-        id: '6253c8b84d0c24ae67e36162',
+        _id: '6253c8b84d0c24ae67e36162',
         name: 'BBB',
         status: 'complete',
         dateCreated: 1647000337214,

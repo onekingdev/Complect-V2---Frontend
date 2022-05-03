@@ -22,14 +22,14 @@ page-container(title="Policies and Procedures")
 import { ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import useProfile from '~/store/Profile.js'
-import PolicyService from '~/services/policies.js'
-import { generatePDF } from '~/services/pdf.js'
+import UseData from '~/store/Data.js'
+import { manualApi } from '~/core/api.js'
 
 export default {
   setup () {
     const notification = inject('notification')
     const router = useRouter()
-    const policies = new PolicyService()
+    const policies = new UseData('policies')
     const { profile } = useProfile()
     const adminTabs = [
       {
@@ -70,7 +70,7 @@ export default {
     const createPolicy = async () => {
       try {
         newPolicy.value.order = policies.getDocuments().value.length
-        const policyId = await policies.createDocuments(newPolicy.value)
+        const policyId = await policies.createDocuments([newPolicy.value])
         notification({
           type: 'success',
           title: 'Success',
@@ -94,7 +94,11 @@ export default {
         collection: 'policies',
         template: 'manualTemplate'
       }
-      const pdfLink = await generatePDF(pdfData)
+      const pdfLink = await manualApi({
+        method: 'post',
+        endpoint: '/pdf',
+        data: JSON.stringify(pdfData)
+      })
       window.location.href = pdfLink
     }
     return {

@@ -23,9 +23,9 @@ export default {
     //   const allUsers = users.getDocuments();
     //   const returnContract = [];
     //   for ( let i = 0; i < allContracts.length; i++ ) {
-    //     const contactUser = allUsers.find( user => user.id === allContracts[i].specialist );
+    //     const contactUser = allUsers.find( user => user._id === allContracts[i].specialist );
     //     returnContract.push({
-    //      "id": allContracts[i].projectId,
+    //      "_id": allContracts[i].projectId,
     //       "name": allContracts[i].name,
     //       "special": `${contactUser.firstName} ${contactUser.lastName} | ${formatDate(allContracts[i].startsAt)} - ${formatDate(allContracts[i].endsAt)}`,
     //       "description": allContracts[i].description,
@@ -41,7 +41,7 @@ export default {
 
     const documents = ref([
       {
-        id: '62281539f4a801ec534af22b',
+        _id: '62281539f4a801ec534af22b',
         name: 'Test Contract',
         specialist: 'bihn turong | 4/15/2020 ~ 6/5/2021',
         description: 'This is test description',
@@ -50,7 +50,7 @@ export default {
           value: 5
         }
       }, {
-        id: '62281539f4a801ec534af22b',
+        _id: '62281539f4a801ec534af22b',
         name: 'Test Contract 1',
         specialist: 'Manuel Special | 4/15/2022 ~ 6/5/2022',
         description: 'This is test description',

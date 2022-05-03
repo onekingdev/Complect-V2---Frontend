@@ -1,6 +1,6 @@
 <template lang="pug">
 c-label.c-input.c-field(:class="{fullwidth, disabled, transparent}" v-bind="{label, required}")
-  div(:class="{'errors': errors && errors.length, 'field-body': type != 'rich'}")
+  div(:class="{'errors': errors && errors.length, 'field-body': type !== 'rich', 'field-body-tag': type === 'tag'}")
     icon(v-if="iconL || icon" :name="iconL || type")
     component.field-input(
       :is="type"
@@ -8,6 +8,7 @@ c-label.c-input.c-field(:class="{fullwidth, disabled, transparent}" v-bind="{lab
       :placeholder="placeholder"
       :required="required"
       :value="modelValue"
+      :data="data"
       @updateValue="updateModelValue")
     icon(v-if="iconR" :name="iconR")
   .field-info.error(v-if="errors && errors.length")
@@ -32,7 +33,8 @@ export default {
     Rich: defineAsyncComponent(() => import('./Types/TypeRich.vue')),
     Time: defineAsyncComponent(() => import('./Types/TypeTime.vue')),
     Url: defineAsyncComponent(() => import('./Types/TypeUrl.vue')),
-    Address: defineAsyncComponent(() => import('./Types/TypeAddress.vue'))
+    Address: defineAsyncComponent(() => import('./Types/TypeAddress.vue')),
+    Tag: defineAsyncComponent(() => import('./Types/TypeTag.vue'))
   },
   props: {
     type: {
@@ -71,6 +73,10 @@ export default {
       type: Number,
       default: 0
     },
+    data: {
+      type: Array,
+      required: true
+    },
     modelValue: {
       type: [
         String, Number, Array, Object
@@ -107,6 +113,8 @@ export default {
     gap: 0.3em
     padding: 0.35em 0.5em
     min-height: 2em
+    &.field-body-tag
+      overflow: inherit
     &.errors
       box-shadow: 0 0 0 1px #f00
     svg.icon

@@ -23,8 +23,8 @@ export default {
     //   const allUsers = users.getDocuments();
     //   const allContact = [];
     //   for ( let i = 0; i < allContracts.length; i++ ) {
-    //     const contactUser = allUsers.find( user => user.id === allContracts[i].specialist );
-    //     const checkUser = allContact.find( contact => contact.id === contactUser.id );
+    //     const contactUser = allUsers.find( user => user._id === allContracts[i].specialist );
+    //     const checkUser = allContact.find( contact => contact._id === contactUser._id );
     //     if ( !checkUser ) {
     //       allContact.push({
     //         "name": `${contactUser.firstName} ${contactUser.lastName}`,
@@ -46,7 +46,7 @@ export default {
 
     const documents = ref([
       {
-        id: '6209f90ce4bad73591ee85f2',
+        _id: '6209f90ce4bad73591ee85f2',
         name: 'binh truong',
         location: 'USA',
         status: 'complete',
@@ -55,7 +55,7 @@ export default {
           value: 3
         }
       }, {
-        id: '621772a4e9dc5a7a8014a9d1',
+        _id: '621772a4e9dc5a7a8014a9d1',
         name: 'Manuel Special',
         location: 'USA',
         status: 'complete',

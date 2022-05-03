@@ -19,14 +19,14 @@ page-container(title="Projects")
 <script>
 import { ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
-import ProjectService from '~/services/projects.js'
-import useProfile from '~/store/Profile.js'
+import UseData from '~/store/Data.js'
 import { manualApi } from '~/core/api.js'
+import useProfile from '~/store/Profile.js'
 export default {
   setup () {
     const notification = inject('notification')
     const router = useRouter()
-    const projects = new ProjectService()
+    const projects = new UseData('projects')
     const { profile } = useProfile()
     const tabs = [
       {
@@ -71,9 +71,9 @@ export default {
 
     const createProject = async () => {
       try {
-        newProject.value.creator = profile.value.id
+        newProject.value.creator = profile.value._id
         newProject.value.collaborators = profile.value
-        const projectId = await projects.createDocuments(newProject.value)
+        const projectId = await projects.createDocuments([newProject.value])
         notification({
           type: 'success',
           title: 'Success',

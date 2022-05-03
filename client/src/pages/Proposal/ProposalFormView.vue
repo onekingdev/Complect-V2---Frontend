@@ -154,8 +154,8 @@ export default {
       roleDetails: '',
       keyDeliverables: '',
       document: '',
-      ownerid: profile.value.id,
-      jobid: route.params.id
+      owner_id: profile.value._id,
+      job_id: route.params.id
     })
 
     const fieldsOptions = {
@@ -196,7 +196,7 @@ export default {
     const rejectProposal = async () => {
       try {
         form.value.status = 'rejected'
-        await proposals.createDocuments(form.value)
+        await proposals.createDocuments([form.value])
         notification({
           type: 'success',
           title: 'Success',
@@ -214,7 +214,7 @@ export default {
     const acceptProposal = async () => {
       try {
         form.value.status = 'accepted'
-        await proposals.createDocuments(form.value)
+        await proposals.createDocuments([form.value])
         notification({
           type: 'success',
           title: 'Success',
@@ -234,7 +234,7 @@ export default {
     }
     onMounted(async () => {
       await jobs.readDocuments(route.params.id)
-      await proposals.readDocuments('', { jobid: route.params.id, ownerid: route.params.specialistid })
+      await proposals.readDocuments('', { job_id: route.params.id, owner_id: route.params.specialist_id })
       if (!proposals.getDocuments().value || proposals.getDocuments().value.length === 0) {
         form.value.startsAt = jobs.getDocument().value.startsAt
         form.value.endsAt = jobs.getDocument().value.endsAt

@@ -26,16 +26,17 @@ c-modal(title="Delete Policy" v-model="isDeleteVisible")
 
 <script>
 import { onMounted, onUnmounted, ref, inject, computed } from 'vue'
+import UseData from '~/store/Data.js'
 import cBanner from '~/components/Misc/cBanner.vue'
 import cModal from '~/components/Misc/cModal.vue'
 import { useRouter } from 'vue-router'
 import useProfile from '~/store/Profile.js'
-import PolicyService from '~/services/policies.js'
 
 export default {
   components: { cBanner, cModal },
+  // eslint-disable-next-line max-lines-per-function
   setup () {
-    const policies = new PolicyService()
+    const policies = new UseData('policies')
     const router = useRouter()
     const { profile } = useProfile()
     const notification = inject('notification')
@@ -56,15 +57,15 @@ export default {
         // if ( oldIndex > newIndex ) {
         //   for ( let i = newIndex; i < oldIndex; i++ ) {
         //     const currentOrder = allPolicies.value[i + 1].order;
-        //     console.log(i, allPolicies.value[i].id);
-        //     policies.updateDocument( allPolicies.value[i].id, { "order": currentOrder });
+        //     console.log(i, allPolicies.value[i]._id);
+        //     policies.updateDocument( allPolicies.value[i]._id, { "order": currentOrder });
         //   }
-        //   policies.updateDocument( allPolicies.value[oldIndex].id, { "order": allPolicies.value[newIndex].order });
+        //   policies.updateDocument( allPolicies.value[oldIndex]._id, { "order": allPolicies.value[newIndex].order });
         // } else {
-        //   policies.updateDocument( allPolicies.value[oldIndex].id, { "order": allPolicies.value[newIndex].order });
+        //   policies.updateDocument( allPolicies.value[oldIndex]._id, { "order": allPolicies.value[newIndex].order });
         //   for ( let i = oldIndex + 1; i <= newIndex; i++ ) {
         //     const currentOrder = allPolicies.value[i - 1].order;
-        //     policies.updateDocument( allPolicies.value[i].id, { "order": currentOrder });
+        //     policies.updateDocument( allPolicies.value[i]._id, { "order": currentOrder });
         //   }
         // }
       }

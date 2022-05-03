@@ -7,8 +7,8 @@ div
     div.experiences-item
       div.heading
         h3.col-4.semibold {{ item.name }}
-        c-button(title="Delete" @click="confirmDeleteExperience(item.id)")
-        c-button(title="Edit" type="primary" @click="editExperience(item.id)")
+        c-button(title="Delete" @click="confirmDeleteExperience(item._id)")
+        c-button(title="Edit" type="primary" @click="editExperience(item._id)")
       div.timeline {{ item.employer }} | {{ formatDate(item.startsAt) }} - {{ item.isPresent ? "Present" : formatDate(item.endsAt) }}
       div.description {{ item.description }}
 </template>
@@ -16,7 +16,7 @@ div
 import { ref, inject, onMounted } from 'vue'
 import cModalExperience from '~/components/Modals/cModalExperience.vue'
 import cModalDelete from '~/components/Modals/cModalDelete.vue'
-import WorkExperienceService from '~/services/work_experiences.js'
+import UseData from '~/store/Data.js'
 import { formatDate } from '~/core/utils.js'
 import useProfile from '~/store/Profile.js'
 
@@ -31,15 +31,15 @@ export default {
     const editExperienceId = ref(null)
     const userExperiences = ref([])
 
-    const userExperiencesData = new WorkExperienceService()
+    const userExperiencesData = new UseData('user_experiences')
 
     const getExperienceData = async () => {
-      await userExperiencesData.readDocuments(null, { userId: profile.value.id })
+      await userExperiencesData.readDocuments(null, { userId: profile.value._id })
       userExperiences.value = userExperiencesData.getDocuments().value
     }
 
     const callbackModalExperience = experience => {
-      const index = userExperiences.value.findIndex(item => item.id === experience.id)
+      const index = userExperiences.value.findIndex(item => item._id === experience._id)
       if (index > -1) userExperiences.value[index] = experience
       else getExperienceData()
     }
@@ -48,7 +48,7 @@ export default {
     const editExperience = id => openExperienceModal(id)
 
     const callbackDelete = id => {
-      const index = userExperiences.value.findIndex(item => item.id === id)
+      const index = userExperiences.value.findIndex(item => item._id === id)
       if (index > -1) userExperiences.value.splice(index, 1)
     }
 

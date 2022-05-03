@@ -35,13 +35,13 @@ export default {
     ]
     const documents = [
       {
-        id: '6253c8b84d0c24ae67e36161',
+        _id: '6253c8b84d0c24ae67e36161',
         name: 'AAA',
         status: 'pending',
         dateCreated: 1647000337214,
         owner: 'System'
       }, {
-        id: '6253c8b84d0c24ae67e36162',
+        _id: '6253c8b84d0c24ae67e36162',
         name: 'BBB',
         status: 'complete',
         dateCreated: 1647000337214,
@@ -56,7 +56,7 @@ export default {
     const deleteForm = () => {}
     const doHamberger = () => {}
     const hasHamberger = { action: doHamberger }
-    const formDetails = computed(() => documents.find(document => document.id === route.params.id))
+    const formDetails = computed(() => documents.find(document => document._id === route.params.id))
     return {
       saveDraft,
       publishFormLibrary,

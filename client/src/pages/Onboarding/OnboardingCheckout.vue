@@ -214,7 +214,7 @@ export default {
         //   "method": "post",
         //   "url": `payment/subscription/${userType === "business" ? form.value.businessId : form.value.specialistId}`,
         //   "data": JSON.stringify({
-        //     // "planId": plan.value.id,
+        //     // "planId": plan.value._id,
         //     "promocode": promocode.value
         //   })
         // });
@@ -257,14 +257,14 @@ export default {
       //   plan.value.name = findplan.title;
       //   plan.value.price = findplan.perPrice;
       //   plan.value.annually = form.value.annually;
-      //   plan.value.id = findplan.id;
+      //   plan.value._id = findplan._id;
       // } else {
       //   const keywordMethod = form.value.annually ? "yearly" : "all";
       //   const findplan = plans.getDocuments().value.find( indplan => indplan.method === keywordMethod );
       //   plan.value.name = findplan.title;
       //   plan.value.price = findplan.perPrice;
       //   plan.value.annually = form.value.annually;
-      //   plan.value.id = findplan.id;
+      //   plan.value._id = findplan._id;
       // }
     })
 

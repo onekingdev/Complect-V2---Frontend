@@ -34,7 +34,7 @@ export default {
     const { authentication } = useAuth()
     const form = ref({})
     const errors = ref({})
-    const step = ref(1)
+    const step = ref(2)
     const toStepTwo = () => step.value = 2
     const rules = {
       email: { required, email },

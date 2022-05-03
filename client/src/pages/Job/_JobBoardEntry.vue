@@ -41,7 +41,7 @@ market-container
           c-field.col-5(label="Search" v-model="searchValue" placeholder="Enter job type, keywords, etc.")
           c-select.col-1(label="Sort By" :data="sortOptions" v-model="sortValue")
         .job-content(v-for="(job, index) in jobs")
-          router-link(:to="{name: 'JobBoardDetail', params: {id: job.id}}") {{ job.name }}
+          router-link(:to="{name: 'JobBoardDetail', params: {id: job._id}}") {{ job.name }}
           p.job-type {{ locationType[job.locationType] }} | {{ job.industries?.map( ind => industriesMap[ind] ).join(',  ') }} | Start {{ formatDate(job.startsAt) }}
           p.job-description {{ job.description }}
           div.grid-6.job-info
@@ -78,15 +78,17 @@ import { useRouter } from 'vue-router'
 import MarketContainer from '~/components/Containers/MarketContainer.vue'
 import { formatDate } from '~/core/utils.js'
 import { industries, jurisdictions, minExperience, paymentType, locationType } from '~/data/static.js'
-import JobPostingService from '~/services/job_postings.js'
+import UseData from '~/store/Data.js'
 import cSelect from '~/components/Inputs/cSelect.vue'
 import cLabel from '~/components/Misc/cLabel.vue'
 import cBadge from '~/components/Misc/cBadge.vue'
 export default {
   components: { cSelect, cLabel, cBadge, MarketContainer },
+  // eslint-disable-next-line max-lines-per-function
   setup () {
+    // const notification = inject( "notification" );
     const router = useRouter()
-    const jobCollection = new JobPostingService()
+    const jobCollection = new UseData('jobs')
 
     const sortOptions = [
       { title: 'Newest', value: 'newest' }, { title: 'Price', value: 'price' }, { title: 'Duration', value: 'duration' }
@@ -138,7 +140,7 @@ export default {
       return alljobs
     })
 
-    onMounted(() => jobCollection.readMarketDocuments())
+    onMounted(() => jobCollection.readDocuments())
 
     return {
       sortOptions,

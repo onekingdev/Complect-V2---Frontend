@@ -38,6 +38,7 @@ c-modal(title="New Risk" v-model="isRiskDeleteVisible")
 
 <script>
 import { onMounted, onUnmounted, computed, ref, inject } from 'vue'
+import UseData from '~/store/Data.js'
 import cBanner from '~/components/Misc/cBanner.vue'
 import cSelect from '~/components/Inputs/cSelect.vue'
 import cLabel from '~/components/Misc/cLabel.vue'
@@ -45,7 +46,6 @@ import cBadge from '~/components/Misc/cBadge.vue'
 import { calcRiskLevel } from '~/core/utils.js'
 import cModal from '~/components/Misc/cModal.vue'
 import useProfile from '~/store/Profile.js'
-import RiskService from '~/services/risks.js'
 
 export default {
   components: { cBanner, cSelect, cLabel, cBadge, cModal },
@@ -56,8 +56,9 @@ export default {
     }
   },
   emits: ['update:policyDetails'],
-  setup (props) {
-    const risks = new RiskService()
+  // eslint-disable-next-line
+  setup ( props ) {
+    const risks = new UseData('risks')
     const editRisk = ref({
       name: '',
       impact: 0,
@@ -179,13 +180,13 @@ export default {
       try {
         newRisk.value.riskLevel = newRiskLevel.value
         newRisk.value.controls = {
-          id: policyDetail.value.id,
+          _id: policyDetail.value._id,
           name: policyDetail.value.name,
           status: policyDetail.value.status,
           lastModified: policyDetail.value.lastModified,
           dateCreated: policyDetail.value.dateCreated
         }
-        await risks.createDocuments(newRisk.value)
+        await risks.createDocuments([newRisk.value])
         notification({
           type: 'success',
           title: 'Success',
@@ -204,7 +205,7 @@ export default {
     const editRiskValue = async () => {
       try {
         newRisk.value.riskLevel = editRiskLevel.value
-        await risks.updateDocuments(newRisk.value.id, [editRisk.value])
+        await risks.updateDocuments(newRisk.value._id, [editRisk.value])
         notification({
           type: 'success',
           title: 'Success',

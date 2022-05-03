@@ -43,7 +43,7 @@ export default {
     }
     const saveSettings = async () => {
       try {
-        await policySetting.createDocuments(policyForm.value)
+        await policySetting.createDocuments([policyForm.value])
         notification({
           type: 'success',
           title: 'Success',
