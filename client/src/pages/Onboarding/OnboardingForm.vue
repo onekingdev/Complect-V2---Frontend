@@ -19,9 +19,9 @@
           c-field(label="Company Name" type="text" placeholder="Company Name" :errors="errors.company" required v-model="form.company")
           c-field.sub-col.col-3(label="AUM" type="text" placeholder="AUM" v-model="form.aum")
           c-field.sub-col.col-3(label="Number of Accounts" type="number" placeholder="Number of Accounts" v-model="form.accounts")
-          c-select.sub-col.col-3(label="Industry" placeholder="Select Industry" :errors="errors.industry_ids" :data="industries" v-model="form.industry_ids" searchable multiple required)
-          c-select.sub-col.col-3(label="Sub-Industry" placeholder="Select Sub-Industry" :data="filteredSubIndustries" v-model="form.subIndustry_id" searchable multiple)
-          c-select.sub-col.col-3(label="Jurisdiction" placeholder="Select Jurisdiction" :errors="errors.jurisdiction_ids" :data="jurisdictions" v-model="form.jurisdiction_ids" searchable multiple required)
+          c-select.sub-col.col-3(label="Industry" placeholder="Select Industry" :errors="errors.industryids" :data="industries" v-model="form.industryids" searchable multiple required)
+          c-select.sub-col.col-3(label="Sub-Industry" placeholder="Select Sub-Industry" :data="filteredSubIndustries" v-model="form.subIndustryid" searchable multiple)
+          c-select.sub-col.col-3(label="Jurisdiction" placeholder="Select Jurisdiction" :errors="errors.jurisdictionids" :data="jurisdictions" v-model="form.jurisdictionids" searchable multiple required)
           c-select.sub-col.col-3(label="Time Zone" placeholder="Select Time Zone" :errors="errors.time_zone" :data="timezones" v-model="form.time_zone" searchable required)
           c-field.sub-col.col-3(label="Phone Number" type="tel" placeholder="Phone Number" v-model="form.phone_number")
           c-field.sub-col.col-3(label="Company Website" type="url" placeholder="Company Website" v-model="form.website")
@@ -44,13 +44,13 @@
             .header What jurisdiction does your expertise extend to?
             .intro Providing your jurisdiction(s) will help find clients within your domain of expertise. Select all that apply.
             .inputs.grid-6
-              c-select.col-3(label="Jurisdiction" placeholder="Select Jurisdiction" :errors="errors.jurisdiction_ids" :data="jurisdictions" v-model="form.jurisdiction_ids" searchable multiple required)
+              c-select.col-3(label="Jurisdiction" placeholder="Select Jurisdiction" :errors="errors.jurisdictionids" :data="jurisdictions" v-model="form.jurisdictionids" searchable multiple required)
               c-select.col-3(label="Time Zone" placeholder="Select Time Zone" :errors="errors.time_zone" :data="timezones" v-model="form.time_zone" searchable required)
           section
             .header What industries do you serve?
             .inputs.grid-6
-              c-select.col-3(label="Industry" placeholder="Select Industry" :errors="errors.industry_ids" :data="industries" v-model="form.industry_ids" searchable multiple required)
-              c-select.col-3(label="Sub-Industry" placeholder="Select Sub-Industry" :data="filteredSubIndustries" v-model="form.subIndustry_id" searchable multiple)
+              c-select.col-3(label="Industry" placeholder="Select Industry" :errors="errors.industryids" :data="industries" v-model="form.industryids" searchable multiple required)
+              c-select.col-3(label="Sub-Industry" placeholder="Select Sub-Industry" :data="filteredSubIndustries" v-model="form.subIndustryid" searchable multiple)
           section
             .header Are you a former regulator?
             .inputs
@@ -60,7 +60,7 @@
             .header Tell us more about yourself:
             .intro Enter any relevant skills to better match you with suitable projects.
             .inputs
-              c-field(type="tag" label="Skills" placeholder="Select Skills" :data="formOptions.skills" v-model="form.skills" searchable)
+              c-select(label="Skills" placeholder="Select Skills" :data="formOptions.skills" v-model="form.skills" searchable multiple)
           section
             .header My Rate
             .inputs
@@ -118,7 +118,7 @@ const radioOptions = [
 
 const formOptions = {
   skills: [
-    'HTML', 'CSS', 'Javascript', 'Python', 'Django', 'Flask', 'PHP', 'Vue.js', 'Angular'
+    { title: 'HTML', value: 'html' }, { title: 'CSS', value: 'css' }, { title: 'Javascript', value: 'js' }
   ],
   experience: [
     { value: 0, title: 'Junior', description: 'Beginner consultant with some industry experience.' }, { value: 1, title: 'Intermediate', description: 'Good experience and solid knowledge of the industry.' }, { value: 2, title: 'Expert', description: 'Deep understanding of industry with varied experience.' }
@@ -158,7 +158,6 @@ export default {
     cSwitcher,
     cPlans
   },
-  // eslint-disable-next-line max-lines-per-function
   setup () {
     const router = useRouter()
     const { profile } = useProfile()
@@ -173,14 +172,14 @@ export default {
       specialist: {
         1: {
           rules: {
-            jurisdiction_ids: { required: requireForArray },
-            industry_ids: { required: requireForArray },
+            jurisdictionids: { required: requireForArray },
+            industryids: { required: requireForArray },
             time_zone: { required: requireForArray }
           },
           data: {
-            jurisdiction_ids: form.value.jurisdiction_ids,
+            jurisdictionids: form.value.jurisdictionids,
             time_zone: form.value.time_zone,
-            industry_ids: form.value.industry_ids
+            industryids: form.value.industryids
           }
         },
         2: {
@@ -198,8 +197,8 @@ export default {
         2: {
           rules: {
             company: { required },
-            industry_ids: { required: requireForArray },
-            jurisdiction_ids: { required: requireForArray },
+            industryids: { required: requireForArray },
+            jurisdictionids: { required: requireForArray },
             time_zone: { required: requireForArray },
             address: { required },
             city: { required },
@@ -207,8 +206,8 @@ export default {
           },
           data: {
             company: form.value.company,
-            industry_ids: form.value.industry_ids,
-            jurisdiction_ids: form.value.jurisdiction_ids,
+            industryids: form.value.industryids,
+            jurisdictionids: form.value.jurisdictionids,
             time_zone: form.value.time_zone,
             address: form.value.address,
             city: form.value.city,
@@ -272,7 +271,7 @@ export default {
       if (zip) form.value.zip = zip
     }
 
-    const filteredSubIndustries = computed(() => filterSubIndustries(form.value.industry_ids, userType))
+    const filteredSubIndustries = computed(() => filterSubIndustries(form.value.industryids, userType))
 
     const resetValues = () => {
       form.value.company = ''

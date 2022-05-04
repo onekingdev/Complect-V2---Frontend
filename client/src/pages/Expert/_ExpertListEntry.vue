@@ -58,7 +58,7 @@ market-container
           .col-5
             .user-detail
               div
-                router-link.user-title(:to="{name: 'ExpertDetail', params: {id: user._id}}") {{ user.firstName }} {{ user.lastName }}
+                router-link.user-title(:to="{name: 'ExpertDetail', params: {id: user.id}}") {{ user.firstName }} {{ user.lastName }}
                 p.user-type
                   span.user-indsutry(v-for="industry in user.industries") {{ industries.find( ind => ind.value == industry )["title"] }}
               c-button-modal.message-button( :modalTitle="`Message with ${user.firstName} ${user.lastName}`" type="primary" title="Message")

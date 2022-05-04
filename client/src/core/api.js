@@ -1,3 +1,5 @@
+const generateQuery = query => query ? `?${Object.keys(query).map(key => `${key}=${query[key]}`).join('&')}` : ''
+
 const endpoint = (collectionName, documentId, query) => {
   let base
   const API_URI = import.meta.env.VITE_API_URI
@@ -75,4 +77,4 @@ const manualApi = async ({ method, url, data }) => {
   }
 }
 
-export { createDocumentsInCloudDb, readDocumentsFromCloudDb, updateDocumentInCloudDb, deleteDocumentsFromCloudDb, manualApi }
+export { createDocumentsInCloudDb, readDocumentsFromCloudDb, updateDocumentInCloudDb, deleteDocumentsFromCloudDb, manualApi, generateQuery }

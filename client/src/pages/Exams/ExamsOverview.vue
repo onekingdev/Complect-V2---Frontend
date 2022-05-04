@@ -5,17 +5,17 @@ c-table(v-bind="{columns, documents}")
 <script>
 import { onMounted, onUnmounted, inject, ref } from 'vue'
 import { appState } from '~/store/appState'
-import UseData from '~/store/Data.js'
+import ExamService from '~/services/exams.js'
 
 export default {
   setup () {
     const modal = inject('modal')
-    const exams = new UseData('exams')
+    const exams = new ExamService()
 
     const documents = ref([])
 
     const handleSuccess = updatedExam => {
-      const index = documents.value.findIndex(item => item._id === updatedExam._id)
+      const index = documents.value.findIndex(item => item.id === updatedExam.id)
 
       documents.value[index] = { ...updatedExam, status: updatedExam.completed ? 'complete' : 'inprogress' }
     }
@@ -24,7 +24,7 @@ export default {
 
     const handleClickEdit = id => modal({ name: 'cModalExam', id, callBack })
     const handleDeleteExamSuccess = id => {
-      const index = documents.value.findIndex(item => item._id === id)
+      const index = documents.value.findIndex(item => item.id === id)
       if (index > -1) documents.value.splice(index, 1)
     }
     const handleDeleteExam = id => {
@@ -75,7 +75,7 @@ export default {
 
     onMounted(async () => {
       const userId = appState.value.userId
-      await exams.readDocuments(null, { user_id: userId })
+      await exams.readDocuments(null, { userid: userId })
       documents.value = exams.getDocuments().value.map(item => ({ ...item, status: item.completed ? 'complete' : 'inprogress' }))
     })
 

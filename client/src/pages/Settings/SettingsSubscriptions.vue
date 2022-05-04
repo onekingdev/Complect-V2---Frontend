@@ -141,7 +141,7 @@ export default {
           method: 'post',
           url: `payment/subscription/${userType === 'business' ? profile.value.businessId : profile.value.specialistId}`,
           data: JSON.stringify({
-            planId: planId._id,
+            planId: planId.id,
             cardId: payInfo.value
           })
         })
@@ -163,7 +163,7 @@ export default {
       try {
         await manualApi({
           method: 'delete',
-          url: `payment/subscription/${linkaccount.value._id}/${linkaccount.value.currentPlan.subId}`
+          url: `payment/subscription/${linkaccount.value.id}/${linkaccount.value.currentPlan.subId}`
         })
         isCancelVisible.value = !isCancelVisible.value
         notification({
@@ -183,7 +183,7 @@ export default {
       console.debug(linkaccount.value)
       if (linkaccount.value?.currentPlan?.planId) {
         planCollection.readDocuments(linkaccount.value.currentPlan.planId)
-        getSubscription(linkaccount.value._id)
+        getSubscription(linkaccount.value.id)
       }
       planCollection.readDocuments()
       getPayments()

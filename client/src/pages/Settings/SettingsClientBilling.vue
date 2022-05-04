@@ -159,7 +159,7 @@ export default {
           last4: response.data.external_accounts.data[0].last4,
           primary
         })
-        specialist.updateDocument(specialist.getDocument().value._id, { account })
+        specialist.updateDocument(specialist.getDocument().value.id, { account })
         notification({
           type: 'success',
           title: 'Success',

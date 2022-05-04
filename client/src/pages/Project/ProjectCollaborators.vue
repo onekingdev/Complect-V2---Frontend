@@ -8,8 +8,8 @@ card-container(title="Collaborators")
       .user-info
         .name {{ collaborator.firstName }} {{ collaborator.lastName }}
       .action
-        c-button(title="Delete" type="default" @click="toggleDeleteModal( collaborator._id )")
-        c-button(title="End Contract" type="default" @click="toggleEndModal( collaborator._id )")
+        c-button(title="Delete" type="default" @click="toggleDeleteModal( collaborator.id )")
+        c-button(title="End Contract" type="default" @click="toggleEndModal( collaborator.id )")
 c-modal(title="Add Collaborator" v-model="isAddModalVisible")
   template(#content)
     c-select(label="Select User" placeholder="Select..." :data="userData" v-model="newUser" searchable)
@@ -38,6 +38,7 @@ import definitionList from '~/components/Misc/DefinitionList.vue'
 import cModal from '~/components/Misc/cModal.vue'
 import cAvatar from '~/components/Misc/cAvatar.vue'
 import cSelect from '~/components/Inputs/cSelect.vue'
+import ProjectService from '~/services/projects.js'
 import UseData from '~/store/Data.js'
 export default {
   components: {
@@ -65,13 +66,13 @@ export default {
     const newUser = ref('')
     const userData = ref([])
     const users = new UseData('users')
-    const projects = new UseData('projects')
+    const projects = new ProjectService()
     const clickedUser = ref('')
     const notification = inject('notification')
     const toggleAddModal = () => {
       userData.value = users.getDocuments().value.map(user => ({
         title: `${user.firstName} ${user.lastName}`,
-        value: user._id
+        value: user.id
       }))
       isAddModalVisible.value = !isAddModalVisible.value
     }
@@ -88,12 +89,12 @@ export default {
         const allCollaborator = props.projectDetail.collaborators
         await users.readDocuments(newUser.value)
         allCollaborator.push({
-          _id: users.getDocument().value._id,
+          id: users.getDocument().value.id,
           firstName: users.getDocument().value.firstName,
           lastName: users.getDocument().value.lastName,
           avatar: users.getDocument().value.avatar
         })
-        await projects.updateDocument(props.projectDetail._id, { collaborators: allCollaborator })
+        await projects.updateDocument(props.projectDetail.id, { collaborators: allCollaborator })
         props.reloadCollection()
         isAddModalVisible.value = !isAddModalVisible.value
         notification({
@@ -111,8 +112,8 @@ export default {
     }
     const deleteCollaborator = async () => {
       try {
-        const allCollaborator = props.projectDetail.collaborators.filter(collaborator => collaborator._id !== clickedUser.value)
-        await projects.updateDocument(props.projectDetail._id, { collaborators: allCollaborator })
+        const allCollaborator = props.projectDetail.collaborators.filter(collaborator => collaborator.id !== clickedUser.value)
+        await projects.updateDocument(props.projectDetail.id, { collaborators: allCollaborator })
         props.reloadCollection()
         isDeleteModalVisible.value = !isDeleteModalVisible.value
         notification({

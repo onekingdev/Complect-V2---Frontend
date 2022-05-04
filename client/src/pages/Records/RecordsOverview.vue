@@ -1,8 +1,8 @@
 <template lang="pug">
 .quick-access
   span.tab(@click="goToHome()") All Documents
-  span.separator(v-if="selectedFolder._id") &nbsp;/&nbsp;
-  span.tab(v-if="selectedFolder._id" @click="goToFolder()") {{ selectedFolder.name }}
+  span.separator(v-if="selectedFolder.id") &nbsp;/&nbsp;
+  span.tab(v-if="selectedFolder.id" @click="goToFolder()") {{ selectedFolder.name }}
 .actions
   input(v-show="false" type="file" @change="onChange()" ref="fileInput")
   c-button(title="Upload" type="primary" @click="uploadRecord()" :loading="loading")
@@ -39,12 +39,12 @@ export default {
       }
     }
     const updateRecords = async () => {
-      const folderId = selectedFolder.value._id ? selectedFolder.value._id : 'root'
+      const folderId = selectedFolder.value.id ? selectedFolder.value.id : 'root'
       await records.readDocuments('', { folderId })
     }
     const uploadRecord = () => fileInput.value.click()
     const handleClickMoveTo = id => {
-      const folderId = selectedFolder.value._id ? selectedFolder.value._id : 'root'
+      const folderId = selectedFolder.value.id ? selectedFolder.value.id : 'root'
       modal({ name: 'cModalRecordMoveTo', callback: updateRecords, id, folderId })
     }
     const onChange = async () => {
@@ -52,7 +52,7 @@ export default {
       try {
         const file = fileInput.value.files[0]
         const formData = new FormData()
-        const folderId = selectedFolder.value._id ? selectedFolder.value._id : 'root'
+        const folderId = selectedFolder.value.id ? selectedFolder.value.id : 'root'
         formData.append('file', file)
         formData.append('collection', 'records')
         formData.append('folderId', folderId)
@@ -61,7 +61,7 @@ export default {
           name: file.name,
           status: 'file',
           owner: `${profile.value.firstName} ${profile.value.lastName}`,
-          ownerId: profile.value._id,
+          ownerId: profile.value.id,
           size: file.size,
           dateCreated: Date.now(),
           lastModified: Date.now(),
@@ -69,8 +69,8 @@ export default {
           folderId,
           key: uploadRes.Key
         })
-        await records.createDocuments([newFile.value])
-        if (selectedFolder.value._id) await records.updateDocument(selectedFolder.value._id, { size: selectedFolder.value.size + file.size })
+        await records.createDocuments(newFile.value)
+        if (selectedFolder.value.id) await records.updateDocument(selectedFolder.value.id, { size: selectedFolder.value.size + file.size })
         loading.value = false
         await records.readDocuments('', { folderId })
         notification({ type: 'success', title: 'Success', message: 'File has been uploaded..' })
@@ -81,24 +81,24 @@ export default {
       }
     }
     const createNewFolder = () => {
-      const folderId = selectedFolder.value._id ? selectedFolder.value._id : 'root'
-      const folderKey = selectedFolder.value._id ? selectedFolder.value.key : ''
+      const folderId = selectedFolder.value.id ? selectedFolder.value.id : 'root'
+      const folderKey = selectedFolder.value.id ? selectedFolder.value.key : ''
       modal({ name: 'cModalRecord', callback: updateRecords, folderId, folderKey })
     }
     const handleClickEdit = id => {
-      const folderKey = selectedFolder.value._id ? selectedFolder.value.key : ''
+      const folderKey = selectedFolder.value.id ? selectedFolder.value.key : ''
       modal({ name: 'cModalRecord', callback: updateRecords, id, folderKey })
     }
     const handleClickDelete = id => {
-      const index = records.getDocuments().value.findIndex(item => item._id === id)
+      const index = records.getDocuments().value.findIndex(item => item.id === id)
       const title = records.getDocuments().value[index].status === 'folder' ? 'Folder' : 'File'
       const description = `Removing this ${records.getDocuments().value[index].status} will delete any progress and tasks associated with the ${records.getDocuments().value[index].status}.`
       modal({ name: 'cModalDelete', id, title, description, collection: 'records', callback: updateRecords, ownerId: records.getDocuments().value[index].ownerId })
     }
     const folderSelect = async id => {
-      const index = records.getDocuments().value.findIndex(item => item._id === id)
+      const index = records.getDocuments().value.findIndex(item => item.id === id)
       selectedFolder.value = records.getDocuments().value[index]
-      await records.readDocuments('', { folderId: selectedFolder.value._id })
+      await records.readDocuments('', { folderId: selectedFolder.value.id })
     }
     const goToHome = async () => {
       await records.readDocuments('', { folderId: 'root' })

@@ -177,8 +177,8 @@ export default {
       hourlyRate: '',
       maxHourlyRate: '',
       paymentSchedule: '',
-      owner_id: profile.value._id,
-      business_id: profile.value.businessId
+      ownerid: profile.value.id,
+      businessid: profile.value.businessId
     })
     const validateInfor = computed(() => ({
       1: {
@@ -248,7 +248,7 @@ export default {
         if (projects.getDocument().value.jobId) {
           await jobs.updateDocument(projects.getDocument().value.jobId, jobForm)
           jobIds = [projects.getDocument().value.jobId]
-        } else jobIds = await jobs.createDocuments([form.value])
+        } else jobIds = await jobs.createDocuments(form.value)
         if (route.params.id) projects.updateDocument(route.params.id, { status: 'draft', jobId: jobIds[0] })
         else {
           const newProjectForm = {
@@ -262,7 +262,7 @@ export default {
             status: 'draft',
             jobId: jobIds[0]
           }
-          projects.createDocuments([newProjectForm])
+          projects.createDocuments(newProjectForm)
         }
         notification({
           type: 'success',
@@ -289,7 +289,7 @@ export default {
           if (projects.getDocument().value.jobId) {
             await jobs.updateDocument(projects.getDocument().value.jobId, jobForm)
             jobIds = [projects.getDocument().value.jobId]
-          } else jobIds = await jobs.createDocuments([form.value])
+          } else jobIds = await jobs.createDocuments(form.value)
           // eslint-disable-next-line max-depth
           if (route.params.id) projects.updateDocument(route.params.id, { status: 'pending', jobId: jobIds[0] })
           else {
@@ -304,7 +304,7 @@ export default {
               status: 'pending',
               jobId: jobIds[0]
             }
-            await projects.createDocuments([newProjectForm])
+            await projects.createDocuments(newProjectForm)
           }
           notification({
             type: 'success',
@@ -338,7 +338,7 @@ export default {
         if (projects.getDocument().value.jobId) {
           await jobs.readDocuments(projects.getDocument().value.jobId)
           form.value = jobs.getDocument().value
-          delete form.value._id
+          delete form.value.id
         } else {
           form.value.name = projects.getDocument().value.name
           form.value.startsAt = projects.getDocument().value.startsAt
