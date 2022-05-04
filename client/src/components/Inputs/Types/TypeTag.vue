@@ -4,7 +4,7 @@
   .selected-items(ref="tagUI")
     .item(v-for="item in value" v-if="value.length" )
       .title {{item}}
-      icon(name="close" @click="removeSelected(item)") // need to fix
+      icon(name="close" @click="removeSelected(item)")
   .dropdown-list(v-show="datalistVisible && filteredData.length" tabindex="-1" ref="dropdownList")
     .items-section(ref="dropdownListItems" @scroll.native="dropdownListScrollEvent()")
       .item(v-for="(item, index) in filteredData" :key="index" @click="selectItem(item)") {{item}}
@@ -44,7 +44,6 @@ export default {
     })
     const tagChange = () => {
       const extraCushion = props.value.length ? 15 : 0
-      console.log(tagUI.value.clientWidth)
       paddingLeft.value = tagUI.value.clientWidth + extraCushion
     }
     const addTag = tag => {
@@ -77,7 +76,6 @@ export default {
       }
     })
     const showDropdownList = () => {
-      console.log(34234)
       params.datalistVisible = true
       if (window.innerHeight - selectComponent.value.getBoundingClientRect().bottom < 300) dropdownListDirection.value = 'drop-up'
       else dropdownListDirection.value = 'drop-down'
@@ -119,6 +117,22 @@ export default {
 <style lang="stylus" scoped>
 .tag-input
   position: relative
+  &.expanded
+    &.drop-down
+      .dropdown-list
+        border-radius: 0 0 var(--v-inputs-border-radius) var(--v-inputs-border-radius)
+        top: calc(100% + 0.05em)
+        .search-section
+          &.offset
+            border-bottom: 1px solid var(--c-border)
+    &.drop-up
+      .dropdown-list
+        border-radius: var(--v-inputs-border-radius) var(--v-inputs-border-radius) 0 0
+        bottom: calc(100% - 1.4em)
+        .search-section
+          order: 2
+          &.offset
+            border-top: 1px solid var(--c-border)
   input
     color: #000
     background: transparent

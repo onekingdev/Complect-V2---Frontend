@@ -1,6 +1,6 @@
 <template lang="pug">
 c-label.c-input.c-field(:class="{fullwidth, disabled, transparent}" v-bind="{label, required}")
-  div(:class="{'errors': errors && errors.length, 'field-body': type !== 'rich', 'field-body-tag': type === 'tag'}")
+  div(:class="divClass")
     icon(v-if="iconL || icon" :name="iconL || type")
     component.field-input(
       :is="type"
@@ -17,7 +17,7 @@ c-label.c-input.c-field(:class="{fullwidth, disabled, transparent}" v-bind="{lab
 </template>
 
 <script>
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, computed } from 'vue'
 import cLabel from '~/components/Misc/cLabel.vue'
 export default {
   components: {
@@ -95,7 +95,14 @@ export default {
     const updateModelValue = value => {
       context.emit('update:modelValue', value)
     }
-    return { updateModelValue }
+    const divClass = computed(() => {
+      return {
+        errors: props.errors && props.errors.length,
+        'field-body': props.type !== 'rich',
+        'field-body-tag': props.type === 'tag'
+      }
+    })
+    return { updateModelValue, divClass }
   }
 }
 </script>

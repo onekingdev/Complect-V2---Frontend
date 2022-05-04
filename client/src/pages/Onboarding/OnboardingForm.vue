@@ -60,7 +60,7 @@
             .header Tell us more about yourself:
             .intro Enter any relevant skills to better match you with suitable projects.
             .inputs
-              c-field(type="tag" label="Skills" placeholder="Select Skills" :data="formOptions.tagskills" v-model="form.skills" searchable)
+              c-field(type="tag" label="Skills" placeholder="Select Skills" :data="formOptions.skills" v-model="form.skills" searchable)
           section
             .header My Rate
             .inputs
@@ -118,9 +118,6 @@ const radioOptions = [
 
 const formOptions = {
   skills: [
-    { title: 'HTML', value: 'html' }, { title: 'CSS', value: 'css' }, { title: 'Javascript', value: 'js' }
-  ],
-  tagskills: [
     'HTML', 'CSS', 'Javascript', 'Python', 'Django', 'Flask', 'PHP', 'Vue.js', 'Angular'
   ],
   experience: [
