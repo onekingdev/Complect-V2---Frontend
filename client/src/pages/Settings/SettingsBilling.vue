@@ -100,10 +100,10 @@ export default {
     const userType = profile.value.type
     const router = useRouter()
     const notification = inject('notification')
-    const publishkey = ref(import.meta.env.VITE_STRIPE)
-    const plaidkey = ref(import.meta.env.PLAID_PUBLIC_KEY)
-    const plaidenv = ref(import.meta.env.PLAID_WEBHOOK)
-    const plaidwebhook = ref(import.meta.env.PLAID_ENVIRONMENT)
+    const publishkey = import.meta.env.VITE_STRIPE
+    const plaidkey = import.meta.env.VITE_PLAID_PK
+    const plaidwebhook = import.meta.env.VITE_PLAID_WH
+    const plaidenv = import.meta.env.VITE_PLAID_ENV
 
     const tokenCreated = token => console.debug(token)
     const elementRef = ref()

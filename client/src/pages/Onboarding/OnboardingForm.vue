@@ -14,7 +14,7 @@
             .intro The CRD number will be used to auto-populate information about your business
             .inputs.grid-6
               c-radios.crd-radio(id="crd" :data="radioOptions" v-model="form.crd")
-              c-field.col-3(id="crdValue" label="What is your CRD number?" placeholder="123456" v-if="form.crd" v-model="form.crdValue")
+              c-field.col-3(id="crdValue" label="What is your CRD number?" placeholder="123456" v-if="form.crd" v-model="form.crdValue" @change="updateFieldsFromCRD()")
         template(#step2)
           c-field(label="Company Name" type="text" placeholder="Company Name" :errors="errors.company" required v-model="form.company")
           c-field.sub-col.col-3(label="AUM" type="text" placeholder="AUM" v-model="form.aum")
@@ -60,7 +60,7 @@
             .header Tell us more about yourself:
             .intro Enter any relevant skills to better match you with suitable projects.
             .inputs
-              c-select(label="Skills" placeholder="Select Skills" :data="formOptions.skills" v-model="form.skills" searchable multiple)
+              c-field(type="tag" label="Skills" placeholder="Select Skills" :data="formOptions.skills" v-model="form.skills" searchable)
           section
             .header My Rate
             .inputs
@@ -82,9 +82,8 @@
 </template>
 
 <script>
-/* eslint-disable no-unused-vars */
 
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import useProfile from '~/store/Profile.js'
 import useBusiness from '~/store/Business.js'
@@ -101,11 +100,12 @@ import cPlans from '~/components/Misc/cPlans.vue'
 // import UseData from "~/store/Data.js";
 import BusinessService from '~/services/business.js'
 import ProfileService from '~/services/profile.js'
+import { getMisc } from '~/services/tags.js'
 
 import useAuth from '~/core/auth.js'
 import cAddress from '~/components/Inputs/cAddress.vue'
 
-import { industries, jurisdictions, timezones } from '~/data/static.js'
+// import { industries, jurisdictions, timezones } from '~/data/static.js'
 import { plans } from '~/data/plans.js'
 
 import { filterSubIndustries, validates } from '~/core/utils.js'
@@ -118,7 +118,7 @@ const radioOptions = [
 
 const formOptions = {
   skills: [
-    { title: 'HTML', value: 'html' }, { title: 'CSS', value: 'css' }, { title: 'Javascript', value: 'js' }
+    'HTML', 'CSS', 'Javascript', 'Python', 'Django', 'Flask', 'PHP', 'Vue.js', 'Angular'
   ],
   experience: [
     { value: 0, title: 'Junior', description: 'Beginner consultant with some industry experience.' }, { value: 1, title: 'Intermediate', description: 'Good experience and solid knowledge of the industry.' }, { value: 2, title: 'Expert', description: 'Deep understanding of industry with varied experience.' }
@@ -161,12 +161,26 @@ export default {
   setup () {
     const router = useRouter()
     const { profile } = useProfile()
-    const { business, isBusiness } = useBusiness()
+    const { isBusiness } = useBusiness()
     const userType = isBusiness ? 'business' : 'specialist'
     const { form, resetForm } = useForm('onboarding', baseForm[userType])
     const errors = ref({})
-    const { onboarding, restoreSession } = useAuth()
-    // const potentials = new UseData( "potential_businesses" );
+    const { restoreSession } = useAuth()
+    const businessService = new BusinessService()
+    const specialistService = new ProfileService()
+    const misc = ref({})
+    const industries = computed(() => {
+      if (!misc.value.industries) return []
+      return misc.value.industries.map(industry => ({ value: industry[0], title: industry[1] }))
+    })
+    const jurisdictions = computed(() => {
+      if (!misc.value.jurisdictions) return []
+      return misc.value.jurisdictions.map(jurisdiction => ({ value: jurisdiction[0], title: jurisdiction[1] }))
+    })
+    const timezones = computed(() => {
+      if (!misc.value.timezones) return []
+      return misc.value.timezones.map(timezone => ({ value: timezone[0], title: timezone[1] }))
+    })
 
     const validateInfor = computed(() => ({
       specialist: {
@@ -235,20 +249,12 @@ export default {
     const goToCheckout = async () => {
       try {
         if (userType === 'business' && form.value.plan === 'starter') {
-          const businessService = new BusinessService()
-          const ids = await businessService.updateDocument([form.value])
-          // eslint-disable-next-line require-atomic-updates
-          // form.value.businessId = ids[0];
-          // await onboarding( form.value );
+          await businessService.updateDocument(form.value)
           await restoreSession()
           await resetForm()
           router.push({ name: 'Dashboard' })
         } else if (userType === 'specialist' && form.value.plan === 'standard') {
-          const specialistService = new ProfileService()
-          const ids = await specialistService.updateDocument(form.value)
-          // eslint-disable-next-line require-atomic-updates
-          // form.value.specialistId = ids[0];
-          // await onboarding( form.value );
+          await specialistService.updateDocument(form.value)
           await restoreSession()
           await resetForm()
           router.push({ name: 'Dashboard' })
@@ -273,38 +279,24 @@ export default {
 
     const filteredSubIndustries = computed(() => filterSubIndustries(form.value.industryids, userType))
 
-    const resetValues = () => {
-      form.value.company = ''
-      form.value.website = ''
-      form.value.aum = ''
-      form.value.accounts = ''
-      form.value.phone_number = ''
-      form.value.address = ''
-      form.value.apt = ''
-      form.value.city = ''
-      form.value.state = ''
-      form.value.zip = ''
+    const updateFieldsFromCRD = async () => {
+      const crdValues = businessService.updateDocument({ business: { crd: form.value.crdValue } })
+      if (!crdValues) return
+      form.value.company = crdValues.business_name
+      form.value.website = crdValues.website
+      form.value.aum = crdValues.aum
+      form.value.accounts = crdValues.accounts
+      form.value.tel = crdValues.phone_number
+      form.value.address = crdValues.address
+      form.value.apt = crdValues.apt_unit
+      form.value.city = crdValues.city
+      form.value.state = crdValues.state
+      form.value.zip = crdValues.zipcode
+      form.value.time_zone = crdValues.time_zone
     }
-
-    // onMounted( () => potentials.readDocuments() );
-    // onUnmounted( () => potentials.clearStore() );
-
-    // watch( () => form.value.crdValue, () => {
-    //   if ( !form.value.crdValue ) return;
-    //   const crdValues = potentials.getDocuments().value.find( doc => doc.crd_number === form.value.crdValue );
-    //   resetValues();
-    //   if ( !crdValues ) return;
-    //   form.value.company = crdValues.business_name;
-    //   form.value.website = crdValues.website;
-    //   form.value.aum = crdValues.aum;
-    //   form.value.accounts = crdValues.client_account_cnt;
-    //   form.value.tel = crdValues.contact_phone;
-    //   form.value.address = crdValues.address_1;
-    //   form.value.apt = crdValues.apartment;
-    //   form.value.city = crdValues.city;
-    //   form.value.state = crdValues.state;
-    //   form.value.zip = crdValues.zipcode;
-    // }, { "deep": true });
+    onMounted(async () => {
+      misc.value = await getMisc()
+    })
 
     return {
       errors,
@@ -319,7 +311,8 @@ export default {
       timezones,
       plans,
       goToCheckout,
-      updateAddressChange
+      updateAddressChange,
+      updateFieldsFromCRD
     }
   }
 }

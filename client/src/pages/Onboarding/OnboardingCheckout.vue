@@ -38,9 +38,9 @@
       .content
         .plan
           .plan-name Payment Method
-        c-button(title="Add Bank Account" v-if="isAddButtonVisible")
+        c-button(title="Add Bank Account" v-if="isAddButtonVisible" type="primary" @click="toggleBankModal()")
       stripe-elements.stripe(v-if="stripeLoaded && isAddButtonVisible" ref="elms" v-slot="{ elements, instance }" :stripe-key="publishkey" :instance-option="instanceOptions" :element-options="elementOptions")
-        stripe-element(ref="card" :elements="elements" :options="cardOptions" @change="stripeChange($event)")
+        stripe-element(ref="card" :elements="elements" :options="cardOptions")
       c-button.add-button(title="Add" type="primary" @click="addPayment()" v-if="isAddButtonVisible")
       div.grid-6(v-if="!isAddButtonVisible")
         template(v-if="cardresult.card")
@@ -101,11 +101,22 @@
                   .price ${{plan.price[1]}}
             template(v-else)
               .price ${{plan.price[0]}}
-      c-button.purchase-button(title="Complete Purchase" type="primary" :disabled="isPurchaseVisible" @click="onBoard()")
+      c-button.purchase-button(title="Complete Purchase" type="primary" :disabled="isPurchaseDisable" @click="onBoard()")
+c-modal(title="Add Bank Account" v-model="isBankMethodVisible")
+  template(#content)
+    .card-billing
+      plaid-link(clientName="Complect" :env="plaidenv" :webhook="plaidwebhook" :public_key="plaidkey" :products="['auth','transactions']" :onSuccess="plaidSuccess" :onLoad="plaidLoad" :onExit="plaidExit" :onEvent="plaidEvent")
+        .grid-6
+          .col-1.billing-icon
+            icon(name="bank" size="huge")
+          .col-4
+            h1 Bank account
+            h4 Use your bank account for future payments
+          .col-1.billing-icon
+            icon(name="chevron-right")
 </template>
 
 <script>
-/* eslint-disable no-unused-vars */
 import { useRouter } from 'vue-router'
 import useProfile from '~/store/Profile.js'
 import useBusiness from '~/store/Business.js'
@@ -113,30 +124,31 @@ import useForm from '~/store/Form.js'
 import useAuth from '~/core/auth.js'
 import { loadStripe } from '@stripe/stripe-js'
 import { StripeElements, StripeElement } from 'vue-stripe-js'
+import PlaidLink from 'vue-plaid-link2'
 import { onBeforeMount, onMounted, ref, inject } from 'vue'
 // import UseData from "~/store/Data.js";
 import BusinessService from '~/services/business.js'
 import ProfileService from '~/services/profile.js'
+import { addStripePayment } from '~/services/payments.js'
 
-import { plans } from '~/data/plans.js'
 import cSwitcher from '~/components/Inputs/cSwitcher.vue'
+import cModal from '~/components/Misc/cModal.vue'
 import { manualApi } from '~/core/api.js'
 export default {
-  components: { StripeElements, StripeElement, cSwitcher },
-  // eslint-disable-next-line
+  components: { StripeElements, StripeElement, cSwitcher, PlaidLink, cModal },
   setup () {
     const { profile } = useProfile()
-    const { business, isBusiness } = useBusiness()
+    const { isBusiness } = useBusiness()
     const userType = isBusiness ? 'business' : 'specialist'
     const { form, resetForm } = useForm('onboarding')
-    const { onboarding, restoreSession } = useAuth()
+    const { restoreSession } = useAuth()
     // const plans = new UseData( "plans" );
     const notification = inject('notification')
     const plan = ref({})
     const router = useRouter()
     const goBack = () => router.go(-1)
     const isAddButtonVisible = ref(true)
-    const isPurchaseVisible = ref(true)
+    const isPurchaseDisable = ref(true)
     const publishkey = ref(import.meta.env.VITE_STRIPE)
     const instanceOptions = ref({ })
     const elementsOptions = ref({ })
@@ -148,6 +160,15 @@ export default {
     const cardresult = ref({ })
     const promocode = ref()
     const promoInfo = ref({ })
+    const plaidkey = import.meta.env.VITE_PLAID_PK
+    const plaidwebhook = import.meta.env.VITE_PLAID_WH
+    const plaidenv = import.meta.env.VITE_PLAID_ENV
+    const plaidSuccess = (publicToken, metadata) => console.debug(publicToken, metadata)
+    const plaidLoad = () => {}
+    const plaidExit = (err, metadata) => console.debug(err, metadata)
+    const plaidEvent = (eventName, metadata) => console.debug(eventName, metadata)
+    const isBankMethodVisible = ref(false)
+    const toggleBankModal = () => isBankMethodVisible.value = !isBankMethodVisible.value
     const paymentOptions = ref([
       {
         title: 'Billed Annually',
@@ -157,18 +178,14 @@ export default {
         value: false
       }
     ])
-    const stripeChange = e => isPurchaseVisible.value = !e.complete
     const addPayment = () => {
       const cardElement = card.value.stripeElement
       elms.value.instance.createToken(cardElement).then(async result => {
         const stripeToken = result.token.id
         cardresult.value = result.token
         try {
-          await manualApi({
-            method: 'post',
-            url: `payment/method/${userType === 'business' ? form.value.businessId : form.value.specialistId}`,
-            data: JSON.stringify({ stripeToken })
-          })
+          await addStripePayment({ stripeToken })
+          isPurchaseDisable.value = false
           notification({
             type: 'success',
             title: 'Success',
@@ -188,36 +205,14 @@ export default {
       try {
         if (userType === 'business') {
           const businessService = new BusinessService()
-          const ids = await businessService.updateDocument(form.value)
-          // await manualApi({
-          //   "method": "post",
-          //   "url": `payment/customer/${ids[0]}`,
-          //   "data": JSON.stringify({})
-          // });
-          // await onboarding({ "businessId": ids[0] });
-          // eslint-disable-next-line require-atomic-updates
-          // form.value.businessId = ids[0];
+          await businessService.updateDocument(form.value)
         } else {
           const specialistService = new ProfileService()
-          const ids = await specialistService.updateDocument(form.value)
-          // await manualApi({
-          //   "method": "post",
-          //   "url": `payment/customer/${ids[0]}`,
-          //   "data": JSON.stringify({})
-          // });
-          // await onboarding({ "specialistId": ids[0] });
-          // eslint-disable-next-line require-atomic-updates
-          // form.value.specialistId = ids[0];
+          await specialistService.updateDocument(form.value)
         }
 
-        // await manualApi({
-        //   "method": "post",
-        //   "url": `payment/subscription/${userType === "business" ? form.value.businessId : form.value.specialistId}`,
-        //   "data": JSON.stringify({
-        //     // "planId": plan.value.id,
-        //     "promocode": promocode.value
-        //   })
-        // });
+        /* we need to add subscription code here */
+
         await restoreSession()
         await resetForm()
         router.push({ name: 'Dashboard' })
@@ -268,8 +263,39 @@ export default {
       // }
     })
 
-    // eslint-disable-next-line max-len
-    return { userType, plan, stripeChange, paymentOptions, users, goBack, profile, form, onBoard, publishkey, instanceOptions, elementsOptions, cardOptions, card, elms, stripeLoaded, addPayment, isAddButtonVisible, isPurchaseVisible, cardresult, promoInfo, promocode, applyPromo }
+    return {
+      userType,
+      plan,
+      paymentOptions,
+      users,
+      goBack,
+      profile,
+      form,
+      onBoard,
+      publishkey,
+      instanceOptions,
+      elementsOptions,
+      cardOptions,
+      card,
+      elms,
+      stripeLoaded,
+      addPayment,
+      isAddButtonVisible,
+      isPurchaseDisable,
+      cardresult,
+      promoInfo,
+      promocode,
+      applyPromo,
+      plaidkey,
+      plaidenv,
+      plaidwebhook,
+      plaidSuccess,
+      plaidLoad,
+      plaidExit,
+      plaidEvent,
+      isBankMethodVisible,
+      toggleBankModal
+    }
   }
 }
 </script>
@@ -401,5 +427,12 @@ export default {
       font-size: 1.3em
     .purchase-button
       margin-top: 2em
-
+.card-billing
+  cursor: pointer
+  .billing-icon
+    align-items: center
+    justify-content: center
+    display: flex
+  h4
+    font-size: 0.875em
 </style>
