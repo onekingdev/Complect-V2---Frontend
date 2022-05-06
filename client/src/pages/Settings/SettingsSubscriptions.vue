@@ -13,7 +13,7 @@ card-container(title="Subscription")
         c-button.col-1(title="Upgrade" type="primary" @click="gotoPlan()")
         .border-line
         div.col-3.plan-type
-          p ${{ document.perPrice }}/{{ document.method?.replace('ly', '') }}, billed {{ document.method }} to Visa **** **** **** 1111
+          p ${{ document.perPrice }}/{{ methodType }}, billed {{ document.method }} to Visa **** **** **** 1111
         div.col-3.plan-period
           p Next payment date {{ formatDate(linkaccount.currentPlan.subscriptionEndAt * 1000) }}
     template(v-else)
@@ -26,7 +26,7 @@ card-container(title="Subscription")
         c-button.col-1(title="Cancel Plan" type="link" @click="toggleCancelVisible()")
         .border-line
         div.col-3.plan-type
-          p ${{ document.perPrice }}/{{ document.method?.replace('ly', '') }}, billed {{ document.method }} to Visa **** **** **** 1111
+          p ${{ document.perPrice }}/{{ methodType }}, billed {{ document.method }} to Visa **** **** **** 1111
         div.col-3.plan-period
           p Next payment date {{ formatDate(linkaccount.currentPlan.subscriptionEndAt * 1000) }}
       div.free-plan.grid-6(v-else)
@@ -64,7 +64,7 @@ c-modal(title="Edit Seats" v-model="isEditPlanVisible" wide)
         p.payment-text(v-if="billingPlan == 15") ${{ billingPlan * addSeats }}/month
         p.payment-text(v-if="billingPlan == 10") ${{ billingPlan * addSeats * 12 }}/year
         p.save(v-if="billingPlan == 10 && addSeats") You saved ${{ 60 * addSeats }}
-      template(v-if="(!addSeats || addSeats == 0) && currentSeats - removeSeats < usedSeats")
+      template(v-if="overflowSeat")
         p You are currently using {{ usedSeats }} out of {{ currentSeats }} of available seats. You may need to disable users in order to remove seats.
     h4 Payment Method
       c-radios(:data="payments" v-model="payInfo")
@@ -232,6 +232,8 @@ export default {
         })
       }
     }
+    const overflowSeat = computed(() => (!addSeats.value || addSeats.value === 0) && currentSeats.value - removeSeats.value < usedSeats.value)
+    const methodType = computed(() => document.value.method?.replace('ly', ''))
     onMounted(() => {
       if (linkaccount.value?.currentPlan?.planId) {
         planCollection.readDocuments(linkaccount.value.currentPlan.planId)
@@ -249,6 +251,8 @@ export default {
       gotoPlan,
       formOptions,
       form,
+      overflowSeat,
+      methodType,
       // plans,
       gotoMoreInfo,
       billingPlan,
