@@ -12,6 +12,7 @@ import { onMounted, onUnmounted, ref, inject, computed } from 'vue'
 import UseData from '~/store/Data.js'
 import cBanner from '~/components/Misc/cBanner.vue'
 import cSelect from '~/components/Inputs/cSelect.vue'
+import { notifyMessages } from '~/data/notifications.js'
 
 export default {
   components: { cBanner, cSelect },
@@ -102,17 +103,25 @@ export default {
       { title: 'Test', value: 1 }, { title: 'Test2', value: 1 }, { title: 'Test3', value: 2 }
     ]
 
+    const createTask = async () => {
+      try {
+        await tasks.createDocuments([newTask.value])
+        notification({
+          type: 'success',
+          title: 'Success',
+          message: notifyMessages.task.create.success
+        })
+      } catch (error) {
+        notification({
+          type: 'error',
+          title: 'Error',
+          message: notifyMessages.task.create.error
+        })
+      }
+    }
     const AssignOptions = [
       { title: 'Assgine1', value: 1 }, { title: 'Assgine2', value: 1 }, { title: 'Assgine3', value: 2 }
     ]
-
-    const createTask = async () => {
-      await tasks.createDocuments([newTask.value])
-      notification({
-        type: 'success',
-        title: 'New Risk has been Created'
-      })
-    }
 
     onMounted(() => tasks.readDocuments())
     onUnmounted(() => tasks.clearStore())

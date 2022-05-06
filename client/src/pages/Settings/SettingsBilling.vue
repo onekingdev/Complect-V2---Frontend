@@ -91,6 +91,7 @@ import useProfile from '~/store/Profile.js'
 import cModal from '~/components/Misc/cModal.vue'
 import { useRouter } from 'vue-router'
 import { manualApi } from '~/core/api.js'
+import { notifyMessages } from '~/data/notifications.js'
 
 export default {
   components: { cSelect, cLabel, cBadge, StripeElements, StripeElement, cModal, PlaidLink },
@@ -135,13 +136,13 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Payment method has been made the primary payment source.'
+          message: notifyMessages.payment.primary.success
         })
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Payment method has not been made the primary payment source. Please try again.'
+          message: notifyMessages.payment.primary.error
         })
       }
     }
@@ -169,7 +170,7 @@ export default {
           notification({
             type: 'success',
             title: 'Success',
-            message: 'New payment method has been added.'
+            message: notifyMessages.payment.add.success
           })
           isNewMethodVisible.value = !isNewMethodVisible.value
           await getPayments()
@@ -177,7 +178,7 @@ export default {
           notification({
             type: 'error',
             title: 'Error',
-            message: 'New payment method has not been added. Please try again.'
+            message: notifyMessages.payment.add.error
           })
         }
       })
@@ -197,7 +198,7 @@ export default {
           notification({
             type: 'error',
             title: 'Error',
-            message: 'Primary payment method cannot be deleted without adding an alternative payment method first.'
+            message: notifyMessages.payment.delete.validate
           })
         } else {
           await manualApi({
@@ -207,7 +208,7 @@ export default {
           notification({
             type: 'success',
             title: 'Success',
-            message: 'New payment method has been deleted.'
+            message: notifyMessages.payment.delete.success
           })
           await getPayments()
         }
@@ -215,7 +216,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Payment method has not been deleted. Please try again.'
+          message: notifyMessages.payment.delete.error
         })
       }
     }

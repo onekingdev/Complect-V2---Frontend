@@ -68,6 +68,7 @@ import { industries, jurisdictions, timezones } from '~/data/static.js'
 import { filterSubIndustries, validates } from '~/core/utils.js'
 import { maxLength, required } from '@vuelidate/validators'
 import { requireForArray } from '~/core/customValidates.js'
+import { notifyMessages } from '~/data/notifications.js'
 
 const COMMON_FIELDS = {
   industries: [],
@@ -203,13 +204,13 @@ export default {
         updateProfile(newData)
         notification({
           title: 'Success',
-          message: 'Information has been saved.'
+          message: notifyMessages.profile.save.success
         })
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Information has not been saved.'
+          message: notifyMessages.profile.save.error
         })
         console.error(error)
       }

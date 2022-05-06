@@ -101,6 +101,7 @@ import useProfile from '~/store/Profile.js'
 import cDropdown from '~/components/Inputs/cDropdown.vue'
 import { manualApi } from '~/core/api.js'
 import cModal from '~/components/Misc/cModal.vue'
+import { notifyMessages } from '~/data/notifications.js'
 export default {
   components: { VerticalTabs, cDropdown, cModal },
   props: {
@@ -187,14 +188,14 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Policy has been published.'
+          message: notifyMessages.policy.publish.success
         })
         togglePublishPolicy()
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Policy has not been published. Please try again.'
+          message: notifyMessages.policy.publish.error
         })
       }
     }
@@ -205,14 +206,14 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Policy has been archived.'
+          message: notifyMessages.policy.archive.success
         })
         toPoliciePage()
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Policy has not been archived. Please try again.'
+          message: notifyMessages.policy.archive.error
         })
       }
     }
@@ -223,14 +224,14 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Policy has been unarchived and republished.'
+          message: notifyMessages.policy.unarchive.success
         })
         toPoliciePage()
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Policy has not been unarchived and republished. Please try again.'
+          message: notifyMessages.policy.unarchive.error
         })
       }
     }
@@ -247,13 +248,13 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Policy has been saved.'
+          message: notifyMessages.policy.save.success
         })
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Policy has not been saved. Please try again.'
+          message: notifyMessages.policy.save.error
         })
       }
     }
@@ -273,7 +274,7 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'New policy has been created.'
+          message: notifyMessages.policy.create.success
         })
         router.push({
           name: 'PolicyDetail',
@@ -285,7 +286,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Policy has not been created. Please try again.'
+          message: notifyMessages.policy.save.error
         })
       }
     }

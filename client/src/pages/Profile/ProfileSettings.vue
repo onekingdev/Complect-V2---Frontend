@@ -21,6 +21,7 @@ import useAuth from '~/core/auth.js'
 import useProfile from '~/store/Profile.js'
 import { validates } from '~/core/utils.js'
 import { numberGreaterThanZero } from '~/core/customValidates.js'
+import { notifyMessages } from '~/data/notifications.js'
 
 export default {
   components: {
@@ -59,13 +60,13 @@ export default {
         updateProfile(data)
         notification({
           title: 'Success',
-          message: 'Information has been saved.'
+          message: notifyMessages.profile.save.success
         })
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Information has not been saved.'
+          message: notifyMessages.profile.save.error
         })
         console.error(error)
       }

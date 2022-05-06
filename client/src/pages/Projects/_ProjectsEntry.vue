@@ -22,6 +22,7 @@ import { useRouter } from 'vue-router'
 import UseData from '~/store/Data.js'
 import { manualApi } from '~/core/api.js'
 import useProfile from '~/store/Profile.js'
+import { notifyMessages } from '~/data/notifications.js'
 export default {
   setup () {
     const notification = inject('notification')
@@ -53,7 +54,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Job posting cannot be created until a valid payment method is added to your account.'
+          message: notifyMessages.job.post.validate
         })
       }
     }
@@ -77,7 +78,7 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Project has been created'
+          message: notifyMessages.project.create.success
         })
         router.push({
           name: 'ProjectDetail',
@@ -87,7 +88,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Project has not been created. Please try again.'
+          message: notifyMessages.project.create.error
         })
       }
     }

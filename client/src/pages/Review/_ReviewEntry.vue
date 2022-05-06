@@ -41,6 +41,7 @@ import cDropdown from '~/components/Inputs/cDropdown.vue'
 import cModal from '~/components/Misc/cModal.vue'
 import cCheckbox from '~/components/Inputs/cCheckbox.vue'
 import { manualApi } from '~/core/api.js'
+import { notifyMessages } from '~/data/notifications.js'
 export default {
   components: {
     cDropdown,
@@ -76,7 +77,7 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Internal review has been deleted.'
+          message: notifyMessages.review.delete.success
         })
         router.push({ name: 'ReviewsOverview' })
       } catch (error) {
@@ -84,7 +85,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Internal review has not been deleted. Please try again.'
+          message: notifyMessages.review.delete.error
         })
       }
     }
@@ -122,7 +123,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Internal Review report cannot be generated until all categories have been marked as complete.'
+          message: notifyMessages.review.create.validate
         })
       }
     }
@@ -133,7 +134,7 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Internal review has been saved.'
+          message: notifyMessages.review.save.success
         })
         router.push({ name: 'ReviewsOverview' })
       } catch (error) {
@@ -141,7 +142,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Internal review has not been saved. Please try again.'
+          message: notifyMessages.review.save.error
         })
       }
     }

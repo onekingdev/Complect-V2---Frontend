@@ -22,6 +22,7 @@ import { onMounted, onUnmounted, inject, ref } from 'vue'
 import UseData from '~/store/Data.js'
 import cBanner from '~/components/Misc/cBanner.vue'
 import cModal from '~/components/Misc/cModal.vue'
+import { notifyMessages } from '~/data/notifications.js'
 export default {
   components: { cBanner, cModal },
   setup () {
@@ -41,14 +42,14 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Internal review has been deleted.'
+          message: notifyMessages.review.delete.success
         })
       } catch (error) {
         console.error(error)
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Internal review has not been deleted. Please try again.'
+          message: notifyMessages.review.delete.error
         })
       }
     }
@@ -59,14 +60,14 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Internal review has been duplicated.'
+          message: notifyMessages.review.duplicate.success
         })
       } catch (error) {
         console.error(error)
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Internal review has not been duplicated. Please try again.'
+          message: notifyMessages.review.duplicate.error
         })
       }
     }

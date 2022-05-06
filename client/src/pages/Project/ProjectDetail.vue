@@ -88,6 +88,7 @@ import { formatDate } from '~/core/utils.js'
 import { useRouter } from 'vue-router'
 import useProfile from '~/store/Profile.js'
 import UseData from '~/store/Data.js'
+import { notifyMessages } from '~/data/notifications.js'
 export default {
   components: {
     cBanner,
@@ -152,13 +153,13 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'User has been removed from the project.'
+          message: notifyMessages.project.collaborator.remove.success
         })
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'User has been not removed from the project. Please try again.'
+          message: notifyMessages.project.collaborator.remove.error
         })
       }
     }

@@ -36,7 +36,6 @@ export default {
     display: flex
     gap: 0.5em
     align-items: center
-    border-bottom: 1px solid var(--c-border)
     font-size: 1em
     .card-title, .header-content
       font-size: 1.25em

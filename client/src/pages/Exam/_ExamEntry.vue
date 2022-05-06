@@ -45,6 +45,7 @@ import { validates } from '~/core/utils.js'
 import { required, email } from '@vuelidate/validators'
 import useExam from '~/core/exams.js'
 import useExamDetail from '~/store/Exam.js'
+import { notifyMessages } from '~/data/notifications.js'
 
 const tabs = [
   {
@@ -59,9 +60,8 @@ const tabs = [
   }
 ]
 
-/* eslint-disable */
 export default {
-  "components": {
+  components: {
     cModal,
     cDropdown,
     cCheckbox
@@ -77,106 +77,106 @@ export default {
       markAsInComplete,
       saveExam,
       exitExamDetail
-    } = useExamDetail();
+    } = useExamDetail()
 
-    const isVisibleInviteEmail = ref( false );
-    const isVisibleRevokeAccess = ref( false );
-    const indexRevokeEmail = ref( -1 );
-    const errors = ref({});
-    const shareEmail = ref( "" );
+    const isVisibleInviteEmail = ref(false)
+    const isVisibleRevokeAccess = ref(false)
+    const indexRevokeEmail = ref(-1)
+    const errors = ref({})
+    const shareEmail = ref('')
 
-    const shareExamModalTitle = computed( () => isVisibleRevokeAccess.value ? "Revoke Access" : "Share Exam" );
+    const shareExamModalTitle = computed(() => isVisibleRevokeAccess.value ? 'Revoke Access' : 'Share Exam')
 
     const handleSuccess = updatedExam => {
-      exam.value = updatedExam;
-    };
+      exam.value = updatedExam
+    }
 
-    const callBack = { handleSuccess };
+    const callBack = { handleSuccess }
 
-    const editExam = () => modal({ "name": "cModalExam", id, callBack });
+    const editExam = () => modal({ name: 'cModalExam', id, callBack })
 
     const handleDeleteExam = () => {
       modal({
-        "name": "cModalDelete",
+        name: 'cModalDelete',
         id,
-        "title": "Exam",
-        "description": "Removing this exam will delete any progress and tasks associated with the file.",
-        "collection": "exams",
-        "callback": exitExamDetail
-      });
-    };
+        title: 'Exam',
+        description: 'Removing this exam will delete any progress and tasks associated with the file.',
+        collection: 'exams',
+        callback: exitExamDetail
+      })
+    }
 
     const handleCloseRevokeModal = () => {
-      isVisibleInviteEmail.value = true;
-    };
+      isVisibleInviteEmail.value = true
+    }
 
     const revokeEmail = index => {
-      isVisibleRevokeAccess.value = true;
-      isVisibleInviteEmail.value = false;
-      indexRevokeEmail.value = index;
-    };
+      isVisibleRevokeAccess.value = true
+      isVisibleInviteEmail.value = false
+      indexRevokeEmail.value = index
+    }
 
     const resetAfterRevoke = () => {
-      indexRevokeEmail.value = -1;
-      isVisibleRevokeAccess.value = false;
-      isVisibleInviteEmail.value = true;
-    };
+      indexRevokeEmail.value = -1
+      isVisibleRevokeAccess.value = false
+      isVisibleInviteEmail.value = true
+    }
 
     const handleConfirmRevoke = async () => {
-      if ( indexRevokeEmail.value < 0 ) return;
+      if (indexRevokeEmail.value < 0) return
 
       try {
-        exam.value.sharedEmails.splice( indexRevokeEmail.value, 1 );
-        await exams.updateDocument( id, { "sharedEmails": exam.value.sharedEmails });
+        exam.value.sharedEmails.splice(indexRevokeEmail.value, 1)
+        await exams.updateDocument(id, { sharedEmails: exam.value.sharedEmails })
         notification({
-          "type": "success",
-          "title": "Success",
-          "message": "Access has been revoked."
-        });
-        resetAfterRevoke();
-      } catch ( error ) {
-        console.error( error );
+          type: 'success',
+          title: 'Success',
+          message: notifyMessages.exam.access.success
+        })
+        resetAfterRevoke()
+      } catch (error) {
+        console.error(error)
         notification({
-          "type": "error",
-          "title": "Error",
-          "message": "Access has not been revoked. Please try again."
-        });
+          type: 'error',
+          title: 'Error',
+          message: notifyMessages.exam.access.error
+        })
       }
-    };
+    }
 
     const openShareLinkModal = () => {
-      errors.value = {};
-      shareEmail.value = "";
+      errors.value = {}
+      shareEmail.value = ''
       resetAfterRevoke()
-    };
+    }
 
     const handleAddInviteEmail = async () => {
-      const newInviteEmail = shareEmail.value;
-      const rules = { "email": { required, email } };
-      errors.value = await validates( rules, { "email": newInviteEmail });
-      if ( exam.value.sharedEmails && exam.value.sharedEmails.includes( newInviteEmail ) ) errors.value.email = ["Email already invited"];
-      if ( Object.keys( errors.value ).length ) return;
+      const newInviteEmail = shareEmail.value
+      const rules = { email: { required, email } }
+      errors.value = await validates(rules, { email: newInviteEmail })
+      if (exam.value.sharedEmails && exam.value.sharedEmails.includes(newInviteEmail)) errors.value.email = ['Email already invited']
+      if (Object.keys(errors.value).length) return
 
-      const { addInviteEmail } = useExam();
+      const { addInviteEmail } = useExam()
 
       try {
-        await addInviteEmail({ id, "email": newInviteEmail });
-        if ( exam.value.sharedEmails ) exam.value.sharedEmails.push( newInviteEmail );
-        else exam.value.sharedEmails = [newInviteEmail];
-        shareEmail.value = "";
+        await addInviteEmail({ id, email: newInviteEmail })
+        if (exam.value.sharedEmails) exam.value.sharedEmails.push(newInviteEmail)
+        else exam.value.sharedEmails = [newInviteEmail]
+        shareEmail.value = ''
         notification({
-          "type": "success",
-          "title": "Success",
-          "message": "Invitation has been sent."
-        });
-      } catch ( err ) {
+          type: 'success',
+          title: 'Success',
+          message: notifyMessages.exam.invite.success
+        })
+      } catch (err) {
         notification({
-          "type": "error",
-          "title": "Error",
-          "message": "Invitation has not been sent. Please try again."
-        });
+          type: 'error',
+          title: 'Error',
+          message: notifyMessages.exam.invite.error
+        })
       }
-    };
+    }
 
     return {
       isVisibleRevokeAccess,
@@ -197,13 +197,12 @@ export default {
       markAsInComplete,
       exitExamDetail,
       saveExam
-    };
+    }
   }
-};
+}
 </script>
 
-
-<style lang="stylus" scoped>
+<style lang='stylus' scoped>
 .exit
   margin-top: 0.5em
   cursor: pointer

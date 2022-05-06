@@ -23,6 +23,7 @@ import cSelect from '~/components/Inputs/cSelect.vue'
 import cLabel from '~/components/Misc/cLabel.vue'
 import cBadge from '~/components/Misc/cBadge.vue'
 import useProfile from '~/store/Profile.js'
+import { notifyMessages } from '~/data/notifications.js'
 export default {
   components: { cSelect, cLabel, cBadge },
   setup () {
@@ -72,7 +73,7 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Risk has been created.'
+          message: notifyMessages.risk.create.success
         })
         router.push({
           name: 'RiskDetail',
@@ -82,7 +83,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Risk has not been created. Plese try again.'
+          message: notifyMessages.risk.create.error
         })
       }
     }

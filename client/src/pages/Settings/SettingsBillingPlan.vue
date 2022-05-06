@@ -49,10 +49,21 @@ card-container
                 .price -${{promoInfo.amount_off}}
               .total
                 .title Total
-                .price(v-if="promoInfo.percent_off") ${{plan.price * ( 100 - promoInfo.percent_off ) / 100}}
+                .price(v-if="promoInfo.percent_off") ${{calcDiscount(plan.price, promoInfo.percent_off )}}
                 .price(v-else-if="promoInfo.amount_off") ${{plan.price - promoInfo.amount_off}}
                 .price(v-else) ${{plan.price}}
               c-button.purchase-button(title="Complete Purchase" type="plan" @click="completePurchase()")
+c-modal(title="Cancel Plan" v-model="isCancelVisible")
+  template(#content)
+    .delete-container
+      div
+        icon(name="error" size="big")
+      .description
+        p You are canceling your subscription to Complect. This will terminate your access to our full suite of features on {{ formatDate(linkaccount.currentPlan.subscriptionEndAt * 1000) }} when your subscription ends.
+        p If you have more than 1GB of stored data or users, this will cause your account to be locked until you upgrade to a paid plan.
+        p.confirm Do you want to continue?
+  template(#footer)
+    c-button(title="Confirm" type="primary" @click="cancelPlan()")
 </template>
 <script>
 import { ref, inject, onMounted } from 'vue'
@@ -69,13 +80,15 @@ import { manualApi } from '~/core/api.js'
 import { formatDate } from '~/core/utils'
 import useForm from '~/store/Form.js'
 import { plans } from '~/data/plans.js'
+import cModal from '~/components/Misc/cModal.vue'
+import { notifyMessages } from '~/data/notifications.js'
+
 export default {
-  components: { cSelect, cLabel, cBadge, cSwitcher, cPlans, cRadios },
-  // eslint-disable-next-line
+  components: { cSelect, cLabel, cBadge, cSwitcher, cPlans, cRadios, cModal },
   setup () {
     const notification = inject('notification')
     const router = useRouter()
-    const { profile, linkaccount } = useProfile()
+    const { profile, linkaccount, isBusiness } = useProfile()
     const planCollection = new UseData('plans')
     const tokenCreated = token => console.debug(token)
     const addPayment = () => console.debug('test')
@@ -84,6 +97,8 @@ export default {
     const promocode = ref()
     const promoInfo = ref({ })
     const planClass = ref('plan-hide')
+    const isCancelVisible = ref(false)
+    const toggleCancelVisible = () => isCancelVisible.value = !isCancelVisible.value
     const baseForm = {
       specialist: {
         crd: false,
@@ -132,12 +147,12 @@ export default {
         url: `payment/subscription/${businessId}`
       })
       subscription.value = subres.data
-      subscription.value = subres.data?.data.filter(sub => sub.id === linkaccount.value.currentPlan?.subId)[0]
+      subscription.value = subres.data?.filter(sub => sub.id === linkaccount.value.currentPlan?.subId)[0]
     }
     const getPayments = async () => {
       const response = await manualApi({
         method: 'get',
-        url: `payment/method/${userType === 'business' ? profile.value.businessId : profile.value.specialistId}`
+        url: `payment/method/${isBusiness ? profile.value.businessId : profile.value.specialistId}`
       })
       const paymentInfo = []
       for (let i = 0; i < response.data?.data?.length; i++) {
@@ -151,7 +166,7 @@ export default {
     const gotoPlan = () => planClass.value = 'plan-show'
     const goToCheckout = () => {
       isPlan.value = false
-      if (userType === 'business') {
+      if (isBusiness) {
         const keywordMethod = form.value.annually ? 'yearly' : 'monthly'
         const keywordTitle = `${form.value.plan} Plan`
         const findplan = planCollection.getDocuments().value.find(indplan => indplan.method === keywordMethod && indplan.title.toLowerCase() === keywordTitle.toLowerCase())
@@ -166,6 +181,26 @@ export default {
         plan.value.price = findplan.perPrice
         plan.value.annually = form.value.annually
         plan.value._id = findplan._id
+      }
+    }
+    const cancelPlan = async () => {
+      try {
+        await manualApi({
+          method: 'delete',
+          url: `payment/subscription/${linkaccount.value._id}/${linkaccount.value.currentPlan.subId}`
+        })
+        isCancelVisible.value = !isCancelVisible.value
+        notification({
+          type: 'success',
+          title: 'Success',
+          message: notifyMessages.subscription.cancel.success
+        })
+      } catch (error) {
+        notification({
+          type: 'error',
+          title: 'Error',
+          message: notifyMessages.subscription.cancel.error
+        })
       }
     }
     const goBack = () => isPlan.value = true
@@ -183,14 +218,14 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Plan has been upgraded successfully.'
+          message: notifyMessages.plan.upgrade.success
         })
         router.push({ name: 'Dashboard' })
       } catch (erorr) {
         notification({
           type: 'Error',
           title: 'Error',
-          message: 'Plan has not been upgraded successfully. Please try again.'
+          message: notifyMessages.plan.upgrade.error
         })
       }
     }
@@ -208,10 +243,12 @@ export default {
         notification({
           type: 'Error',
           title: 'Error',
-          message: 'You have inputted wrong promo code. Please try again.'
+          message: notifyMessages.promo.input.error
         })
       }
     }
+    const calcDiscount = (price, percent) => price * (100 - percent) / 100
+
     onMounted(() => {
       console.debug(linkaccount.value)
       if (linkaccount.value?.currentPlan?.planId) {
@@ -246,7 +283,10 @@ export default {
       completePurchase,
       promoInfo,
       promocode,
-      applyPromo
+      applyPromo,
+      toggleCancelVisible,
+      cancelPlan,
+      calcDiscount
     }
   }
 }
@@ -267,7 +307,7 @@ export default {
   display: flex
   align-items: center
   gap: 2em
-  overflow: scroll
+  overflow: auto
   min-height: 100%
   main
     flex: 3 0 auto
@@ -304,6 +344,10 @@ export default {
       .title
         font-weight: bold
         font-size: 1.3em
+
+    .add-button
+      margin-top: 2em
+      margin-left: auto
 
     .add-button
       margin-top: 2em

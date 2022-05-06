@@ -31,6 +31,7 @@ import cModal from '~/components/Misc/cModal.vue'
 import cDropdown from '~/components/Inputs/cDropdown.vue'
 import UseData from '~/store/Data.js'
 import { formatDate } from '~/core/utils'
+import { notifyMessages } from '~/data/notifications.js'
 const documents = [
   {
     _id: '1234234234234',
@@ -123,7 +124,6 @@ export default {
     }
   },
   emits: ['update:projectDetail'],
-  // eslint-disable-next-line max-lines-per-function
   setup (props) {
     const proposals = new UseData('proposals')
     const timesheet = new UseData('timesheet')
@@ -186,14 +186,14 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Timesheet has been submitted.'
+          message: notifyMessages.timesheet.submit.success
         })
         isLogModalVisible.value = !isLogModalVisible.value
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Timesheet has not been submitted. Please try again.'
+          message: notifyMessages.timesheet.submit.error
         })
       }
     }
@@ -206,48 +206,48 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Timesheet has been saved.'
+          message: notifyMessages.timesheet.save.success
         })
         isLogModalVisible.value = !isLogModalVisible.value
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Timesheet has not been saved. Please try again.'
+          message: notifyMessages.timesheet.save.error
         })
       }
     }
     const approveTimeSheet = id => {
       try {
-        timesheet.updateDocument(id, { status: 'rejected' })
+        timesheet.updateDocument(id, { status: 'accepted' })
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Timesheet has been approved.'
+          message: notifyMessages.timesheet.approve.success
         })
         isLogModalVisible.value = !isLogModalVisible.value
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Timesheet has not been approved. Please try again.'
+          message: notifyMessages.timesheet.approve.error
         })
       }
     }
     const rejectTimeSheet = id => {
       try {
-        timesheet.updateDocument(id, { status: 'accepted' })
+        timesheet.updateDocument(id, { status: 'rejected' })
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Timesheet has been rejected.'
+          message: notifyMessages.timesheet.reject.success
         })
         isLogModalVisible.value = !isLogModalVisible.value
       } catch (error) {
         notification({
-          type: 'error',
-          title: 'Error',
-          message: 'Timesheet has not been rejected. Please try again.'
+          type: error,
+          title: Error,
+          message: notifyMessages.timesheet.reject.error
         })
       }
     }
@@ -257,7 +257,7 @@ export default {
     const businessColumn = [
       { title: 'Date Submitted', key: 'created_on', cell: 'CellAction', unsortable: true, meta: { type: 'date', action: toggleEntryModal } }, { title: 'Status', key: 'status', cell: 'CellStatus', unsortable: true }, { title: 'Total Time', key: 'hour', cell: 'CellTitle', unsortable: true }, { title: 'Total Due', key: 'amount', cell: 'CellPrice', align: 'right', unsortable: true }
     ]
-    // const documents = computed( () => records.getDocuments().value.filter( record => props.projectDetail.documents.indexOf( record._id ) > -1 ) );
+    // const documents = computed(() => records.getDocuments().value.filter(record => props.projectDetail.documents.indexOf(record._id) > -1))
     onMounted(() => proposals.readDocuments('', { job_id: props.projectDetail.jobId, status: 'accepted' }))
     return {
       columns: profile.value.type === 'business' ? businessColumn : specialistColumns,

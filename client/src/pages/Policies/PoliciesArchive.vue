@@ -30,6 +30,7 @@ import UseData from '~/store/Data.js'
 import cBanner from '~/components/Misc/cBanner.vue'
 import cModal from '~/components/Misc/cModal.vue'
 import useProfile from '~/store/Profile.js'
+import { notifyMessages } from '~/data/notifications.js'
 
 export default {
   components: { cBanner, cModal },
@@ -57,14 +58,14 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Policy has been unarchived and republished.'
+          message: notifyMessages.policy.unarchive.success
         })
       } catch (error) {
         console.error(error)
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Policy has not been unarchived and republished. Please try again.'
+          message: notifyMessages.policy.unarchive.error
         })
       }
     }
@@ -75,14 +76,14 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Policy has been deleted.'
+          message: notifyMessages.policy.delete.success
         })
       } catch (error) {
         console.error(error)
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Policy has not been deleted. Please try again.'
+          message: notifyMessages.policy.delete.error
         })
       }
     }
@@ -126,29 +127,29 @@ export default {
 
     // const basicColumns = [
     //   {
-    //     "title": "Name",
-    //     "key": "name",
-    //     "cell": "CellTitle",
-    //         "unsortable": true
+    //     'title': 'Name',
+    //     'key': 'name',
+    //     'cell': 'CellTitle',
+    //         'unsortable': true
     //   },
     //   {
-    //     "title": "Status",
-    //     "key": "status",
-    //     "cell": "CellStatus",
+    //     'title': 'Status',
+    //     'key': 'status',
+    //     'cell': 'CellStatus',
     //   },
     //   {
-    //     "title": "Last Modified",
-    //     "key": "modifiedAt",
-    //     "cell": "CellDate",
-    //     "align": "right"
+    //     'title': 'Last Modified',
+    //     'key': 'modifiedAt',
+    //     'cell': 'CellDate',
+    //     'align': 'right'
     //   },
     //   {
-    //     "title": "Date Created",
-    //     "key": "createdAt",
-    //     "cell": "CellDate",
-    //     "align": "right"
+    //     'title': 'Date Created',
+    //     'key': 'createdAt',
+    //     'cell': 'CellDate',
+    //     'align': 'right'
     //   }
-    // ];
+    // ]
 
     onMounted(() => policies.readDocuments('', { status: 'archived' }))
     onUnmounted(() => policies.clearStore())
@@ -168,7 +169,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang='stylus' scoped>
 .rules-block
   font-size: 0.9em
   margin: 1em 0

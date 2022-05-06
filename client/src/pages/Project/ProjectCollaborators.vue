@@ -39,6 +39,7 @@ import cModal from '~/components/Misc/cModal.vue'
 import cAvatar from '~/components/Misc/cAvatar.vue'
 import cSelect from '~/components/Inputs/cSelect.vue'
 import UseData from '~/store/Data.js'
+import { notifyMessages } from '~/data/notifications.js'
 export default {
   components: {
     cBanner,
@@ -99,13 +100,13 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'User has been added to the project.'
+          message: notifyMessages.project.collaborator.add.success
         })
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'User has been not added to the project. Please try again.'
+          message: notifyMessages.project.collaborator.add.error
         })
       }
     }
@@ -118,13 +119,13 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'User has been removed from the project.'
+          message: notifyMessages.project.collaborator.remove.success
         })
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'User has been not removed from the project. Please try again.'
+          message: notifyMessages.project.collaborator.remove.error
         })
       }
     }

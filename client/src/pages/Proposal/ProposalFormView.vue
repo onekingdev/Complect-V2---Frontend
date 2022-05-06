@@ -121,6 +121,7 @@ import cAvatar from '~/components/Misc/cAvatar.vue'
 import cChat from '~/components/Misc/cChat.vue'
 import cModal from '~/components/Misc/cModal.vue'
 import cDropzone from '~/components/Inputs/cDropzone.vue'
+import { notifyMessages } from '~/data/notifications.js'
 const specialist = ref({
   id: '3234234029384209384',
   firstName: 'Manuel',
@@ -200,14 +201,14 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Proposal has been rejected'
+          message: notifyMessages.proposal.reject.success
         })
         gotoJobBoard()
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Proposal has not been rejected. Please try again.'
+          message: notifyMessages.proposal.reject.error
         })
       }
     }
@@ -218,7 +219,7 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Proposal has been accepted'
+          message: notifyMessages.proposal.accept.success
         })
         router.push({
           name: 'ProjectContract',
@@ -228,7 +229,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Proposal has not been accepted. Please try again.'
+          message: notifyMessages.proposal.accept.error
         })
       }
     }

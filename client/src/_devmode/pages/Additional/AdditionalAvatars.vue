@@ -1,5 +1,26 @@
 <template lang="pug">
 card-container(title="Constructor")
+<<<<<<< HEAD
+	template(v-if="userProfile" #content)
+		component-constructor
+			template(#controls)
+				c-switcher(id="avatar-sizes" label="Size" :options="options.sizes" v-model="selectedOptions.size" fullwidth)
+				c-switcher(id="avatar-shapes" label="Shape" :options="options.shapes" v-model="selectedOptions.shape" fullwidth)
+			template(#code)
+				code {{code}}
+			template(#preview)
+				c-avatar(:size="selectedOptions.size" :shape="selectedOptions.shape" :avatar="userProfile.avatar" :firstName="userProfile.first_name" :lastName="userProfile.last_name")
+				c-avatar(:size="selectedOptions.size" :shape="selectedOptions.shape" :firstName="userProfile.first_name" :lastName="userProfile.last_name")
+			
+card-container(title="Collection")
+	template(#controls)
+		c-button(iconL="refresh" type="transparent" @click="refreshUser()")
+	template(v-if="userProfile" #content)
+		.preview-column.col-2(v-for="(shape, index) in options.shapes" :key="index")
+			c-avatar(v-for="(size, index) in options.sizes" :avatar="userProfile.avatar" :firstName="userProfile.first_name" :lastName="userProfile.last_name" :size="size.value" :shape="shape.value" :key="index")
+		.preview-column.col-2(v-for="(shape, index) in options.shapes" :key="index")
+			c-avatar(v-for="(size, index) in options.sizes" :firstName="userProfile.first_name" :lastName="userProfile.last_name" :size="size.value" :shape="shape.value" :key="index")
+=======
   template(v-if="userProfile" #content)
     component-constructor
       template(#controls)
@@ -19,6 +40,7 @@ card-container(title="Collection")
       c-avatar(v-for="(size, index) in options.sizes" :avatar="userProfile.avatar" :firstName="userProfile.first_name" :lastName="userProfile.last_name" :size="size.value" :shape="shape.value" :key="index")
     .preview-column.col-2(v-for="(shape, index) in options.shapes" :key="index")
       c-avatar(v-for="(size, index) in options.sizes" :firstName="userProfile.first_name" :lastName="userProfile.last_name" :size="size.value" :shape="shape.value" :key="index")
+>>>>>>> 9c70eb1ebdb196a9ceaf57764ece690fb86708b6
 </template>
 
 
@@ -55,6 +77,16 @@ export default {
       shape: "circle",
     })
 
+<<<<<<< HEAD
+		const code = computed(() => {
+			let avatar = `avatar="avatar.jpg"`
+			let firstName = `firstName="${userProfile.value.first_name}"`
+			let lastName = `lastName="${userProfile.value.last_name}"`
+			let size = selectedOptions.size !== 'regular' ? `size="${selectedOptions.size}"` : ""
+			let shape = selectedOptions.shape !== 'circle' ? `shape="${selectedOptions.shape}"` : ""
+			return `c-avatar(${avatar} ${firstName} ${lastName} ${size} ${shape})`
+		})
+=======
     const code = computed(() => {
       let avatar = `avatar="avatar.jpg"`
       let firstName = `firstName="${userProfile.value.first_name}"`
@@ -63,6 +95,7 @@ export default {
       let shape = selectedOptions.shape !== 'circle' ? `shape="${selectedOptions.shape}"` : ""
       return `c-avatar(${avatar} ${firstName} ${lastName} ${size} ${shape})`
     })
+>>>>>>> 9c70eb1ebdb196a9ceaf57764ece690fb86708b6
 
     onMounted(() => refreshUser())
     

@@ -46,6 +46,7 @@ import cBadge from '~/components/Misc/cBadge.vue'
 import { calcRiskLevel } from '~/core/utils.js'
 import cModal from '~/components/Misc/cModal.vue'
 import useProfile from '~/store/Profile.js'
+import { notifyMessages } from '~/data/notifications.js'
 
 export default {
   components: { cBanner, cSelect, cLabel, cBadge, cModal },
@@ -56,8 +57,7 @@ export default {
     }
   },
   emits: ['update:policyDetails'],
-  // eslint-disable-next-line
-  setup ( props ) {
+  setup (props) {
     const risks = new UseData('risks')
     const editRisk = ref({
       name: '',
@@ -190,7 +190,7 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Risk has been created.'
+          message: notifyMessages.risk.create.success
         })
         toggleNewRisk()
       } catch (error) {
@@ -198,7 +198,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Risk has not been deleted. Please try again.'
+          message: notifyMessages.risk.create.error
         })
       }
     }
@@ -209,7 +209,7 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Risk has been created.'
+          message: notifyMessages.risk.update.success
         })
         isRiskEditVisible.value = !isRiskEditVisible.value
       } catch (error) {
@@ -217,7 +217,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Risk has not been deleted. Please try again.'
+          message: notifyMessages.risk.update.error
         })
       }
     }
@@ -227,14 +227,14 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Risk has been deleted.'
+          message: notifyMessages.risk.delete.success
         })
         isRiskDeleteVisible.value = !isRiskDeleteVisible.value
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Risk has not been deleted. Please try again.'
+          message: notifyMessages.risk.delete.error
         })
       }
     }

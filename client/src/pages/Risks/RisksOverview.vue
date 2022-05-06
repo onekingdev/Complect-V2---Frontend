@@ -42,6 +42,7 @@ import useProfile from '~/store/Profile.js'
 import cSelect from '~/components/Inputs/cSelect.vue'
 import cBadge from '~/components/Misc/cBadge.vue'
 import cLabel from '~/components/Misc/cLabel.vue'
+import { notifyMessages } from '~/data/notifications.js'
 
 export default {
   components: { cBanner, cModal, cSelect, cLabel, cBadge },
@@ -87,7 +88,7 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Control has been removed.'
+          message: notifyMessages.risk.control.delete.success
         })
         await risks.readDocuments(risks.getDocument().value._id)
       } catch (error) {
@@ -95,7 +96,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Control has not been removed. Please try again.'
+          message: notifyMessages.risk.control.delete.error
         })
       }
     }
@@ -107,7 +108,7 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Risk has been updated.'
+          message: notifyMessages.risk.update.success
         })
         router.push({
           name: 'RiskDetail',
@@ -117,7 +118,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Risk has not been updated. Please try again.'
+          message: notifyMessages.risk.update.error
         })
       }
     }
@@ -127,14 +128,14 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Risk has been deleted.'
+          message: notifyMessages.risk.delete.success
         })
         isDeleteVisible.value = !isDeleteVisible.value
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Risk has not been deleted. Please try again.'
+          message: notifyMessages.risk.delete.error
         })
       }
     }

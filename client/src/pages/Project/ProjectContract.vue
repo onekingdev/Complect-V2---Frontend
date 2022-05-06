@@ -71,6 +71,7 @@ import { formatDate, validates } from '~/core/utils.js'
 import useProfile from '~/store/Profile.js'
 import { required } from '@vuelidate/validators'
 import { useRouter, useRoute } from 'vue-router'
+import { notifyMessages } from '~/data/notifications.js'
 
 const roles = [
   {
@@ -118,7 +119,7 @@ export default {
   },
   emits: ['update:projectDetail'],
   // eslint-disable-next-line
-  setup ( props ) {
+  setup (props) {
     const isEditRoleModalVisible = ref(false)
     const router = useRouter()
     const route = useRoute()
@@ -205,13 +206,13 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Role has been updated'
+          message: notifyMessages.project.role.success
         })
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Role has not been updated. Please try again.'
+          message: notifyMessages.project.role.error
         })
       }
     }
@@ -225,14 +226,14 @@ export default {
           notification({
             type: 'success',
             title: 'Success',
-            message: 'Issue has been escalated for review'
+            message: notifyMessages.project.report.success
           })
         }
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Issue has not been escalated for review. Please try again.'
+          message: notifyMessages.project.report.error
         })
       }
     }
@@ -243,13 +244,13 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Contract early completion request has been submitted.'
+          message: notifyMessages.contract.end.success
         })
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Contract early completion request has not been submitted. Please try again.'
+          message: notifyMessages.contract.end.error
         })
       }
     }

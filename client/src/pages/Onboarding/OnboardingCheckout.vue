@@ -121,6 +121,7 @@ import ProfileService from '~/services/profile.js'
 import { plans } from '~/data/plans.js'
 import cSwitcher from '~/components/Inputs/cSwitcher.vue'
 import { manualApi } from '~/core/api.js'
+import { notifyMessages } from '~/data/notifications.js'
 export default {
   components: { StripeElements, StripeElement, cSwitcher },
   // eslint-disable-next-line
@@ -172,14 +173,14 @@ export default {
           notification({
             type: 'success',
             title: 'Success',
-            message: 'New Payment Method has been added successfully.'
+            message: notifyMessages.payment.add.success
           })
           isAddButtonVisible.value = !isAddButtonVisible.value
         } catch (error) {
           notification({
             type: 'error',
             title: 'Error',
-            message: 'New Payment Method has not been added. Please try again.'
+            message: notifyMessages.payment.add.error
           })
         }
       })
@@ -239,7 +240,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'You have inputted wrong promo code. Please try again.'
+          message: notifyMessages.payment.input.error
         })
       }
     }
