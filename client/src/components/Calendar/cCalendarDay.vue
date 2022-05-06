@@ -3,8 +3,8 @@
   .date {{date}}
   .events(v-if="events")
     template(v-for="(event, index) in events.visible" :key="index")
-      .event.event-spacer(v-if="!event"): .title &nbsp;
-      component(v-else :is="getEventComponent(event.type)" :id="event._id" :event="event" :title="event.title" :linked="event.linked" :completed="event.completed" :overdue="event.overdue")
+      component(v-if="event" :is="getEventComponent(event.type)" :id="event._id" :event="event" :title="event.title" :linked="event.linked" :completed="event.completed" :overdue="event.overdue")
+      .event.event-spacer(v-else): .title &nbsp;
     template(v-if="events.hidden && events.hidden.length")
       c-context-menu(:label="`+${events.hidden.length} more`")
         template(v-for="(event, index) in events.hidden" :key="index")
