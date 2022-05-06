@@ -68,7 +68,7 @@ export default {
       next = true
       const index = step.value - 1
       const stepItem = props.steps[index]
-      if (stepItem && stepItem.validates && value > 0) {
+      if (stepItem && stepItem.validates) {
         const isValid = await stepItem.validates(step.value)
         if (!isValid) next = false
       }

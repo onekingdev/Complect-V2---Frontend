@@ -7,22 +7,25 @@ c-modal(title="Message" v-model="isMessageVisible")
 
 <script>
 import { onMounted, onUnmounted, ref } from 'vue'
+import useProfile from '~/store/Profile.js'
 import cChat from '~/components/Misc/cChat.vue'
 import cModal from '~/components/Misc/cModal.vue'
-import ContractService from '~/services/contracts.js'
+import UseData from '~/store/Data.js'
 // import { formatDate } from "~/core/utils";
 export default {
   components: { cChat, cModal },
   setup () {
-    const contracts = new ContractService()
+    const { profile } = useProfile()
+    const contracts = new UseData('contracts')
+    const users = new UseData('users')
     // const documents = computed( () => {
     //   const allContracts = contracts.getDocuments();
     //   const allUsers = users.getDocuments();
     //   const returnContract = [];
     //   for ( let i = 0; i < allContracts.length; i++ ) {
-    //     const contactUser = allUsers.find( user => user.id === allContracts[i].specialist );
+    //     const contactUser = allUsers.find( user => user._id === allContracts[i].specialist );
     //     returnContract.push({
-    //      "id": allContracts[i].projectId,
+    //      "_id": allContracts[i].projectId,
     //       "name": allContracts[i].name,
     //       "special": `${contactUser.firstName} ${contactUser.lastName} | ${formatDate(allContracts[i].startsAt)} - ${formatDate(allContracts[i].endsAt)}`,
     //       "description": allContracts[i].description,
@@ -38,7 +41,7 @@ export default {
 
     const documents = ref([
       {
-        id: '62281539f4a801ec534af22b',
+        _id: '62281539f4a801ec534af22b',
         name: 'Test Contract',
         business: 'bihn turong | 4/15/2020 ~ 6/5/2021',
         description: 'This is test description',
@@ -47,7 +50,7 @@ export default {
           value: 5
         }
       }, {
-        id: '62281539f4a801ec534af22b',
+        _id: '62281539f4a801ec534af22b',
         name: 'Test Contract 1',
         business: 'Manuel Special | 4/15/2022 ~ 6/5/2022',
         description: 'This is test description',
@@ -79,7 +82,8 @@ export default {
     ]
 
     onMounted(() => {
-      contracts.readDocuments()
+      contracts.readDocuments('', { business: profile.value.businessId })
+      users.readDocuments()
     })
     onUnmounted(() => contracts.clearStore())
 

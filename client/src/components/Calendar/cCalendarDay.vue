@@ -3,16 +3,20 @@
   .date {{date}}
   .events(v-if="events")
     template(v-for="(event, index) in events.visible" :key="index")
-      component(:is="getEventComponent(event.type)" :id="event._id" :title="event.title" :linked="event.linked" :completed="event.completed" :overdue="event.overdue")
+      .event.event-spacer(v-if="!event"): .title &nbsp;
+      component(v-else :is="getEventComponent(event.type)" :id="event._id" :event="event" :title="event.title" :linked="event.linked" :completed="event.completed" :overdue="event.overdue")
     template(v-if="events.hidden && events.hidden.length")
       c-context-menu(:label="`+${events.hidden.length} more`")
         template(v-for="(event, index) in events.hidden" :key="index")
-          component(:is="getEventComponent(event.type)" type="transparent" :id="event._id" :title="event.title" :linked="event.linked" :completed="event.completed" :overdue="event.overdue")
+          component(:is="getEventComponent(event.type)" type="transparent" :id="event._id" :event="event" :title="event.title" :linked="event.linked" :completed="event.completed" :overdue="event.overdue")
 </template>
 
 <script>
 import { computed, defineAsyncComponent } from 'vue'
+import dayjs from 'dayjs'
 import cContextMenu from '~/components/Misc/cContextMenu.vue'
+const WEEK_FIRST_DAY = 1 // Monday (1) or Sunday (0) to correctly split tasks by weeks
+
 export default {
   components: { cContextMenu },
   props: {
@@ -31,13 +35,20 @@ export default {
 
     const events = computed(() => {
       if (!props.day.events) return false
-      const visible = []
-      const hidden = []
-      props.day.events.forEach((event, index) => {
-        if (index < 2) visible.push(event)
-        else hidden.push(event)
+      const enrichedEvents = props.day.events.map(event => {
+        const startsToday = dayjs(event.startsAt).isSame(props.day.dateFull, 'day'),
+          endsToday = dayjs(event.endsAt).isSame(props.day.dateFull, 'day'),
+          isWeekStart = dayjs(props.day.dateFull).day() === WEEK_FIRST_DAY,
+          showTitle = startsToday || (dayjs(event.startsAt).isBefore(props.day.dateFull, 'day') && isWeekStart),
+          cssClasses = {
+            'event-starts-not-today event-cover-grid-line-left': !startsToday,
+            'event-ends-not-today': !endsToday
+          }
+        return { ...event, startsToday, cssClasses, showTitle }
       })
-      return { visible, hidden }
+      return enrichedEvents.length < 3
+        ? { visible: enrichedEvents, hidden: [] }
+        : { visible: enrichedEvents.slice(0, 2), hidden: enrichedEvents.slice(2).filter(e => e) }
     })
     return { events, getEventComponent }
   }

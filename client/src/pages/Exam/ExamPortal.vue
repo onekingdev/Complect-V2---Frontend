@@ -36,17 +36,17 @@ header
 
 <script>
 import { ref, onMounted, onUnmounted, computed } from 'vue'
-import ExamRequestService from '~/services/exam_requests.js'
+import UseData from '~/store/Data.js'
 import { useRoute } from 'vue-router'
 import { validates } from '~/core/utils.js'
 import { required, email } from '@vuelidate/validators'
 
 export default {
   setup () {
+    const requests = new UseData('exam_requests')
+    const requestDocuments = ref([])
     const route = useRoute()
     const id = route.params.id
-    const requests = new ExamRequestService(id)
-    const requestDocuments = ref([])
     const isConfirmPage = ref(true)
     const confirmEmail = ref('')
     const errors = ref({})

@@ -158,14 +158,14 @@ export default {
         plan.value.name = findplan.title
         plan.value.price = findplan.perPrice
         plan.value.annually = form.value.annually
-        plan.value.id = findplan.id
+        plan.value._id = findplan._id
       } else {
         const keywordMethod = form.value.annually ? 'yearly' : 'all'
         const findplan = planCollection.getDocuments().value.find(indplan => indplan.method === keywordMethod)
         plan.value.name = findplan.title
         plan.value.price = findplan.perPrice
         plan.value.annually = form.value.annually
-        plan.value.id = findplan.id
+        plan.value._id = findplan._id
       }
     }
     const goBack = () => isPlan.value = true
@@ -173,9 +173,9 @@ export default {
       try {
         await manualApi({
           method: 'post',
-          url: `payment/subscription/${linkaccount.value.id}`,
+          url: `payment/subscription/${linkaccount.value._id}`,
           data: JSON.stringify({
-            planId: plan.value.id,
+            planId: plan.value._id,
             cardId: payInfo.value,
             promocode: promocode.value
           })
@@ -216,7 +216,7 @@ export default {
       console.debug(linkaccount.value)
       if (linkaccount.value?.currentPlan?.planId) {
         planCollection.readDocuments(linkaccount.value.currentPlan.planId)
-        getSubscription(linkaccount.value.id)
+        getSubscription(linkaccount.value._id)
       }
       planCollection.readDocuments()
       getPayments()

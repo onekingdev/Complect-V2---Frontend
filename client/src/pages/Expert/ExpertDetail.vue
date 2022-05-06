@@ -8,13 +8,13 @@ page-container(section="Specialist Marketplace" type="document")
         b {{ document.firstName }} {{ document.lastName }}
     card-container(title="Specialist Profile")
       template(#content)
-        .user-content.grid-6(v-if="document.id")
+        .user-content.grid-6(v-if="document._id")
           .col-1
             c-avatar(avatar="avatar.jpg" :firstName="document.first_name" :lastName="document.last_name" size="huge")
           .col-5
             .user-detail
               div
-                router-link.user-title(:to="{name: 'ExpertDetail', params: {id: document.id}}") {{ document.firstName }} {{ document.lastName }}
+                router-link.user-title(:to="{name: 'ExpertDetail', params: {id: document._id}}") {{ document.firstName }} {{ document.lastName }}
                 p.user-type
                   span.user-indsutry(v-for="(industry, index) in document.industries") {{ industries.find( ind => ind.value == industry )["title"] }}
               c-button-modal.message-button( :modalTitle="`Message with ${document.firstName} ${document.lastName}`" type="primary" title="Message")

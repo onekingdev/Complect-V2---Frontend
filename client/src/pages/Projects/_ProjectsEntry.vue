@@ -71,9 +71,9 @@ export default {
 
     const createProject = async () => {
       try {
-        newProject.value.creator = profile.value.id
+        newProject.value.creator = profile.value._id
         newProject.value.collaborators = profile.value
-        const projectId = await projects.createDocuments(newProject.value)
+        const projectId = await projects.createDocuments([newProject.value])
         notification({
           type: 'success',
           title: 'Success',

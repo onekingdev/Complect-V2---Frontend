@@ -36,11 +36,11 @@ c-modal(title="Confirm Unsaved Changes" v-model="isDeleteVisible")
 <script>
 import { onMounted, onUnmounted, inject, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import ReviewService from '~/services/reviews.js'
+import UseData from '~/store/Data.js'
 import cDropdown from '~/components/Inputs/cDropdown.vue'
 import cModal from '~/components/Misc/cModal.vue'
 import cCheckbox from '~/components/Inputs/cCheckbox.vue'
-import { generatePDF } from '~/services/pdf.js'
+import { manualApi } from '~/core/api.js'
 export default {
   components: {
     cDropdown,
@@ -48,7 +48,7 @@ export default {
     cModal
   },
   setup () {
-    const reviews = new ReviewService()
+    const reviews = new UseData('reviews')
     const route = useRoute()
     const notification = inject('notification')
     const router = useRouter()
@@ -68,7 +68,7 @@ export default {
       }
     ]
 
-    const editReview = () => modal({ name: 'cModalReview', id: reviews.getDocument().value.id })
+    const editReview = () => modal({ name: 'cModalReview', id: reviews.getDocument().value._id })
 
     const deleteReiew = async () => {
       try {
@@ -106,13 +106,17 @@ export default {
         flag = flag && category.completedAt
       })
       if (flag) {
-        const reviewId = reviews.getDocument().value.id
+        const reviewId = reviews.getDocument().value._id
         const pdfData = {
           collection: 'reviews',
           template: 'internalReport',
-          id: reviewId
+          _id: reviewId
         }
-        const pdfLink = await generatePDF(pdfData)
+        const pdfLink = await manualApi({
+          method: 'POST',
+          url: 'pdf',
+          data: JSON.stringify(pdfData)
+        })
         window.location.href = pdfLink
       } else {
         notification({
@@ -125,7 +129,7 @@ export default {
 
     const saveAndExit = async () => {
       try {
-        await reviews.updateDocument(reviews.getDocument().value.id, reviews.getDocument().value)
+        await reviews.updateDocument(reviews.getDocument().value._id, reviews.getDocument().value)
         notification({
           type: 'success',
           title: 'Success',

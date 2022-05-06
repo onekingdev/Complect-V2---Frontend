@@ -23,7 +23,7 @@ card-container.custom(title="Requests")
               c-dropdown(iconR="more" wide)
                 c-button(title="Edit" type="transparent" @click="editRequest(request)")
                 c-button(:title="shareBtnTitle(request)" type="transparent" @click="toggleShareRequest(request)")
-                c-button(title="Delete" type="transparent" @click="confirmDeleteRequest(request.id)")
+                c-button(title="Delete" type="transparent" @click="confirmDeleteRequest(request._id)")
           .details {{ request.details }}
           .counts
             icon(name="chevron-down")
@@ -106,7 +106,7 @@ export default {
       const editConfig = { "btn": "Save", "title": "Edit Request" };
       const addConfig = { "btn": "Add", "title": "New Request" };
 
-      return requestForm.value && requestForm.value.id ? editConfig : addConfig;
+      return requestForm.value && requestForm.value._id ? editConfig : addConfig;
     });
 
     const requestFilters = computed( () => {
@@ -125,7 +125,7 @@ export default {
     const createExamRequest = async () => {
       const data = { ...requestForm.value, "modifiedAt": new Date() };
       try {
-        await requests.createDocuments(data);
+        await requests.createDocuments([data]);
         isVisibleRequestModal.value = false;
         notification({ "type": "success", "title": "Success", "message": "Request has been added." });
       } catch ( err ) {
@@ -136,8 +136,8 @@ export default {
     const updateExamRequest = async ( data, messageSuccess, messageError ) => {
       data.modifiedAt = new Date();
       try {
-        await requests.updateDocument( data.id, data );
-        const index = requestDocuments.value.find( item => item.id === data.id );
+        await requests.updateDocument( data._id, data );
+        const index = requestDocuments.value.find( item => item._id === data._id );
         if ( index > -1 ) requestDocuments.value[index] = data;
         isVisibleRequestModal.value = false;
         notification({
@@ -167,7 +167,7 @@ export default {
       const rules = { "name": { required, "maxLength": maxLength( 255 ) } };
       requestErrors.value = await validates( rules, requestForm.value );
       if ( Object.keys( requestErrors.value ).length ) return;
-      if ( requestForm.value.id ) {
+      if ( requestForm.value._id ) {
         const messageSuccess = "Request has been saved.";
         const messageError = "Request has not been saved. Please try again.";
         updateExamRequest( requestForm.value, messageSuccess, messageError );
@@ -188,7 +188,7 @@ export default {
     };
 
     const handleDeleteRequestSuccess = reqId => {
-      const index = requestDocuments.value.findIndex( request => request.id === reqId );
+      const index = requestDocuments.value.findIndex( request => request._id === reqId );
       if ( index > -1 ) requestDocuments.value.splice( index, 1 );
     };
 
@@ -217,7 +217,7 @@ export default {
       const req = pendingReqTextDelete.value.req
       req.text_entries.splice(pendingReqTextDelete.value.idx, 1)
       try {
-        await requests.updateDocument( req.id, req )
+        await requests.updateDocument( req._id, req )
         isVisibleDeleteNoteModal.value = false
         notification({
           "type": "success",
@@ -272,7 +272,7 @@ export default {
         if (uploadingReq.value.files) {
           uploadingReq.value.files.push(newFile)
         } else uploadingReq.value.files = [newFile]
-        await requests.updateDocument( uploadingReq.value.id, { ...uploadingReq.value });
+        await requests.updateDocument( uploadingReq.value._id, { ...uploadingReq.value });
         notification({ "type": "success", "title": "Success", "message": "File has been uploaded." });
       } catch ( error ) {
         console.error( error );

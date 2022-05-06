@@ -20,7 +20,7 @@ card-container
         .week-day.cell(v-for="(weekDay, index) in weekDays" :key="index") {{weekDay}}
         template(v-if="days.length")
           c-calendar-day.cell(
-            v-for="(day, index) in days"
+            v-for="(day, index) in daysSortedEvents"
             :key="day.dateFull"
             :date="day.dateDay"
             :day="day"
@@ -185,12 +185,31 @@ export default {
         ...previousMonthDays.value, ...currentMonthDays.value, ...nextMonthDays.value
       ]
       const events = generatedEvents()
-      // const events = props.events
       filledDates(dates, events)
       return dates
     })
 
-    return { weekDays, selectedMonth, today, days, changeMonth, setToday, dateRange, downloadAllEvents, downloadEvents }
+    const daysSortedEvents = computed(() => days.value
+      .reduce(({ yesterday, result }, day) => {
+        const isSameEvent = (a, b) => a?._id === b?._id
+        let dayResult = []
+        yesterday.map((yesterdayEvent, i) => {
+          const todayEvent = day.events.find(e => isSameEvent(e, yesterdayEvent))
+          if (todayEvent) dayResult[i] = todayEvent
+        })
+        day.events
+          .filter(evt => dayResult.findIndex(alreadyPlacedEvt => isSameEvent(alreadyPlacedEvt, evt)) === -1)
+          .map(evt => {
+            const firstUnsetIndex = dayResult.findIndex(i => !i),
+              newIndex = firstUnsetIndex === -1 ? dayResult.length : firstUnsetIndex
+            dayResult[newIndex] = evt
+          })
+
+        result.push({ ...day, events: dayResult })
+        return { yesterday: [...dayResult], result }
+      }, { yesterday: [], result: [] }).result)
+
+    return { weekDays, selectedMonth, today, days, daysSortedEvents, changeMonth, setToday, dateRange, downloadAllEvents, downloadEvents }
   }
 }
 </script>

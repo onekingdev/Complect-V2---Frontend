@@ -19,13 +19,13 @@ page-container(section="Risk Register" :title="document.name" :badge="{icon:'war
 <script>
 import { computed, onMounted, onUnmounted, inject } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import RiskService from '~/services/risks.js'
+import UseData from '~/store/Data.js'
 import { calcRiskLevel } from '~/core/utils.js'
 import cDropdown from '~/components/Inputs/cDropdown.vue'
 export default {
   components: { cDropdown },
   setup () {
-    const risks = new RiskService()
+    const risks = new UseData('risks')
     const route = useRoute()
     const router = useRouter()
     const notification = inject('notification')
@@ -36,7 +36,7 @@ export default {
 
     const deleteRisk = async () => {
       try {
-        await risks.deleteDocuments(risks.getDocument().value.id)
+        await risks.deleteDocuments(risks.getDocument().value._id)
         notification({
           type: 'success',
           title: 'Success',
