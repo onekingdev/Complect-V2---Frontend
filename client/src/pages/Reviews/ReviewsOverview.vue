@@ -19,14 +19,14 @@ c-modal(title="Delete Internal Review" v-model="isDeleteVisible")
 
 <script>
 import { onMounted, onUnmounted, inject, ref } from 'vue'
-import UseData from '~/store/Data.js'
+import ReviewService from '~/services/reviews.js'
 import cBanner from '~/components/Misc/cBanner.vue'
 import cModal from '~/components/Misc/cModal.vue'
 import { notifyMessages } from '~/data/notifications.js'
 export default {
   components: { cBanner, cModal },
   setup () {
-    const reviews = new UseData('reviews')
+    const reviews = new ReviewService()
     const notification = inject('notification')
     const modal = inject('modal')
     const isDeleteVisible = ref(false)
@@ -54,9 +54,9 @@ export default {
       }
     }
     const handleClickDuplicate = async id => {
-      const index = reviews.getDocuments().value.findIndex(doc => doc._id === id)
+      const index = reviews.getDocuments().value.findIndex(doc => doc.id === id)
       try {
-        await reviews.createDocuments([reviews.getDocuments().value[index]])
+        await reviews.createDocuments(reviews.getDocuments().value[index])
         notification({
           type: 'success',
           title: 'Success',

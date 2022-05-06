@@ -29,23 +29,21 @@ card-container.budget(:title="chartTitle")
 <script>
 import VueApexCharts from 'vue3-apexcharts'
 import cDropdown from '~/components/Inputs/cDropdown.vue'
-import useProfile from '~/store/Profile.js'
+import useBusiness from '~/store/Business.js'
 export default {
   components: { cDropdown, VueApexCharts },
   setup () {
-    const { profile } = useProfile()
-    const userType = profile.value.type
-    const isSpecialist = userType === 'specialist'
-    const paymentTitle = isSpecialist ? 'Earnings' : 'Payments'
-    const categories = isSpecialist
+    const { isBusiness } = useBusiness()
+    const paymentTitle = !isBusiness ? 'Earnings' : 'Payments'
+    const categories = !isBusiness
       ? [
           'Earnings', 'Goal'
         ]
       : [
           'Spent', 'Annual Budget'
         ]
-    const chartTitle = isSpecialist ? 'Annual Earnings' : 'Annual Budget'
-    const placeholder = isSpecialist ? 'Annual goal' : 'Annual budget'
+    const chartTitle = !isBusiness ? 'Annual Earnings' : 'Annual Budget'
+    const placeholder = !isBusiness ? 'Annual goal' : 'Annual budget'
 
     const options = {
       chart: {

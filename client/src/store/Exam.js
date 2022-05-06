@@ -1,6 +1,7 @@
 import { ref, onMounted, onUnmounted, inject } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import UseData from '~/store/Data.js'
+import ExamService from '~/services/exams.js'
+import ExamRequestService from '~/services/exam_requests.js'
 import { notifyMessages } from '~/data/notifications.js'
 
 const exam = ref({})
@@ -11,8 +12,8 @@ export default function useExamDetail () {
   const route = useRoute()
   const notification = inject('notification')
   const modal = inject('modal')
-  const exams = new UseData('exams')
-  const requests = new UseData('exam_requests')
+  const exams = new ExamService()
+  const requests = new ExamRequestService()
   const id = route.params.id
 
   const handleSuccessCompleteExam = () => exam.value.completed = true
@@ -43,7 +44,7 @@ export default function useExamDetail () {
   const saveExam = async (exit = false) => {
     const updatingList = []
     requestDocuments.value.forEach(req => {
-      updatingList.push(requests.updateDocument(req._id, req))
+      updatingList.push(requests.updateDocument(req.id, req))
     })
     try {
       await Promise.all(updatingList)

@@ -9,7 +9,7 @@ card-container(title="Tasks")
 
 <script>
 import { onMounted, onUnmounted, ref, inject, computed } from 'vue'
-import UseData from '~/store/Data.js'
+import TaskService from '~/services/tasks.js'
 import cBanner from '~/components/Misc/cBanner.vue'
 import cSelect from '~/components/Inputs/cSelect.vue'
 import { notifyMessages } from '~/data/notifications.js'
@@ -23,7 +23,7 @@ export default {
     }
   },
   setup (props) {
-    const tasks = new UseData('tasks')
+    const tasks = new TaskService()
     const modal = inject('modal')
     const notification = inject('notification')
     const showTaskModal = () => modal({ name: 'cModalTask' })

@@ -7,7 +7,7 @@
     .menu
       a(v-for="(tab, index) in tabs" :key="index" :class="{ active: activedTopbar === tab.title }" @click="goToRoute(tab.routeName)") {{ $locale(tab.title) }}
     .buttons
-      c-button(title="Find an Expert" type="accent" @click="goToRoute('ExpertList')" v-if="profile.type == 'business'")
+      c-button(title="Find an Expert" type="accent" @click="goToRoute('ExpertList')" v-if="isBusiness")
       c-button(title="Browse Jobs" type="accent" @click="goToRoute('JobBoard')" v-else)
       c-button.notification-icon(iconL="bell" type="transparent" @click="gotoNotification()" :class="{active: isNewNotification}")
   .user-block(v-if="profile" @click="toggleUserDropDown()" ref="userDropDown" :class="{expanded: userDropDownExpanded}")
@@ -25,6 +25,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { onClickOutside } from '@vueuse/core'
 import useAuth from '~/core/auth.js'
 import useProfile from '~/store/Profile.js'
+import useBusiness from '~/store/Business.js'
 import cAvatar from '~/components/Misc/cAvatar.vue'
 
 const tabs = [
@@ -47,6 +48,7 @@ export default {
     const router = useRouter()
     const { signOut } = useAuth()
     const { profile } = useProfile()
+    const { isBusiness } = useBusiness()
     const userDropDown = ref(null)
     const userDropDownExpanded = ref(false)
     const isNewNotification = ref(false)
@@ -71,7 +73,7 @@ export default {
       router.push({ name: 'NotificationCenter' })
       isNewNotification.value = false
     }
-    const reportLink = profile.value.type === 'specialist' ? '/reports/financials' : '/reports/organizations'
+    const reportLink = !isBusiness ? '/reports/financials' : '/reports/organizations'
 
     const connect = () => {
       websocket = new WebSocket(import.meta.env.VITE_WS)
@@ -101,6 +103,7 @@ export default {
       tabs,
       goToRoute,
       profile,
+      isBusiness,
       userDropDown,
       userDropDownExpanded,
       toggleUserDropDown,

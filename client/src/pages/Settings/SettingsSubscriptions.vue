@@ -82,6 +82,7 @@ import cBadge from '~/components/Misc/cBadge.vue'
 import cSwitcher from '~/components/Inputs/cSwitcher.vue'
 import cPlans from '~/components/Misc/cPlans.vue'
 import useProfile from '~/store/Profile.js'
+import useBusiness from '~/store/Business.js'
 import { manualApi } from '~/core/api.js'
 import { formatDate } from '~/core/utils'
 import useForm from '~/store/Form.js'
@@ -92,7 +93,8 @@ import { notifyMessages } from '~/data/notifications.js'
 export default {
   components: { cSelect, cLabel, cBadge, cSwitcher, cPlans, cRadios, cModal },
   setup () {
-    const { profile, linkaccount, isBusiness } = useProfile()
+    const { profile, linkaccount } = useProfile()
+    const { isBusiness } = useBusiness()
     const notification = inject('notification')
     const router = useRouter()
     const planCollection = new UseData('plans')
@@ -114,7 +116,7 @@ export default {
         plan: 'starter'
       }
     }
-    const userType = profile.value.type
+    const userType = isBusiness ? 'business' : 'specialist'
     const { form } = useForm('onboarding', baseForm[userType])
     const formOptions = {
       skills: [
@@ -187,7 +189,6 @@ export default {
             message: notifyMessages.seat.add.success
           })
         } else if ((addSeats.value === 0 || !addSeats.value) && removeSeats.value > 0) {
-          // eslint-disable-next-line max-depth
           if (currentSeats.value - removeSeats.value < currentSeats.value) {
             notification({
               type: 'error',
@@ -215,7 +216,7 @@ export default {
       try {
         await manualApi({
           method: 'delete',
-          url: `payment/subscription/${linkaccount.value._id}/${linkaccount.value.currentPlan.subId}`
+          url: `payment/subscription/${linkaccount.value.id}/${linkaccount.value.currentPlan.subId}`
         })
         isCancelVisible.value = !isCancelVisible.value
         notification({
@@ -234,7 +235,7 @@ export default {
     onMounted(() => {
       if (linkaccount.value?.currentPlan?.planId) {
         planCollection.readDocuments(linkaccount.value.currentPlan.planId)
-        getSubscription(linkaccount.value._id)
+        getSubscription(linkaccount.value.id)
       }
       planCollection.readDocuments()
       getPayments()

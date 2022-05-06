@@ -34,7 +34,7 @@ export default {
     const { authentication } = useAuth()
     const form = ref({})
     const errors = ref({})
-    const step = ref(2)
+    const step = ref(1)
     const toStepTwo = () => step.value = 2
     const rules = {
       email: { required, email },
@@ -49,7 +49,6 @@ export default {
         await authentication(form.value)
         sessionStorage.setItem('email', JSON.stringify(form.value.email)) // will be changed to sessionID
       } catch (error) {
-        // eslint-disable-next-line consistent-return
         if (error === 'Missing OTP') return toStepTwo()
         if (error.includes('email')) Object.assign(errors.value, { email: [error] })
         if (error.includes('password')) Object.assign(errors.value, { password: [error] })

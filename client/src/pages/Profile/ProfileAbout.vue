@@ -62,6 +62,7 @@ import HorizontalTabs from '~/components/Containers/HorizontalTabs.vue'
 import UserExperiences from '~/pages/Profile/components/UserExperiences.vue'
 import cAddress from '~/components/Inputs/cAddress.vue'
 import useProfile from '~/store/Profile.js'
+import useBusiness from '~/store/Business.js'
 import useAuth from '~/core/auth.js'
 
 import { industries, jurisdictions, timezones } from '~/data/static.js'
@@ -171,7 +172,8 @@ export default {
     const companyImg = ref('')
     const { onboarding } = useAuth()
     const { profile, updateProfile, saveForm } = useProfile()
-    const userType = profile.value.type
+    const { isBusiness } = useBusiness()
+    const userType = isBusiness ? 'business' : 'specialist'
     const errors = ref({})
 
     const form = ref({ ...profile.value })
@@ -179,8 +181,7 @@ export default {
 
     // computed
     const filteredSubIndustries = computed(() => filterSubIndustries(form.value.industries, userType))
-    const isBusiness = computed(() => userType === 'business')
-    const profileObject = isBusiness.value ? MY_PROFILE : SPECIALIST_PROFILE
+    const profileObject = isBusiness ? MY_PROFILE : SPECIALIST_PROFILE
 
     // function
     const restoreInformation = section => {
@@ -195,7 +196,7 @@ export default {
         newData[field] = form.value[field]
       })
 
-      const rules = getValidateRules(isBusiness.value, section)
+      const rules = getValidateRules(isBusiness, section)
       errors.value = await validates(rules, newData)
       if (Object.keys(errors.value).length > 0) return
 

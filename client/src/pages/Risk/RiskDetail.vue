@@ -42,7 +42,7 @@ c-modal(title="Unlink Policy" v-model="isDeleteVisible")
 
 <script>
 import { computed, inject, ref } from 'vue'
-import UseData from '~/store/Data.js'
+import RiskService from '~/services/risks.js'
 import definitionList from '~/components/Misc/DefinitionList.vue'
 import { calcRiskLevel } from '~/core/utils.js'
 import cSelect from '~/components/Inputs/cSelect.vue'
@@ -53,9 +53,8 @@ import cModal from '~/components/Misc/cModal.vue'
 import { notifyMessages } from '~/data/notifications.js'
 export default {
   components: { definitionList, cSelect, cLabel, cBadge, cModal },
-  // eslint-disable-next-line
   setup () {
-    const risks = new UseData('risks')
+    const risks = new RiskService()
     const notification = inject('notification')
     const locale = inject('locale')
     const clickId = ref('')
@@ -81,15 +80,15 @@ export default {
     const deletePolicy = async () => {
       try {
         const policyId = clickId.value
-        const controls = risks.getDocument().value.controls.filter(doc => doc._id !== policyId)
-        await risks.updateDocument(risks.getDocument().value._id, { controls })
+        const controls = risks.getDocument().value.controls.filter(doc => doc.id !== policyId)
+        await risks.updateDocument(risks.getDocument().value.id, { controls })
         isDeleteVisible.value = !isDeleteVisible.value
         notification({
           type: 'success',
           title: 'Success',
           message: notifyMessages.risk.control.delete.success
         })
-        await risks.readDocuments(risks.getDocument().value._id)
+        await risks.readDocuments(risks.getDocument().value.id)
       } catch (error) {
         notification({
           type: 'error',
@@ -111,14 +110,14 @@ export default {
       try {
         riskForm.value.riskLevel = newRiskLevel.value
         riskForm.value.creator = `${profile.value.firstName} ${profile.value.lastName}`
-        await risks.updateDocument(risks.getDocument().value._id, riskForm.value)
+        await risks.updateDocument(risks.getDocument().value.id, riskForm.value)
         notification({
           type: 'success',
           title: 'Success',
           message: notifyMessages.risk.update.success
         })
         isEditRiskVisible.value = !isEditRiskVisible.value
-        await risks.readDocuments(risks.getDocument().value._id)
+        await risks.readDocuments(risks.getDocument().value.id)
       } catch {
         notification({
           type: 'error',
@@ -198,42 +197,42 @@ export default {
         lastModified: 1644778085732,
         status: 'draft',
         name: 'Policy2',
-        _id: '123234234'
+        id: '123234234'
       },
       {
         Created: 1644778085732,
         lastModified: 1644778085732,
         status: 'draft',
         name: 'Policy3',
-        _id: '123234234'
+        id: '123234234'
       },
       {
         Created: 1644778085732,
         lastModified: 1644778085732,
         status: 'draft',
         name: 'Policy4',
-        _id: '123234234'
+        id: '123234234'
       },
       {
         Created: 1644778085732,
         lastModified: 1644778085732,
         status: 'draft',
         name: 'Policy5',
-        _id: '123234234'
+        id: '123234234'
       },
       {
         Created: 1644778085732,
         lastModified: 1644778085732,
         status: 'draft',
         name: 'Policy6',
-        _id: '123234234'
+        id: '123234234'
       },
       {
         Created: 1644778085732,
         lastModified: 1644778085732,
         status: 'draft',
         name: 'Policy7',
-        _id: '123234234'
+        id: '123234234'
       }
     ])
     const addControl = () => console.debug(policyDocuments.value)

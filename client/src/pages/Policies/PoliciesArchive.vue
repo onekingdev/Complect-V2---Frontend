@@ -26,16 +26,16 @@ c-modal(title="Delete Policy" v-model="isDeleteVisible")
 
 <script>
 import { onMounted, onUnmounted, ref, inject, computed } from 'vue'
-import UseData from '~/store/Data.js'
 import cBanner from '~/components/Misc/cBanner.vue'
 import cModal from '~/components/Misc/cModal.vue'
 import useProfile from '~/store/Profile.js'
+import PolicyService from '~/services/policies.js'
 import { notifyMessages } from '~/data/notifications.js'
 
 export default {
   components: { cBanner, cModal },
   setup () {
-    const policies = new UseData('policies')
+    const policies = new PolicyService()
     const { profile } = useProfile()
     const notification = inject('notification')
     const isDeleteVisible = ref(false)

@@ -1,7 +1,7 @@
 <template lang="pug">
 card-container(title="Billing")
   template(#content)
-    template(v-if="userType == 'business'")
+    template(v-if="isBusiness")
       div.grid-6.sub-header
         h4.col-3 Payment Method
         div.col-2
@@ -88,6 +88,7 @@ import PlaidLink from 'vue-plaid-link2'
 import cLabel from '~/components/Misc/cLabel.vue'
 import cBadge from '~/components/Misc/cBadge.vue'
 import useProfile from '~/store/Profile.js'
+import useBusiness from '~/store/Business.js'
 import cModal from '~/components/Misc/cModal.vue'
 import { useRouter } from 'vue-router'
 import { manualApi } from '~/core/api.js'
@@ -95,16 +96,15 @@ import { notifyMessages } from '~/data/notifications.js'
 
 export default {
   components: { cSelect, cLabel, cBadge, StripeElements, StripeElement, cModal, PlaidLink },
-  // eslint-disable-next-line
   setup () {
     const { profile, linkaccount } = useProfile()
-    const userType = profile.value.type
+    const { isBusiness } = useBusiness()
     const router = useRouter()
     const notification = inject('notification')
-    const publishkey = ref(import.meta.env.VITE_STRIPE)
-    const plaidkey = ref(import.meta.env.PLAID_PUBLIC_KEY)
-    const plaidenv = ref(import.meta.env.PLAID_WEBHOOK)
-    const plaidwebhook = ref(import.meta.env.PLAID_ENVIRONMENT)
+    const publishkey = import.meta.env.VITE_STRIPE
+    const plaidkey = import.meta.env.VITE_PLAID_PK
+    const plaidwebhook = import.meta.env.VITE_PLAID_WH
+    const plaidenv = import.meta.env.VITE_PLAID_ENV
 
     const tokenCreated = token => console.debug(token)
     const elementRef = ref()
@@ -114,14 +114,14 @@ export default {
     const getPayments = async () => {
       const response = await manualApi({
         method: 'get',
-        url: `payment/method/${userType === 'business' ? profile.value.businessId : profile.value.specialistId}`
+        url: `payment/method/${isBusiness ? profile.value.businessId : profile.value.specialistId}`
       })
       payments.value = response.data
     }
     const getCustomer = async () => {
       const customres = await manualApi({
         method: 'get',
-        url: `payment/customer/${userType === 'business' ? profile.value.businessId : profile.value.specialistId}`
+        url: `payment/customer/${isBusiness ? profile.value.businessId : profile.value.specialistId}`
       })
       customer.value = customres
     }
@@ -129,7 +129,7 @@ export default {
       try {
         await manualApi({
           method: 'put',
-          url: `payment/customer/${userType === 'business' ? profile.value.businessId : profile.value.specialistId}`,
+          url: `payment/customer/${isBusiness ? profile.value.businessId : profile.value.specialistId}`,
           data: JSON.stringify({ invoice_settings: { default_payment_method: id } })
         })
         await getCustomer()
@@ -164,7 +164,7 @@ export default {
         try {
           await manualApi({
             method: 'post',
-            url: `payment/method/${userType === 'business' ? profile.value.businessId : profile.value.specialistId}`,
+            url: `payment/method/${isBusiness ? profile.value.businessId : profile.value.specialistId}`,
             data: JSON.stringify({ stripeToken })
           })
           notification({
@@ -203,7 +203,7 @@ export default {
         } else {
           await manualApi({
             method: 'delete',
-            url: `payment/method/${userType === 'business' ? profile.value.businessId : profile.value.specialistId}/${id}`
+            url: `payment/method/${isBusiness ? profile.value.businessId : profile.value.specialistId}/${id}`
           })
           notification({
             type: 'success',
@@ -329,7 +329,7 @@ export default {
       stripeLoaded,
       isNewMethodVisible,
       toggleNewMethod,
-      userType,
+      isBusiness,
       clientBilling,
       billingType,
       setBillingType,

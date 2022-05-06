@@ -1,25 +1,6 @@
 import { mount } from '@vue/test-utils'
 import cAvatar from '~/components/Misc/cAvatar.vue'
 
-<<<<<<< HEAD
-test("should render default component", async () => {
-	const wrapper = mount(cAvatar, {
-		props: {
-			firstName: "John",
-			lastName: "Smith"
-		}
-	})
-	const img = wrapper.find(".c-avatar-photo")
-	expect(img.attributes("alt")).toBe("John Smith");
-	expect(img.element.style.display).toBe("none")
-	await wrapper.setProps({ avatar: "https://example.com/avatar.jpg" });
-	expect(img.attributes("src")).toBe("https://example.com/avatar.jpg");
-	expect(wrapper.text()).toContain("JS");
-	expect(wrapper.props("size")).toBe("regular");
-	expect(wrapper.classes("regular")).toBe(true);
-	expect(wrapper.props("shape")).toBe("circle");
-	expect(wrapper.classes("circle")).toBe(true);
-=======
 test('should render default component', async () => {
   const wrapper = mount(cAvatar, {
     props: {
@@ -37,7 +18,6 @@ test('should render default component', async () => {
   expect(wrapper.classes('regular')).toBe(true)
   expect(wrapper.props('shape')).toBe('circle')
   expect(wrapper.classes('circle')).toBe(true)
->>>>>>> 9c70eb1ebdb196a9ceaf57764ece690fb86708b6
 })
 
 test('should render diferent sizes', async () => {

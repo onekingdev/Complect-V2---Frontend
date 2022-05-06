@@ -23,7 +23,7 @@ card-container.custom(title="Requests")
               c-dropdown(iconR="more" wide)
                 c-button(title="Edit" type="transparent" @click="editRequest(request)")
                 c-button(:title="shareBtnTitle(request)" type="transparent" @click="toggleShareRequest(request)")
-                c-button(title="Delete" type="transparent" @click="confirmDeleteRequest(request._id)")
+                c-button(title="Delete" type="transparent" @click="confirmDeleteRequest(request.id)")
           .details {{ request.details }}
           .counts
             icon(name="chevron-down")
@@ -92,7 +92,6 @@ export default {
       markAsInComplete,
       saveExam
     } = useExamDetail()
-    
     const fileInput = ref(null)
     const initForm = { completed: false, examId: id, shared: false }
     const isVisibleRequestModal = ref(false)
@@ -106,7 +105,7 @@ export default {
       const editConfig = { btn: 'Save', title: 'Edit Request' }
       const addConfig = { btn: 'Add', title: 'New Request' }
 
-      return requestForm.value && requestForm.value._id ? editConfig : addConfig
+      return requestForm.value && requestForm.value.id ? editConfig : addConfig
     })
 
     const requestFilters = computed(() => {
@@ -136,8 +135,8 @@ export default {
     const updateExamRequest = async (data, messageSuccess, messageError) => {
       data.modifiedAt = new Date()
       try {
-        await requests.updateDocument(data._id, data)
-        const index = requestDocuments.value.find(item => item._id === data._id)
+        await requests.updateDocument(data.id, data)
+        const index = requestDocuments.value.find(item => item.id === data.id)
         if (index > -1) requestDocuments.value[index] = data
         isVisibleRequestModal.value = false
         notification({
@@ -176,7 +175,7 @@ export default {
 
     const toggleMarkRequest = request => {
       request.completed = !request.completed
-      const complete = request.completed ? 'complete' : 'incomplete'
+      const text = request.completed ? 'complete' : 'incomplete'
       const messageSuccess = notifyMessages.exam.request[text].success
       const errorMessage = notifyMessages.exam.request[text].error
       updateExamRequest(request, messageSuccess, errorMessage)
@@ -188,7 +187,7 @@ export default {
     }
 
     const handleDeleteRequestSuccess = reqId => {
-      const index = requestDocuments.value.findIndex(request => request._id === reqId)
+      const index = requestDocuments.value.findIndex(request => request.id === reqId)
       if (index > -1) requestDocuments.value.splice(index, 1)
     }
 
@@ -204,8 +203,8 @@ export default {
     }
 
     const addTextEntry = (req) => {
-      if (req.text_entries) req.text_entries.push({content: ''})
-      else req.text_entries = [{content: ''}]
+      if (req.text_entries) req.text_entries.push({ content: '' })
+      else req.text_entries = [{ content: '' }]
     }
 
     const removeTextEntry = (req, idx) => {
@@ -217,7 +216,7 @@ export default {
       const req = pendingReqTextDelete.value.req
       req.text_entries.splice(pendingReqTextDelete.value.idx, 1)
       try {
-        await requests.updateDocument(req._id, req)
+        await requests.updateDocument(req.id, req)
         isVisibleDeleteNoteModal.value = false
         notification({
           type: 'success',
@@ -236,7 +235,7 @@ export default {
     const redirectToPortal = () => {
       router.push({
         name: 'ExamPortal',
-        params: { id: id }
+        params: { id }
       })
     }
 

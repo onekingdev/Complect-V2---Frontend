@@ -75,18 +75,19 @@ vertical-detail
 </template>
 
 <script>
-import { ref, computed, inject } from 'vue'
-import { useRouter } from 'vue-router'
-import UseData from '~/store/Data.js'
+import { ref, computed, inject, onMounted, onUnmounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import ReviewService from '~/services/reviews.js'
 import VerticalDetail from '~/components/Containers/VerticalDetail.vue'
 import { notifyMessages } from '~/data/notifications.js'
 
 export default {
   components: { VerticalDetail },
   setup () {
-    const reviews = new UseData('reviews')
+    const route = useRoute()
     const notification = inject('notification')
     const router = useRouter()
+    const reviews = new ReviewService()
     const reviewCategory = ref({})
     const isGeneral = ref(true)
     const catId = ref(null)
@@ -100,7 +101,7 @@ export default {
       isGeneral.value = true
       router.push({
         name: 'ReviewDetail',
-        params: { id: reviews.getDocument().value._id }
+        params: { id: reviews.getDocument().value.id }
       })
     }
     const selectCategory = id => {
@@ -121,7 +122,7 @@ export default {
     const completeReview = async () => {
       const timestamp = reviews.getDocument().value.completedAt ? null : Date.now()
       try {
-        await reviews.updateDocument(reviews.getDocument().value._id, { completedAt: timestamp })
+        await reviews.updateDocument(reviews.getDocument().value.id, { completedAt: timestamp })
         notification({
           type: 'success',
           title: 'Success',
@@ -163,6 +164,10 @@ export default {
         notification({ type: 'error', title: 'Error', message: notifyMessages.review.category.add.error })
       }
     }
+    onMounted(() => {
+      reviews.readDocuments(route.params.id)
+    })
+    onUnmounted(() => reviews.clearStore())
     return {
       document: reviews.getDocument(),
       state,

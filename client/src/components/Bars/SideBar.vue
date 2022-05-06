@@ -8,7 +8,7 @@
           .title {{$locale(section.title)}}
           icon(name="chevron-up")
         .section-links
-          router-link.link-item(v-for="(link, index) in section.links" :key="index" :to="{name: link.view}")
+          router-link.link-item(v-for="(link, index) in section.links" :key="index" :to="{name: link.view, query: {type: link.type}}" :class="{'active': !link.active || (link.active && link.type===queryType) }")
             .title {{$locale(link.title)}}
 
       .menu-section.bordered
@@ -31,30 +31,28 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { appState, collapseSidebar, collapseSidebarSections } from '~/store/appState.js'
 import useNavigation from '~/store/Navigation'
-import useProfile from '~/store/Profile.js'
+import useBusiness from '~/store/Business.js'
 
 export default {
   setup () {
     const { sidebarHomeNavigation, sidebarDocumentsNavigation, sidebarReportsNavigation, sidebarReportsSpecialistNavigation, sidebarSpecialistNavigation } = useNavigation()
-    const { profile } = useProfile()
+    const { isBusiness } = useBusiness()
     const route = useRoute()
-    const userType = profile.value.type
-
+    const queryType = computed(() => route.query.type)
     const renderSidebar = computed(() => {
       if ('sidebar' in route.meta) return route.meta.sidebar // check in sidebar key persist in meta object
       return true
     })
-
     const sidebarNavigation = computed(() => {
       switch (route.meta.tab) {
         case 'Documents':
-          if (userType === 'specialist') return sidebarSpecialistNavigation
+          if (!isBusiness) return sidebarSpecialistNavigation
           return sidebarDocumentsNavigation
         case 'Reports':
-          if (userType === 'specialist') return sidebarReportsSpecialistNavigation
+          if (!isBusiness) return sidebarReportsSpecialistNavigation
           return sidebarReportsNavigation
         default:
-          if (userType === 'specialist') return sidebarSpecialistNavigation
+          if (!isBusiness) return sidebarSpecialistNavigation
           return sidebarHomeNavigation
       }
     })
@@ -64,7 +62,8 @@ export default {
       sidebarNavigation,
       renderSidebar,
       collapseSidebar,
-      collapseSidebarSections
+      collapseSidebarSections,
+      queryType
     }
   }
 }
@@ -96,12 +95,13 @@ $link-hover-color = #2F304F
   .menu-section
     + .menu-section
       margin-top: 0.5rem
+    :deep(.icon-newspaper-white)
+      fill: none
   .section-links
     padding-bottom: 2rem
     max-height: 15em
     overflow: hidden
     transition: max-height var(--fx-duration-short, .15s) ease-in-out, padding var(--fx-duration-short, .15s) ease-in-out
-
   .header-item, .link-item
     display: flex
     align-items: center
@@ -125,9 +125,9 @@ $link-hover-color = #2F304F
       margin-top: 0.5rem
     .title
       letter-spacing: 0.03em
-    &:hover, &.router-link-active
+    &:hover, &.router-link-active.active
       background: $link-hover-color
-    &.router-link-active
+    &.router-link-active.active
       color: #fff
       font-weight: bold
     .paper
@@ -150,11 +150,9 @@ $link-hover-color = #2F304F
       width: $icons-size
       height: $icons-size
       transform: rotate(180deg)
-
   .bordered
     border-top: 1px solid #2e304f
     padding: 0.7em 0
-
 .bar.sidebar
   &.sidebar-collapsed
     .header-item
@@ -172,12 +170,10 @@ $link-hover-color = #2F304F
       padding: 0
       a
         display: none
-
   .section-collapsed
     svg.icon-chevron-up
       transform: rotate(180deg)
     .section-links
       max-height: 0em
       padding: 0
-
 </style>

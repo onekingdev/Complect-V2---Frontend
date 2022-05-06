@@ -105,7 +105,7 @@ export default {
     })
 
     const getData = async () => {
-      await userExperiences.readDocuments( props.id )
+      await userExperiences.readDocuments(props.id)
       form.value = userExperiences.getDocument().value
     }
 

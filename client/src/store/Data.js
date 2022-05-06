@@ -72,7 +72,7 @@ export default class UseData {
     } catch (error) {
       notification(error)
       // roll back store changes, if api error
-      this.documents.value[index] = { ...backup } // eslint-disable-line require-atomic-updates
+      this.documents.value[index] = { ...backup }
     } finally {
       backup = null
     }
@@ -96,7 +96,7 @@ export default class UseData {
       notification(error)
       // roll back store changes, if api error
       if (documentId) this.documents.value.splice(index, 0, backup)
-      else this.documents.value = backup // eslint-disable-line require-atomic-updates
+      else this.documents.value = backup
     } finally {
       backup = null
     }

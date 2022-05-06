@@ -76,6 +76,7 @@ import cBadge from '~/components/Misc/cBadge.vue'
 import cSwitcher from '~/components/Inputs/cSwitcher.vue'
 import cPlans from '~/components/Misc/cPlans.vue'
 import useProfile from '~/store/Profile.js'
+import useBusiness from '~/store/Business.js'
 import { manualApi } from '~/core/api.js'
 import { formatDate } from '~/core/utils'
 import useForm from '~/store/Form.js'
@@ -88,7 +89,8 @@ export default {
   setup () {
     const notification = inject('notification')
     const router = useRouter()
-    const { profile, linkaccount, isBusiness } = useProfile()
+    const { profile, linkaccount } = useProfile()
+    const { isBusiness } = useBusiness()
     const planCollection = new UseData('plans')
     const tokenCreated = token => console.debug(token)
     const addPayment = () => console.debug('test')
@@ -111,7 +113,7 @@ export default {
         plan: 'starter'
       }
     }
-    const userType = profile.value.type
+    const userType = isBusiness ? 'business' : 'specialist'
     const { form } = useForm('onboarding', baseForm[userType])
     const plan = ref({
       name: 'All Access Membership',
@@ -173,14 +175,14 @@ export default {
         plan.value.name = findplan.title
         plan.value.price = findplan.perPrice
         plan.value.annually = form.value.annually
-        plan.value._id = findplan._id
+        plan.value.id = findplan.id
       } else {
         const keywordMethod = form.value.annually ? 'yearly' : 'all'
         const findplan = planCollection.getDocuments().value.find(indplan => indplan.method === keywordMethod)
         plan.value.name = findplan.title
         plan.value.price = findplan.perPrice
         plan.value.annually = form.value.annually
-        plan.value._id = findplan._id
+        plan.value.id = findplan.id
       }
     }
     const cancelPlan = async () => {
@@ -208,9 +210,9 @@ export default {
       try {
         await manualApi({
           method: 'post',
-          url: `payment/subscription/${linkaccount.value._id}`,
+          url: `payment/subscription/${linkaccount.value.id}`,
           data: JSON.stringify({
-            planId: plan.value._id,
+            planId: plan.value.id,
             cardId: payInfo.value,
             promocode: promocode.value
           })
@@ -253,7 +255,7 @@ export default {
       console.debug(linkaccount.value)
       if (linkaccount.value?.currentPlan?.planId) {
         planCollection.readDocuments(linkaccount.value.currentPlan.planId)
-        getSubscription(linkaccount.value._id)
+        getSubscription(linkaccount.value.id)
       }
       planCollection.readDocuments()
       getPayments()

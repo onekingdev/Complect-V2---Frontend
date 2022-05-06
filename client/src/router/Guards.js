@@ -4,7 +4,7 @@ import useBusiness from '~/store/Business'
 import useAuth from '~/core/auth.js'
 
 const { profile } = useProfile()
-const { business } = useBusiness()
+const { business, isBusiness } = useBusiness()
 
 const isOnboarded = () => {
   if (business && business.value?.owner) return business.value?.onboarding_passed
@@ -32,7 +32,7 @@ const useNotOnboardedGuard = (to, from, next) => {
 }
 
 const businessPagesGuard = (to, from, next) => {
-  if (profile.value.type === 'business') next()
+  if (isBusiness) next()
   else next({ name: 'ErrorLayer' })
 }
 

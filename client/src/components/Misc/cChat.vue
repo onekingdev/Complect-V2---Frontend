@@ -71,7 +71,6 @@ export default {
         },
         text: newComment.value
       }
-      // temp disable for demo
       // eslint-disable-next-line vue/no-mutating-props
       props.comments.push(comment)
       newComment.value = ''

@@ -9,10 +9,10 @@
 
 <script>
 import { inject, onMounted } from 'vue'
-import UseData from '~/store/Data.js'
+import TaskService from '~/services/tasks.js'
 export default {
   setup () {
-    const tasks = new UseData('tasks')
+    const tasks = new TaskService()
     const modal = inject('modal')
 
     const openTaskModal = () => modal({ name: 'cModalTask' })
