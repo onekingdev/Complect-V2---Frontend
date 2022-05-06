@@ -36,14 +36,14 @@ export default {
     const events = computed(() => {
       if (!props.day.events) return false
       const enrichedEvents = props.day.events.map(event => {
-        const startsToday = dayjs(event.startsAt).isSame(props.day.dateFull, 'day'),
-          endsToday = dayjs(event.endsAt).isSame(props.day.dateFull, 'day'),
-          isWeekStart = dayjs(props.day.dateFull).day() === WEEK_FIRST_DAY,
-          showTitle = startsToday || (dayjs(event.startsAt).isBefore(props.day.dateFull, 'day') && isWeekStart),
-          cssClasses = {
-            'event-starts-not-today event-cover-grid-line-left': !startsToday,
-            'event-ends-not-today': !endsToday
-          }
+        const startsToday = dayjs(event.startsAt).isSame(props.day.dateFull, 'day')
+        const endsToday = dayjs(event.endsAt).isSame(props.day.dateFull, 'day')
+        const isWeekStart = dayjs(props.day.dateFull).day() === WEEK_FIRST_DAY
+        const showTitle = startsToday || (dayjs(event.startsAt).isBefore(props.day.dateFull, 'day') && isWeekStart)
+        const cssClasses = {
+          'event-starts-not-today event-cover-grid-line-left': !startsToday,
+          'event-ends-not-today': !endsToday
+        }
         return { ...event, startsToday, cssClasses, showTitle }
       })
       return enrichedEvents.length < 3

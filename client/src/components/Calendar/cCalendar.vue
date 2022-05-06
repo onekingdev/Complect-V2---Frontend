@@ -192,16 +192,16 @@ export default {
     const daysSortedEvents = computed(() => days.value
       .reduce(({ yesterday, result }, day) => {
         const isSameEvent = (a, b) => a?._id === b?._id
-        let dayResult = []
-        yesterday.map((yesterdayEvent, i) => {
+        const dayResult = []
+        yesterday.forEach((yesterdayEvent, i) => {
           const todayEvent = day.events.find(e => isSameEvent(e, yesterdayEvent))
           if (todayEvent) dayResult[i] = todayEvent
         })
         day.events
           .filter(evt => dayResult.findIndex(alreadyPlacedEvt => isSameEvent(alreadyPlacedEvt, evt)) === -1)
-          .map(evt => {
-            const firstUnsetIndex = dayResult.findIndex(i => !i),
-              newIndex = firstUnsetIndex === -1 ? dayResult.length : firstUnsetIndex
+          .forEach(evt => {
+            const firstUnsetIndex = dayResult.findIndex(i => !i)
+            const newIndex = firstUnsetIndex === -1 ? dayResult.length : firstUnsetIndex
             dayResult[newIndex] = evt
           })
 
