@@ -65,6 +65,7 @@ export default {
     const approveTransaction = () => {
       try {
         props.transaction.isApproved = true
+        props.transaction.controls = [{name: ''}]
         notification({
           type: 'success',
           title: 'Success',
@@ -86,6 +87,7 @@ export default {
     const denyTransaction = () => {
       try {
         props.transaction.isApproved = false
+        props.transaction.controls = []
         notification({
           type: 'success',
           title: 'Success',

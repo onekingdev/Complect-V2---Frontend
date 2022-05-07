@@ -23,6 +23,7 @@ export default {
     }
   },
   setup (props) {
+    console.log('props.document.isReview', props.document.isReview)
     const modal = inject('modal')
     const updateTransaction = () => {}
     const openTransactionModal = () => modal({ name: 'cModalReviewTransaction', callback: updateTransaction, transaction: props.document })

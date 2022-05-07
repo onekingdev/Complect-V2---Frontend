@@ -53,10 +53,9 @@ for (let i = 1; i < randomNumber(5,8); i++) {
     additionalNotes: ''
   })
 }
+transactionData.value[0].reviewDescription = 'User gained clearance to buy Apple (AAPL) stock.'
 transactionData.value[0].isReview = true
 transactionData.value[0].isApproved = false
-transactionData.value[1].isReview = true
-transactionData.value[1].isApproved = true
 
 const securityData = ref([])
 securityData.value = []
