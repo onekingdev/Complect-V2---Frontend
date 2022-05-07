@@ -14,7 +14,7 @@
             .intro The CRD number will be used to auto-populate information about your business
             .inputs.grid-6
               c-radios.crd-radio(id="crd" :data="radioOptions" v-model="form.crd")
-              c-field.col-3(id="crdValue" label="What is your CRD number?" placeholder="123456" v-if="form.crd" v-model="form.crdValue" @change="updateFieldsFromCRD()")
+              c-field.col-3(id="crdValue" label="What is your CRD number?" v-if="form.crd" v-model="form.crdValue" @change="updateFieldsFromCRD()")
         template(#step2)
           c-field(label="Company Name" type="text" placeholder="Company Name" :errors="errors.company" required v-model="form.company")
           c-field.sub-col.col-3(label="AUM" type="text" placeholder="AUM" v-model="form.aum")
