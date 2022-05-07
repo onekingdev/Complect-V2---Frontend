@@ -2,7 +2,7 @@
 card-container
   template(#content)
     template(v-if="step === 1")
-      h1 Let's get you started!!
+      h1 Let's get you started!
       h2 Select your account type
       c-radio-cards.account-types(id="user-type" :data="accountTypes" :alignCenter="true" v-model="form.type")
       c-button(title="Next" type="primary" @click="nextStep(1)" fullwidth)

@@ -5,7 +5,7 @@
     | {{profile.first_name}} {{profile.last_name}}
   .dashboard
     .calendar
-      //- c-calendar(:events="documents")
+      c-calendar(:events="[]")
     card-container.upcoming(title="Upcoming")
 </template>
 
