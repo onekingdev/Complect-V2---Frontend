@@ -64,10 +64,10 @@
           section
             .header Your Hourly Rate
             .inputs
-              c-field(label="Enter your hourly rate" type="number" :errors="errors.hourly_rate" v-model="form.hourly_rate")
+              c-field(label="Hourly Rate" type="number" :errors="errors.hourly_rate" v-model="form.hourly_rate")
           section
             .header What's your experience?
-            .itro Select one that best matches your level of your expertise.
+            .intro Select one that best matches your level of your expertise.
             .inputs
               c-radio-cards(id="experience" :data="formOptions.experience" :errors="errors.experience" v-model="form.experience")
           section
