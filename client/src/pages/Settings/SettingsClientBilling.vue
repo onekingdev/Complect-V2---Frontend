@@ -21,7 +21,7 @@
             .header Tell us more about your business:
             .intro We will use this to verify your identify
             .inputs.grid-6
-              c-field.col-3(label="Date of birth" type="date" v-model="payoutForm.DOB" placeholder="MM/DD/YYYY" required)
+              c-field.col-3(label="Date of Birth" type="date" v-model="payoutForm.DOB" placeholder="MM/DD/YYYY" required)
               c-field.col-3(label="Business Tax ID" v-model="payoutForm.businessTax" required)
               c-field.col-6(label="Business Address" v-model="payoutForm.address" required)
               c-field.col-2(label="City" v-model="payoutForm.city" required)
