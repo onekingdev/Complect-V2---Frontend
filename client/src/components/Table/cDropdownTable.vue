@@ -173,7 +173,7 @@ export default {
       white-space: nowrap
     .expandable-title
       padding-left: 50px
-    .border-none
+    &.border-none
       border-bottom: 0
   .cell
     display: flex
