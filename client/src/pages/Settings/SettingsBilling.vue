@@ -1,7 +1,7 @@
 <template lang="pug">
 card-container(title="Billing")
   template(#content)
-    template(v-if="isBusiness")
+    template(v-if="userType == 'business'")
       div.grid-6.sub-header
         h4.col-3 Payment Method
         div.col-2
@@ -88,23 +88,22 @@ import PlaidLink from 'vue-plaid-link2'
 import cLabel from '~/components/Misc/cLabel.vue'
 import cBadge from '~/components/Misc/cBadge.vue'
 import useProfile from '~/store/Profile.js'
-import useBusiness from '~/store/Business.js'
 import cModal from '~/components/Misc/cModal.vue'
 import { useRouter } from 'vue-router'
 import { manualApi } from '~/core/api.js'
-import { notifyMessages } from '~/data/notifications.js'
 
 export default {
   components: { cSelect, cLabel, cBadge, StripeElements, StripeElement, cModal, PlaidLink },
+  // eslint-disable-next-line
   setup () {
     const { profile, linkaccount } = useProfile()
-    const { isBusiness } = useBusiness()
+    const userType = profile.value.type
     const router = useRouter()
     const notification = inject('notification')
-    const publishkey = import.meta.env.VITE_STRIPE
-    const plaidkey = import.meta.env.VITE_PLAID_PK
-    const plaidwebhook = import.meta.env.VITE_PLAID_WH
-    const plaidenv = import.meta.env.VITE_PLAID_ENV
+    const publishkey = ref(import.meta.env.VITE_STRIPE)
+    const plaidkey = ref(import.meta.env.PLAID_PUBLIC_KEY)
+    const plaidenv = ref(import.meta.env.PLAID_WEBHOOK)
+    const plaidwebhook = ref(import.meta.env.PLAID_ENVIRONMENT)
 
     const tokenCreated = token => console.debug(token)
     const elementRef = ref()
@@ -114,14 +113,14 @@ export default {
     const getPayments = async () => {
       const response = await manualApi({
         method: 'get',
-        url: `payment/method/${isBusiness ? profile.value.businessId : profile.value.specialistId}`
+        url: `payment/method/${userType === 'business' ? profile.value.businessId : profile.value.specialistId}`
       })
       payments.value = response.data
     }
     const getCustomer = async () => {
       const customres = await manualApi({
         method: 'get',
-        url: `payment/customer/${isBusiness ? profile.value.businessId : profile.value.specialistId}`
+        url: `payment/customer/${userType === 'business' ? profile.value.businessId : profile.value.specialistId}`
       })
       customer.value = customres
     }
@@ -129,20 +128,20 @@ export default {
       try {
         await manualApi({
           method: 'put',
-          url: `payment/customer/${isBusiness ? profile.value.businessId : profile.value.specialistId}`,
+          url: `payment/customer/${userType === 'business' ? profile.value.businessId : profile.value.specialistId}`,
           data: JSON.stringify({ invoice_settings: { default_payment_method: id } })
         })
         await getCustomer()
         notification({
           type: 'success',
           title: 'Success',
-          message: notifyMessages.payment.primary.success
+          message: 'Payment method has been made the primary payment source.'
         })
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: notifyMessages.payment.primary.error
+          message: 'Payment method has not been made the primary payment source. Please try again.'
         })
       }
     }
@@ -164,13 +163,13 @@ export default {
         try {
           await manualApi({
             method: 'post',
-            url: `payment/method/${isBusiness ? profile.value.businessId : profile.value.specialistId}`,
+            url: `payment/method/${userType === 'business' ? profile.value.businessId : profile.value.specialistId}`,
             data: JSON.stringify({ stripeToken })
           })
           notification({
             type: 'success',
             title: 'Success',
-            message: notifyMessages.payment.add.success
+            message: 'New payment method has been added.'
           })
           isNewMethodVisible.value = !isNewMethodVisible.value
           await getPayments()
@@ -178,7 +177,7 @@ export default {
           notification({
             type: 'error',
             title: 'Error',
-            message: notifyMessages.payment.add.error
+            message: 'New payment method has not been added. Please try again.'
           })
         }
       })
@@ -198,17 +197,17 @@ export default {
           notification({
             type: 'error',
             title: 'Error',
-            message: notifyMessages.payment.delete.validate
+            message: 'Primary payment method cannot be deleted without adding an alternative payment method first.'
           })
         } else {
           await manualApi({
             method: 'delete',
-            url: `payment/method/${isBusiness ? profile.value.businessId : profile.value.specialistId}/${id}`
+            url: `payment/method/${userType === 'business' ? profile.value.businessId : profile.value.specialistId}/${id}`
           })
           notification({
             type: 'success',
             title: 'Success',
-            message: notifyMessages.payment.delete.success
+            message: 'New payment method has been deleted.'
           })
           await getPayments()
         }
@@ -216,7 +215,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: notifyMessages.payment.delete.error
+          message: 'Payment method has not been deleted. Please try again.'
         })
       }
     }
@@ -329,7 +328,7 @@ export default {
       stripeLoaded,
       isNewMethodVisible,
       toggleNewMethod,
-      isBusiness,
+      userType,
       clientBilling,
       billingType,
       setBillingType,

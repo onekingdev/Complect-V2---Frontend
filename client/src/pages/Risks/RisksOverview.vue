@@ -33,7 +33,7 @@ c-modal(title="Unlink Policy" v-model="isUnlinkVisible")
 
 <script>
 import { onMounted, onUnmounted, ref, inject, computed } from 'vue'
-import RiskService from '~/services/risks.js'
+import UseData from '~/store/Data.js'
 import { calcRiskLevel } from '~/core/utils.js'
 import cBanner from '~/components/Misc/cBanner.vue'
 import { useRouter } from 'vue-router'
@@ -42,12 +42,12 @@ import useProfile from '~/store/Profile.js'
 import cSelect from '~/components/Inputs/cSelect.vue'
 import cBadge from '~/components/Misc/cBadge.vue'
 import cLabel from '~/components/Misc/cLabel.vue'
-import { notifyMessages } from '~/data/notifications.js'
 
 export default {
   components: { cBanner, cModal, cSelect, cLabel, cBadge },
+  // eslint-disable-next-line
   setup () {
-    const risks = new RiskService()
+    const risks = new UseData('risks')
     const router = useRouter()
     const notification = inject('notification')
     const { profile } = useProfile()
@@ -81,21 +81,21 @@ export default {
         const policyId = clickId.value.policyId
         // await policies.deleteDocuments( policyId );
         await risks.readDocuments(riskId)
-        const controls = risks.getDocument().value.controls.filter(doc => doc.id !== policyId)
-        await risks.updateDocument(risks.getDocument().value.id, { controls })
+        const controls = risks.getDocument().value.controls.filter(doc => doc._id !== policyId)
+        await risks.updateDocument(risks.getDocument().value._id, { controls })
         isUnlinkVisible.value = !isUnlinkVisible.value
         notification({
           type: 'success',
           title: 'Success',
-          message: notifyMessages.risk.control.delete.success
+          message: 'Control has been removed.'
         })
-        await risks.readDocuments(risks.getDocument().value.id)
+        await risks.readDocuments(risks.getDocument().value._id)
       } catch (error) {
         console.error(error)
         notification({
           type: 'error',
           title: 'Error',
-          message: notifyMessages.risk.control.delete.error
+          message: 'Control has not been removed. Please try again.'
         })
       }
     }
@@ -107,7 +107,7 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: notifyMessages.risk.update.success
+          message: 'Risk has been updated.'
         })
         router.push({
           name: 'RiskDetail',
@@ -117,7 +117,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: notifyMessages.risk.update.error
+          message: 'Risk has not been updated. Please try again.'
         })
       }
     }
@@ -127,14 +127,14 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: notifyMessages.risk.delete.success
+          message: 'Risk has been deleted.'
         })
         isDeleteVisible.value = !isDeleteVisible.value
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: notifyMessages.risk.delete.error
+          message: 'Risk has not been deleted. Please try again.'
         })
       }
     }

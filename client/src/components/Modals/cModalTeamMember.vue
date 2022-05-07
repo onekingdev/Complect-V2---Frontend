@@ -31,7 +31,6 @@ import useModals from '~/store/Modals.js'
 import UseData from '~/store/Data.js'
 import teamMember from '~/core/teamMember.js'
 import { onClickOutside } from '@vueuse/core'
-import { notifyMessages } from '~/data/notifications.js'
 
 const userRoles = [
   {
@@ -65,11 +64,11 @@ const disabledReasons = [
 const notificationMessage = (isDisableModal, disabled, id) => {
   const messages = {}
   if (isDisableModal) {
-    messages.success = disabled ? notifyMessages.user.disable.update.success : notifyMessages.user.disable.new.success
-    messages.error = disabled ? notifyMessages.user.disable.update.error : notifyMessages.user.disable.new.error
+    messages.success = disabled ? 'Reason has been updated.' : 'User has been disabled.'
+    messages.error = disabled ? 'Reason has not been updated' : 'User has not been disabled'
   } else {
-    messages.success = id ? notifyMessages.user.update.success : notifyMessages.user.create.success
-    messages.error = id ? notifyMessages.user.update.error : notifyMessages.user.create.error
+    messages.success = id ? 'User has been updated.' : 'User has been created.'
+    messages.error = id ? 'User has not been updated' : 'User has not been created'
   }
 
   return messages
@@ -192,13 +191,13 @@ export default {
 }
 </script>
 
-<style lang='stylus' scoped>
+<style lang="stylus" scoped>
 .heading
-  font-size: 0.85em
+  font-size: 0.85em;
   &.bold
-    font-weight: bold
+    font-weight: bold;
 .warning
-  position: relative
-  top: 1em
-  left: 1em
+  position: relative;
+  top: 1em;
+  left: 1em;
 </style>

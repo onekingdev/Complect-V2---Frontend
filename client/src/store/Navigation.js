@@ -90,9 +90,7 @@ const sidebarHomeNavigation = [
     links: [
       {
         title: 'Personal Trade Monitoring',
-        view: 'EthicsEntries',
-        active: true,
-        type: 'trade'
+        view: 'TradeTransaction'
       }, {
         title: 'Attestations',
         view: 'EthicsEntries',

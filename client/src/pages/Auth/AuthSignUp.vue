@@ -2,7 +2,7 @@
 card-container
   template(#content)
     template(v-if="step === 1")
-      h1 Let's get you started!
+      h1 Let's get you started!!
       h2 Select your account type
       c-radio-cards.account-types(id="user-type" :data="accountTypes" :alignCenter="true" v-model="form.type")
       c-button(title="Next" type="primary" @click="nextStep(1)" fullwidth)
@@ -49,7 +49,7 @@ export default {
   setup () {
     // steps 1, 2
     const { registration, authentication } = useAuth()
-    const { form } = useForm('registration')
+    const { form, resetForm } = useForm('registration')
     const accountTypes = [
       {
         value: 'employee',
@@ -92,6 +92,7 @@ export default {
           }
         })
         nextStep(1)
+        resetForm()
       } catch (error) {
         if (error) Object.assign(errors.value, { email: [error] })
       }

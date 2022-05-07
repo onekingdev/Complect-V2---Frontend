@@ -19,7 +19,6 @@ import UseData from '~/store/Data.js'
 import cBanner from '~/components/Misc/cBanner.vue'
 import cModal from '~/components/Misc/cModal.vue'
 import cUpload from '~/components/Inputs/cUpload.vue'
-import { notifyMessages } from '~/data/notifications.js'
 
 export default {
   components: { cBanner, cModal, cUpload },
@@ -44,17 +43,17 @@ export default {
     }
     const saveSettings = async () => {
       try {
-        await policySetting.createDocuments(policyForm.value)
+        await policySetting.createDocuments([policyForm.value])
         notification({
           type: 'success',
           title: 'Success',
-          message: notifyMessages.policy.setting.success
+          message: 'Setting has been updated.'
         })
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: notifyMessages.policy.setting.error
+          message: 'Setting has not been updated. Please try again.'
         })
       }
     }

@@ -3,13 +3,13 @@ section.grid-6
   h3.semibold My Profile
   c-upload(:class="{'col-2': !isBusiness, 'col-full': isBusiness}" v-model="avatar")
   c-checkbox.availability.col-4(v-if="!isBusiness" label="Availability" type="toggle" v-model="form.availability")
-  c-field.col-3(label="First Name" type="text" :errors="errors.firstName" required v-model="form.firstName")
-  c-field.col-3(label="Last Name" type="text" :errors="errors.lastName" required v-model="form.lastName")
+  c-field.col-3(label="First Name" type="text" placeholder="First Name" :errors="errors.firstName" required v-model="form.firstName")
+  c-field.col-3(label="Last Name" type="text" placeholder="Last Name" :errors="errors.lastName" required v-model="form.lastName")
   template(v-if="!isBusiness")
-    c-textarea.col-full(label="Description" v-model="form.description")
+    c-textarea.col-full(label="Description" placeholder="Description" v-model="form.description")
     c-select.col-3(label="Jurisdiction" placeholder="Select Jurisdiction" :errors="errors.jurisdictions" :data="jurisdictions" v-model="form.jurisdictions" required searchable multiple)
     c-select.col-3(label="Industry" placeholder="Select Industry" :errors="errors.industries" :data="industries" v-model="form.industries" required searchable multiple)
-    c-select.col-3(label="Sub-Industry" placeholder="Select Sub-Industry" :data="filteredSubIndustries" v-model="form.subIndustries" searchable multiple)
+    c-select.col-3(label="Sub-Industry" placeholder="Sub-Industry" :data="filteredSubIndustries" v-model="form.subIndustries" searchable multiple)
     c-select.col-3(label="Former Regulator" placeholder="Search or add a tag" :data="[]" searchable multiple)
   .controls
     c-button(type="link" title="Cancel" @click="restoreInformation('my-profile')")
@@ -33,22 +33,22 @@ section.grid-6
     section.grid-6
       h3.semibold Company Details
       c-upload(class="col-full" v-model="companyImg")
-      c-field.col-3(label="Company Name" type="text" :errors="errors.company" required v-model="form.company")
-      c-field.col-3(label="CRD Number" type="text" v-model="form.crd")
-      c-field.col-3(label="AUM" type="text" v-model="form.aum")
-      c-field.col-3(label="Number of Accounts" type="number" v-model="form.accounts")
+      c-field.col-3(label="Company Name" type="text" placeholder="Company Name" :errors="errors.company" required v-model="form.company")
+      c-field.col-3(label="CRD Number" type="text" placeholder="CRD Number" v-model="form.crd")
+      c-field.col-3(label="AUM" type="text" placeholder="AUM" v-model="form.aum")
+      c-field.col-3(label="Number of Accounts" type="number" placeholder="Number of Accounts" v-model="form.accounts")
       c-select.col-3(label="Industry" placeholder="Select Industry" :data="industries" :errors="errors.industries" v-model="form.industries" required searchable multiple)
-      c-select.col-3(label="Sub-Industry" placeholder="Select Sub-Industry" :data="filteredSubIndustries" v-model="form.subIndustries" searchable multiple)
+      c-select.col-3(label="Sub-Industry" placeholder="Sub-Industry" :data="filteredSubIndustries" v-model="form.subIndustries" searchable multiple)
       c-select.col-3(label="Jurisdiction" placeholder="Select Jurisdiction" :data="jurisdictions" :errors="errors.jurisdictions"  v-model="form.jurisdictions" required searchable multiple)
       c-select.col-3(label="Time Zone" placeholder="Select Time Zone" :data="timezones" :errors="errors.timezone" v-model="form.timezone" required)
-      c-field.col-3(label="Phone Number" type="text" v-model="form.tel")
-      c-field.col-3(label="Company Website" type="text" v-model="form.website")
+      c-field.col-3(label="Phone Number" type="text" placeholder="Phone Number" v-model="form.tel")
+      c-field.col-3(label="Company Website" type="text" placeholder="Company Website" v-model="form.website")
       .divider
-      c-address.col-5(label="Business Address" :value="form.address" :errors="errors.address" @update="updateAddressChange" required)
-      c-field.col-1(label="Apt/Unit:" type="text" v-model="form.apt")
-      c-field.col-2(label="City" type="text" :errors="errors.city" required v-model="form.city")
-      c-field.col-2(label="State" type="text" :errors="errors.state" required v-model="form.state")
-      c-field.col-2(label="Zip Code" type="text" :errors="errors.zip" required v-model="form.zip")
+      c-address.col-5(label="Business Address" :value="form.address" :errors="errors.address" placeholder="Business Address" @update="updateAddressChange" required)
+      c-field.col-1(label="Apt/Unit:" type="text" placeholder="Apt/Unit:" v-model="form.apt")
+      c-field.col-2(label="City" type="text" placeholder="City" :errors="errors.city" required v-model="form.city")
+      c-field.col-2(label="State" type="text" placeholder="State" :errors="errors.state" required v-model="form.state")
+      c-field.col-2(label="Zip Code" type="text" placeholder="Zip Code" :errors="errors.zip" required v-model="form.zip")
       .controls
         c-button(type="link" title="Cancel" @click="restoreInformation('company')")
         c-button(type="primary" title="Save" @click="saveInformation('company')")
@@ -62,14 +62,12 @@ import HorizontalTabs from '~/components/Containers/HorizontalTabs.vue'
 import UserExperiences from '~/pages/Profile/components/UserExperiences.vue'
 import cAddress from '~/components/Inputs/cAddress.vue'
 import useProfile from '~/store/Profile.js'
-import useBusiness from '~/store/Business.js'
 import useAuth from '~/core/auth.js'
 
 import { industries, jurisdictions, timezones } from '~/data/static.js'
 import { filterSubIndustries, validates } from '~/core/utils.js'
 import { maxLength, required } from '@vuelidate/validators'
 import { requireForArray } from '~/core/customValidates.js'
-import { notifyMessages } from '~/data/notifications.js'
 
 const COMMON_FIELDS = {
   industries: [],
@@ -172,8 +170,7 @@ export default {
     const companyImg = ref('')
     const { onboarding } = useAuth()
     const { profile, updateProfile, saveForm } = useProfile()
-    const { isBusiness } = useBusiness()
-    const userType = isBusiness ? 'business' : 'specialist'
+    const userType = profile.value.type
     const errors = ref({})
 
     const form = ref({ ...profile.value })
@@ -181,7 +178,8 @@ export default {
 
     // computed
     const filteredSubIndustries = computed(() => filterSubIndustries(form.value.industries, userType))
-    const profileObject = isBusiness ? MY_PROFILE : SPECIALIST_PROFILE
+    const isBusiness = computed(() => userType === 'business')
+    const profileObject = isBusiness.value ? MY_PROFILE : SPECIALIST_PROFILE
 
     // function
     const restoreInformation = section => {
@@ -196,7 +194,7 @@ export default {
         newData[field] = form.value[field]
       })
 
-      const rules = getValidateRules(isBusiness, section)
+      const rules = getValidateRules(isBusiness.value, section)
       errors.value = await validates(rules, newData)
       if (Object.keys(errors.value).length > 0) return
 
@@ -205,13 +203,13 @@ export default {
         updateProfile(newData)
         notification({
           title: 'Success',
-          message: notifyMessages.profile.save.success
+          message: 'Information has been saved.'
         })
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: notifyMessages.profile.save.error
+          message: 'Information has not been saved.'
         })
         console.error(error)
       }

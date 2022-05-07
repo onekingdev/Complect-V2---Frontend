@@ -26,16 +26,15 @@ c-modal(title="Delete Policy" v-model="isDeleteVisible")
 
 <script>
 import { onMounted, onUnmounted, ref, inject, computed } from 'vue'
+import UseData from '~/store/Data.js'
 import cBanner from '~/components/Misc/cBanner.vue'
 import cModal from '~/components/Misc/cModal.vue'
 import useProfile from '~/store/Profile.js'
-import PolicyService from '~/services/policies.js'
-import { notifyMessages } from '~/data/notifications.js'
 
 export default {
   components: { cBanner, cModal },
   setup () {
-    const policies = new PolicyService()
+    const policies = new UseData('policies')
     const { profile } = useProfile()
     const notification = inject('notification')
     const isDeleteVisible = ref(false)
@@ -58,14 +57,14 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: notifyMessages.policy.unarchive.success
+          message: 'Policy has been unarchived and republished.'
         })
       } catch (error) {
         console.error(error)
         notification({
           type: 'error',
           title: 'Error',
-          message: notifyMessages.policy.unarchive.error
+          message: 'Policy has not been unarchived and republished. Please try again.'
         })
       }
     }
@@ -76,14 +75,14 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: notifyMessages.policy.delete.success
+          message: 'Policy has been deleted.'
         })
       } catch (error) {
         console.error(error)
         notification({
           type: 'error',
           title: 'Error',
-          message: notifyMessages.policy.delete.error
+          message: 'Policy has not been deleted. Please try again.'
         })
       }
     }
@@ -127,29 +126,29 @@ export default {
 
     // const basicColumns = [
     //   {
-    //     'title': 'Name',
-    //     'key': 'name',
-    //     'cell': 'CellTitle',
-    //         'unsortable': true
+    //     "title": "Name",
+    //     "key": "name",
+    //     "cell": "CellTitle",
+    //         "unsortable": true
     //   },
     //   {
-    //     'title': 'Status',
-    //     'key': 'status',
-    //     'cell': 'CellStatus',
+    //     "title": "Status",
+    //     "key": "status",
+    //     "cell": "CellStatus",
     //   },
     //   {
-    //     'title': 'Last Modified',
-    //     'key': 'modifiedAt',
-    //     'cell': 'CellDate',
-    //     'align': 'right'
+    //     "title": "Last Modified",
+    //     "key": "modifiedAt",
+    //     "cell": "CellDate",
+    //     "align": "right"
     //   },
     //   {
-    //     'title': 'Date Created',
-    //     'key': 'createdAt',
-    //     'cell': 'CellDate',
-    //     'align': 'right'
+    //     "title": "Date Created",
+    //     "key": "createdAt",
+    //     "cell": "CellDate",
+    //     "align": "right"
     //   }
-    // ]
+    // ];
 
     onMounted(() => policies.readDocuments('', { status: 'archived' }))
     onUnmounted(() => policies.clearStore())
@@ -169,7 +168,7 @@ export default {
 }
 </script>
 
-<style lang='stylus' scoped>
+<style lang="stylus" scoped>
 .rules-block
   font-size: 0.9em
   margin: 1em 0

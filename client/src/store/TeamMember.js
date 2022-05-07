@@ -2,7 +2,6 @@ import { ref, onMounted, inject, computed } from 'vue'
 import UseData from '~/store/Data.js'
 import useProfile from '~/store/Profile.js'
 import teamMember from '~/core/teamMember.js'
-import { notifyMessages } from '~/data/notifications.js'
 
 const COLLECTION_NAME = 'team_members'
 const teamMembers = new UseData(COLLECTION_NAME)
@@ -84,7 +83,7 @@ export default function useTeamMember () {
       isReactiveUserVisible.value = false
       notification({
         title: 'Success',
-        message: notifyMessages.user.reactive.success
+        message: 'User has been reactivated.'
       })
 
       getData()
@@ -92,7 +91,7 @@ export default function useTeamMember () {
       notification({
         type: 'error',
         title: 'Error',
-        message: notifyMessages.user.reactive.error
+        message: 'User has not been reactivated. Please try again.'
       })
     }
   }

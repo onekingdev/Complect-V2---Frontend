@@ -1,10 +1,9 @@
 <template lang="pug">
-.event.task-event(@click="openTaskModal()" :class="[type, {overdue, completed}, event.cssClasses]")
-  icon(v-if="event.startsToday && overdue" name="warning")
-  icon(v-if="event.startsToday" name="calendar-task")
-  icon(v-if="event.startsToday && linked" :name="`calendar-${linked}`")
-  .title(v-if="event.showTitle") {{title}}
-  .title(v-else) &nbsp;
+.event.task-event(@click="openTaskModal()" :class="[type, {overdue, completed}]")
+  icon(v-if="overdue" name="warning")
+  icon(name="calendar-task")
+  icon(v-if="linked" :name="`calendar-${linked}`")
+  .title {{title}}
 </template>
 
 <script>
@@ -13,10 +12,6 @@ export default {
   props: {
     id: {
       type: String,
-      required: true
-    },
-    event: {
-      type: Object,
       required: true
     },
     title: {

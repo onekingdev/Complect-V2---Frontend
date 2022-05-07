@@ -1,3 +1,9 @@
+import { ref } from "vue"
+import { randomMongoId, randomNumber, randomElement } from "~/_devmode/generator/components/atoms/utils.js"
+import { randomFirstNames, randomLastNames } from "~/_devmode/generator/components/molecules/randomName.js"
+import { randomGenders } from "~/_devmode/generator/components/molecules/randomGenders.js"
+import { randomDatesInRange } from "~/_devmode/generator/components/molecules/randomDate.js"
+import { wordsDict } from "~/_devmode/generator/components/dict/wordsDict.js"
 const formCards = [
   {
     type: 'attestation',
@@ -19,6 +25,50 @@ const formCards = [
     routeName: 'FormLibraryEntry'
   }
 ]
+
+const transactionData = ref([])
+transactionData.value = []
+for (let i = 1; i < randomNumber(5,8); i++) {
+  const gender = randomGenders({ q: 1 })[0];
+  const firstName = randomFirstNames({
+    q: 1,
+    gender
+  })[0];
+  const lastName = randomLastNames({ q: 1 })[0]
+  const dictLength = wordsDict.length
+  const wordIndex = randomNumber(0, dictLength - 1)
+  transactionData.value.push({
+    date:  randomDatesInRange({q: 1, shift: [-50, 0]})[0],
+    _id: randomMongoId(),
+    employeeName: `${firstName} ${lastName}`,
+    accountNumber: Math.round( randomNumber( 100, 20000 ) / 100 ) * 100,
+    ticker: wordsDict[wordIndex].toUpperCase(),
+    cusip: Math.round( randomNumber( 100, 500 ) / 100 ) * 100,
+    action: randomElement(['buy', 'sell']),
+    quantity: Math.round( randomNumber( 200, 300 ) / 100 ) * 100,
+    cost: Math.round( randomNumber( 100, 10000 ) / 100 ) * 100,
+    type: randomElement(['Linked', 'Custom']),
+    isReview: false,
+    isApproved: false,
+    additionalNotes: ''
+  })
+}
+transactionData.value[0].isReview = true
+transactionData.value[0].isApproved = false
+transactionData.value[1].isReview = true
+transactionData.value[1].isApproved = true
+
+const securityData = ref([])
+securityData.value = []
+for (let i = 1; i < randomNumber(5,8); i++) {
+  const dictLength = wordsDict.length
+  const wordIndex = randomNumber(0, dictLength - 1)
+  securityData.value.push({
+    _id: randomMongoId(),
+    tickerName: wordsDict[wordIndex].toUpperCase(),
+    createdAt: randomDatesInRange({q: 1, shift: [-50, 0]})[0]
+  })
+}
 
 const formLibraryData = [
   {
@@ -287,4 +337,4 @@ const ethicsAllEntriesData = [
   }
 ]
 
-export { formCards, formLibraryData, ethicsData, ethicsAllEntriesData }
+export { formCards, formLibraryData, ethicsData, ethicsAllEntriesData, transactionData, securityData }

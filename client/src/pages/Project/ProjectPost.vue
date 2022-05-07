@@ -34,8 +34,6 @@ import { formatDate } from '~/core/utils.js'
 import { industries, jurisdictions } from '~/data/static.js'
 import { useRouter } from 'vue-router'
 import UseData from '~/store/Data.js'
-import { notifyMessages } from '~/data/notifications.js'
-
 export default {
   components: {
     cBanner,
@@ -55,6 +53,7 @@ export default {
     }
   },
   emits: ['update:projectDetail'],
+  // eslint-disable-next-line max-lines-per-function
   setup (props) {
     const jobs = new UseData('jobs')
     const projects = new UseData('projects')
@@ -65,17 +64,17 @@ export default {
     const notification = inject('notification')
     const toggleDeleteModal = () => isDeleteModalVisible.value = !isDeleteModalVisible.value
     const gotoProposal = id => {
-      const findProposal = proposals.getDocuments().value.find(proposal => proposal.id === id)
-      router.push({ name: 'ProposalView', params: { id: findProposal.jobid, specialistid: findProposal.ownerid } })
+      const findProposal = proposals.getDocuments().value.find(proposal => proposal._id === id)
+      router.push({ name: 'ProposalView', params: { id: findProposal.job_id, specialist_id: findProposal.owner_id } })
     }
     const deleteJobPost = async () => {
       try {
         await jobs.deleteDocuments(props.projectDetail.jobId)
-        await projects.updateDocument(props.projectDetail.id, { jobId: '' })
+        await projects.updateDocument(props.projectDetail._id, { jobId: '' })
         notification({
           type: 'success',
           title: 'Success',
-          message: notifyMessages.job.delete.success
+          message: 'Job posting has been deleted.'
         })
         isDeleteModalVisible.value = !isDeleteModalVisible.value
         props.reloadCollection()
@@ -84,7 +83,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: notifyMessages.job.delete.error
+          message: 'Job posting has not been deleted. Please try again.'
         })
       }
     }
@@ -145,16 +144,16 @@ export default {
       for (let i = 0; i < props.projectDetail?.collaborators?.length && i < 5; i++) {
         const userinfo = props.projectDetail?.collaborators[i]
         userinfo.info = userinfo.role
-        if (userinfo.id === props.projectDetail.creator && props.projectDetail.creator) userinfo.info += '& Project Creator'
+        if (userinfo._id === props.projectDetail.creator && props.projectDetail.creator) userinfo.info += '& Project Creator'
         returnValue.push({ user: props.projectDetail?.collaborators[i] })
       }
       return returnValue
     })
     const projectStatus = computed(() => props.projectDetail?.status)
-    const editJobPost = () => router.push({ name: 'ProjectPostEdit', params: { id: props.projectDetail.id } })
+    const editJobPost = () => router.push({ name: 'ProjectPostEdit', params: { id: props.projectDetail._id } })
     const applicants = computed(() => {
       const returnProposals = proposals.getDocuments().value.map(proposal => {
-        const findUser = users.getDocuments().value.find(user => user.id === proposal.ownerid)
+        const findUser = users.getDocuments().value.find(user => user._id === proposal.owner_id)
         const returnProposal = { ...proposal, user: findUser }
         return returnProposal
       })
@@ -164,7 +163,7 @@ export default {
     onMounted(() => {
       jobs.readDocuments(props.projectDetail.jobId)
       users.readDocuments()
-      proposals.readDocuments('', { jobid: props.projectDetail.jobId })
+      proposals.readDocuments('', { job_id: props.projectDetail.jobId })
     })
     onUnmounted(() => jobs.clearStore())
 
@@ -183,7 +182,7 @@ export default {
   }
 }
 </script>
-<style lang='stylus' scoped>
+<style lang="stylus" scoped>
 .no-applicants
   display: flex
   justify-content: center

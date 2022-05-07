@@ -1,8 +1,8 @@
 <template lang="pug">
 router-link(:to="{name: 'ProjectDetail', params: {id: id}}")
-  .event.project-event(:class="[type, {overdue, completed}, event.cssClasses]")
-    icon(v-if="event.startsToday" name="calendar-project")
-    .title {{event.showTitle ? title : '&nbsp;'}}
+  .event.project-event(:class="[type, {overdue, completed}]")
+    icon(name="calendar-project")
+    .title {{title}}
 </template>
 
 <script>
@@ -10,10 +10,6 @@ export default {
   props: {
     id: {
       type: String,
-      required: true
-    },
-    event: {
-      type: Object,
       required: true
     },
     title: {

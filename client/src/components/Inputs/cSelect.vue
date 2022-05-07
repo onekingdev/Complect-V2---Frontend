@@ -116,7 +116,7 @@ export default {
         return objects
       }
       const index = props.data.findIndex(item => item.value === selected)
-      return props.data[index]?.title
+      return props.data[index].title
     }
 
     onMounted(() => {

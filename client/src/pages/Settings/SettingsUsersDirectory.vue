@@ -21,7 +21,7 @@ export default {
 
     const handleReinvite = id => console.debug(id)
     const checkShowReInvite = id => {
-      const user = activeUsers.value.find(item => item.id === id)
+      const user = activeUsers.value.find(item => item._id === id)
       if (!user) return false
       return user.status === 'pending'
     }

@@ -4,13 +4,12 @@ c-table(v-bind="{columns, documents, filters}")
 
 <script>
 import { computed, onMounted, onUnmounted } from 'vue'
-import JobPostingService from '~/services/job_postings.js'
-import ProposalService from '~/services/proposals.js'
+import UseData from '~/store/Data.js'
 import useProfile from '~/store/Profile.js'
 export default {
   setup () {
-    const proposals = new ProposalService()
-    const jobs = new JobPostingService()
+    const proposals = new UseData('proposals')
+    const jobs = new UseData('jobs')
     const { profile } = useProfile()
     const columns = [
       {
@@ -90,10 +89,10 @@ export default {
       const proposalArray = proposals.getDocuments().value
       const returnArray = []
       for (let i = 0; i < proposalArray.length; i++) {
-        const selectedJob = jobs.getDocuments().value.find(job => job.id === proposalArray[i].jobid)
+        const selectedJob = jobs.getDocuments().value.find(job => job._id === proposalArray[i].job_id)
         if (selectedJob) {
           const returnObj = {
-            id: proposalArray[i].status === 'accepted' || proposalArray[i].status === 'complete' ? '61fb29f8d39177aad786604e' : '',
+            _id: proposalArray[i].status === 'accepted' || proposalArray[i].status === 'complete' ? '61fb29f8d39177aad786604e' : '',
             name: selectedJob.name,
             client: { firstName: 'Hanh', lastName: 'Client' },
             payment: proposalArray[i].priceType === 'hourly' ? proposalArray[i].hourlyRate * 100 : proposalArray[i].budget,
@@ -108,7 +107,7 @@ export default {
     })
 
     onMounted(() => {
-      proposals.readDocuments('', { ownerid: profile.value.id })
+      proposals.readDocuments('', { owner_id: profile.value._id })
       jobs.readDocuments()
     })
     onUnmounted(() => proposals.clearStore())

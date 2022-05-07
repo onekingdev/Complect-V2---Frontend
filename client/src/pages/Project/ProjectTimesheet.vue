@@ -1,6 +1,6 @@
 <template lang="pug">
-card-container(:title="isBusiness ? 'Contract Timesheet' : 'My Timesheet'")
-  template(#controls v-if="isBusiness")
+card-container(:title="profile.type == 'specialist' ? 'My Timesheet' : 'Contract Timesheet'")
+  template(#controls v-if="profile.type != 'specialist'")
     c-button(title="Log Time" type="primary" @click="toggleLogModal()" )
   template(#content)
     c-table(v-bind="{columns, documents}")
@@ -20,22 +20,20 @@ c-modal(title="Entry Details" v-model="isLogModalVisible")
   template(#footer)
     c-button(title="Save as Draft" type="default" @click="draftTimeSheet()" v-if="!isEntry")
     c-button(title="Submit" type="primary" @click="submitTimeSheet()" v-if="!isEntry")
-    c-button(title="Reject" type="default" @click="rejectTimeSheet(form.id)" v-if="isEntry && isBusiness")
-    c-button(title="Approve" type="primary" @click="approveTimeSheet(form.id)" v-if="isEntry && isBusiness")
+    c-button(title="Reject" type="default" @click="rejectTimeSheet(form._id)" v-if="isEntry && profile.type != 'specialist'")
+    c-button(title="Approve" type="primary" @click="approveTimeSheet(form._id)" v-if="isEntry && profile.type != 'specialist'")
 </template>
 <script>
 import cBanner from '~/components/Misc/cBanner.vue'
 import { ref, onMounted, inject } from 'vue'
 import useProfile from '~/store/Profile.js'
-import useBusiness from '~/store/Business.js'
 import cModal from '~/components/Misc/cModal.vue'
 import cDropdown from '~/components/Inputs/cDropdown.vue'
 import UseData from '~/store/Data.js'
 import { formatDate } from '~/core/utils'
-import { notifyMessages } from '~/data/notifications.js'
 const documents = [
   {
-    id: '1234234234234',
+    _id: '1234234234234',
     date: 1648688166644,
     created_on: 1648688166644,
     hour: 10,
@@ -53,7 +51,7 @@ const documents = [
       }
     ]
   }, {
-    id: '12342342342324',
+    _id: '12342342342324',
     date: 1648688166644,
     created_on: 1648688166644,
     hour: 12,
@@ -71,7 +69,7 @@ const documents = [
       }
     ]
   }, {
-    id: '12342342334234',
+    _id: '12342342334234',
     date: 1648688166644,
     created_on: 1648688166644,
     hour: 12,
@@ -89,7 +87,7 @@ const documents = [
       }
     ]
   }, {
-    id: '12342434234234',
+    _id: '12342434234234',
     date: 1648688166644,
     created_on: 1648688166644,
     hour: 12,
@@ -125,11 +123,11 @@ export default {
     }
   },
   emits: ['update:projectDetail'],
+  // eslint-disable-next-line max-lines-per-function
   setup (props) {
     const proposals = new UseData('proposals')
     const timesheet = new UseData('timesheet')
     const { profile } = useProfile()
-    const { isBusiness } = useBusiness()
     const notification = inject('notification')
     const form = ref({
       created_on: Date.now(),
@@ -158,7 +156,7 @@ export default {
       isEntry.value = true
       form.value = documents.find(doc => {
         let returnObj
-        if (doc.id === id) {
+        if (doc._id === id) {
           returnObj = doc
           for (let i = 0; i < returnObj.entries.length; i++) returnObj.entries[i].date = formatDate(returnObj.entries[i].date)
           return returnObj
@@ -184,18 +182,18 @@ export default {
         form.value.hour += form.value.entries[i].hour
       }
       try {
-        timesheet.createDocuments(form.value)
+        timesheet.createDocuments([form.value])
         notification({
           type: 'success',
           title: 'Success',
-          message: notifyMessages.timesheet.submit.success
+          message: 'Timesheet has been submitted.'
         })
         isLogModalVisible.value = !isLogModalVisible.value
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: notifyMessages.timesheet.submit.error
+          message: 'Timesheet has not been submitted. Please try again.'
         })
       }
     }
@@ -204,52 +202,52 @@ export default {
       form.value.status = 'draft'
       for (let i = 0; i < form.value.entries.length; i++) form.value.amount += form.value.entries[i].hour * proposals.getDocuments().value[0].hourlyRate
       try {
-        timesheet.createDocuments(form.value)
+        timesheet.createDocuments([form.value])
         notification({
           type: 'success',
           title: 'Success',
-          message: notifyMessages.timesheet.save.success
+          message: 'Timesheet has been saved.'
         })
         isLogModalVisible.value = !isLogModalVisible.value
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: notifyMessages.timesheet.save.error
+          message: 'Timesheet has not been saved. Please try again.'
         })
       }
     }
     const approveTimeSheet = id => {
       try {
-        timesheet.updateDocument(id, { status: 'accepted' })
+        timesheet.updateDocument(id, { status: 'rejected' })
         notification({
           type: 'success',
           title: 'Success',
-          message: notifyMessages.timesheet.approve.success
+          message: 'Timesheet has been approved.'
         })
         isLogModalVisible.value = !isLogModalVisible.value
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: notifyMessages.timesheet.approve.error
+          message: 'Timesheet has not been approved. Please try again.'
         })
       }
     }
     const rejectTimeSheet = id => {
       try {
-        timesheet.updateDocument(id, { status: 'rejected' })
+        timesheet.updateDocument(id, { status: 'accepted' })
         notification({
           type: 'success',
           title: 'Success',
-          message: notifyMessages.timesheet.reject.success
+          message: 'Timesheet has been rejected.'
         })
         isLogModalVisible.value = !isLogModalVisible.value
       } catch (error) {
         notification({
-          type: error,
-          title: Error,
-          message: notifyMessages.timesheet.reject.error
+          type: 'error',
+          title: 'Error',
+          message: 'Timesheet has not been rejected. Please try again.'
         })
       }
     }
@@ -259,7 +257,7 @@ export default {
     const businessColumn = [
       { title: 'Date Submitted', key: 'created_on', cell: 'CellAction', unsortable: true, meta: { type: 'date', action: toggleEntryModal } }, { title: 'Status', key: 'status', cell: 'CellStatus', unsortable: true }, { title: 'Total Time', key: 'hour', cell: 'CellTitle', unsortable: true }, { title: 'Total Due', key: 'amount', cell: 'CellPrice', align: 'right', unsortable: true }
     ]
-    // const documents = computed( () => records.getDocuments().value.filter( record => props.projectDetail.documents.indexOf( record.id ) > -1 ) );
+    // const documents = computed( () => records.getDocuments().value.filter( record => props.projectDetail.documents.indexOf( record._id ) > -1 ) );
     onMounted(() => proposals.readDocuments('', { job_id: props.projectDetail.jobId, status: 'accepted' }))
     return {
       columns: profile.value.type === 'business' ? businessColumn : specialistColumns,
@@ -275,7 +273,6 @@ export default {
       approveTimeSheet,
       rejectTimeSheet,
       isEntry,
-      isBusiness,
       proposals: proposals.getDocuments()
     }
   }

@@ -42,7 +42,7 @@ c-modal(title="Unlink Policy" v-model="isDeleteVisible")
 
 <script>
 import { computed, inject, ref } from 'vue'
-import RiskService from '~/services/risks.js'
+import UseData from '~/store/Data.js'
 import definitionList from '~/components/Misc/DefinitionList.vue'
 import { calcRiskLevel } from '~/core/utils.js'
 import cSelect from '~/components/Inputs/cSelect.vue'
@@ -50,11 +50,11 @@ import cLabel from '~/components/Misc/cLabel.vue'
 import cBadge from '~/components/Misc/cBadge.vue'
 import useProfile from '~/store/Profile.js'
 import cModal from '~/components/Misc/cModal.vue'
-import { notifyMessages } from '~/data/notifications.js'
 export default {
   components: { definitionList, cSelect, cLabel, cBadge, cModal },
+  // eslint-disable-next-line
   setup () {
-    const risks = new RiskService()
+    const risks = new UseData('risks')
     const notification = inject('notification')
     const locale = inject('locale')
     const clickId = ref('')
@@ -80,20 +80,20 @@ export default {
     const deletePolicy = async () => {
       try {
         const policyId = clickId.value
-        const controls = risks.getDocument().value.controls.filter(doc => doc.id !== policyId)
-        await risks.updateDocument(risks.getDocument().value.id, { controls })
+        const controls = risks.getDocument().value.controls.filter(doc => doc._id !== policyId)
+        await risks.updateDocument(risks.getDocument().value._id, { controls })
         isDeleteVisible.value = !isDeleteVisible.value
         notification({
           type: 'success',
           title: 'Success',
-          message: notifyMessages.risk.control.delete.success
+          message: 'Control has been removed.'
         })
-        await risks.readDocuments(risks.getDocument().value.id)
+        await risks.readDocuments(risks.getDocument().value._id)
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: notifyMessages.risk.control.delete.error
+          message: 'Control has not been removed. Please try again.'
         })
       }
     }
@@ -110,19 +110,19 @@ export default {
       try {
         riskForm.value.riskLevel = newRiskLevel.value
         riskForm.value.creator = `${profile.value.firstName} ${profile.value.lastName}`
-        await risks.updateDocument(risks.getDocument().value.id, riskForm.value)
+        await risks.updateDocument(risks.getDocument().value._id, riskForm.value)
         notification({
           type: 'success',
           title: 'Success',
-          message: notifyMessages.risk.update.success
+          message: 'Risk has been updated.'
         })
         isEditRiskVisible.value = !isEditRiskVisible.value
-        await risks.readDocuments(risks.getDocument().value.id)
+        await risks.readDocuments(risks.getDocument().value._id)
       } catch {
         notification({
           type: 'error',
           title: 'Error',
-          message: notifyMessages.risk.update.error
+          message: 'Risk has not been updated. Please try again.'
         })
       }
     }
@@ -197,42 +197,42 @@ export default {
         lastModified: 1644778085732,
         status: 'draft',
         name: 'Policy2',
-        id: '123234234'
+        _id: '123234234'
       },
       {
         Created: 1644778085732,
         lastModified: 1644778085732,
         status: 'draft',
         name: 'Policy3',
-        id: '123234234'
+        _id: '123234234'
       },
       {
         Created: 1644778085732,
         lastModified: 1644778085732,
         status: 'draft',
         name: 'Policy4',
-        id: '123234234'
+        _id: '123234234'
       },
       {
         Created: 1644778085732,
         lastModified: 1644778085732,
         status: 'draft',
         name: 'Policy5',
-        id: '123234234'
+        _id: '123234234'
       },
       {
         Created: 1644778085732,
         lastModified: 1644778085732,
         status: 'draft',
         name: 'Policy6',
-        id: '123234234'
+        _id: '123234234'
       },
       {
         Created: 1644778085732,
         lastModified: 1644778085732,
         status: 'draft',
         name: 'Policy7',
-        id: '123234234'
+        _id: '123234234'
       }
     ])
     const addControl = () => console.debug(policyDocuments.value)

@@ -59,7 +59,7 @@ export default {
     ]
 
     const controlsDocuments = [{
-      id: '123',
+      _id: '123',
       title: 'Policy',
       status: 'draft',
       lastModified: Date.now(),

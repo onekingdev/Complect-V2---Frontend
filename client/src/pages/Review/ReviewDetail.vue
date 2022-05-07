@@ -75,19 +75,16 @@ vertical-detail
 </template>
 
 <script>
-import { ref, computed, inject, onMounted, onUnmounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import ReviewService from '~/services/reviews.js'
+import { ref, computed, inject } from 'vue'
+import { useRouter } from 'vue-router'
+import UseData from '~/store/Data.js'
 import VerticalDetail from '~/components/Containers/VerticalDetail.vue'
-import { notifyMessages } from '~/data/notifications.js'
-
 export default {
   components: { VerticalDetail },
   setup () {
-    const route = useRoute()
+    const reviews = new UseData('reviews')
     const notification = inject('notification')
     const router = useRouter()
-    const reviews = new ReviewService()
     const reviewCategory = ref({})
     const isGeneral = ref(true)
     const catId = ref(null)
@@ -101,7 +98,7 @@ export default {
       isGeneral.value = true
       router.push({
         name: 'ReviewDetail',
-        params: { id: reviews.getDocument().value.id }
+        params: { id: reviews.getDocument().value._id }
       })
     }
     const selectCategory = id => {
@@ -113,27 +110,27 @@ export default {
     const updateReview = async () => {
       try {
         await reviews.updateDocument(reviews.getDocument().value._id, reviews.getDocument().value)
-        notification({ type: 'success', title: 'Success', message: notifyMessages.review.category.update.success })
+        notification({ type: 'success', title: 'Success', message: 'Category has been updated.' })
       } catch (error) {
         console.error(error)
-        notification({ type: 'error', title: 'Error', message: notifyMessages.review.category.update.error })
+        notification({ type: 'error', title: 'Error', message: 'Category has not been updated. Please try again.' })
       }
     }
     const completeReview = async () => {
       const timestamp = reviews.getDocument().value.completedAt ? null : Date.now()
       try {
-        await reviews.updateDocument(reviews.getDocument().value.id, { completedAt: timestamp })
+        await reviews.updateDocument(reviews.getDocument().value._id, { completedAt: timestamp })
         notification({
           type: 'success',
           title: 'Success',
-          message: timestamp ? notifyMessages.review.category.complete.success : notifyMessages.review.category.incomplete.success
+          message: `Category has been marked as ${timestamp ? 'complete' : 'incomplete'}.`
         })
       } catch (error) {
         console.error(error)
         notification({
           type: 'error',
           title: 'Error',
-          message: timestamp ? notifyMessages.review.category.complete.error : notifyMessages.review.category.incomplete.error
+          message: `Category has not been marked as ${timestamp ? 'complete' : 'incomplete'}. Please try again.`
         })
       }
     }
@@ -141,7 +138,7 @@ export default {
     const addEmployeesInterviewed = () => reviews.getDocument().value.employeesInterviewed.push({ name: '', role: '', department: '' })
     const deleteRegulatoryChange = (regulatoryChange, index) => {
       regulatoryChange.splice(index, 1)
-      notification({ type: 'success', title: 'Success', message: notifyMessages.review.category.entry.delete.success })
+      notification({ type: 'success', title: 'Success', message: 'Entry has been deleted.' })
     }
     const deleteEmployeesInterviewed = (employeesInterviewed, index) => employeesInterviewed.splice(index, 1)
     const toggleCategory = () => state.value.isButton = !state.value.isButton
@@ -151,7 +148,7 @@ export default {
       state.value.categoryName = ''
       try {
         await reviews.updateDocument(reviews.getDocument().value._id, { categories: reviews.getDocument().value.categories })
-        notification({ type: 'success', title: 'Success', message: notifyMessages.review.category.add.success })
+        notification({ type: 'success', title: 'Success', message: 'Category has been added.' })
         isGeneral.value = false
         catId.value = reviews.getDocument().value.categories.length - 1
         reviewCategory.value = reviews.getDocument().value.categories[catId.value]
@@ -161,13 +158,9 @@ export default {
         })
       } catch (error) {
         console.error(error)
-        notification({ type: 'error', title: 'Error', message: notifyMessages.review.category.add.error })
+        notification({ type: 'error', title: 'Error', message: 'Category has not been added. Please try again.' })
       }
     }
-    onMounted(() => {
-      reviews.readDocuments(route.params.id)
-    })
-    onUnmounted(() => reviews.clearStore())
     return {
       document: reviews.getDocument(),
       state,

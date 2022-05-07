@@ -10,6 +10,7 @@ card-container(title="Constructor")
       template(#preview)
         c-avatar(:size="selectedOptions.size" :shape="selectedOptions.shape" :avatar="userProfile.avatar" :firstName="userProfile.first_name" :lastName="userProfile.last_name")
         c-avatar(:size="selectedOptions.size" :shape="selectedOptions.shape" :firstName="userProfile.first_name" :lastName="userProfile.last_name")
+      
 card-container(title="Collection")
   template(#controls)
     c-button(iconL="refresh" type="transparent" @click="refreshUser()")
@@ -20,55 +21,59 @@ card-container(title="Collection")
       c-avatar(v-for="(size, index) in options.sizes" :firstName="userProfile.first_name" :lastName="userProfile.last_name" :size="size.value" :shape="shape.value" :key="index")
 </template>
 
+
 <script>
-import { ref, reactive, computed, onMounted } from 'vue'
-import ComponentConstructor from '~/_devmode/misc/ComponentConstructor.vue'
-import cSwitcher from '~/components/Inputs/cSwitcher.vue'
-import cAvatar from '~/components/Misc/cAvatar.vue'
-import { randomUsers } from '~/_devmode/generator/components/organisms/randomUsers.js'
+import { ref, reactive, computed, onMounted } from "vue"
+import ComponentConstructor from "~/_devmode/misc/ComponentConstructor.vue"
+import cSwitcher from "~/components/Inputs/cSwitcher.vue"
+import cAvatar from "~/components/Misc/cAvatar.vue";
+import { randomUsers } from "~/_devmode/generator/components/organisms/randomUsers.js";
 
 export default {
   components: { ComponentConstructor, cSwitcher, cAvatar },
-  setup () {
+  setup() {
     const userProfile = ref(null)
-    const refreshUser = () => userProfile.value = randomUsers({ q: 1 })[0]
+    const refreshUser = () => userProfile.value = randomUsers({q:1})[0]
 
     const options = {
       sizes: [
-        { title: 'Tiny', value: 'tiny' },
-        { title: 'Small', value: 'small' },
-        { title: 'Regular', value: 'regular' },
-        { title: 'Big', value: 'big' },
-        { title: 'Huge', value: 'huge' }
+        {title: "Tiny", value: "tiny"},
+        {title: "Small", value: "small"},
+        {title: "Regular", value: "regular"},
+        {title: "Big", value: "big"},
+        {title: "Huge", value: "huge"}
       ],
       shapes: [
-        { title: 'Circle', value: 'circle' },
-        { title: 'Rounded', value: 'rounded' },
-        { title: 'Square', value: 'square' }
+        {title: "Circle", value: "circle"},
+        {title: "Rounded", value: "rounded"},
+        {title: "Square", value: "square"}
       ]
     }
 
     const selectedOptions = reactive({
-      size: 'regular',
-      shape: 'circle'
+      size: "regular",
+      shape: "circle",
     })
 
     const code = computed(() => {
-      const avatar = "avatar='avatar.jpg'"
-      const firstName = `firstName='${userProfile.value.first_name}'`
-      const lastName = `lastName='${userProfile.value.last_name}'`
-      const size = selectedOptions.size !== 'regular' ? `size='${selectedOptions.size}'` : ''
-      const shape = selectedOptions.shape !== 'circle' ? `shape='${selectedOptions.shape}'` : ''
+      let avatar = `avatar="avatar.jpg"`
+      let firstName = `firstName="${userProfile.value.first_name}"`
+      let lastName = `lastName="${userProfile.value.last_name}"`
+      let size = selectedOptions.size !== 'regular' ? `size="${selectedOptions.size}"` : ""
+      let shape = selectedOptions.shape !== 'circle' ? `shape="${selectedOptions.shape}"` : ""
       return `c-avatar(${avatar} ${firstName} ${lastName} ${size} ${shape})`
     })
 
     onMounted(() => refreshUser())
+    
+
     return { options, selectedOptions, userProfile, refreshUser, code }
   }
-}
+};
 </script>
 
-<style lang='stylus' scoped>
+
+<style lang="stylus" scoped>
 .card-container
   margin-bottom: 2em
   .preview-column

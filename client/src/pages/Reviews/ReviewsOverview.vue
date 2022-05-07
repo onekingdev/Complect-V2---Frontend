@@ -19,14 +19,13 @@ c-modal(title="Delete Internal Review" v-model="isDeleteVisible")
 
 <script>
 import { onMounted, onUnmounted, inject, ref } from 'vue'
-import ReviewService from '~/services/reviews.js'
+import UseData from '~/store/Data.js'
 import cBanner from '~/components/Misc/cBanner.vue'
 import cModal from '~/components/Misc/cModal.vue'
-import { notifyMessages } from '~/data/notifications.js'
 export default {
   components: { cBanner, cModal },
   setup () {
-    const reviews = new ReviewService()
+    const reviews = new UseData('reviews')
     const notification = inject('notification')
     const modal = inject('modal')
     const isDeleteVisible = ref(false)
@@ -42,32 +41,32 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: notifyMessages.review.delete.success
+          message: 'Internal review has been deleted.'
         })
       } catch (error) {
         console.error(error)
         notification({
           type: 'error',
           title: 'Error',
-          message: notifyMessages.review.delete.error
+          message: 'Internal review has not been deleted. Please try again.'
         })
       }
     }
     const handleClickDuplicate = async id => {
-      const index = reviews.getDocuments().value.findIndex(doc => doc.id === id)
+      const index = reviews.getDocuments().value.findIndex(doc => doc._id === id)
       try {
-        await reviews.createDocuments(reviews.getDocuments().value[index])
+        await reviews.createDocuments([reviews.getDocuments().value[index]])
         notification({
           type: 'success',
           title: 'Success',
-          message: notifyMessages.review.duplicate.success
+          message: 'Internal review has been duplicated.'
         })
       } catch (error) {
         console.error(error)
         notification({
           type: 'error',
           title: 'Error',
-          message: notifyMessages.review.duplicate.error
+          message: 'Internal review has not been duplicated. Please try again.'
         })
       }
     }

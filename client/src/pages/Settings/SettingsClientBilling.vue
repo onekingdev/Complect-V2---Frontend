@@ -8,12 +8,12 @@
           c-select.col-3(label="Account Type" placeholder="Select Account Type" :data="accountType" v-model="payoutForm.accountType" required)
           div.col-3
           template(v-if="payoutForm.accountType == 'company'")
-            c-field.col-3(label="Legal Business Name" v-model="payoutForm.businesName" required)
+            c-field.col-3(label="Legal Business Name" placeholder="Legal business name" v-model="payoutForm.businesName" required)
             div.col-3
           template(v-if="payoutForm.accountType == 'individual'")
-            c-field.col-1(label="Legal First Name" v-model="payoutForm.firstName" required)
+            c-field.col-1(label="Legal First Name" placeholder="Legal first name" v-model="payoutForm.firstName" required)
             div.col-1
-            c-field.col-1(label="Legal Business Name" v-model="payoutForm.lastName" required)
+            c-field.col-1(label="Legal Business Name" placeholder="Legal last name" v-model="payoutForm.lastName" required)
             div.col-3
           c-select.col-3(label="Country" placeholder="Select Account Type" :data="selectCountries" v-model="payoutForm.countries" searchable required)
         template(#step2)
@@ -21,18 +21,18 @@
             .header Tell us more about your business:
             .intro We will use this to verify your identify
             .inputs.grid-6
-              c-field.col-3(label="Date of Birth" type="date" v-model="payoutForm.DOB" placeholder="MM/DD/YYYY" required)
-              c-field.col-3(label="Business Tax ID" v-model="payoutForm.businessTax" required)
-              c-field.col-6(label="Business Address" v-model="payoutForm.address" required)
-              c-field.col-2(label="City" v-model="payoutForm.city" required)
-              c-field.col-2(label="State" v-model="payoutForm.state" required)
-              c-field.col-2(label="Zip" v-model="payoutForm.zip" required)
+              c-field.col-3(label="Date of birth" type="date" v-model="payoutForm.DOB" placeholder="MM/DD/YYYY" required)
+              c-field.col-3(label="Business tax" v-model="payoutForm.businessTax" placeholder="000000000" required)
+              c-field.col-6(label="Business Address" v-model="payoutForm.address" placeholder="Address" required)
+              c-field.col-2(label="City" v-model="payoutForm.city" placeholder="City" required)
+              c-field.col-2(label="State" v-model="payoutForm.state" placeholder="State" required)
+              c-field.col-2(label="Zip" v-model="payoutForm.zip" placeholder="Zip" required)
         template(#step3)
-          c-field.col-3(label="Routing Number" v-model="payoutForm.routingNumber" required)
+          c-field.col-3(label="Routing Number" v-model="payoutForm.routingNumber" placeholder="Routing number" required)
           br
-          c-field.col-3(label="Account Number" v-model="payoutForm.accountNumber" required)
+          c-field.col-3(label="Account Number" v-model="payoutForm.accountNumber" placeholder="Account number" required)
           br
-          c-field.col-3(label="Confirm Account Number" v-model="payoutForm.confirmAccountNumber" required)
+          c-field.col-3(label="Confirm Account Number" v-model="payoutForm.confirmAccountNumber" placeholder="Account number" required)
         template(#controls)
           c-button(title="Submit" type="primary" @click="submitClientBilling()")
 </template>
@@ -41,7 +41,6 @@
 import { ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import useProfile from '~/store/Profile.js'
-import useBusiness from '~/store/Business.js'
 import useForm from '~/store/Form.js'
 import cFormWizard from '~/components/FormWizard/cFormWizard.vue'
 import cRadios from '~/components/Inputs/cRadios.vue'
@@ -55,7 +54,6 @@ import UseData from '~/store/Data.js'
 
 import { selectCountries } from '~/data/static.js'
 import { plans } from '~/data/plans.js'
-import { notifyMessages } from '~/data/notifications.js'
 
 export default {
   components: {
@@ -82,8 +80,7 @@ export default {
     }
     const router = useRouter()
     const { profile } = useProfile()
-    const { isBusiness } = useBusiness()
-    const userType = isBusiness ? 'business' : 'specialist'
+    const userType = profile.value.type
     const { form } = useForm('onboarding', baseForm[userType])
     const notification = inject('notification')
 
@@ -111,20 +108,24 @@ export default {
       confirmAccountNumber: ''
     })
 
+    // eslint-disable-next-line max-statements
     const submitClientBilling = async () => {
       try {
         const requestBody = {}
         requestBody.type = 'custom'
         requestBody.country = 'US'
         requestBody.email = profile.value.email
+        // eslint-disable-next-line camelcase
         requestBody.requested_capabilities = { 0: 'transfers' }
         requestBody.settings = { payouts: { debit_negative_balances: 'true' } }
         let accountname
         if (payoutForm.value.accountType === 'company') {
+          // eslint-disable-next-line camelcase
           requestBody.business_type = 'company'
           requestBody.company = { name: payoutForm.value.businesName }
           accountname = payoutForm.value.businesName
         } else {
+          // eslint-disable-next-line camelcase
           requestBody.business_type = 'individual'
           requestBody.individual = {
             first_name: payoutForm.value.firstName,
@@ -132,6 +133,7 @@ export default {
           }
           accountname = `${payoutForm.value.firstName} ${payoutForm.value.lastName}`
         }
+        // eslint-disable-next-line camelcase
         requestBody.external_account = {
           object: 'bank_account',
           country: 'US',
@@ -157,18 +159,18 @@ export default {
           last4: response.data.external_accounts.data[0].last4,
           primary
         })
-        specialist.updateDocument(specialist.getDocument().value.id, { account })
+        specialist.updateDocument(specialist.getDocument().value._id, { account })
         notification({
           type: 'success',
           title: 'Success',
-          message: notifyMessages.bank.add.success
+          message: 'Receiving bank has been added.'
         })
         router.push({ name: 'SettingsBilling' })
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: notifyMessages.bank.add.error
+          message: 'Receiving bank has not been added. Please try again.'
         })
       }
     }

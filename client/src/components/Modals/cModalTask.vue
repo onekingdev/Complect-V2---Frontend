@@ -33,7 +33,6 @@ import UseData from '~/store/Data.js'
 import cChat from '~/components/Misc/cChat.vue'
 import { formatDate } from '~/core/utils.js'
 import { onClickOutside } from '@vueuse/core'
-import { notifyMessages } from '~/data/notifications.js'
 
 export default {
   components: { cChat },
@@ -68,16 +67,15 @@ export default {
       try {
         await tasks.createDocuments([form.value])
         notification({
-          type: 'success',
           title: 'Success',
-          message: notifyMessages.task.create.success
+          message: 'Task has been created.'
         })
       } catch (error) {
         console.error(error)
         notification({
           type: 'error',
           title: 'Error',
-          message: notifyMessages.task.create.error
+          message: 'Task has not been created. Please try again.'
         })
       }
     }
@@ -85,13 +83,13 @@ export default {
     const updateTask = async () => {
       try {
         await tasks.updateDocument(form.value._id, form.value)
-        notification({ type: 'success', title: 'Success', message: notifyMessages.task.update.success })
+        notification({ title: 'Success', message: 'Task has been updated.' })
       } catch (error) {
         console.error(error)
         notification({
           type: 'error',
           title: 'Error',
-          message: notifyMessages.task.update.error
+          message: 'Task has not been updated. Please try again.'
         })
       }
     }
@@ -101,14 +99,14 @@ export default {
         await tasks.updateDocument(form.value._id, { completedAt: timestamp })
         notification({
           title: 'Success',
-          message: timestamp ? notifyMessages.task.complete.success : notifyMessages.task.incomplete.success
+          message: `Task has been marked as ${timestamp ? 'complete' : 'incomplete'}.`
         })
       } catch (error) {
         console.error(error)
         notification({
           type: 'error',
           title: 'Error',
-          message: timestamp ? notifyMessages.task.complete.error : notifyMessages.task.incomplete.error
+          message: `Task has not been marked as ${timestamp ? 'complete' : 'incomplete'}. Please try again.`
         })
       }
     }
@@ -118,14 +116,14 @@ export default {
         await tasks.deleteDocuments(props.id)
         notification({
           title: 'Success',
-          message: notifyMessages.task.delete.success
+          message: 'Task has been deleted.'
         })
       } catch (error) {
         console.error(error)
         notification({
           type: 'error',
           title: 'Error',
-          message: notifyMessages.task.delete.error
+          message: 'Task has not been deleted. Please try again.'
         })
       } finally {
         closeModal()

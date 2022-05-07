@@ -117,12 +117,12 @@ export default {
       websocket.onmessage = ({ data }) => {
         if (JSON.parse(data).type === 'ping') return
         const messageData = JSON.parse(data).message
-        if (messageData && messageData.receiverid === profile.value.id) {
-          if (messageData.senderid === currentMessageUserId.value) {
+        if (messageData && messageData.receiver_id === profile.value._id) {
+          if (messageData.sender_id === currentMessageUserId.value) {
             messageList.value.push(messageData)
             scrollToBottom('smooth')
           } else {
-            const receiverUser = receiverList.value.find(user => user.userId === messageData.senderid)
+            const receiverUser = receiverList.value.find(user => user.userId === messageData.sender_id)
             receiverUser.newMessage = true
             receiverUser.lastMessage = `${messageData.message.slice(0, 15)}...`
           }
@@ -137,8 +137,8 @@ export default {
     }
     const send = () => {
       const data = {
-        senderid: profile.value.id,
-        receiverid: currentMessageUserId.value,
+        sender_id: profile.value._id,
+        receiver_id: currentMessageUserId.value,
         firstName: profile.value.firstName,
         lastName: profile.value.lastName,
         message: newMessage.value,

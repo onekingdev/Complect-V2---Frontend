@@ -129,7 +129,6 @@ import cAvatar from '~/components/Misc/cAvatar.vue'
 import cChat from '~/components/Misc/cChat.vue'
 import cModal from '~/components/Misc/cModal.vue'
 import cDropzone from '~/components/Inputs/cDropzone.vue'
-import { notifyMessages } from '~/data/notifications.js'
 const business = ref({
   id: '3234234029384209384',
   firstName: 'Manuel',
@@ -145,6 +144,7 @@ const business = ref({
 })
 export default {
   components: { cSelect, cLabel, cBadge, cAvatar, cChat, cModal, cDropzone },
+  // eslint-disable-next-line max-lines-per-function
   setup () {
     const jobs = new UseData('jobs')
     const proposals = new UseData('proposals')
@@ -164,8 +164,8 @@ export default {
       roleDetails: '',
       keyDeliverables: '',
       document: '',
-      ownerid: profile.value.id,
-      jobid: route.params.id
+      owner_id: profile.value._id,
+      job_id: route.params.id
     })
     const validateInfor = computed(() => ({
       rules: {
@@ -229,18 +229,18 @@ export default {
     const saveProposal = async () => {
       try {
         form.value.status = 'draft'
-        await proposals.createDocuments(form.value)
+        await proposals.createDocuments([form.value])
         notification({
           type: 'success',
           title: 'Success',
-          message: notifyMessages.proposal.save.success
+          message: 'Proposal has been saved'
         })
         gotoJobBoard()
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: notifyMessages.proposal.save.error
+          message: 'Proposal has not been saved. Please try again.'
         })
       }
     }
@@ -249,19 +249,20 @@ export default {
         form.value.status = 'pending'
         const isValidate = await stepValidate()
         if (isValidate) {
+          // eslint-disable-next-line max-depth
           if (!proposals.getDocuments().value || proposals.getDocuments().value.length === 0) {
-            await proposals.createDocuments(form.value)
+            await proposals.createDocuments([form.value])
             notification({
               type: 'success',
               title: 'Success',
-              message: notifyMessages.proposal.submit.success
+              message: 'Proposal has been submitted.'
             })
           } else {
-            await proposals.updateDocument(form.value.id, form.value)
+            await proposals.updateDocument(form.value._id, form.value)
             notification({
               type: 'success',
               title: 'Success',
-              message: notifyMessages.proposal.submit.success
+              message: 'Proposal has been submitted.'
             })
           }
           gotoJobBoard()
@@ -270,13 +271,13 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: notifyMessages.proposal.submit.error
+          message: 'Proposal has not been submitted. Please try again.'
         })
       }
     }
     onMounted(async () => {
       await jobs.readDocuments(route.params.id)
-      await proposals.readDocuments('', { jobid: route.params.id, ownerid: profile.value.id })
+      await proposals.readDocuments('', { job_id: route.params.id, owner_id: profile.value._id })
       if (!proposals.getDocuments().value || proposals.getDocuments().value.length === 0) {
         form.value.startsAt = jobs.getDocument().value.startsAt
         form.value.endsAt = jobs.getDocument().value.endsAt

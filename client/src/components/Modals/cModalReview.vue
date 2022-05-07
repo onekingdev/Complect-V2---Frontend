@@ -21,7 +21,6 @@ import UseData from '~/store/Data.js'
 import { onClickOutside } from '@vueuse/core'
 import cSelect from '~/components/Inputs/cSelect.vue'
 import _clonedeep from 'lodash.clonedeep'
-import { notifyMessages } from '~/data/notifications.js'
 
 export default {
   components: { cSelect },
@@ -78,14 +77,14 @@ export default {
           form.value.categories = duplicate.categories
           reviewId = await reviews.createDocuments([form.value])
         } else reviewId = await reviews.createDocuments([form.value])
-        notification({ type: 'success', title: 'Success', message: notifyMessages.review.create.success })
+        notification({ type: 'success', title: 'Success', message: 'Internal review has been created' })
         router.push({
           name: 'ReviewDetail',
           params: { id: reviewId[0] }
         })
       } catch (error) {
         console.error(error)
-        notification({ type: 'error', title: 'Error', message: notifyMessages.review.create.error })
+        notification({ type: 'error', title: 'Error', message: 'Internal review has not been created. Please try again.' })
       }
     }
     const getProgress = review => {
@@ -110,10 +109,10 @@ export default {
         await reviews.updateDocument(form.value._id, form.value)
         const index = reviews.getDocuments().value.findIndex(doc => doc._id === form.value._id)
         getProgress(reviews.getDocuments().value[index])
-        notification({ type: 'success', title: 'Success', message: notifyMessages.review.update.success })
+        notification({ type: 'success', title: 'Success', message: 'Internal review has been updated.' })
       } catch (error) {
         console.error(error)
-        notification({ type: 'error', title: 'Error', message: notifyMessages.review.update.error })
+        notification({ type: 'error', title: 'Error', message: 'Internal review has not been updated. Please try again.' })
       }
     }
     const saveReview = async () => {
@@ -149,7 +148,7 @@ export default {
 }
 </script>
 
-<style lang='stylus' scoped>
+<style lang="stylus" scoped>
 .c-modal-review
   .delete-button
     margin-right: auto
