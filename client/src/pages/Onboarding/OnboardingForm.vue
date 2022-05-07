@@ -62,11 +62,11 @@
             .inputs
               c-field(type="tag" label="Skills" placeholder="Select Skills" :data="formOptions.skills" v-model="form.skills" searchable)
           section
-            .header My Rate
+            .header Your Hourly Rate
             .inputs
-              c-field(label="Enter your hourly rate" type="number" placeholder="Hourly rate" :errors="errors.hourly_rate" v-model="form.hourly_rate")
+              c-field(label="Enter your hourly rate" type="number" :errors="errors.hourly_rate" v-model="form.hourly_rate")
           section
-            .header Whats your experience?
+            .header What's your experience?
             .itro Select one that best matches your level of your expertise.
             .inputs
               c-radio-cards(id="experience" :data="formOptions.experience" :errors="errors.experience" v-model="form.experience")
@@ -75,7 +75,7 @@
             c-dropzone
         template(#step3)
           .plan-header
-            .title Choose your Membership Plan
+            .title Choose Your Membership Plan
             .subtitle Want to skip selecting a plan?
             c-button(title="Continue With Free Plan" type="plan" @click="goToCheckout()")
           c-plans(:type="userType" :plans="plans[userType]" :annually="true" v-model="form.plan" @checkout="goToCheckout()")
