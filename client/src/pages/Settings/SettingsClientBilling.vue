@@ -8,12 +8,12 @@
           c-select.col-3(label="Account Type" placeholder="Select Account Type" :data="accountType" v-model="payoutForm.accountType" required)
           div.col-3
           template(v-if="payoutForm.accountType == 'company'")
-            c-field.col-3(label="Legal Business Name" placeholder="Legal business name" v-model="payoutForm.businesName" required)
+            c-field.col-3(label="Legal Business Name" v-model="payoutForm.businesName" required)
             div.col-3
           template(v-if="payoutForm.accountType == 'individual'")
-            c-field.col-1(label="Legal First Name" placeholder="Legal first name" v-model="payoutForm.firstName" required)
+            c-field.col-1(label="Legal First Name" v-model="payoutForm.firstName" required)
             div.col-1
-            c-field.col-1(label="Legal Business Name" placeholder="Legal last name" v-model="payoutForm.lastName" required)
+            c-field.col-1(label="Legal Business Name" v-model="payoutForm.lastName" required)
             div.col-3
           c-select.col-3(label="Country" placeholder="Select Account Type" :data="selectCountries" v-model="payoutForm.countries" searchable required)
         template(#step2)
@@ -22,17 +22,17 @@
             .intro We will use this to verify your identify
             .inputs.grid-6
               c-field.col-3(label="Date of birth" type="date" v-model="payoutForm.DOB" placeholder="MM/DD/YYYY" required)
-              c-field.col-3(label="Business tax" v-model="payoutForm.businessTax" placeholder="000000000" required)
-              c-field.col-6(label="Business Address" v-model="payoutForm.address" placeholder="Address" required)
-              c-field.col-2(label="City" v-model="payoutForm.city" placeholder="City" required)
-              c-field.col-2(label="State" v-model="payoutForm.state" placeholder="State" required)
-              c-field.col-2(label="Zip" v-model="payoutForm.zip" placeholder="Zip" required)
+              c-field.col-3(label="Business Tax ID" v-model="payoutForm.businessTax" required)
+              c-field.col-6(label="Business Address" v-model="payoutForm.address" required)
+              c-field.col-2(label="City" v-model="payoutForm.city" required)
+              c-field.col-2(label="State" v-model="payoutForm.state" required)
+              c-field.col-2(label="Zip" v-model="payoutForm.zip" required)
         template(#step3)
-          c-field.col-3(label="Routing Number" v-model="payoutForm.routingNumber" placeholder="Routing number" required)
+          c-field.col-3(label="Routing Number" v-model="payoutForm.routingNumber" required)
           br
-          c-field.col-3(label="Account Number" v-model="payoutForm.accountNumber" placeholder="Account number" required)
+          c-field.col-3(label="Account Number" v-model="payoutForm.accountNumber" required)
           br
-          c-field.col-3(label="Confirm Account Number" v-model="payoutForm.confirmAccountNumber" placeholder="Account number" required)
+          c-field.col-3(label="Confirm Account Number" v-model="payoutForm.confirmAccountNumber" required)
         template(#controls)
           c-button(title="Submit" type="primary" @click="submitClientBilling()")
 </template>
