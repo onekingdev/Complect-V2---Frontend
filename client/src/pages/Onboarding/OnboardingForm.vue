@@ -26,11 +26,11 @@
           c-field.sub-col.col-3(label="Phone Number" type="tel" v-model="form.phone_number")
           c-field.sub-col.col-3(label="Company Website" type="url" v-model="form.website")
           .divider
-          c-address.business-col.col-5(label="Business Address" :errors="errors.address" :value="form.address" placeholder="Business Address" @update="updateAddressChange" required)
+          c-address.business-col.col-5(label="Business Address" :errors="errors.address" :value="form.address" @update="updateAddressChange" required)
           c-field.apt-col.col-1(label="Apt/Unit" type="text" v-model="form.apt")
           c-field.city-col.col-2(label="City" type="text" :errors="errors.city" v-model="form.city" required)
           c-field.state-col.col-2(label="State" type="text" :errors="errors.state" v-model="form.state")
-          c-field.zip-col.col-2(label="Zipcode" type="number" :errors="errors.zip" v-model="form.zip" required)
+          c-field.zip-col.col-2(label="Zip Code" type="number" :errors="errors.zip" v-model="form.zip" required)
         template(#step3)
           .plan-header
             .title Choose your plan
