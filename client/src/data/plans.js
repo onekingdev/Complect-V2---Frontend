@@ -34,7 +34,7 @@ const plans = {
       name: [
         'free'
       ],
-      users: ['1 admin user'],
+      users: ['1 free user'],
       benefits: [
         'Compliance Calendar', 'Project Management'
       ]

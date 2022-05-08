@@ -14,23 +14,23 @@
             .intro The CRD number will be used to auto-populate information about your business
             .inputs.grid-6
               c-radios.crd-radio(id="crd" :data="radioOptions" v-model="form.crd")
-              c-field.col-3(id="crdValue" label="What is your CRD number?" placeholder="123456" v-if="form.crd" v-model="form.crdValue" @change="updateFieldsFromCRD()")
+              c-field.col-3(id="crdValue" label="What is your CRD number?" v-if="form.crd" v-model="form.crdValue" @change="updateFieldsFromCRD()")
         template(#step2)
-          c-field(label="Company Name" type="text" placeholder="Company Name" :errors="errors.company" required v-model="form.company")
-          c-field.sub-col.col-3(label="AUM" type="text" placeholder="AUM" v-model="form.aum")
-          c-field.sub-col.col-3(label="Number of Accounts" type="number" placeholder="Number of Accounts" v-model="form.accounts")
+          c-field(label="Company Name" type="text" :errors="errors.company" required v-model="form.company")
+          c-field.sub-col.col-3(label="AUM" type="text" v-model="form.aum")
+          c-field.sub-col.col-3(label="Number of Accounts" type="number" v-model="form.accounts")
           c-select.sub-col.col-3(label="Industry" placeholder="Select Industry" :errors="errors.industryids" :data="industries" v-model="form.industryids" searchable multiple required)
           c-select.sub-col.col-3(label="Sub-Industry" placeholder="Select Sub-Industry" :data="filteredSubIndustries" v-model="form.subIndustryid" searchable multiple)
           c-select.sub-col.col-3(label="Jurisdiction" placeholder="Select Jurisdiction" :errors="errors.jurisdictionids" :data="jurisdictions" v-model="form.jurisdictionids" searchable multiple required)
           c-select.sub-col.col-3(label="Time Zone" placeholder="Select Time Zone" :errors="errors.time_zone" :data="timezones" v-model="form.time_zone" searchable required)
-          c-field.sub-col.col-3(label="Phone Number" type="tel" placeholder="Phone Number" v-model="form.phone_number")
-          c-field.sub-col.col-3(label="Company Website" type="url" placeholder="Company Website" v-model="form.website")
+          c-field.sub-col.col-3(label="Phone Number" type="tel" v-model="form.phone_number")
+          c-field.sub-col.col-3(label="Company Website" type="url" v-model="form.website")
           .divider
-          c-address.business-col.col-5(label="Business Address" :errors="errors.address" :value="form.address" placeholder="Business Address" @update="updateAddressChange" required)
-          c-field.apt-col.col-1(label="Apt/Unit" type="text" placeholder="Apt/Unit" v-model="form.apt")
-          c-field.city-col.col-2(label="City" type="text" placeholder="City" :errors="errors.city" v-model="form.city" required)
-          c-field.state-col.col-2(label="State" type="text" placeholder="State" :errors="errors.state" v-model="form.state")
-          c-field.zip-col.col-2(label="Zip code" type="number" placeholder="Zip code" :errors="errors.zip" v-model="form.zip" required)
+          c-address.business-col.col-5(label="Business Address" :errors="errors.address" :value="form.address" @update="updateAddressChange" required)
+          c-field.apt-col.col-1(label="Apt/Unit" type="text" v-model="form.apt")
+          c-field.city-col.col-2(label="City" type="text" :errors="errors.city" v-model="form.city" required)
+          c-field.state-col.col-2(label="State" type="text" :errors="errors.state" v-model="form.state")
+          c-field.zip-col.col-2(label="Zip Code" type="number" :errors="errors.zip" v-model="form.zip" required)
         template(#step3)
           .plan-header
             .title Choose your plan
@@ -62,12 +62,12 @@
             .inputs
               c-field(type="tag" label="Skills" placeholder="Select Skills" :data="formOptions.skills" v-model="form.skills" searchable)
           section
-            .header My Rate
+            .header Your Hourly Rate
             .inputs
-              c-field(label="Enter your hourly rate" type="number" placeholder="Hourly rate" :errors="errors.hourly_rate" v-model="form.hourly_rate")
+              c-field(label="Hourly Rate" type="number" :errors="errors.hourly_rate" v-model="form.hourly_rate")
           section
-            .header Whats your experience?
-            .itro Select one that best matches your level of your expertise.
+            .header What's your experience?
+            .intro Select one that best matches your level of your expertise.
             .inputs
               c-radio-cards(id="experience" :data="formOptions.experience" :errors="errors.experience" v-model="form.experience")
           section
@@ -75,7 +75,7 @@
             c-dropzone
         template(#step3)
           .plan-header
-            .title Choose your Membership Plan
+            .title Choose Your Membership Plan
             .subtitle Want to skip selecting a plan?
             c-button(title="Continue With Free Plan" type="plan" @click="goToCheckout()")
           c-plans(:type="userType" :plans="plans[userType]" :annually="true" v-model="form.plan" @checkout="goToCheckout()")
@@ -168,15 +168,12 @@ export default {
     const specialistService = new ProfileService()
     const misc = ref({})
     const industries = computed(() => {
-      if (!misc.value.industries) return []
       return misc.value.industries.map(industry => ({ value: industry.id, title: industry.name }))
     })
     const jurisdictions = computed(() => {
-      if (!misc.value.jurisdictions) return []
       return misc.value.jurisdictions.map(jurisdiction => ({ value: jurisdiction.id, title: jurisdiction.name }))
     })
     const timezones = computed(() => {
-      if (!misc.value.timezones) return []
       return misc.value.timezones.map(timezone => ({ value: timezone[0], title: timezone[1] }))
     })
 
