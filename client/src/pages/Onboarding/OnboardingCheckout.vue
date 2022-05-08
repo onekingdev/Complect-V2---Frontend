@@ -126,15 +126,15 @@ import { loadStripe } from '@stripe/stripe-js'
 import { StripeElements, StripeElement } from 'vue-stripe-js'
 import PlaidLink from 'vue-plaid-link2'
 import { onBeforeMount, onMounted, ref, inject } from 'vue'
-// import UseData from "~/store/Data.js";
 import BusinessService from '~/services/business.js'
 import ProfileService from '~/services/profile.js'
-import { addStripePayment } from '~/services/payments.js'
+import { addStripePayment, upgradeSubsciption } from '~/services/payments.js'
 
 import cSwitcher from '~/components/Inputs/cSwitcher.vue'
 import cModal from '~/components/Misc/cModal.vue'
 import { manualApi } from '~/core/api.js'
 import { notifyMessages } from '~/data/notifications.js'
+import { plans } from '~/data/plans.js'
 export default {
   components: { StripeElements, StripeElement, cSwitcher, PlaidLink, cModal },
   setup () {
@@ -143,7 +143,6 @@ export default {
     const userType = isBusiness ? 'business' : 'specialist'
     const { form, resetForm } = useForm('onboarding')
     const { restoreSession } = useAuth()
-    // const plans = new UseData( "plans" );
     const notification = inject('notification')
     const plan = ref({})
     const router = useRouter()
@@ -212,7 +211,16 @@ export default {
           await specialistService.updateDocument(form.value)
         }
 
-        /* we need to add subscription code here */
+        let planName
+        if (form.value.annually) planName = plan.value.name[0]
+        else planName = plan.value.name[1]
+        const upgradeInfo = {
+          upgrade: {
+            plan: planName,
+            seats_count: users.value
+          }
+        }
+        await upgradeSubsciption(upgradeInfo)
 
         await restoreSession()
         await resetForm()
@@ -244,24 +252,7 @@ export default {
       stripePromise.then(() => stripeLoaded.value = true)
     })
     onMounted(() => {
-      // plan.value = plans[userType].find( item => item.key === form.value.plan );
-      // plans.readDocuments();
-      // if ( userType === "business" ) {
-      //   const keywordMethod = form.value.annually ? "yearly" : "monthly";
-      //   const keywordTitle = `${form.value.plan} Plan`;
-      //   const findplan = plans.getDocuments().value.find( indplan => indplan.method === keywordMethod && indplan.title.toLowerCase() === keywordTitle.toLowerCase() );
-      //   plan.value.name = findplan.title;
-      //   plan.value.price = findplan.perPrice;
-      //   plan.value.annually = form.value.annually;
-      //   plan.value.id = findplan.id;
-      // } else {
-      //   const keywordMethod = form.value.annually ? "yearly" : "all";
-      //   const findplan = plans.getDocuments().value.find( indplan => indplan.method === keywordMethod );
-      //   plan.value.name = findplan.title;
-      //   plan.value.price = findplan.perPrice;
-      //   plan.value.annually = form.value.annually;
-      //   plan.value.id = findplan.id;
-      // }
+      plan.value = plans[userType].find(item => item.key === form.value.plan)
     })
 
     return {

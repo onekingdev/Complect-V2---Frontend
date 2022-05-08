@@ -96,8 +96,6 @@ import cDropzone from '~/components/Inputs/cDropzone.vue'
 import cSwitcher from '~/components/Inputs/cSwitcher.vue'
 import cPlans from '~/components/Misc/cPlans.vue'
 
-// import { manualApi } from "~/core/api.js";
-// import UseData from "~/store/Data.js";
 import BusinessService from '~/services/business.js'
 import ProfileService from '~/services/profile.js'
 import { getMisc } from '~/services/tags.js'
@@ -279,21 +277,20 @@ export default {
     const filteredSubIndustries = computed(() => filterSubIndustries(form.value.industryids, userType))
 
     const updateFieldsFromCRD = async () => {
-      const crdValues = businessService.updateDocument({ business: { crd: form.value.crdValue } })
-      if (!crdValues) return
-      crdValues.then(function (crdResult) {
-        form.value.company = crdResult.business_name
-        form.value.website = crdResult.website
-        form.value.aum = crdResult.aum
-        form.value.accounts = crdResult.accounts
-        form.value.tel = crdResult.phone_number
-        form.value.address = crdResult.address
-        form.value.apt = crdResult.apt_unit
-        form.value.city = crdResult.city
-        form.value.state = crdResult.state
-        form.value.zip = crdResult.zipcode
-        form.value.time_zone = crdResult.time_zone
-      })
+      await businessService.updateDocument({ business: { crd: form.value.crdValue } })
+      const crdResult = businessService.getDocument().value
+      if (!crdResult) return
+      form.value.company = crdResult.business_name
+      form.value.website = crdResult.website
+      form.value.aum = crdResult.aum
+      form.value.accounts = crdResult.accounts
+      form.value.tel = crdResult.phone_number
+      form.value.address = crdResult.address
+      form.value.apt = crdResult.apt_unit
+      form.value.city = crdResult.city
+      form.value.state = crdResult.state
+      form.value.zip = crdResult.zipcode
+      form.value.time_zone = crdResult.time_zone
     }
     onMounted(async () => {
       misc.value = await getMisc()
