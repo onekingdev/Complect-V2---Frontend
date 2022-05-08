@@ -179,8 +179,6 @@ export default {
     })
     const timezones = computed(() => {
       if (!misc.value.timezones) return []
-      window.tz = misc.value.timezones
-
       return misc.value.timezones.map(timezone => ({ value: timezone[0], title: timezone[1] }))
     })
 
