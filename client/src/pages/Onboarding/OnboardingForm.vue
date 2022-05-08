@@ -281,7 +281,7 @@ export default {
     const updateFieldsFromCRD = async () => {
       const crdValues = businessService.updateDocument({ business: { crd: form.value.crdValue } })
       if (!crdValues) return
-      crdValues.then(function(crdResult) {
+      crdValues.then(function (crdResult) {
         form.value.company = crdResult.business_name
         form.value.website = crdResult.website
         form.value.aum = crdResult.aum
