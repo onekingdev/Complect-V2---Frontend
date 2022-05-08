@@ -89,8 +89,9 @@ detail-container
 <script>
 import { computed, inject } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import UseData from '~/store/Data.js'
+import ReviewService from '~/services/reviews.js'
 import cDropdown from '~/components/Inputs/cDropdown.vue'
+import { notifyMessages } from '~/data/notifications.js'
 export default {
   components: { cDropdown },
   props: {
@@ -101,11 +102,11 @@ export default {
   },
   emits: ['update:reviewCategory'],
   setup (props) {
-    const reviews = new UseData('reviews')
-    const modal = inject('modal')
-    const notification = inject('notification')
     const router = useRouter()
     const route = useRoute()
+    const reviews = new ReviewService()
+    const modal = inject('modal')
+    const notification = inject('notification')
 
     const category = computed(() => props.reviewCategory)
     const btnTitle = computed(() => category.value.completedAt ? 'Mark as Incomplete' : 'Mark as Complete')
@@ -126,7 +127,7 @@ export default {
       notification({
         type: 'success',
         title: 'Success',
-        message: 'Topic has been deleted.'
+        message: notifyMessages.review.category.topic.delete.success
       })
     }
 
@@ -135,7 +136,7 @@ export default {
       notification({
         type: 'success',
         title: 'Success',
-        message: 'Item has been deleted.'
+        message: notifyMessages.review.category.item.delete.success
       })
     }
 
@@ -144,7 +145,7 @@ export default {
       notification({
         type: 'success',
         title: 'Success',
-        message: 'Finding has been deleted.'
+        message: notifyMessages.review.category.finding.delete.success
       })
     }
 
@@ -152,22 +153,22 @@ export default {
       try {
         const catId = route.params.catId
         reviews.getDocument().value.categories.splice(catId, 1)
-        await reviews.updateDocument(reviews.getDocument().value._id, reviews.getDocument().value)
+        await reviews.updateDocument(reviews.getDocument().value.id, reviews.getDocument().value)
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Category has been deleted.'
+          message: notifyMessages.review.category.delete.success
         })
         router.push({
           name: 'ReviewDetail',
-          params: { id: reviews.getDocument().value._id }
+          params: { id: reviews.getDocument().value.id }
         })
       } catch (error) {
         console.error(error)
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Category has not been deleted. Please try again.'
+          message: notifyMessages.review.category.delete.error
         })
       }
     }
@@ -176,18 +177,18 @@ export default {
       try {
         const catId = route.params.catId
         reviews.getDocument().value.categories[catId] = category.value
-        await reviews.updateDocument(reviews.getDocument().value._id, reviews.getDocument().value)
+        await reviews.updateDocument(reviews.getDocument().value.id, reviews.getDocument().value)
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Category has been updated.'
+          message: notifyMessages.review.category.update.success
         })
       } catch (error) {
         console.error(error)
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Category has not been updated. Please try again.'
+          message: notifyMessages.review.category.update.error
         })
       }
     }
@@ -197,18 +198,18 @@ export default {
       const catId = route.params.catId
       reviews.getDocument().value.categories[catId].completedAt = timestamp
       try {
-        await reviews.updateDocument(reviews.getDocument().value._id, reviews.getDocument().value)
+        await reviews.updateDocument(reviews.getDocument().value.id, reviews.getDocument().value)
         notification({
           type: 'success',
           title: 'Success',
-          message: `Category has been marked as ${timestamp ? 'complete' : 'incomplete'}.`
+          message: timestamp ? notifyMessages.review.category.complete.success : notifyMessages.review.category.incomplete.success
         })
       } catch (error) {
         console.error(error)
         notification({
           type: 'error',
           title: 'Error',
-          message: `Category has not been marked as ${timestamp ? 'complete' : 'incomplete'}. Please try again.`
+          message: timestamp ? notifyMessages.review.category.complete.error : notifyMessages.review.category.incomplete.error
         })
       }
     }

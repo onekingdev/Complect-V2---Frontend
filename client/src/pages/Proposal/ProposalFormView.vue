@@ -121,6 +121,7 @@ import cAvatar from '~/components/Misc/cAvatar.vue'
 import cChat from '~/components/Misc/cChat.vue'
 import cModal from '~/components/Misc/cModal.vue'
 import cDropzone from '~/components/Inputs/cDropzone.vue'
+import { notifyMessages } from '~/data/notifications.js'
 const specialist = ref({
   id: '3234234029384209384',
   firstName: 'Manuel',
@@ -134,7 +135,6 @@ const specialist = ref({
 })
 export default {
   components: { cSelect, cLabel, cBadge, cAvatar, cChat, cModal, cDropzone },
-  // eslint-disable-next-line max-lines-per-function
   setup () {
     const jobs = new UseData('jobs')
     const proposals = new UseData('proposals')
@@ -154,8 +154,8 @@ export default {
       roleDetails: '',
       keyDeliverables: '',
       document: '',
-      owner_id: profile.value._id,
-      job_id: route.params.id
+      ownerid: profile.value.id,
+      jobid: route.params.id
     })
 
     const fieldsOptions = {
@@ -196,29 +196,29 @@ export default {
     const rejectProposal = async () => {
       try {
         form.value.status = 'rejected'
-        await proposals.createDocuments([form.value])
+        await proposals.createDocuments(form.value)
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Proposal has been rejected'
+          message: notifyMessages.proposal.reject.success
         })
         gotoJobBoard()
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Proposal has not been rejected. Please try again.'
+          message: notifyMessages.proposal.reject.error
         })
       }
     }
     const acceptProposal = async () => {
       try {
         form.value.status = 'accepted'
-        await proposals.createDocuments([form.value])
+        await proposals.createDocuments(form.value)
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Proposal has been accepted'
+          message: notifyMessages.proposal.accept.success
         })
         router.push({
           name: 'ProjectContract',
@@ -228,13 +228,13 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Proposal has not been accepted. Please try again.'
+          message: notifyMessages.proposal.accept.error
         })
       }
     }
     onMounted(async () => {
       await jobs.readDocuments(route.params.id)
-      await proposals.readDocuments('', { job_id: route.params.id, owner_id: route.params.specialist_id })
+      await proposals.readDocuments('', { jobid: route.params.id, ownerid: route.params.specialistid })
       if (!proposals.getDocuments().value || proposals.getDocuments().value.length === 0) {
         form.value.startsAt = jobs.getDocument().value.startsAt
         form.value.endsAt = jobs.getDocument().value.endsAt

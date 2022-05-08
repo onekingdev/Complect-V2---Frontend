@@ -23,6 +23,7 @@ import { validates } from '~/core/utils.js'
 import { required, helpers } from '@vuelidate/validators'
 import { requireDate } from '~/core/customValidates.js'
 import { v4 as uuidv4 } from 'uuid'
+import { notifyMessages } from '~/data/notifications.js'
 
 const endsAtGreaterStartAt = (endsAt, siblings) => endsAt >= siblings.startsAt
 
@@ -77,14 +78,14 @@ export default {
       try {
         const examIds = await exams.createDocuments([data])
         closeModal()
-        notification({ type: 'success', title: 'Success', message: 'Exam has been created.' })
+        notification({ type: 'success', title: 'Success', message: notifyMessages.exam.create.success })
 
         router.push({
           name: 'ExamDetail',
           params: { id: examIds[0] }
         })
       } catch (err) {
-        notification({ type: 'error', title: 'Error', message: 'Exam has not been created. Please try again.' })
+        notification({ type: 'error', title: 'Error', message: notifyMessages.exam.create.error })
       }
     }
 
@@ -96,7 +97,7 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Exam has been saved.'
+          message: notifyMessages.exam.save.success
         })
 
         if (props.callBack) props.callBack.handleSuccess(form.value)
@@ -105,7 +106,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Exam has not been saved. Please try again.'
+          message: notifyMessages.exam.save.error
         })
       }
     }

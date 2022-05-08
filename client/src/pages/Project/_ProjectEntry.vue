@@ -4,10 +4,10 @@ page-container(section="Projects" :title="document.name" :owner="linkaccount?.co
     c-checkbox.show-calendar(label="Show on Calendar")
 
   template(#controls)
-    c-button(title="Post Project"  @click="postProject()" v-if="document.creator === profile._id && !document.jobId")
+    c-button(title="Post Project"  @click="postProject()" v-if="document.creator === profile.id && !document.jobId")
     c-button(v-if="!document.completed" title="Mark as Complete" type="primary" @click="toggleCompleteModal()")
-    c-button(v-if="document.completed && document.creator === profile._id" title="Mark as Incomplete" type="primary" @click="toggleIncompleteModal()")
-    c-button(title="Post Project"  @click="postProject()" v-if="document.creator !== profile._id && !document.jobId")
+    c-button(v-if="document.completed && document.creator === profile.id" title="Mark as Incomplete" type="primary" @click="toggleIncompleteModal()")
+    c-button(title="Post Project"  @click="postProject()" v-if="document.creator !== profile.id && !document.jobId")
     c-button(type="icon" iconL="close" size="small" @click="closeProject()")
 
   template(#tabs v-if="!document.jobId")
@@ -17,7 +17,7 @@ page-container(section="Projects" :title="document.name" :owner="linkaccount?.co
   template(#tabs v-if="document.jobId && proposals && proposals.length > 0")
     router-link(v-for="(tab, index) in contractTab" :key="index" :to="{name: tab.routeName}") {{ $locale(tab.title)}}
   template(#navigation-controls)
-    // c-dropdown(title="Actions" v-if="document.creator === profile._id")
+    // c-dropdown(title="Actions" v-if="document.creator === profile.id")
     c-dropdown(title="Actions")
       c-button(title="Edit" type="transparent" @click="toggleEditModal()")
       c-button(title="Delete" type="transparent" @click="toggleDeleteModal()")
@@ -63,12 +63,15 @@ c-modal(title="Remove Project" v-model="isDeleteModalVisible")
 <script>
 import { onMounted, onUnmounted, inject, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import UseData from '~/store/Data.js'
+import ProjectService from '~/services/projects.js'
+import ProposalService from '~/services/proposals.js'
 import cDropdown from '~/components/Inputs/cDropdown.vue'
 import cCheckbox from '~/components/Inputs/cCheckbox.vue'
 import useProfile from '~/store/Profile.js'
+import useBusiness from '~/store/Business.js'
 import { manualApi } from '~/core/api.js'
 import cModal from '~/components/Misc/cModal.vue'
+import { notifyMessages } from '~/data/notifications.js'
 
 const tabs = [
   {
@@ -138,14 +141,14 @@ export default {
     cCheckbox,
     cModal
   },
-  // eslint-disable-next-line
   setup () {
-    const projects = new UseData('projects')
-    const proposals = new UseData('proposals')
-    const notification = inject('notification')
     const route = useRoute()
     const router = useRouter()
+    const projects = new ProjectService()
+    const proposals = new ProposalService(route.params.id)
+    const notification = inject('notification')
     const { profile, linkaccount } = useProfile()
+    const { isBusiness } = useBusiness()
     const isCompleteModalVisible = ref(false)
     const isIncompleteModalVisible = ref(false)
     const isEditModalVisible = ref(false)
@@ -170,13 +173,13 @@ export default {
       projectForm.value.description = projects.getDocument().value.description
     }
     const closeProject = () => {
-      if (profile.value.type === 'specialist') router.push({ name: 'JobsOverview' })
+      if (!isBusiness) router.push({ name: 'JobsOverview' })
       else router.push({ name: 'ProjectsOverview' })
     }
     const updateProject = async updateDocument => {
       try {
         if (updateDocument) projectForm.value = updateDocument
-        await projects.updateDocument(projects.getDocument().value._id, projectForm.value)
+        await projects.updateDocument(projects.getDocument().value.id, projectForm.value)
         notification({
           type: 'success',
           title: 'Success',
@@ -194,27 +197,26 @@ export default {
 
     const markAsComplete = async () => {
       try {
-        await proposals.readDocuments('', { job_id: projects.getDocument().value.jobId })
+        await proposals.readDocuments('', { jobid: projects.getDocument().value.jobId })
         const allContracts = proposals.getDocuments().value
         const hasActive = ref(false)
-        // eslint-disable-next-line max-depth
         for (let i = 0; i < allContracts.length; i++) if (allContracts[i].status !== 'complete') hasActive.value = true
         if (hasActive.value === true) {
           notification({
             type: 'error',
             title: 'Error',
-            message: 'Project has not been marked as complete. There is still an active contract for this project. Please end the contract to mark this project as complete.'
+            message: notifyMessages.project.complete.validate
           })
           isCompleteModalVisible.value = !isCompleteModalVisible.value
         } else {
-          await projects.updateDocument(projects.getDocument().value._id, {
+          await projects.updateDocument(projects.getDocument().value.id, {
             status: 'complete',
             completed: true
           })
           notification({
             type: 'success',
             title: 'Success',
-            message: 'Project has been marked as complete.'
+            message: notifyMessages.project.complete.success
           })
           closeProject()
         }
@@ -222,13 +224,13 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Project has not been marked as complete. Please try again.'
+          message: notifyMessages.project.complete.error
         })
       }
     }
     const markAsIncomplete = () => {
       try {
-        projects.updateDocument(projects.getDocument().value._id, {
+        projects.updateDocument(projects.getDocument().value.id, {
           status: 'in progress',
           completed: false
         })
@@ -236,39 +238,38 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Project has been reactivated.'
+          message: notifyMessages.project.reactive.success
         })
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Project has not been reactivated. Please try again.'
+          message: notifyMessages.project.reactive.error
         })
       }
     }
     const deleteProject = async () => {
-      projects.deleteDocuments(projects.getDocument().value._id)
+      projects.deleteDocuments(projects.getDocument().value.id)
       closeProject()
 
       try {
-        await proposals.readDocuments('', { job_id: projects.getDocument().value.jobId })
+        await proposals.readDocuments('', { jobid: projects.getDocument().value.jobId })
         const allContracts = proposals.getDocuments().value
         const hasActive = ref(false)
-        // eslint-disable-next-line max-depth
         for (let i = 0; i < allContracts.length; i++) if (allContracts[i].status !== 'complete') hasActive.value = false
         if (hasActive.value === true) {
           notification({
             type: 'error',
             title: 'Error',
-            message: 'Project has not been deleted. There is still an active contract for this project. Please end the contract to delete this project.'
+            message: notifyMessages.project.delete.validate
           })
           isDeleteModalVisible.value = !isDeleteModalVisible.value
         } else {
-          projects.deleteDocuments(projects.getDocument().value._id)
+          projects.deleteDocuments(projects.getDocument().value.id)
           notification({
             type: 'success',
             title: 'Success',
-            message: 'Project has been deleted.'
+            message: notifyMessages.project.delete.success
           })
           closeProject()
         }
@@ -276,30 +277,29 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Project has not been deleted. Please try again.'
+          message: notifyMessages.project.delete.error
         })
       }
     }
     const postProject = async () => {
-      const userType = profile.value.type
       const response = await manualApi({
         method: 'get',
-        url: `payment/method/${userType === 'business' ? profile.value.businessId : profile.value.specialistId}`
+        url: `payment/method/${isBusiness ? profile.value.businessId : profile.value.specialistId}`
       })
-      if (response.data && response.data.length > 0) router.push({ name: 'ProjectPostJob', params: { id: projects.getDocument().value._id } })
+      if (response.data && response.data.length > 0) router.push({ name: 'ProjectPostJob', params: { id: projects.getDocument().value.id } })
       else {
         router.push({ name: 'BillingPlan' })
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Job posting cannot be created until a valid payment method is added to your account.'
+          message: notifyMessages.job.post.validatte
         })
       }
     }
 
     onMounted(async () => {
       await projects.readDocuments(route.params.id)
-      proposals.readDocuments('', { job_id: projects.getDocument().value.jobId, status: 'accepted' })
+      proposals.readDocuments('', { jobid: projects.getDocument().value.jobId, status: 'accepted' })
     })
     onUnmounted(() => projects.clearStore())
 
@@ -331,7 +331,7 @@ export default {
   }
 }
 </script>
-<style lang="stylus" scoped>
+<style lang='stylus' scoped>
 .show-calendar
   margin-bottom: 2em
 .delete-container

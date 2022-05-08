@@ -4,10 +4,10 @@ c-table(v-bind="{columns, documents, filters}" :loading="loading")
 
 <script>
 import { onMounted, ref, onUnmounted } from 'vue'
-import UseData from '~/store/Data.js'
+import TaskService from '~/services/tasks.js'
 export default {
   setup () {
-    const tasks = new UseData('tasks')
+    const tasks = new TaskService()
     const loading = ref(true)
     const handleClickEdit = id => console.debug('Edit', id)
     const handleClickDelete = id => tasks.deleteDocuments(id)

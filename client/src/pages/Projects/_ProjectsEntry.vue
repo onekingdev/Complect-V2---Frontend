@@ -22,12 +22,16 @@ import { useRouter } from 'vue-router'
 import UseData from '~/store/Data.js'
 import { manualApi } from '~/core/api.js'
 import useProfile from '~/store/Profile.js'
+import useBusiness from '~/store/Business.js'
+import { notifyMessages } from '~/data/notifications.js'
+
 export default {
   setup () {
     const notification = inject('notification')
     const router = useRouter()
     const projects = new UseData('projects')
     const { profile } = useProfile()
+    const { isBusiness } = useBusiness()
     const tabs = [
       {
         title: 'My Projects',
@@ -42,10 +46,9 @@ export default {
     ]
 
     const postJob = async () => {
-      const userType = profile.value.type
       const response = await manualApi({
         method: 'get',
-        url: `payment/method/${userType === 'business' ? profile.value.businessId : profile.value.specialistId}`
+        url: `payment/method/${isBusiness ? profile.value.businessId : profile.value.specialistId}`
       })
       if (response.data && response.data.length > 0) router.push({ name: 'ProjectPostNew' })
       else {
@@ -53,7 +56,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Job posting cannot be created until a valid payment method is added to your account.'
+          message: notifyMessages.job.post.validate
         })
       }
     }
@@ -71,13 +74,13 @@ export default {
 
     const createProject = async () => {
       try {
-        newProject.value.creator = profile.value._id
+        newProject.value.creator = profile.value.id
         newProject.value.collaborators = profile.value
-        const projectId = await projects.createDocuments([newProject.value])
+        const projectId = await projects.createDocuments(newProject.value)
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Project has been created'
+          message: notifyMessages.project.create.success
         })
         router.push({
           name: 'ProjectDetail',
@@ -87,7 +90,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Project has not been created. Please try again.'
+          message: notifyMessages.project.create.error
         })
       }
     }

@@ -1,21 +1,42 @@
 <template lang="pug">
 card-container(title="Subscription")
   template(#content)
-    div.grid-6.sub-header
-      h4.col-3 Plan
-    div.subscription-content.grid-6(v-if="linkaccount.currentPlan" :class="planClass")
-      div.col-3.plan-type
-        h4 {{ document.title }}
-        p(v-if="userType=='business'") {{ document.seatCount + (linkaccount.seatQty?linkaccount.seatQty:0) }} available users ( {{ document.seatCount }} free users and {{ linkaccount.seatQty?linkaccount.seatQty:0 }} paid users )
-      div.col-2(v-if="userType!='business'")
-      c-button.col-1(title="Cancel Plan" type="link" @click="toggleCancelVisible()")
-      c-button.col-1(v-if="userType=='business'" title="Edit Plan" type="default" @click="togglePlanVisible()")
-      c-button.col-1(v-if="userType=='business'" title="Upgrade" type="primary" @click="gotoPlan()")
-      .border-line
-      div.col-3.plan-type
-        p ${{ document.perPrice }} billed {{ document.method }} to **** **** **** 1111
-      div.col-3.plan-period
-        p Next payment date {{ formatDate(linkaccount.currentPlan.subscriptionEndAt * 1000) }}
+    template(v-if="isBusiness")
+      div.grid-6.sub-header
+        h4.col-3 Plan
+      div.subscription-content.grid-6(v-if="linkaccount.currentPlan" :class="planClass")
+        div.col-3.plan-type
+          h4 {{ document.title }}
+          p {{ currentSeats }} active users
+        c-button.col-1(title="Cancel Plan" type="link" @click="toggleCancelVisible()")
+        c-button.col-1(title="Edit Plan" type="default" @click="togglePlanVisible()")
+        c-button.col-1(title="Upgrade" type="primary" @click="gotoPlan()")
+        .border-line
+        div.col-3.plan-type
+          p ${{ document.perPrice }}/{{ methodType }}, billed {{ document.method }} to Visa **** **** **** 1111
+        div.col-3.plan-period
+          p Next payment date {{ formatDate(linkaccount.currentPlan.subscriptionEndAt * 1000) }}
+    template(v-else)
+      div.grid-6.sub-header(v-if="linkaccount.currentPlan")
+        h4.col-3 Plan
+      div.subscription-content.grid-6(v-if="linkaccount.currentPlan" :class="planClass")
+        div.col-3.plan-type
+          h4 All Access Membership
+        div.col-2
+        c-button.col-1(title="Cancel Plan" type="link" @click="toggleCancelVisible()")
+        .border-line
+        div.col-3.plan-type
+          p ${{ document.perPrice }}/{{ methodType }}, billed {{ document.method }} to Visa **** **** **** 1111
+        div.col-3.plan-period
+          p Next payment date {{ formatDate(linkaccount.currentPlan.subscriptionEndAt * 1000) }}
+      div.free-plan.grid-6(v-else)
+        .free-icon.col-1
+          icon(name="mail" size="huge")
+        .col-3.free-plan-content
+          h4 Get hired for your next big job.
+          p.col-3 Sign up for All Access Membership are unlock the compliance job board, remote client program management
+        c-button.col-1(title="More Information" type="default" @click="gotoMoreInfo()")
+        c-button.col-1(title="Upgrade Now" iconR="chevron-right" type="primary" @click="gotoPlan()")
 c-modal(title="Cancel Plan" v-model="isCancelVisible")
   template(#content)
     .delete-container
@@ -27,25 +48,31 @@ c-modal(title="Cancel Plan" v-model="isCancelVisible")
         p.confirm Do you want to continue?
   template(#footer)
     c-button(title="Confirm" type="primary" @click="cancelPlan()")
-c-modal(title="Edit Plan" v-model="isEditPlanVisible" wide)
+c-modal(title="Edit Seats" v-model="isEditPlanVisible" wide)
   template(#content)
     div.col-4.grid-6
-      p Your organization currently has 2 active users
+      p  You currently have {{ currentSeats }} seats
       c-select.col-3(label="Billing Plan" :data="formOptions.payments" v-model="billingPlan")
-      c-field.col-3(label="Additional Users" v-model="billUsers")
+      c-field.col-3(label="Add Seats" v-model="addSeats")
+      .col-3
+      c-field.col-3.align-right(label="Remove Seats" v-model="removeSeats")
     div.col-2.payment-info
-      p.payment-title USERS
-      p.payment-text ${{ billingPlan }}/month
-      p.payment-title TOTAL
-      p.payment-text(v-if="billingPlan == 15") ${{ billingPlan * billUsers }}/month
-      p.payment-text(v-if="billingPlan == 10") ${{ billingPlan * billUsers * 12 }}/yearly
+      p.payment-title SEATS
+      template(v-if="addSeats > 0")
+        p.payment-text ${{ billingPlan }}/month
+        p.payment-title TOTAL
+        p.payment-text(v-if="billingPlan == 15") ${{ billingPlan * addSeats }}/month
+        p.payment-text(v-if="billingPlan == 10") ${{ billingPlan * addSeats * 12 }}/year
+        p.save(v-if="billingPlan == 10 && addSeats") You saved ${{ 60 * addSeats }}
+      template(v-if="overflowSeat")
+        p You are currently using {{ usedSeats }} out of {{ currentSeats }} of available seats. You may need to disable users in order to remove seats.
     h4 Payment Method
       c-radios(:data="payments" v-model="payInfo")
   template(#footer)
     c-button(title="Save" type="primary" @click="saveUsers()")
 </template>
 <script>
-import { ref, inject, onMounted } from 'vue'
+import { ref, inject, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import UseData from '~/store/Data.js'
 import cSelect from '~/components/Inputs/cSelect.vue'
@@ -55,21 +82,22 @@ import cBadge from '~/components/Misc/cBadge.vue'
 import cSwitcher from '~/components/Inputs/cSwitcher.vue'
 import cPlans from '~/components/Misc/cPlans.vue'
 import useProfile from '~/store/Profile.js'
+import useBusiness from '~/store/Business.js'
 import { manualApi } from '~/core/api.js'
 import { formatDate } from '~/core/utils'
 import useForm from '~/store/Form.js'
-// import { plans } from "~/data/plans.js";
+import cModal from '~/components/Misc/cModal.vue'
+import { notifyMessages } from '~/data/notifications.js'
+
+// import { plans } from '~/data/plans.js'
 export default {
-  components: { cSelect, cLabel, cBadge, cSwitcher, cPlans, cRadios },
-  // eslint-disable-next-line
+  components: { cSelect, cLabel, cBadge, cSwitcher, cPlans, cRadios, cModal },
   setup () {
     const { profile, linkaccount } = useProfile()
+    const { isBusiness } = useBusiness()
     const notification = inject('notification')
     const router = useRouter()
     const planCollection = new UseData('plans')
-    const tokenCreated = token => console.debug(token)
-    const addPayment = () => console.debug('test')
-    const elementRef = ref()
     const subscription = ref({})
     const isCancelVisible = ref(false)
     const isEditPlanVisible = ref(false)
@@ -88,7 +116,7 @@ export default {
         plan: 'starter'
       }
     }
-    const userType = profile.value.type
+    const userType = isBusiness ? 'business' : 'specialist'
     const { form } = useForm('onboarding', baseForm[userType])
     const formOptions = {
       skills: [
@@ -107,8 +135,15 @@ export default {
         }
       ]
     }
-    const billingPlan = ref(0)
-    const billUsers = ref(0)
+    const billingPlan = ref(10)
+    const addSeats = ref(0)
+    const removeSeats = ref(0)
+    const currentSeats = computed(() => {
+      const freeSeats = planCollection.getDocument().value.seatCount || 0
+      const paidSeats = linkaccount.value.seatQty || 0
+      return freeSeats + paidSeats
+    })
+    const usedSeats = ref(7)
     const payInfo = ref()
     const payments = ref([])
     const getSubscription = async businessId => {
@@ -117,12 +152,12 @@ export default {
         url: `payment/subscription/${businessId}`
       })
       subscription.value = subres.data
-      subscription.value = subres.data?.data.filter(sub => sub.id === linkaccount.value.currentPlan?.subId)[0]
+      subscription.value = subres.data.find(sub => sub.id === linkaccount.value.currentPlan?.subId)
     }
     const getPayments = async () => {
       const response = await manualApi({
         method: 'get',
-        url: `payment/method/${userType === 'business' ? profile.value.businessId : profile.value.specialistId}`
+        url: `payment/method/${isBusiness ? profile.value.businessId : profile.value.specialistId}`
       })
       const paymentInfo = []
       for (let i = 0; i < response.data.length; i++) {
@@ -134,28 +169,46 @@ export default {
       payments.value = paymentInfo
     }
     const gotoPlan = () => router.push({ name: 'BillingPlan' })
+    const gotoMoreInfo = () => window.location.href = 'https://www.complect.com/specialists'
     const saveUsers = async () => {
       try {
-        const planId = planCollection.getDocuments().value.find(doc => doc.amount === billingPlan.value)
-        await manualApi({
-          method: 'post',
-          url: `payment/subscription/${userType === 'business' ? profile.value.businessId : profile.value.specialistId}`,
-          data: JSON.stringify({
-            planId: planId._id,
-            cardId: payInfo.value
+        if (addSeats.value > 0) {
+          const planId = planCollection.getDocuments().value.find(doc => doc.amount === billingPlan.value)
+          await manualApi({
+            method: 'post',
+            url: `payment/subscription/${isBusiness ? profile.value.businessId : profile.value.specialistId}`,
+            data: JSON.stringify({
+              planId: planId._id,
+              cardId: payInfo.value
+            })
           })
-        })
-        isEditPlanVisible.value = !isEditPlanVisible.value
-        notification({
-          type: 'success',
-          title: 'Success',
-          message: 'Seats are sucessfully added'
-        })
+          isEditPlanVisible.value = !isEditPlanVisible.value
+          notification({
+            type: 'success',
+            title: 'Success',
+            message: notifyMessages.seat.add.success
+          })
+        } else if ((addSeats.value === 0 || !addSeats.value) && removeSeats.value > 0) {
+          if (currentSeats.value - removeSeats.value < currentSeats.value) {
+            notification({
+              type: 'error',
+              title: 'Error',
+              message: notifyMessages.seat.add.validate
+            })
+          } else {
+            isEditPlanVisible.value = !isEditPlanVisible.value
+            notification({
+              type: 'success',
+              title: 'Success',
+              message: notifyMessages.seat.add.success
+            })
+          }
+        }
       } catch (error) {
         notification({
-          type: 'success',
-          title: 'Success',
-          message: 'Seats has not been added. Please try again.'
+          type: 'error',
+          title: 'Error',
+          message: notifyMessages.seat.add.error
         })
       }
     }
@@ -163,36 +216,34 @@ export default {
       try {
         await manualApi({
           method: 'delete',
-          url: `payment/subscription/${linkaccount.value._id}/${linkaccount.value.currentPlan.subId}`
+          url: `payment/subscription/${linkaccount.value.id}/${linkaccount.value.currentPlan.subId}`
         })
         isCancelVisible.value = !isCancelVisible.value
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Subscription successfully cancelled.'
+          message: notifyMessages.subscription.cancel.success
         })
       } catch (error) {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Subscription has not been cancelled. Please try again.'
+          message: notifyMessages.subscription.cancel.error
         })
       }
     }
+    const overflowSeat = computed(() => (!addSeats.value || addSeats.value === 0) && currentSeats.value - removeSeats.value < usedSeats.value)
+    const methodType = computed(() => document.value.method?.replace('ly', ''))
     onMounted(() => {
-      console.debug(linkaccount.value)
       if (linkaccount.value?.currentPlan?.planId) {
         planCollection.readDocuments(linkaccount.value.currentPlan.planId)
-        getSubscription(linkaccount.value._id)
+        getSubscription(linkaccount.value.id)
       }
       planCollection.readDocuments()
       getPayments()
     })
     return {
       document: planCollection.getDocument(),
-      tokenCreated,
-      addPayment,
-      elementRef,
       subscription,
       formatDate,
       linkaccount,
@@ -200,18 +251,24 @@ export default {
       gotoPlan,
       formOptions,
       form,
+      overflowSeat,
+      methodType,
       // plans,
-      userType,
+      gotoMoreInfo,
       billingPlan,
       payments,
       payInfo,
       saveUsers,
-      billUsers,
+      addSeats,
+      removeSeats,
+      currentSeats,
+      usedSeats,
       togglePlanVisible,
       toggleCancelVisible,
       isCancelVisible,
       isEditPlanVisible,
-      cancelPlan
+      cancelPlan,
+      isBusiness
     }
   }
 }
@@ -221,6 +278,10 @@ export default {
   border: 1px solid var(--c-border)
   border-radius: 5px
   padding: 1.25em
+  .plan-type
+    h4
+      font-size: 18px
+      font-weight: 700
   .icon-content
     display: flex
     align-items: center
@@ -231,6 +292,22 @@ export default {
     text-align: right
   &.plan-show
     display: none
+.free-plan
+  border: 1px solid var(--c-border)
+  border-radius: 5px
+  padding: 1.25em
+  align-item: center
+  .free-icon
+    display: flex
+    align-items: center
+    justify-content: center
+  .free-plan-content
+    h4
+      font-size: 18px
+      font-weight: 700
+  .c-button
+    max-height: 3em
+    top: 1em
 .payment-info
   padding: 0.7em 2em
   border: 1px solid var(--c-border)
@@ -241,6 +318,8 @@ export default {
     color: #aaa
   .payment-text
     margin-bottom: 0.7em
+  .save
+    color: var(--c-green)
 .plan-content.plan-hide
   display: none
 .delete-container

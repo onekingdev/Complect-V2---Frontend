@@ -19,6 +19,7 @@ import { ref, inject, computed, onMounted } from 'vue'
 import UseData from '~/store/Data.js'
 import useModals from '~/store/Modals.js'
 import { onClickOutside } from '@vueuse/core'
+import { notifyMessages } from '~/data/notifications.js'
 
 export default {
   props: {
@@ -59,7 +60,7 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Exam has been completed.'
+          message: notifyMessages.exam.complete.success
         })
 
         if (props.callBack) props.callBack.handleSuccess(form)
@@ -68,7 +69,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Exam has not been completed. Please try again.'
+          message: notifyMessages.exam.complete.error
         })
       }
     }

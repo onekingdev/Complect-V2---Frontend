@@ -26,17 +26,17 @@ c-modal(title="Delete Policy" v-model="isDeleteVisible")
 
 <script>
 import { onMounted, onUnmounted, ref, inject, computed } from 'vue'
-import UseData from '~/store/Data.js'
 import cBanner from '~/components/Misc/cBanner.vue'
 import cModal from '~/components/Misc/cModal.vue'
 import { useRouter } from 'vue-router'
 import useProfile from '~/store/Profile.js'
+import PolicyService from '~/services/policies.js'
+import { notifyMessages } from '~/data/notifications.js'
 
 export default {
   components: { cBanner, cModal },
-  // eslint-disable-next-line max-lines-per-function
   setup () {
-    const policies = new UseData('policies')
+    const policies = new PolicyService()
     const router = useRouter()
     const { profile } = useProfile()
     const notification = inject('notification')
@@ -51,23 +51,6 @@ export default {
     const isdraggable = {
       action: event => {
         console.debug(event)
-        // const { oldIndex, newIndex } = event.moved;
-        // console.log(oldIndex, newIndex);
-        // console.log(allPolicies.value);
-        // if ( oldIndex > newIndex ) {
-        //   for ( let i = newIndex; i < oldIndex; i++ ) {
-        //     const currentOrder = allPolicies.value[i + 1].order;
-        //     console.log(i, allPolicies.value[i]._id);
-        //     policies.updateDocument( allPolicies.value[i]._id, { "order": currentOrder });
-        //   }
-        //   policies.updateDocument( allPolicies.value[oldIndex]._id, { "order": allPolicies.value[newIndex].order });
-        // } else {
-        //   policies.updateDocument( allPolicies.value[oldIndex]._id, { "order": allPolicies.value[newIndex].order });
-        //   for ( let i = oldIndex + 1; i <= newIndex; i++ ) {
-        //     const currentOrder = allPolicies.value[i - 1].order;
-        //     policies.updateDocument( allPolicies.value[i]._id, { "order": currentOrder });
-        //   }
-        // }
       }
     }
     const toggleDeleteModal = id => {
@@ -85,14 +68,14 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Policy has been archived.'
+          message: notifyMessages.policy.archive.success
         })
       } catch (error) {
         console.error(error)
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Policy has not been archived. Please try again.'
+          message: notifyMessages.policy.archive.error
         })
       }
     }
@@ -103,14 +86,14 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Policy has been deleted'
+          message: notifyMessages.policy.delete.success
         })
       } catch (error) {
         console.error(error)
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Policy has not been deleted. Please try again.'
+          message: notifyMessages.policy.delete.error
         })
       }
     }
@@ -154,30 +137,30 @@ export default {
       }
     ]
     // const basicColumns = [
-    //   {
-    //     "title": "Name",
-    //     "key": "name",
-    //     "cell": "CellTitle",
-    //     "unsortable": true
-    //   },
-    //   {
-    //     "title": "Status",
-    //     "key": "status",
-    //     "cell": "CellStatus",
-    //   },
-    //   {
-    //     "title": "Last Modified",
-    //     "key": "modifiedAt",
-    //     "cell": "CellDate",
-    //     "align": "right"
-    //   },
-    //   {
-    //     "title": "Date Created",
-    //     "key": "createdAt",
-    //     "cell": "CellDate",
-    //     "align": "right"
-    //   }
-    // ];
+    //  {
+    //   'title: 'Name',
+    //   'key: 'name',
+    //   'cell: 'CellTitle',
+    //   'unsortable: true
+    //  },
+    //  {
+    //   'title: 'Status',
+    //   'key: 'status',
+    //   'cell: 'CellStatus',
+    //  },
+    //  {
+    //   'title: 'Last Modified',
+    //   'key: 'modifiedAt',
+    //   'cell: 'CellDate',
+    //   'align: 'right'
+    //  },
+    //  {
+    //   'title: 'Date Created',
+    //   'key: 'createdAt',
+    //   'cell: 'CellDate',
+    //   'align: 'right'
+    //  }
+    // ]
 
     onMounted(() => policies.readDocuments())
     onUnmounted(() => policies.clearStore())
@@ -197,7 +180,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang='stylus' scoped>
 .rules-block
   font-size: 0.9em
   margin: 1em 0

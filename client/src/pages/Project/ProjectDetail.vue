@@ -88,6 +88,7 @@ import { formatDate } from '~/core/utils.js'
 import { useRouter } from 'vue-router'
 import useProfile from '~/store/Profile.js'
 import UseData from '~/store/Data.js'
+import { notifyMessages } from '~/data/notifications.js'
 export default {
   components: {
     cBanner,
@@ -106,8 +107,7 @@ export default {
     }
   },
   emits: ['update:projectDetail'],
-  // eslint-disable-next-line
-  setup ( props ) {
+  setup (props) {
     const projects = new UseData('projects')
     const notification = inject('notification')
     const router = useRouter()
@@ -145,20 +145,20 @@ export default {
     }
     const deleteCol = async () => {
       try {
-        const allCollaborator = props.projectDetail.collaborators.filter(collaborator => collaborator._id !== clickedId.value)
-        await projects.updateDocument(props.projectDetail._id, { collaborators: allCollaborator })
+        const allCollaborator = props.projectDetail.collaborators.filter(collaborator => collaborator.id !== clickedId.value)
+        await projects.updateDocument(props.projectDetail.id, { collaborators: allCollaborator })
         props.reloadCollection()
         isRemoveColModalVisible.value = !isRemoveColModalVisible.value
         notification({
           type: 'success',
           title: 'Success',
-          message: 'User has been removed from the project.'
+          message: notifyMessages.project.collaborator.remove.success
         })
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'User has been not removed from the project. Please try again.'
+          message: notifyMessages.project.collaborator.remove.error
         })
       }
     }
@@ -173,7 +173,7 @@ export default {
         },
         createdAt: Date.now()
       })
-      projects.updateDocument(props.projectDetail._id, { comments: commentData })
+      projects.updateDocument(props.projectDetail.id, { comments: commentData })
       newcomment.value = ''
       props.reloadCollection()
     }
@@ -204,7 +204,7 @@ export default {
       for (let i = 0; i < props.projectDetail?.collaborators?.length && i < 5; i++) {
         const userinfo = props.projectDetail?.collaborators[i]
         userinfo.info = userinfo.role
-        if (userinfo._id === props.projectDetail.creator && props.projectDetail.creator) userinfo.info += '& Project Creator'
+        if (userinfo.id === props.projectDetail.creator && props.projectDetail.creator) userinfo.info += '& Project Creator'
         returnValue.push({ user: props.projectDetail?.collaborators[i] })
       }
       return returnValue
@@ -212,7 +212,7 @@ export default {
     const projectStatus = computed(() => props.projectDetail?.status)
     const updateProjectDetail = async () => {
       isEditModalVisible.value = !isEditModalVisible.value
-      await projects.updateDocument(props.projectDetail._id, projectForm.value)
+      await projects.updateDocument(props.projectDetail.id, projectForm.value)
       props.reloadCollection()
     }
     const collaboratorTab = () => router.push({ name: 'ProjectCollaborators' })

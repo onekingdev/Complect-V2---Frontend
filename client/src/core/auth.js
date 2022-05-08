@@ -35,9 +35,7 @@ export default function useAuth () {
   }
 
   const onboarding = async form => {
-    const userId = appState.value.userId
-    const userType = profile.value.type
-    const result = await authServer({ path: 'onboarding', data: { type: userType, _id: userId, form } })
+    const result = await authServer({ path: 'api/profile', data: form })
     if (!result.ok) throw result.message
     updateProfile(form)
     // router.push({ "name": "Dashboard" });

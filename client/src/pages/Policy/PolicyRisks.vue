@@ -38,7 +38,6 @@ c-modal(title="New Risk" v-model="isRiskDeleteVisible")
 
 <script>
 import { onMounted, onUnmounted, computed, ref, inject } from 'vue'
-import UseData from '~/store/Data.js'
 import cBanner from '~/components/Misc/cBanner.vue'
 import cSelect from '~/components/Inputs/cSelect.vue'
 import cLabel from '~/components/Misc/cLabel.vue'
@@ -46,6 +45,8 @@ import cBadge from '~/components/Misc/cBadge.vue'
 import { calcRiskLevel } from '~/core/utils.js'
 import cModal from '~/components/Misc/cModal.vue'
 import useProfile from '~/store/Profile.js'
+import RiskService from '~/services/risks.js'
+import { notifyMessages } from '~/data/notifications.js'
 
 export default {
   components: { cBanner, cSelect, cLabel, cBadge, cModal },
@@ -56,9 +57,8 @@ export default {
     }
   },
   emits: ['update:policyDetails'],
-  // eslint-disable-next-line
-  setup ( props ) {
-    const risks = new UseData('risks')
+  setup (props) {
+    const risks = new RiskService()
     const editRisk = ref({
       name: '',
       impact: 0,
@@ -180,17 +180,17 @@ export default {
       try {
         newRisk.value.riskLevel = newRiskLevel.value
         newRisk.value.controls = {
-          _id: policyDetail.value._id,
+          id: policyDetail.value.id,
           name: policyDetail.value.name,
           status: policyDetail.value.status,
           lastModified: policyDetail.value.lastModified,
           dateCreated: policyDetail.value.dateCreated
         }
-        await risks.createDocuments([newRisk.value])
+        await risks.createDocuments(newRisk.value)
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Risk has been created.'
+          message: notifyMessages.risk.create.success
         })
         toggleNewRisk()
       } catch (error) {
@@ -198,18 +198,18 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Risk has not been deleted. Please try again.'
+          message: notifyMessages.risk.create.error
         })
       }
     }
     const editRiskValue = async () => {
       try {
         newRisk.value.riskLevel = editRiskLevel.value
-        await risks.updateDocuments(newRisk.value._id, [editRisk.value])
+        await risks.updateDocuments(newRisk.value.id, [editRisk.value])
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Risk has been created.'
+          message: notifyMessages.risk.update.success
         })
         isRiskEditVisible.value = !isRiskEditVisible.value
       } catch (error) {
@@ -217,7 +217,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Risk has not been deleted. Please try again.'
+          message: notifyMessages.risk.update.error
         })
       }
     }
@@ -227,14 +227,14 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Risk has been deleted.'
+          message: notifyMessages.risk.delete.success
         })
         isRiskDeleteVisible.value = !isRiskDeleteVisible.value
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Risk has not been deleted. Please try again.'
+          message: notifyMessages.risk.delete.error
         })
       }
     }

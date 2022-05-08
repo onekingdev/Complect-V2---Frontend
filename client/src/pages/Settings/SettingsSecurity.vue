@@ -32,6 +32,7 @@ import useAuth from '~/core/auth.js'
 import { validates } from '~/core/utils.js'
 import { sameAsWith } from '~/core/customValidates.js'
 import { required, email, minLength } from '@vuelidate/validators'
+import { notifyMessages } from '~/data/notifications.js'
 
 export default {
   setup () {
@@ -73,13 +74,13 @@ export default {
 
         notification({
           title: 'Success',
-          message: `${type} has been updated.`
+          message: notifyMessages.profile[type.toLowerCase()].success
         })
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: `${type} has not been updated. Please try again.`
+          message: notifyMessages.profile[type.toLowerCase()].error
         })
         console.error(error)
         errors.value[type.toLowerCase()] = [error]

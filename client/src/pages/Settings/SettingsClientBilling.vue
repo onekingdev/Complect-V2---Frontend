@@ -41,6 +41,7 @@
 import { ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import useProfile from '~/store/Profile.js'
+import useBusiness from '~/store/Business.js'
 import useForm from '~/store/Form.js'
 import cFormWizard from '~/components/FormWizard/cFormWizard.vue'
 import cRadios from '~/components/Inputs/cRadios.vue'
@@ -54,6 +55,7 @@ import UseData from '~/store/Data.js'
 
 import { selectCountries } from '~/data/static.js'
 import { plans } from '~/data/plans.js'
+import { notifyMessages } from '~/data/notifications.js'
 
 export default {
   components: {
@@ -80,7 +82,8 @@ export default {
     }
     const router = useRouter()
     const { profile } = useProfile()
-    const userType = profile.value.type
+    const { isBusiness } = useBusiness()
+    const userType = isBusiness ? 'business' : 'specialist'
     const { form } = useForm('onboarding', baseForm[userType])
     const notification = inject('notification')
 
@@ -108,24 +111,20 @@ export default {
       confirmAccountNumber: ''
     })
 
-    // eslint-disable-next-line max-statements
     const submitClientBilling = async () => {
       try {
         const requestBody = {}
         requestBody.type = 'custom'
         requestBody.country = 'US'
         requestBody.email = profile.value.email
-        // eslint-disable-next-line camelcase
         requestBody.requested_capabilities = { 0: 'transfers' }
         requestBody.settings = { payouts: { debit_negative_balances: 'true' } }
         let accountname
         if (payoutForm.value.accountType === 'company') {
-          // eslint-disable-next-line camelcase
           requestBody.business_type = 'company'
           requestBody.company = { name: payoutForm.value.businesName }
           accountname = payoutForm.value.businesName
         } else {
-          // eslint-disable-next-line camelcase
           requestBody.business_type = 'individual'
           requestBody.individual = {
             first_name: payoutForm.value.firstName,
@@ -133,7 +132,6 @@ export default {
           }
           accountname = `${payoutForm.value.firstName} ${payoutForm.value.lastName}`
         }
-        // eslint-disable-next-line camelcase
         requestBody.external_account = {
           object: 'bank_account',
           country: 'US',
@@ -159,18 +157,18 @@ export default {
           last4: response.data.external_accounts.data[0].last4,
           primary
         })
-        specialist.updateDocument(specialist.getDocument().value._id, { account })
+        specialist.updateDocument(specialist.getDocument().value.id, { account })
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Receiving bank has been added.'
+          message: notifyMessages.bank.add.success
         })
         router.push({ name: 'SettingsBilling' })
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Receiving bank has not been added. Please try again.'
+          message: notifyMessages.bank.add.error
         })
       }
     }

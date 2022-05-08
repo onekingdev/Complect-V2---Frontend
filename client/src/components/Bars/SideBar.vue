@@ -31,14 +31,13 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { appState, collapseSidebar, collapseSidebarSections } from '~/store/appState.js'
 import useNavigation from '~/store/Navigation'
-import useProfile from '~/store/Profile.js'
+import useBusiness from '~/store/Business.js'
 
 export default {
   setup () {
     const { sidebarHomeNavigation, sidebarDocumentsNavigation, sidebarReportsNavigation, sidebarReportsSpecialistNavigation, sidebarSpecialistNavigation } = useNavigation()
-    const { profile } = useProfile()
+    const { isBusiness } = useBusiness()
     const route = useRoute()
-    const userType = profile.value.type
     const queryType = computed(() => route.query.type)
     const renderSidebar = computed(() => {
       if ('sidebar' in route.meta) return route.meta.sidebar // check in sidebar key persist in meta object
@@ -47,13 +46,13 @@ export default {
     const sidebarNavigation = computed(() => {
       switch (route.meta.tab) {
         case 'Documents':
-          if (userType === 'specialist') return sidebarSpecialistNavigation
+          if (!isBusiness) return sidebarSpecialistNavigation
           return sidebarDocumentsNavigation
         case 'Reports':
-          if (userType === 'specialist') return sidebarReportsSpecialistNavigation
+          if (!isBusiness) return sidebarReportsSpecialistNavigation
           return sidebarReportsNavigation
         default:
-          if (userType === 'specialist') return sidebarSpecialistNavigation
+          if (!isBusiness) return sidebarSpecialistNavigation
           return sidebarHomeNavigation
       }
     })

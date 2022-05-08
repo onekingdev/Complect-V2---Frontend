@@ -66,11 +66,13 @@ import cSelect from '~/components/Inputs/cSelect.vue'
 import cDropdown from '~/components/Inputs/cDropdown.vue'
 import cRating from '~/components/Inputs/cRating.vue'
 import UseData from '~/store/Data.js'
+import ProposalService from '~/services/proposals.js'
 import { paymentType } from '~/data/static.js'
 import { formatDate, validates } from '~/core/utils.js'
 import useProfile from '~/store/Profile.js'
 import { required } from '@vuelidate/validators'
 import { useRouter, useRoute } from 'vue-router'
+import { notifyMessages } from '~/data/notifications.js'
 
 const roles = [
   {
@@ -117,8 +119,7 @@ export default {
     }
   },
   emits: ['update:projectDetail'],
-  // eslint-disable-next-line
-  setup ( props ) {
+  setup (props) {
     const isEditRoleModalVisible = ref(false)
     const router = useRouter()
     const route = useRoute()
@@ -133,7 +134,7 @@ export default {
     const userData = ref([])
     const errors = ref([])
     const users = new UseData('users')
-    const proposals = new UseData('proposals')
+    const proposals = new ProposalService(props.projectDetail.jobId)
     const reports = new UseData('reports')
     const notification = inject('notification')
     const validateInfor = computed(() => ({
@@ -182,7 +183,7 @@ export default {
       return Object.keys(errors.value).length === 0
     }
     const toggleEditRoleModal = async () => {
-      await users.readDocuments(proposals.getDocuments().value[0].owner_id)
+      await users.readDocuments(proposals.getDocuments().value[0].ownerid)
       userData.value = users.getDocument().value
       userData.value.rating = 5
       isEditRoleModalVisible.value = !isEditRoleModalVisible.value
@@ -193,25 +194,25 @@ export default {
       reportForm.value.details = ''
     }
     const toggleEndModal = async () => {
-      await users.readDocuments(proposals.getDocuments().value[0].owner_id)
+      await users.readDocuments(proposals.getDocuments().value[0].ownerid)
       userData.value = users.getDocument().value
       userData.value.rating = 5
       isEndModalVisible.value = !isEndModalVisible.value
     }
     const editRole = async () => {
       try {
-        await users.updateDocument(userData.value._id, { role: newRole.value })
+        await users.updateDocument(userData.value.id, { role: newRole.value })
         isEditRoleModalVisible.value = !isEditRoleModalVisible.value
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Role has been updated'
+          message: notifyMessages.project.role.success
         })
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Role has not been updated. Please try again.'
+          message: notifyMessages.project.role.error
         })
       }
     }
@@ -219,41 +220,41 @@ export default {
       try {
         const isValidate = stepValidate('reportIssue')
         if (isValidate) {
-          const reportDetail = { ...reportForm.value, reporter: profile.value._id, receiver: userData.value._id }
-          await reports.createDocuments([reportDetail])
+          const reportDetail = { ...reportForm.value, reporter: profile.value.id, receiver: userData.value.id }
+          await reports.createDocuments(reportDetail)
           isReportModalVisible.value = !isReportModalVisible.value
           notification({
             type: 'success',
             title: 'Success',
-            message: 'Issue has been escalated for review'
+            message: notifyMessages.project.report.success
           })
         }
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Issue has not been escalated for review. Please try again.'
+          message: notifyMessages.project.report.error
         })
       }
     }
     const endContract = async () => {
       try {
-        await proposals.updateDocument(proposals.getDocuments().value[0]._id, { status: 'complete' })
+        await proposals.updateDocument(proposals.getDocuments().value[0].id, { status: 'complete' })
         isEndModalVisible.value = !isEndModalVisible.value
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Contract early completion request has been submitted.'
+          message: notifyMessages.contract.end.success
         })
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Contract early completion request has not been submitted. Please try again.'
+          message: notifyMessages.contract.end.error
         })
       }
     }
-    onMounted(() => proposals.readDocuments('', { job_id: props.projectDetail.jobId, status: 'accepted' }))
+    onMounted(() => proposals.readDocuments('', { jobid: props.projectDetail.jobId, status: 'accepted' }))
     return {
       submitReport,
       endContract,

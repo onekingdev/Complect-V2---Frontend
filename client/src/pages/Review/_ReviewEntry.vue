@@ -36,11 +36,12 @@ c-modal(title="Confirm Unsaved Changes" v-model="isDeleteVisible")
 <script>
 import { onMounted, onUnmounted, inject, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import UseData from '~/store/Data.js'
+import ReviewService from '~/services/reviews.js'
 import cDropdown from '~/components/Inputs/cDropdown.vue'
 import cModal from '~/components/Misc/cModal.vue'
 import cCheckbox from '~/components/Inputs/cCheckbox.vue'
-import { manualApi } from '~/core/api.js'
+import { generatePDF } from '~/services/pdf.js'
+import { notifyMessages } from '~/data/notifications.js'
 export default {
   components: {
     cDropdown,
@@ -48,7 +49,7 @@ export default {
     cModal
   },
   setup () {
-    const reviews = new UseData('reviews')
+    const reviews = new ReviewService()
     const route = useRoute()
     const notification = inject('notification')
     const router = useRouter()
@@ -68,7 +69,7 @@ export default {
       }
     ]
 
-    const editReview = () => modal({ name: 'cModalReview', id: reviews.getDocument().value._id })
+    const editReview = () => modal({ name: 'cModalReview', id: reviews.getDocument().value.id })
 
     const deleteReiew = async () => {
       try {
@@ -76,7 +77,7 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Internal review has been deleted.'
+          message: notifyMessages.review.delete.success
         })
         router.push({ name: 'ReviewsOverview' })
       } catch (error) {
@@ -84,7 +85,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Internal review has not been deleted. Please try again.'
+          message: notifyMessages.review.delete.error
         })
       }
     }
@@ -106,34 +107,30 @@ export default {
         flag = flag && category.completedAt
       })
       if (flag) {
-        const reviewId = reviews.getDocument().value._id
+        const reviewId = reviews.getDocument().value.id
         const pdfData = {
           collection: 'reviews',
           template: 'internalReport',
-          _id: reviewId
+          id: reviewId
         }
-        const pdfLink = await manualApi({
-          method: 'POST',
-          url: 'pdf',
-          data: JSON.stringify(pdfData)
-        })
+        const pdfLink = await generatePDF(pdfData)
         window.location.href = pdfLink
       } else {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Internal Review report cannot be generated until all categories have been marked as complete.'
+          message: notifyMessages.review.create.validate
         })
       }
     }
 
     const saveAndExit = async () => {
       try {
-        await reviews.updateDocument(reviews.getDocument().value._id, reviews.getDocument().value)
+        await reviews.updateDocument(reviews.getDocument().value.id, reviews.getDocument().value)
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Internal review has been saved.'
+          message: notifyMessages.review.save.success
         })
         router.push({ name: 'ReviewsOverview' })
       } catch (error) {
@@ -141,7 +138,7 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Internal review has not been saved. Please try again.'
+          message: notifyMessages.review.save.error
         })
       }
     }

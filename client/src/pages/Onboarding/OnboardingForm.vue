@@ -3,7 +3,7 @@
   card-container(title="Set Up Your Account")
     template(#content)
       //- Business
-      c-form-wizard(v-if="userType === 'business'" :steps="wizardSteps.business")
+      c-form-wizard(v-if="isBusiness" :steps="wizardSteps.business")
         template(#step1)
           section
             .header.crd-header Do you have a CRD number?
@@ -14,14 +14,14 @@
             .intro The CRD number will be used to auto-populate information about your business
             .inputs.grid-6
               c-radios.crd-radio(id="crd" :data="radioOptions" v-model="form.crd")
-              c-field.col-3(id="crdValue" label="What is your CRD number?" placeholder="123456" v-if="form.crd" v-model="form.crdValue")
+              c-field.col-3(id="crdValue" label="What is your CRD number?" placeholder="123456" v-if="form.crd" v-model="form.crdValue" @change="updateFieldsFromCRD()")
         template(#step2)
           c-field(label="Company Name" type="text" placeholder="Company Name" :errors="errors.company" required v-model="form.company")
           c-field.sub-col.col-3(label="AUM" type="text" placeholder="AUM" v-model="form.aum")
           c-field.sub-col.col-3(label="Number of Accounts" type="number" placeholder="Number of Accounts" v-model="form.accounts")
-          c-select.sub-col.col-3(label="Industry" placeholder="Select Industry" :errors="errors.industry_ids" :data="industries" v-model="form.industry_ids" searchable multiple required)
-          c-select.sub-col.col-3(label="Sub-Industry" placeholder="Select Sub-Industry" :data="filteredSubIndustries" v-model="form.subIndustry_id" searchable multiple)
-          c-select.sub-col.col-3(label="Jurisdiction" placeholder="Select Jurisdiction" :errors="errors.jurisdiction_ids" :data="jurisdictions" v-model="form.jurisdiction_ids" searchable multiple required)
+          c-select.sub-col.col-3(label="Industry" placeholder="Select Industry" :errors="errors.industryids" :data="industries" v-model="form.industryids" searchable multiple required)
+          c-select.sub-col.col-3(label="Sub-Industry" placeholder="Select Sub-Industry" :data="filteredSubIndustries" v-model="form.subIndustryid" searchable multiple)
+          c-select.sub-col.col-3(label="Jurisdiction" placeholder="Select Jurisdiction" :errors="errors.jurisdictionids" :data="jurisdictions" v-model="form.jurisdictionids" searchable multiple required)
           c-select.sub-col.col-3(label="Time Zone" placeholder="Select Time Zone" :errors="errors.time_zone" :data="timezones" v-model="form.time_zone" searchable required)
           c-field.sub-col.col-3(label="Phone Number" type="tel" placeholder="Phone Number" v-model="form.phone_number")
           c-field.sub-col.col-3(label="Company Website" type="url" placeholder="Company Website" v-model="form.website")
@@ -44,13 +44,13 @@
             .header What jurisdiction does your expertise extend to?
             .intro Providing your jurisdiction(s) will help find clients within your domain of expertise. Select all that apply.
             .inputs.grid-6
-              c-select.col-3(label="Jurisdiction" placeholder="Select Jurisdiction" :errors="errors.jurisdiction_ids" :data="jurisdictions" v-model="form.jurisdiction_ids" searchable multiple required)
+              c-select.col-3(label="Jurisdiction" placeholder="Select Jurisdiction" :errors="errors.jurisdictionids" :data="jurisdictions" v-model="form.jurisdictionids" searchable multiple required)
               c-select.col-3(label="Time Zone" placeholder="Select Time Zone" :errors="errors.time_zone" :data="timezones" v-model="form.time_zone" searchable required)
           section
             .header What industries do you serve?
             .inputs.grid-6
-              c-select.col-3(label="Industry" placeholder="Select Industry" :errors="errors.industry_ids" :data="industries" v-model="form.industry_ids" searchable multiple required)
-              c-select.col-3(label="Sub-Industry" placeholder="Select Sub-Industry" :data="filteredSubIndustries" v-model="form.subIndustry_id" searchable multiple)
+              c-select.col-3(label="Industry" placeholder="Select Industry" :errors="errors.industryids" :data="industries" v-model="form.industryids" searchable multiple required)
+              c-select.col-3(label="Sub-Industry" placeholder="Select Sub-Industry" :data="filteredSubIndustries" v-model="form.subIndustryid" searchable multiple)
           section
             .header Are you a former regulator?
             .inputs
@@ -60,7 +60,7 @@
             .header Tell us more about yourself:
             .intro Enter any relevant skills to better match you with suitable projects.
             .inputs
-              c-select(label="Skills" placeholder="Select Skills" :data="formOptions.skills" v-model="form.skills" searchable multiple)
+              c-field(type="tag" label="Skills" placeholder="Select Skills" :data="formOptions.skills" v-model="form.skills" searchable)
           section
             .header My Rate
             .inputs
@@ -82,9 +82,8 @@
 </template>
 
 <script>
-/* eslint-disable no-unused-vars */
 
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import useProfile from '~/store/Profile.js'
 import useBusiness from '~/store/Business.js'
@@ -101,11 +100,12 @@ import cPlans from '~/components/Misc/cPlans.vue'
 // import UseData from "~/store/Data.js";
 import BusinessService from '~/services/business.js'
 import ProfileService from '~/services/profile.js'
+import { getMisc } from '~/services/tags.js'
 
 import useAuth from '~/core/auth.js'
 import cAddress from '~/components/Inputs/cAddress.vue'
 
-import { industries, jurisdictions, timezones } from '~/data/static.js'
+// import { industries, jurisdictions, timezones } from '~/data/static.js'
 import { plans } from '~/data/plans.js'
 
 import { filterSubIndustries, validates } from '~/core/utils.js'
@@ -118,7 +118,7 @@ const radioOptions = [
 
 const formOptions = {
   skills: [
-    { title: 'HTML', value: 'html' }, { title: 'CSS', value: 'css' }, { title: 'Javascript', value: 'js' }
+    'HTML', 'CSS', 'Javascript', 'Python', 'Django', 'Flask', 'PHP', 'Vue.js', 'Angular'
   ],
   experience: [
     { value: 0, title: 'Junior', description: 'Beginner consultant with some industry experience.' }, { value: 1, title: 'Intermediate', description: 'Good experience and solid knowledge of the industry.' }, { value: 2, title: 'Expert', description: 'Deep understanding of industry with varied experience.' }
@@ -158,29 +158,44 @@ export default {
     cSwitcher,
     cPlans
   },
-  // eslint-disable-next-line max-lines-per-function
   setup () {
     const router = useRouter()
     const { profile } = useProfile()
-    const { business, isBusiness } = useBusiness()
+    const { isBusiness } = useBusiness()
     const userType = isBusiness ? 'business' : 'specialist'
     const { form, resetForm } = useForm('onboarding', baseForm[userType])
     const errors = ref({})
-    const { onboarding, restoreSession } = useAuth()
-    // const potentials = new UseData( "potential_businesses" );
+    const { restoreSession } = useAuth()
+    const businessService = new BusinessService()
+    const specialistService = new ProfileService()
+    const misc = ref({})
+    const industries = computed(() => {
+      if (!misc.value.industries) return []
+      return misc.value.industries.map(industry => ({ value: industry.id, title: industry.name }))
+    })
+    const jurisdictions = computed(() => {
+      if (!misc.value.jurisdictions) return []
+      return misc.value.jurisdictions.map(jurisdiction => ({ value: jurisdiction.id, title: jurisdiction.name }))
+    })
+    const timezones = computed(() => {
+      if (!misc.value.timezones) return []
+      window.tz = misc.value.timezones
+
+      return misc.value.timezones.map(timezone => ({ value: timezone[0], title: timezone[1] }))
+    })
 
     const validateInfor = computed(() => ({
       specialist: {
         1: {
           rules: {
-            jurisdiction_ids: { required: requireForArray },
-            industry_ids: { required: requireForArray },
+            jurisdictionids: { required: requireForArray },
+            industryids: { required: requireForArray },
             time_zone: { required: requireForArray }
           },
           data: {
-            jurisdiction_ids: form.value.jurisdiction_ids,
+            jurisdictionids: form.value.jurisdictionids,
             time_zone: form.value.time_zone,
-            industry_ids: form.value.industry_ids
+            industryids: form.value.industryids
           }
         },
         2: {
@@ -198,8 +213,8 @@ export default {
         2: {
           rules: {
             company: { required },
-            industry_ids: { required: requireForArray },
-            jurisdiction_ids: { required: requireForArray },
+            industryids: { required: requireForArray },
+            jurisdictionids: { required: requireForArray },
             time_zone: { required: requireForArray },
             address: { required },
             city: { required },
@@ -207,8 +222,8 @@ export default {
           },
           data: {
             company: form.value.company,
-            industry_ids: form.value.industry_ids,
-            jurisdiction_ids: form.value.jurisdiction_ids,
+            industryids: form.value.industryids,
+            jurisdictionids: form.value.jurisdictionids,
             time_zone: form.value.time_zone,
             address: form.value.address,
             city: form.value.city,
@@ -235,28 +250,19 @@ export default {
 
     const goToCheckout = async () => {
       try {
-        if (userType === 'business' && form.value.plan === 'starter') {
-          const businessService = new BusinessService()
-          const ids = await businessService.updateDocument([form.value])
-          // eslint-disable-next-line require-atomic-updates
-          // form.value.businessId = ids[0];
-          // await onboarding( form.value );
+        if (isBusiness && form.value.plan === 'starter') {
+          await businessService.updateDocument(form.value)
           await restoreSession()
           await resetForm()
           router.push({ name: 'Dashboard' })
-        } else if (userType === 'specialist' && form.value.plan === 'standard') {
-          const specialistService = new ProfileService()
-          const ids = await specialistService.updateDocument(form.value)
-          // eslint-disable-next-line require-atomic-updates
-          // form.value.specialistId = ids[0];
-          // await onboarding( form.value );
+        } else if (!isBusiness && form.value.plan === 'standard') {
+          await specialistService.updateDocument(form.value)
           await restoreSession()
           await resetForm()
           router.push({ name: 'Dashboard' })
         } else {
           form.value.email = profile.value.email
-          // eslint-disable-next-line max-depth
-          if (userType === 'specialist') form.value.company = `${profile.value.firstName} ${profile.value.lastName}`
+          if (!isBusiness) form.value.company = `${profile.value.firstName} ${profile.value.lastName}`
           router.push({ name: 'OnboardingCheckout' })
         }
       } catch (error) {
@@ -272,44 +278,33 @@ export default {
       if (zip) form.value.zip = zip
     }
 
-    const filteredSubIndustries = computed(() => filterSubIndustries(form.value.industry_ids, userType))
+    const filteredSubIndustries = computed(() => filterSubIndustries(form.value.industryids, userType))
 
-    const resetValues = () => {
-      form.value.company = ''
-      form.value.website = ''
-      form.value.aum = ''
-      form.value.accounts = ''
-      form.value.phone_number = ''
-      form.value.address = ''
-      form.value.apt = ''
-      form.value.city = ''
-      form.value.state = ''
-      form.value.zip = ''
+    const updateFieldsFromCRD = async () => {
+      const crdValues = businessService.updateDocument({ business: { crd: form.value.crdValue } })
+      if (!crdValues) return
+      crdValues.then(function(crdResult) {
+        form.value.company = crdResult.business_name
+        form.value.website = crdResult.website
+        form.value.aum = crdResult.aum
+        form.value.accounts = crdResult.accounts
+        form.value.tel = crdResult.phone_number
+        form.value.address = crdResult.address
+        form.value.apt = crdResult.apt_unit
+        form.value.city = crdResult.city
+        form.value.state = crdResult.state
+        form.value.zip = crdResult.zipcode
+        form.value.time_zone = crdResult.time_zone
+      })
     }
-
-    // onMounted( () => potentials.readDocuments() );
-    // onUnmounted( () => potentials.clearStore() );
-
-    // watch( () => form.value.crdValue, () => {
-    //   if ( !form.value.crdValue ) return;
-    //   const crdValues = potentials.getDocuments().value.find( doc => doc.crd_number === form.value.crdValue );
-    //   resetValues();
-    //   if ( !crdValues ) return;
-    //   form.value.company = crdValues.business_name;
-    //   form.value.website = crdValues.website;
-    //   form.value.aum = crdValues.aum;
-    //   form.value.accounts = crdValues.client_account_cnt;
-    //   form.value.tel = crdValues.contact_phone;
-    //   form.value.address = crdValues.address_1;
-    //   form.value.apt = crdValues.apartment;
-    //   form.value.city = crdValues.city;
-    //   form.value.state = crdValues.state;
-    //   form.value.zip = crdValues.zipcode;
-    // }, { "deep": true });
+    onMounted(async () => {
+      misc.value = await getMisc()
+    })
 
     return {
       errors,
       userType,
+      isBusiness,
       radioOptions,
       wizardSteps,
       form,
@@ -320,7 +315,8 @@ export default {
       timezones,
       plans,
       goToCheckout,
-      updateAddressChange
+      updateAddressChange,
+      updateFieldsFromCRD
     }
   }
 }

@@ -8,8 +8,8 @@ menu-container(:type="menuType")
       template(#footer)
         c-button(title="Create" type="primary" @click="createPolicy()")
     draggable.policies-list(:list="documents")
-      p.ind-policy(v-for="(indDoc, index) in documents" :key="indDoc._id")
-        router-link(:to=" {name: 'PolicyDetail', params: { id: indDoc._id } } ") {{indDoc.name}}
+      p.ind-policy(v-for="(indDoc, index) in documents" :key="indDoc.id")
+        router-link(:to=" {name: 'PolicyDetail', params: { id: indDoc.id } } ") {{indDoc.name}}
   template(#content)
     page-container(:badge="{title: policyDetails.status }" :title="policyDetails.name" type="document full-width" :hasHamberger="hasHamberger")
       template(#controls)
@@ -96,11 +96,12 @@ c-modal(title="Unarchive Policy" v-model="isUnarchiveVisible")
 import VerticalTabs from '~/components/Containers/VerticalTabs.vue'
 import { onMounted, onUnmounted, inject, computed, watch, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import UseData from '~/store/Data.js'
 import useProfile from '~/store/Profile.js'
 import cDropdown from '~/components/Inputs/cDropdown.vue'
-import { manualApi } from '~/core/api.js'
 import cModal from '~/components/Misc/cModal.vue'
+import PolicyService from '~/services/policies.js'
+import { generatePDF } from '~/services/pdf.js'
+import { notifyMessages } from '~/data/notifications.js'
 export default {
   components: { VerticalTabs, cDropdown, cModal },
   props: {
@@ -117,11 +118,10 @@ export default {
       default: ''
     }
   },
-  // eslint-disable-next-line
   setup () {
     const route = useRoute()
     const router = useRouter()
-    const policies = new UseData('policies')
+    const policies = new PolicyService()
     const { profile } = useProfile()
     const notification = inject('notification')
     const menuType = ref('')
@@ -165,13 +165,13 @@ export default {
     const toggleUnarchivePolicy = () => isUnarchiveVisible.value = !isPublishVisible.value
 
     const closePolicy = () => {
-      const originValue = policies.getDocuments().value.filter(document => document._id === policyDetails.value._id)[0]
+      const originValue = policies.getDocuments().value.filter(document => document.id === policyDetails.value.id)[0]
       if (originValue.name !== policies.getDocument().value.name || originValue.description !== policies.getDocument().value.description) isUnsavedVisible.value = !isUnsavedVisible.value
       else toPoliciePage()
     }
     const publishPolicy = async () => {
       try {
-        const policyId = policies.getDocument().value._id
+        const policyId = policies.getDocument().value.id
         let history
         history = policyDetails.value.history
         policyDetails.value.status = 'published'
@@ -187,73 +187,73 @@ export default {
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Policy has been published.'
+          message: notifyMessages.policy.publish.success
         })
         togglePublishPolicy()
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Policy has not been published. Please try again.'
+          message: notifyMessages.policy.publish.error
         })
       }
     }
     const archivePolicy = async () => {
       try {
-        const policyId = policies.getDocument().value._id
+        const policyId = policies.getDocument().value.id
         await policies.updateDocument(policyId, { status: 'archived', tasks: [] })
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Policy has been archived.'
+          message: notifyMessages.policy.archive.success
         })
         toPoliciePage()
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Policy has not been archived. Please try again.'
+          message: notifyMessages.policy.archive.error
         })
       }
     }
     const unarchivePolicy = async () => {
       try {
-        const policyId = policies.getDocument().value._id
+        const policyId = policies.getDocument().value.id
         await policies.updateDocument(policyId, { status: 'published' })
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Policy has been unarchived and republished.'
+          message: notifyMessages.policy.unarchive.success
         })
         toPoliciePage()
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Policy has not been unarchived and republished. Please try again.'
+          message: notifyMessages.policy.unarchive.error
         })
       }
     }
     const deletePolicy = async () => {
-      const policyId = policies.getDocument().value._id
+      const policyId = policies.getDocument().value.id
       await policies.deleteDocuments(policyId)
       toPoliciePage()
     }
     const saveDraft = async () => {
       try {
-        const policyId = policies.getDocument().value._id
+        const policyId = policies.getDocument().value.id
         policyDetails.value.status = 'draft'
         await policies.updateDocument(policyId, { status: 'draft', name: policyDetails.value.name, description: policyDetails.value.description })
         notification({
           type: 'success',
           title: 'Success',
-          message: 'Policy has been saved.'
+          message: notifyMessages.policy.save.success
         })
       } catch (error) {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Policy has not been saved. Please try again.'
+          message: notifyMessages.policy.save.error
         })
       }
     }
@@ -269,11 +269,11 @@ export default {
     const createPolicy = async () => {
       try {
         newPolicy.value.order = policies.getDocuments().value.length
-        const policyId = await policies.createDocuments([newPolicy.value])
+        const policyId = await policies.createDocuments(newPolicy.value)
         notification({
           type: 'success',
           title: 'Success',
-          message: 'New policy has been created.'
+          message: notifyMessages.policy.create.success
         })
         router.push({
           name: 'PolicyDetail',
@@ -285,22 +285,18 @@ export default {
         notification({
           type: 'error',
           title: 'Error',
-          message: 'Policy has not been created. Please try again.'
+          message: notifyMessages.policy.save.error
         })
       }
     }
     const exportPDF = async () => {
-      const policyId = policies.getDocument().value._id
+      const policyId = policies.getDocument().value.id
       const pdfData = {
         collection: 'policies',
         template: 'manualTemplate',
-        _id: policyId
+        id: policyId
       }
-      const pdfLink = await manualApi({
-        method: 'post',
-        endpoint: '/pdf',
-        data: JSON.stringify(pdfData)
-      })
+      const pdfLink = await generatePDF(pdfData)
       window.location.href = pdfLink.data
     }
 

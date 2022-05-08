@@ -18,6 +18,7 @@ export default class BusinessService {
   async updateDocument (data) {
     const doc = await manualApi({ method: 'PATCH', url: 'business', data })
     this.document.value = doc
+    return doc
   }
 
   clearStore () {
