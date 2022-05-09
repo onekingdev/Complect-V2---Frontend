@@ -63,9 +63,9 @@ export default {
 
     const approveTransaction = () => {
       try {
-				// eslint-disable-next-line
+        // eslint-disable-next-line
         props.transaction.isApproved = true
-				// eslint-disable-next-line
+        // eslint-disable-next-line
         props.transaction.controls = [{ name: '' }]
         notification({
           type: 'success',
@@ -87,9 +87,9 @@ export default {
 
     const denyTransaction = () => {
       try {
-				// eslint-disable-next-line
+        // eslint-disable-next-line
         props.transaction.isApproved = false
-				// eslint-disable-next-line
+        // eslint-disable-next-line
         props.transaction.controls = []
         notification({
           type: 'success',
