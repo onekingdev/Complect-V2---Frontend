@@ -20,7 +20,7 @@
               c-button(v-if="!column.unsortable" type="icon" iconR="sort" @click="sortDocuments(column.key)")
       tbody(v-if="filteredDocuments.length")
         template(v-for="document in filteredDocuments" :key="document._id")
-          tr
+          tr(:class="{'border-none': document.controls?.length && document.showSub}")
             td(v-for="(column, index) in columns" :key="index")
               //- temp suspense solution
               Suspense
@@ -30,13 +30,14 @@
                   :key="column.key"
                   :meta="column.meta"
                   :id="document._id"
+                  :document="document"
                   :controlLength="document.controls?.length"
                   :data="document[column.key]"
                   :showSub="document.showSub"
                   :hideShow="() => document.showSub = !document.showSub")
           template(v-if="document.showSub")
             tr(v-for="control in document.controls" :key="control._id")
-              td(v-for="(column, index) in controlColumns" :key="index" :class="{'expandable-title': column.cell === 'CellTitle'}")
+              td(v-for="(column, index) in controlColumns" :key="index" :class="{'expandable-title': column.cell === 'CellTitle'}" :colspan='column.meta.colspan')
                 //- temp suspense solution
                 Suspense
                   component.cell(
@@ -52,7 +53,7 @@
 </template>
 
 <script>
-import { ref, computed, defineAsyncComponent } from 'vue'
+import { ref, computed, onMounted, defineAsyncComponent } from 'vue'
 import { sortArrayByKey } from '~/core/utils.js'
 export default {
   components: { cDropdown: defineAsyncComponent(() => import('~/components/Inputs/cDropdown.vue')) },
@@ -127,6 +128,10 @@ export default {
       sortArrayByKey(props.documents, key, sortAsc.value[key])
     }
 
+    onMounted(() => {
+      for (const filter of props.filters) activateFilter(filter.title, filter.field, filter.keys[0])
+    })
+
     return {
       getTableCell,
       sortDocuments,
@@ -159,7 +164,7 @@ export default {
       gap: 1em
 
 .c-dropdown-table table
-  font-size: 0.85em
+  font-size: 0.875em
   width: 100%
   tr
     border-bottom: 1px solid var(--c-border)
@@ -168,6 +173,8 @@ export default {
       white-space: nowrap
     .expandable-title
       padding-left: 50px
+    &.border-none
+      border-bottom: 0
   .cell
     display: flex
     justify-content: flex-start

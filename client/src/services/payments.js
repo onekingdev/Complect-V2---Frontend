@@ -8,9 +8,5 @@ const addStripePayment = async data => {
   const docs = await manualApi({ method: 'POST', url: 'payment_methods', data })
   return docs
 }
-const upgradeSubsciption = async data => {
-  const docs = await manualApi({ method: 'POST', url: 'upgrades', data })
-  return docs
-}
 
-export { getStripePayments, addStripePayment, upgradeSubsciption }
+export { getStripePayments, addStripePayment }
