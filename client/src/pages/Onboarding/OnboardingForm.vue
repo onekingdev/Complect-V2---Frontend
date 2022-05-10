@@ -83,7 +83,7 @@
 
 <script>
 
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import useProfile from '~/store/Profile.js'
 import useBusiness from '~/store/Business.js'
@@ -96,9 +96,11 @@ import cDropzone from '~/components/Inputs/cDropzone.vue'
 import cSwitcher from '~/components/Inputs/cSwitcher.vue'
 import cPlans from '~/components/Misc/cPlans.vue'
 
+// import { manualApi } from "~/core/api.js";
+// import UseData from "~/store/Data.js";
 import BusinessService from '~/services/business.js'
 import ProfileService from '~/services/profile.js'
-import { getMisc, getSkills } from '~/services/tags.js'
+import { getMisc } from '~/services/tags.js'
 
 import useAuth from '~/core/auth.js'
 import cAddress from '~/components/Inputs/cAddress.vue'
@@ -106,7 +108,7 @@ import cAddress from '~/components/Inputs/cAddress.vue'
 // import { industries, jurisdictions, timezones } from '~/data/static.js'
 import { plans } from '~/data/plans.js'
 
-import { validates } from '~/core/utils.js'
+import { filterSubIndustries, validates } from '~/core/utils.js'
 import { required, requiredUnless } from '@vuelidate/validators'
 import { requireForArray, numberGreaterThanZero } from '~/core/customValidates.js'
 
@@ -167,15 +169,13 @@ export default {
     const businessService = new BusinessService()
     const specialistService = new ProfileService()
     const misc = ref({})
-    const skills = ref({})
     const industries = computed(() => {
       if (!misc.value.industries) return []
-      const parentIndustries = misc.value.industries.filter(industry => !industry.parent_id)
-      return parentIndustries.map(industry => ({ value: industry.id, title: industry.name }))
+      return misc.value.industries.map(industry => ({ value: industry[0], title: industry[1] }))
     })
     const jurisdictions = computed(() => {
       if (!misc.value.jurisdictions) return []
-      return misc.value.jurisdictions.map(jurisdiction => ({ value: jurisdiction.id, title: jurisdiction.name }))
+      return misc.value.jurisdictions.map(jurisdiction => ({ value: jurisdiction[0], title: jurisdiction[1] }))
     })
     const timezones = computed(() => {
       if (!misc.value.timezones) return []
@@ -276,43 +276,25 @@ export default {
       if (zip) form.value.zip = zip
     }
 
-    const filteredSubIndustries = computed(() => {
-      if (!misc.value.industries) return []
-      if (!form.value.industryids) return []
-      const childIndustries = misc.value.industries.filter(industry => form.value.industryids.indexOf(industry.parent_id) > -1)
-      return childIndustries.map(industry => ({ value: industry.id, title: industry.name }))
-    })
+    const filteredSubIndustries = computed(() => filterSubIndustries(form.value.industryids, userType))
 
     const updateFieldsFromCRD = async () => {
-      await businessService.updateDocument({ business: { crd: form.value.crdValue } })
-      const crdResult = businessService.getDocument().value
-      if (!crdResult) return
-      form.value.company = crdResult.business_name
-      form.value.website = crdResult.website
-      form.value.aum = crdResult.aum
-      form.value.accounts = crdResult.accounts
-      form.value.tel = crdResult.phone_number
-      form.value.address = crdResult.address
-      form.value.apt = crdResult.apt_unit
-      form.value.city = crdResult.city
-      form.value.state = crdResult.state
-      form.value.zip = crdResult.zipcode
-      form.value.time_zone = crdResult.time_zone
+      const crdValues = businessService.updateDocument({ business: { crd: form.value.crdValue } })
+      if (!crdValues) return
+      form.value.company = crdValues.business_name
+      form.value.website = crdValues.website
+      form.value.aum = crdValues.aum
+      form.value.accounts = crdValues.accounts
+      form.value.tel = crdValues.phone_number
+      form.value.address = crdValues.address
+      form.value.apt = crdValues.apt_unit
+      form.value.city = crdValues.city
+      form.value.state = crdValues.state
+      form.value.zip = crdValues.zipcode
+      form.value.time_zone = crdValues.time_zone
     }
-    watch(() => form.value.industryids, () => {
-      if (!form.value.subIndustryid) return
-      form.value.subIndustryid = form.value.subIndustryid.filter(subId => {
-        if (!misc.value.industries) return false
-        const subIndustry = misc.value.industries.find(industry => industry.id === subId)
-        if (!subIndustry) return false
-        if (!form.value.industryids) return false
-        if (form.value.industryids.indexOf(subIndustry.parent_id) === -1) return false
-        return true
-      })
-    })
     onMounted(async () => {
       misc.value = await getMisc()
-      skills.value = await getSkills()
     })
 
     return {
