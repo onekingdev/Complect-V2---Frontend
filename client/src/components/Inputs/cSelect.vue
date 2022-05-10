@@ -56,7 +56,7 @@ export default {
     required: Boolean,
     searchable: Boolean
   },
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'update:data'],
   setup (props, context) {
     const selectComponent = ref(null)
     const dropdownList = ref(null)
@@ -128,6 +128,10 @@ export default {
     watch(selectedItems, selected => {
       selectedObjects.value = valuesToObjects(selected)
       context.emit('update:modelValue', selected)
+    })
+
+    watch(() => props.data, () => {
+      selectedObjects.value = valuesToObjects(props.modelValue)
     })
 
     watch(() => props.modelValue, newValue => {

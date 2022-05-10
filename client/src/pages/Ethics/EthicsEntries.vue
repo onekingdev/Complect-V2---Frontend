@@ -13,7 +13,7 @@ import { ethicsData } from '~/data/data.js'
 export default {
   setup () {
     const route = useRoute()
-    const titles = { trade: 'Personal Trade Monitoring', attestation: 'Attestation', logs: 'Logs', approval: 'Pre-Approval' }
+    const titles = { attestation: 'Attestation', logs: 'Logs', approval: 'Pre-Approval' }
     const title = computed(() => titles[route.query.type])
     const columns = [
       {

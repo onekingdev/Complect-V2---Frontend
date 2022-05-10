@@ -17,7 +17,7 @@
               c-field.col-3(id="crdValue" label="What is your CRD number?" v-if="form.crd" v-model="form.crdValue" @change="updateFieldsFromCRD()")
         template(#step2)
           c-field(label="Company Name" type="text" :errors="errors.company" required v-model="form.company")
-          c-field.sub-col.col-3(label="AUM" type="number" v-model="form.aum")
+          c-field.sub-col.col-3(label="AUM" type="text" v-model="form.aum")
           c-field.sub-col.col-3(label="Number of Accounts" type="number" v-model="form.accounts")
           c-select.sub-col.col-3(label="Industry" placeholder="Select Industry" :errors="errors.industryids" :data="industries" v-model="form.industryids" searchable multiple required)
           c-select.sub-col.col-3(label="Sub-Industry" placeholder="Select Sub-Industry" :data="filteredSubIndustries" v-model="form.subIndustryid" searchable multiple)
@@ -83,7 +83,7 @@
 
 <script>
 
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import useProfile from '~/store/Profile.js'
 import useBusiness from '~/store/Business.js'
@@ -98,7 +98,7 @@ import cPlans from '~/components/Misc/cPlans.vue'
 
 import BusinessService from '~/services/business.js'
 import ProfileService from '~/services/profile.js'
-import { getMisc } from '~/services/tags.js'
+import { getMisc, getSkills } from '~/services/tags.js'
 
 import useAuth from '~/core/auth.js'
 import cAddress from '~/components/Inputs/cAddress.vue'
@@ -106,7 +106,7 @@ import cAddress from '~/components/Inputs/cAddress.vue'
 // import { industries, jurisdictions, timezones } from '~/data/static.js'
 import { plans } from '~/data/plans.js'
 
-import { filterSubIndustries, validates } from '~/core/utils.js'
+import { validates } from '~/core/utils.js'
 import { required, requiredUnless } from '@vuelidate/validators'
 import { requireForArray, numberGreaterThanZero } from '~/core/customValidates.js'
 
@@ -167,13 +167,18 @@ export default {
     const businessService = new BusinessService()
     const specialistService = new ProfileService()
     const misc = ref({})
+    const skills = ref({})
     const industries = computed(() => {
-      return misc.value.industries.map(industry => ({ value: industry.id, title: industry.name }))
+      if (!misc.value.industries) return []
+      const parentIndustries = misc.value.industries.filter(industry => !industry.parent_id)
+      return parentIndustries.map(industry => ({ value: industry.id, title: industry.name }))
     })
     const jurisdictions = computed(() => {
+      if (!misc.value.jurisdictions) return []
       return misc.value.jurisdictions.map(jurisdiction => ({ value: jurisdiction.id, title: jurisdiction.name }))
     })
     const timezones = computed(() => {
+      if (!misc.value.timezones) return []
       return misc.value.timezones.map(timezone => ({ value: timezone[0], title: timezone[1] }))
     })
 
@@ -271,7 +276,11 @@ export default {
       if (zip) form.value.zip = zip
     }
 
-    const filteredSubIndustries = computed(() => filterSubIndustries(form.value.industryids, userType))
+    const filteredSubIndustries = computed(() => {
+      if (!misc.value.industries) return []
+      const childIndustries = misc.value.industries.filter(industry => form.value.industryids.indexOf(industry.parent_id) > -1)
+      return childIndustries.map(industry => ({ value: industry.id, title: industry.name }))
+    })
 
     const updateFieldsFromCRD = async () => {
       await businessService.updateDocument({ business: { crd: form.value.crdValue } })
@@ -289,8 +298,18 @@ export default {
       form.value.zip = crdResult.zipcode
       form.value.time_zone = crdResult.time_zone
     }
+    watch(() => form.value.industryids, () => {
+      form.value.subIndustryid = form.value.subIndustryid.filter(subId => {
+        if (!misc.value.industries) return true
+        const subIndustry = misc.value.industries.find(industry => industry.id === subId)
+        if (!subIndustry) return false
+        if (form.value.industryids.indexOf(subIndustry.parent_id) === -1) return false
+        return true
+      })
+    })
     onMounted(async () => {
       misc.value = await getMisc()
+      skills.value = await getSkills()
     })
 
     return {
@@ -343,7 +362,7 @@ section
       position: relative
       .tooltip
         visibility: hidden
-        width: 13em
+        width: 17em
         background: var(--c-tooltip-bgColor)
         text-align: center
         padding: 0.34em 0.68em
