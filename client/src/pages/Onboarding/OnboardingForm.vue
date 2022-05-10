@@ -17,7 +17,7 @@
               c-field.col-3(id="crdValue" label="What is your CRD number?" v-if="form.crd" v-model="form.crdValue" @change="updateFieldsFromCRD()")
         template(#step2)
           c-field(label="Company Name" type="text" :errors="errors.company" required v-model="form.company")
-          c-field.sub-col.col-3(label="AUM" type="text" v-model="form.aum")
+          c-field.sub-col.col-3(label="AUM" type="number" v-model="form.aum")
           c-field.sub-col.col-3(label="Number of Accounts" type="number" v-model="form.accounts")
           c-select.sub-col.col-3(label="Industry" placeholder="Select Industry" :errors="errors.industryids" :data="industries" v-model="form.industryids" searchable multiple required)
           c-select.sub-col.col-3(label="Sub-Industry" placeholder="Select Sub-Industry" :data="filteredSubIndustries" v-model="form.subIndustryid" searchable multiple)
@@ -343,7 +343,7 @@ section
       position: relative
       .tooltip
         visibility: hidden
-        width: 17em
+        width: 13em
         background: var(--c-tooltip-bgColor)
         text-align: center
         padding: 0.34em 0.68em

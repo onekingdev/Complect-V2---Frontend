@@ -29,7 +29,7 @@ const plans = {
     {
       key: 'starter',
       title: 'Starter',
-      intro: 'Try out our product for free!',
+      intro: 'Try out our base product for free!',
       price: [0],
       name: [
         'free'
@@ -49,7 +49,7 @@ const plans = {
         'team_tier_annual', 'team_tier_monthly'
       ],
       users: [
-        '3 free users plus $120/year per person', '3 free users plus $15/mo per person'
+        '3 free users plus $120/year per user', '3 free users plus $15/mo per user'
       ],
       freeUsers: 3,
       benefits: [
@@ -71,7 +71,7 @@ const plans = {
         'business_tier_annual', 'business_tier_monthly'
       ],
       users: [
-        '10 free users plus $120/year per person', '10 free users plus $15/mo per person'
+        '10 free users plus $120/year per user', '10 free users plus $15/mo per user'
       ],
       freeUsers: 10,
       benefits: [
