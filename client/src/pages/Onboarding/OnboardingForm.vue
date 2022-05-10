@@ -300,6 +300,7 @@ export default {
       form.value.time_zone = crdResult.time_zone
     }
     watch(() => form.value.industryids, () => {
+      if (!form.value.subIndustryid) return
       form.value.subIndustryid = form.value.subIndustryid.filter(subId => {
         if (!misc.value.industries) return false
         const subIndustry = misc.value.industries.find(industry => industry.id === subId)
