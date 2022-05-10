@@ -109,6 +109,7 @@ export default {
     const valuesToObjects = selected => {
       if (props.multiple) {
         const objects = []
+        if (!selected || selected.length === 0) return objects
         selected.forEach(value => {
           const index = props.data.findIndex(item => item.value === value)
           objects.push(props.data[index])
