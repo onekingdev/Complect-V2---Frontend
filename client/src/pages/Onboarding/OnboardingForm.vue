@@ -171,11 +171,11 @@ export default {
     const misc = ref({})
     const industries = computed(() => {
       if (!misc.value.industries) return []
-      return misc.value.industries.map(industry => ({ value: industry[0], title: industry[1] }))
+      return misc.value.industries.map(industry => ({ value: industry.id, title: industry.name }))
     })
     const jurisdictions = computed(() => {
       if (!misc.value.jurisdictions) return []
-      return misc.value.jurisdictions.map(jurisdiction => ({ value: jurisdiction[0], title: jurisdiction[1] }))
+      return misc.value.jurisdictions.map(jurisdiction => ({ value: jurisdiction.id, title: jurisdiction.name }))
     })
     const timezones = computed(() => {
       if (!misc.value.timezones) return []
@@ -281,17 +281,19 @@ export default {
     const updateFieldsFromCRD = async () => {
       const crdValues = businessService.updateDocument({ business: { crd: form.value.crdValue } })
       if (!crdValues) return
-      form.value.company = crdValues.business_name
-      form.value.website = crdValues.website
-      form.value.aum = crdValues.aum
-      form.value.accounts = crdValues.accounts
-      form.value.tel = crdValues.phone_number
-      form.value.address = crdValues.address
-      form.value.apt = crdValues.apt_unit
-      form.value.city = crdValues.city
-      form.value.state = crdValues.state
-      form.value.zip = crdValues.zipcode
-      form.value.time_zone = crdValues.time_zone
+      crdValues.then(function (crdResult) {
+        form.value.company = crdResult.business_name
+        form.value.website = crdResult.website
+        form.value.aum = crdResult.aum
+        form.value.accounts = crdResult.accounts
+        form.value.tel = crdResult.phone_number
+        form.value.address = crdResult.address
+        form.value.apt = crdResult.apt_unit
+        form.value.city = crdResult.city
+        form.value.state = crdResult.state
+        form.value.zip = crdResult.zipcode
+        form.value.time_zone = crdResult.time_zone
+      })
     }
     onMounted(async () => {
       misc.value = await getMisc()
