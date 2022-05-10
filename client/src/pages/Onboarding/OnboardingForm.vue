@@ -96,6 +96,8 @@ import cDropzone from '~/components/Inputs/cDropzone.vue'
 import cSwitcher from '~/components/Inputs/cSwitcher.vue'
 import cPlans from '~/components/Misc/cPlans.vue'
 
+// import { manualApi } from "~/core/api.js";
+// import UseData from "~/store/Data.js";
 import BusinessService from '~/services/business.js'
 import ProfileService from '~/services/profile.js'
 import { getMisc } from '~/services/tags.js'
@@ -168,12 +170,15 @@ export default {
     const specialistService = new ProfileService()
     const misc = ref({})
     const industries = computed(() => {
-      return misc.value.industries.map(industry => ({ value: industry.id, title: industry.name }))
+      if (!misc.value.industries) return []
+      return misc.value.industries.map(industry => ({ value: industry[0], title: industry[1] }))
     })
     const jurisdictions = computed(() => {
-      return misc.value.jurisdictions.map(jurisdiction => ({ value: jurisdiction.id, title: jurisdiction.name }))
+      if (!misc.value.jurisdictions) return []
+      return misc.value.jurisdictions.map(jurisdiction => ({ value: jurisdiction[0], title: jurisdiction[1] }))
     })
     const timezones = computed(() => {
+      if (!misc.value.timezones) return []
       return misc.value.timezones.map(timezone => ({ value: timezone[0], title: timezone[1] }))
     })
 
@@ -274,20 +279,19 @@ export default {
     const filteredSubIndustries = computed(() => filterSubIndustries(form.value.industryids, userType))
 
     const updateFieldsFromCRD = async () => {
-      await businessService.updateDocument({ business: { crd: form.value.crdValue } })
-      const crdResult = businessService.getDocument().value
-      if (!crdResult) return
-      form.value.company = crdResult.business_name
-      form.value.website = crdResult.website
-      form.value.aum = crdResult.aum
-      form.value.accounts = crdResult.accounts
-      form.value.tel = crdResult.phone_number
-      form.value.address = crdResult.address
-      form.value.apt = crdResult.apt_unit
-      form.value.city = crdResult.city
-      form.value.state = crdResult.state
-      form.value.zip = crdResult.zipcode
-      form.value.time_zone = crdResult.time_zone
+      const crdValues = businessService.updateDocument({ business: { crd: form.value.crdValue } })
+      if (!crdValues) return
+      form.value.company = crdValues.business_name
+      form.value.website = crdValues.website
+      form.value.aum = crdValues.aum
+      form.value.accounts = crdValues.accounts
+      form.value.tel = crdValues.phone_number
+      form.value.address = crdValues.address
+      form.value.apt = crdValues.apt_unit
+      form.value.city = crdValues.city
+      form.value.state = crdValues.state
+      form.value.zip = crdValues.zipcode
+      form.value.time_zone = crdValues.time_zone
     }
     onMounted(async () => {
       misc.value = await getMisc()
