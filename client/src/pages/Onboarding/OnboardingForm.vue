@@ -278,6 +278,7 @@ export default {
 
     const filteredSubIndustries = computed(() => {
       if (!misc.value.industries) return []
+      if (!form.value.industryids) return []
       const childIndustries = misc.value.industries.filter(industry => form.value.industryids.indexOf(industry.parent_id) > -1)
       return childIndustries.map(industry => ({ value: industry.id, title: industry.name }))
     })
@@ -300,9 +301,10 @@ export default {
     }
     watch(() => form.value.industryids, () => {
       form.value.subIndustryid = form.value.subIndustryid.filter(subId => {
-        if (!misc.value.industries) return true
+        if (!misc.value.industries) return false
         const subIndustry = misc.value.industries.find(industry => industry.id === subId)
         if (!subIndustry) return false
+        if (!form.value.industryids) return false
         if (form.value.industryids.indexOf(subIndustry.parent_id) === -1) return false
         return true
       })
