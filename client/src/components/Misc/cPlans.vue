@@ -1,13 +1,17 @@
 <template lang="pug">
 .c-plans
+  div {{ currentPlan }}
   .plan-card.card-style(v-for="(plan, index) in plans" :key="index" :class="[plan.key]")
-
-    template(v-if="currentPlan == plan.price[0] || currentPlan == plan.price[1]")
-      c-button(title="Current Plan" type="primary")
-    template(v-else-if="currentPlan < plan.price[0] || currentPlan < plan.price[1]")
-      c-button(title="Upgrade Plan" type="plan" @click="selectPlan(plan.key, true)")
+    div {{ currentPlan }}
+    template(v-if="currentPlan")
+      template(v-if="currentPlan == plan.price[0] || currentPlan == plan.price[1]")
+        c-button(title="Current Plan" type="primary")
+      template(v-else-if="currentPlan < plan.price[0] || currentPlan < plan.price[1]")
+        c-button(title="Upgrade Plan" type="plan" @click="selectPlan(plan.key, true)")
+      template(v-else)
+        c-button(title="Downgrade Plan" type="plan" @click="selectPlan(plan.key)")
     template(v-else)
-      c-button(title="Downgrade Plan" type="plan" @click="selectPlan(plan.key)")
+      c-button(title="Select Plan" type="plan" @click="selectPlan(plan.key)")
 
     .header
       .title {{plan.title}}
@@ -57,7 +61,7 @@ export default {
       type: [
         String, Number
       ],
-      default: '0'
+      default: ''
     }
   },
   emits: [
@@ -89,6 +93,8 @@ export default {
     min-width: 18em
     max-width: 24em
     padding: 2em 2em 4em
+    .c-button
+      box-shadow: 0 0 0 1px var(--c-border)
     .title
       font-size: 1.3em
       font-weight: bold

@@ -56,7 +56,7 @@ export default {
     margin-bottom: 0.2em
     color: #666
   .c-switcher-items
-    font-size: 0.9em
+    font-size: 1em
     line-height: 1
     display: flex
     overflow: hidden

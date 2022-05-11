@@ -190,7 +190,7 @@ export default {
             title: 'Success',
             message: notifyMessages.payment.add.success
           })
-          isAddButtonVisible.value = false
+          isAddButtonVisible.value = true
         } catch (error) {
           notification({
             type: 'error',
@@ -221,14 +221,9 @@ export default {
     const onBoard = async () => {
       try {
         if (isBusiness) {
-          form.value.industry_ids = form.value.industry_ids.concat(form.value.jurisdiction_ids)
-          delete form.value.jurisdiction_ids
           const businessService = new BusinessService()
           await businessService.updateDocument(form.value)
         } else {
-          form.value.industry_ids = form.value.industry_ids.concat(form.value.jurisdiction_ids)
-          delete form.value.jurisdiction_ids
-          delete form.value.company
           const specialistService = new ProfileService()
           await specialistService.updateDocument(form.value)
         }

@@ -34,7 +34,8 @@ export default {
     Time: defineAsyncComponent(() => import('./Types/TypeTime.vue')),
     Url: defineAsyncComponent(() => import('./Types/TypeUrl.vue')),
     Address: defineAsyncComponent(() => import('./Types/TypeAddress.vue')),
-    Tag: defineAsyncComponent(() => import('./Types/TypeTag.vue'))
+    Tag: defineAsyncComponent(() => import('./Types/TypeTag.vue')),
+    Currency: defineAsyncComponent(() => import('./Types/TypeCurrency.vue'))
   },
   props: {
     type: {
