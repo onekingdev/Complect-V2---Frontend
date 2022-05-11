@@ -22,7 +22,7 @@ card-container
       c-button(title="Sign Up" type="primary" @click="signUpUser()" fullwidth)
     template(v-if="step === 3")
       h1 Confirm Your Email
-      h3.text-center We sent a 6 digit code to {{form.email}}. Please enter it below.
+      h3 We sent a 6 digit code to {{form.email}}. Please enter it below.
       icon(name="mail")
       .confirmation-code(@keypress.enter="submitCode(form.email, form.password, otp)")
         input(v-for="i in 6" :key="i" type="number" @paste="onPaste" @paste.prevent :ref="el => { if (el) inputs[i-1] = el }" v-model="numbers[i-1]" @keyup="event => keyupHandler(event, i)" @input="event => inputHandler(event, i)" required)
@@ -35,7 +35,7 @@ card-container
 </template>
 
 <script>
-import { ref, inject } from 'vue'
+import { ref } from 'vue'
 import useAuth from '~/core/auth'
 import useSignInOtp from '~/core/signInOtp'
 import useForm from '~/store/Form.js'
@@ -43,14 +43,12 @@ import cRadioCards from '~/components/Inputs/cRadioCards.vue'
 import { validates } from '~/core/utils.js'
 import { required, maxLength, email as emailValidator, minLength } from '@vuelidate/validators'
 import { sameAsWith } from '~/core/customValidates.js'
-import { notifyMessages } from '~/data/notifications.js'
 
 export default {
   components: { cRadioCards },
   setup () {
     // steps 1, 2
     const { registration, authentication } = useAuth()
-    const notification = inject('notification')
     const { form } = useForm('registration')
     const accountTypes = [
       {
@@ -100,16 +98,11 @@ export default {
     }
 
     const sendNewCode = async () => {
-      try {
-        await authentication({
-          email: form.value.email,
-          password: form.value.password,
-          otp_attempt: ''
-        })
-      } catch (error) {
-        if (error === 'Missing OTP') notification({ type: 'success', title: 'Success', message: notifyMessages.profile.otp.success })
-        else if (error !== 'Missing OTP') notification({ type: 'error', title: 'Error', message: notifyMessages.profile.otp.error })
-      }
+      await authentication({
+        email: form.value.email,
+        password: form.value.password,
+        otp_attempt: ''
+      })
     }
 
     // step 3
@@ -151,8 +144,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.text-center
-  text-align: center
 .account-types
   margin: 1em 0
 .terms

@@ -113,8 +113,6 @@ export default function useAuth () {
 
   const signOut = async () => {
     localStorage.removeItem('auth_token')
-    sessionStorage.removeItem('onboarding')
-    sessionStorage.removeItem('registration')
     setUserIdState('')
     await router.push({ name: 'AuthSignIn' })
     profile.value = {}

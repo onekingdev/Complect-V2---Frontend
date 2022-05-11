@@ -12,7 +12,7 @@
       c-button.notification-icon(iconL="bell" type="transparent" @click="gotoNotification()" :class="{active: isNewNotification}")
   .user-block(v-if="profile" @click="toggleUserDropDown()" ref="userDropDown" :class="{expanded: userDropDownExpanded}")
     c-avatar(:avatar="profile.avatar" :firstName="profile.first_name" :lastName="profile.last_name" size="small")
-    .name {{profile.first_name}} {{profile.last_name}}
+    .name {{profile.firstName}} {{profile.lastName}}
     icon(name="chevron-down")
     .dropdown-menu(v-if="userDropDownExpanded")
       router-link(v-if="!simpleTopBar" :to="{name: 'ProfileAbout'}") {{$locale("Profile")}}
@@ -216,7 +216,6 @@ export default {
         padding: 0.5em 1em
         box-shadow: none
         transition: background var(--fx-duration-regular, .25s)
-        text-align: left
         &:hover
           background: var(--c-bg-light-hover, #f3f6f9)
         &.router-link-exact-active
