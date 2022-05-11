@@ -2,7 +2,7 @@
 input(v-if="!value.length" type="text" :placeholder="placeholder" readonly)
 .selected-items(v-else)
   .item(v-for="item in value")
-    .title {{item.title}}
+    .title(v-if="item") {{item.title}}
     //- icon(name="close" @click="removeSelected(item.value)") // need to fix
 </template>
 
@@ -18,16 +18,15 @@ export default {
       default: ''
     }
   }
-  // need to finish removeSelected
-  // "emits": ["updateValue"],
-  // setup ( props, context ) {
-  //   const removeSelected = ( value ) => {
-  //     const selected = [...props.value];
-  //     const index = selected.findIndex( item => item.value === value );
-  //     selected.splice( index, 1 );
-  //     context.emit( "updateValue", selected );
-  //   };
-  //   return { removeSelected };
+  // emits: ['updateValue'],
+  // setup (props, context) {
+  //   const removeSelected = (value) => {
+  //     const selected = [...props.value]
+  //     const index = selected.findIndex(item => item.value === value)
+  //     selected.splice(index, 1)
+  //     context.emit('updateValue', selected)
+  //   }
+  //   return { removeSelected }
   // }
 }
 </script>
