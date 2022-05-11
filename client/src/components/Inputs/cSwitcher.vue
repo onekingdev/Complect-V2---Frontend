@@ -80,7 +80,7 @@ export default {
       justify-content: center
       background: #fff
       color: #1b1c29
-      padding: 0.5em 0.7em
+      padding: 0.7em 1.25em
       svg.icon
         width: 1em
         height: 1em
