@@ -190,7 +190,7 @@ export default {
             title: 'Success',
             message: notifyMessages.payment.add.success
           })
-          isAddButtonVisible.value = true
+          isAddButtonVisible.value = false
         } catch (error) {
           notification({
             type: 'error',
@@ -220,12 +220,18 @@ export default {
     }
     const onBoard = async () => {
       try {
+        const newForm = form.value
         if (isBusiness) {
+          newForm.industry_ids = newForm.industry_ids.concat(newForm.subIndustry_id)
+          delete newForm.subIndustry_id
           const businessService = new BusinessService()
-          await businessService.updateDocument(form.value)
+          await businessService.updateDocument(newForm)
         } else {
+          newForm.industry_ids = newForm.industry_ids.concat(newForm.subIndustry_id)
+          delete newForm.subIndustry_id
+          delete newForm.company
           const specialistService = new ProfileService()
-          await specialistService.updateDocument(form.value)
+          await specialistService.updateDocument(newForm)
         }
 
         let planName

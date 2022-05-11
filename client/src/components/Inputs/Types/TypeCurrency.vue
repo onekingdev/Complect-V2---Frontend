@@ -17,7 +17,7 @@ export default {
   emits: ['updateValue'],
   setup (props, context) {
     const newValue = ref(props.value)
-    const updateModelValue = () => context.emit('updateValue', parseInt(newValue, 10))
+    const updateModelValue = () => context.emit('updateValue', parseInt(newValue.value, 10))
     return { updateModelValue, newValue }
   }
 }

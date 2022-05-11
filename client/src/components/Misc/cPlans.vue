@@ -11,7 +11,7 @@
       template(v-else)
         c-button(title="Downgrade Plan" type="plan" @click="selectPlan(plan.key)")
     template(v-else)
-      c-button(title="Select Plan" type="plan" @click="selectPlan(plan.key)")
+      c-button(title="Select Plan" type="plan" @click="selectPlan(plan.key, true)")
 
     .header
       .title {{plan.title}}
