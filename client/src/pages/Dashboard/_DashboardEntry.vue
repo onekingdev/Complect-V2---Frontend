@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { onMounted, onUnmounted, ref } from 'vue'
+import { ref } from 'vue'
 // import UseData from '~/store/Data.js'
 import cCalendar from '~/components/Calendar/cCalendar.vue'
 import CollapseContainer from '~/components/Containers/CollapseContainer.vue'
@@ -48,28 +48,28 @@ export default {
         title: 'Due date',
         key: 'ends_on',
         cell: 'CellDate',
-				align: 'right'
+        align: 'right'
       }
     ]
 
     const documents = ref([
       {
-        name: "Task 1",
+        name: 'Task 1',
         ends_on: 1647000337214
       },
       {
-        name: "Task 2",
+        name: 'Task 2',
         ends_on: 1647000337214
       }
     ])
 
-		const projectDocuments = ref([
+    const projectDocuments = ref([
       {
-        name: "Projects 1",
+        name: 'Projects 1',
         ends_on: 1647000337214
       },
       {
-        name: "Projects 2",
+        name: 'Projects 2',
         ends_on: 1647000337214
       }
     ])
