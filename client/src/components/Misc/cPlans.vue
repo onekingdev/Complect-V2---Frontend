@@ -17,7 +17,7 @@
     .price
       template(v-if="plan.price[0]")
         template(v-if="annually")
-          template(v-if="type == 'specialist'")
+          template(v-if="type === 'specialist'")
             .per-year-big ${{plan.price[0]}}/year
           template(v-else)
             .per-month
@@ -33,7 +33,7 @@
         .per-month FREE
         .users(v-if="plan.users") {{plan.users[0]}}
 
-    .benefits
+    .benefits(:class="{ 'free-year-plan': !plan.price[0] && annually && type !== 'specialist' }")
       .benefit(v-for="(benefit, index) in plan.benefits" :key="index")
         icon(name="success")
         .desctiption(v-html="benefit")
@@ -120,6 +120,8 @@ export default {
         color: #797b7e
     .benefits
       border-top: 1px solid var(--c-border)
+      &.free-year-plan
+        margin-top: 1.5em
       .benefit
         display: flex
         gap: 0.7em

@@ -95,8 +95,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.text-center
-  text-align: center
 .forgot-password
   font-size: 0.875em
 .forgot-password, .sign-up
