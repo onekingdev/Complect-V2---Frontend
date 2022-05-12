@@ -25,7 +25,7 @@
         div.col-1
         .col-1.job-info-value {{ formatDate(job.endsAt) }}
       .job-info-content.grid-6
-        .col-1.job-info-title Min. Experience
+        .col-1.job-info-title Min. Expereince
         div.col-1
         .col-1.job-info-value {{ minExperience[job.minExperience] }}
       .job-info-content.grid-6
@@ -54,7 +54,7 @@
         div.col-2.border-left.job-info-ind
           icon(name="world" size="small")
           .detail
-            span EXPERIENCE
+            span EXPEREINCE
             p {{ minExperience[job.minExperience] }}
     hr
     .skill-content

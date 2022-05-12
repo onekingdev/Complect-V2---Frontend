@@ -14,7 +14,7 @@ market-container
             c-select.filter-value(label="" placeholder="Select Industry" :data="industries" v-model="filterValues['industry']" searchable multiple)
         .filter-content.border-bottom
           .filter-title-content(@click="toggleShowStatus('level')")
-            .filter-title EXPERIENCE LEVEL
+            .filter-title EXPEREINCE LEVEL
             .filter-icon
               icon(name="chevron-up" size="small" v-if="filterShow['level']")
               icon(name="chevron-down" size="small" v-if="!filterShow['level']")

@@ -12,7 +12,7 @@
             .title {{$locale(link.title)}}
 
       .menu-section.bordered
-        router-link.link-item(:to="{name: 'FormLibrary'}")
+        router-link.link-item(:to="{name: 'FormLibrary'}" v-if="isBusiness")
           icon.paper(name="paper")
           .title {{$locale('Form Library')}}
         router-link.link-item(:to="{name: 'SettingsGeneral'}")
@@ -63,6 +63,7 @@ export default {
       renderSidebar,
       collapseSidebar,
       collapseSidebarSections,
+      isBusiness,
       queryType
     }
   }
