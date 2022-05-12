@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { onClickOutside } from '@vueuse/core'
 import useAuth from '~/core/auth.js'
@@ -28,23 +28,13 @@ import useProfile from '~/store/Profile.js'
 import useBusiness from '~/store/Business.js'
 import cAvatar from '~/components/Misc/cAvatar.vue'
 
-const businessTabs = [
+const tabs = [
   {
     title: 'Home',
     routeName: 'Dashboard'
   }, {
     title: 'Documents',
     routeName: 'RecordsOverview'
-  }, {
-    title: 'Reports',
-    routeName: 'ReportOrganizations'
-  }
-]
-
-const specialistTabs = [
-  {
-    title: 'Home',
-    routeName: 'Dashboard'
   }, {
     title: 'Reports',
     routeName: 'ReportOrganizations'
@@ -62,8 +52,7 @@ export default {
     const userDropDown = ref(null)
     const userDropDownExpanded = ref(false)
     const isNewNotification = ref(false)
-    const tabs = computed(() => isBusiness ? businessTabs : specialistTabs)
-    let websocket
+    // let websocket
     const toggleUserDropDown = () => userDropDownExpanded.value = !userDropDownExpanded.value
     onClickOutside(userDropDown, () => userDropDownExpanded.value = false)
 
@@ -86,27 +75,27 @@ export default {
     }
     const reportLink = !isBusiness ? '/reports/financials' : '/reports/organizations'
 
-    const connect = () => {
-      websocket = new WebSocket(import.meta.env.VITE_WS)
-      websocket.onclose = ({ wasClean, code, reason }) => {
-        console.error(`onclose:   ${JSON.stringify({ wasClean, code, reason })}`)
-      }
-      websocket.onerror = error => {
-        console.error(error)
-      }
-      websocket.onmessage = ({ data }) => {
-        if (JSON.parse(data).type !== 'ping') isNewNotification.value = true
-      }
-      websocket.onopen = () => {
-        websocket.send(JSON.stringify({
-          command: 'subscribe',
-          identifier: '{"channel": "NotificationChannel"}'
-        }))
-      }
-    }
+    // const connect = () => {
+    //   websocket = new WebSocket(import.meta.env.VITE_WS)
+    //   websocket.onclose = ({ wasClean, code, reason }) => {
+    //     console.error(`onclose:   ${JSON.stringify({ wasClean, code, reason })}`)
+    //   }
+    //   websocket.onerror = error => {
+    //     console.error(error)
+    //   }
+    //   websocket.onmessage = ({ data }) => {
+    //     if (JSON.parse(data).type !== 'ping') isNewNotification.value = true
+    //   }
+    //   websocket.onopen = () => {
+    //     websocket.send(JSON.stringify({
+    //       command: 'subscribe',
+    //       identifier: '{"channel": "NotificationChannel"}'
+    //     }))
+    //   }
+    // }
 
-    onMounted(() => connect())
-    onUnmounted(() => websocket.close())
+    // onMounted(() => connect())
+    // onUnmounted(() => websocket.close())
 
     return {
       reportLink,
@@ -184,9 +173,6 @@ export default {
           background: var(--c-yellow-500)
           background-clip: padding-box
           border-radius: 50%
-        :deep(.icon-bell)
-          width: 1.75em
-          height: 1.75em
   .user-block
     position: relative
     display: flex
@@ -230,6 +216,7 @@ export default {
         padding: 0.5em 1em
         box-shadow: none
         transition: background var(--fx-duration-regular, .25s)
+        text-align: left
         &:hover
           background: var(--c-bg-light-hover, #f3f6f9)
         &.router-link-exact-active

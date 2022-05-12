@@ -34,7 +34,7 @@ export default {
       try {
         await reset(resetEmail.value)
       } catch (error) {
-        Object.assign(errors.value, { resetEmail: [error] })
+        Object.assign(errors.value, { resetEmail: ['Invalid email address'] })
         console.error(error)
       }
     }

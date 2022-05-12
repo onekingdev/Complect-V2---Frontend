@@ -23,7 +23,7 @@ card-container(title="Billing")
         c-table(v-bind="{columns, documents: invoices}")
     template(v-else)
       div.grid-6.sub-header
-        h4.col-3 Clinet Billing
+        h4.col-3 Client Billing
         div.col-2
         c-button.col-1.buttons(title="Add Bank Account" type="primary" @click="clientBilling()")
       template(v-if="linkaccount.account")

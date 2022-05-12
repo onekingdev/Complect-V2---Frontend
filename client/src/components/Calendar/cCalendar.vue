@@ -10,9 +10,9 @@ card-container
       .container.date-range-container
         c-field(label="Start Date" type="date" v-model="dateRange.start")
         c-field(label="End Date" type="date" v-model="dateRange.end")
-      .container.buttons-container
+      .container.butotns-container
         c-button(title="Download All" type="link" @click="downloadAllEvents()")
-        c-button.download(title="Download" @click="downloadEvents()")
+        c-button(title="Download" @click="downloadEvents()")
     //- c-button(iconL="refresh" @click="generateEvents()" type="transparent")
   template(#content)
     .calendar
@@ -229,9 +229,6 @@ export default {
   :deep(.dropdown)
     right: 0 !important
     left: initial !important
-.buttons-container .download
-  :deep(.primary-title)
-    font-weight: bold
 .calendar
   overflow: hidden
   .grid

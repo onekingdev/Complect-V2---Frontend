@@ -35,14 +35,12 @@ export default {
       {
         title: 'Date Created',
         key: 'dateCreated',
-        cell: 'CellDate',
-        align: 'right'
+        cell: 'CellDate'
       },
       {
         title: 'Created By',
         key: 'owner',
-        cell: 'CellDefault',
-        align: 'right'
+        cell: 'CellDefault'
       },
       {
         unsortable: true,

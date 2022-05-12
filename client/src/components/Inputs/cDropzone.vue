@@ -8,7 +8,7 @@
   .upload-container(@dragover="dragover" @drop="drop" :class="{ 'drag-over': isDragover }")
     input(v-show="false" type="file" :multiple="multiple" :accept="accept" @change="onChange" ref="fileInput")
     p.text {{ text }}
-    c-button(v-if="button" title="Upload File" @click="uploadFiles")
+    c-button(v-if="button" title="Upload" @click="uploadFiles")
 </template>
 
 <script>
@@ -111,6 +111,7 @@ export default {
     .text
       font-size: 0.9em
       color: var(--c-blue)
+      font-weight: 500
     .c-button
       margin: 1em auto
     &.drag-over

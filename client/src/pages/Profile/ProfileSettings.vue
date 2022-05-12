@@ -1,7 +1,7 @@
 <template lang="pug">
 section.grid-6
   h3 Your Hourly Rate
-  c-field.col-full(label="Hourly Rate" type="number" placeholder="Hourly Rate" :errors="errors.rate" v-model="form.rate" required)
+  c-field.col-full(label="Hourly Rate" type="number" :errors="errors.rate" v-model="form.rate" required)
   div.perhour Per hour
   .divider
   h3 Experience Level
