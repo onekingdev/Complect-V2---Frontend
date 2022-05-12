@@ -1,7 +1,7 @@
 <template lang="pug">
 .bar.topbar
-  .logo
-    icon(name="logo" @click="goToRoute('Dashboard')")
+  .logo(@click="goToRoute('Dashboard')")
+    icon(name="logo")
     icon(name="brandname")
   .navigation(v-if="!simpleTopBar")
     .menu
