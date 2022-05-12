@@ -12,7 +12,7 @@
             .title {{$locale(link.title)}}
 
       .menu-section.bordered
-        router-link.link-item(:to="{name: 'FormLibrary'}" v-if="isBusiness")
+        router-link.link-item(v-if="isBusiness" :to="{name: 'FormLibrary'}")
           icon.paper(name="paper")
           .title {{$locale('Form Library')}}
         router-link.link-item(:to="{name: 'SettingsGeneral'}")
