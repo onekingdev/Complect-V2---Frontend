@@ -254,9 +254,9 @@ export default {
 
     const goToCheckout = async isStandard => {
       try {
-        if (isStandard) form.value.plan = 'standard'
+        if (isStandard) form.value.plan = plans.specialist[0].key
         const newForm = form.value
-        if (isBusiness && form.value.plan === 'starter') {
+        if (isBusiness && form.value.plan === plans.business[0].key) {
           newForm.industry_ids = newForm.industry_ids.concat(newForm.subIndustry_id)
           delete newForm.subIndustry_id
           await businessService.updateDocument(newForm)
@@ -270,7 +270,7 @@ export default {
           }
           await upgradeSubsciption(upgradeInfo)
           router.push({ name: 'Dashboard' })
-        } else if (!isBusiness && form.value.plan === 'standard') {
+        } else if (!isBusiness && form.value.plan === plans.specialist[0].key) {
           newForm.industry_ids = newForm.industry_ids.concat(newForm.subIndustry_id)
           delete newForm.subIndustry_id
           delete newForm.company

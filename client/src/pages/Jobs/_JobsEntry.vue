@@ -1,15 +1,5 @@
 <template lang="pug">
-page-container(title="Projects")
-  template(#controls)
-    c-button(title="Post Job" @click="postJob()")
-    c-button-modal(title="New Project" modalTitle="New Project" type="primary")
-      template(#content)
-        c-field(label="Project Name" v-model="newProject.name" required)
-        c-field.col-3(label="Start Date" type="date" v-model="newProject.startsAt" required)
-        c-field.col-3(label="End Date" type="date" v-model="newProject.endsAt" required)
-        c-field(label="Description" v-model="newProject.description")
-      template(#footer)
-        c-button(title="Create" type="primary" @click="createProject()")
+page-container(title="Jobs")
   template(#tabs)
     router-link(v-for="(tab, index) in tabs" :key="index" :to="{name: tab.routeName}") {{ $locale(tab.title)}}
   template(#content)
@@ -33,7 +23,7 @@ export default {
     const { profile } = useProfile()
     const tabs = [
       {
-
+        title: 'My Jobs',
         routeName: 'JobsOverview'
       }, {
         title: 'Contacts',

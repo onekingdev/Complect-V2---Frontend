@@ -28,13 +28,23 @@ import useProfile from '~/store/Profile.js'
 import useBusiness from '~/store/Business.js'
 import cAvatar from '~/components/Misc/cAvatar.vue'
 
-const tabs = [
+const businessTabs = [
   {
     title: 'Home',
     routeName: 'Dashboard'
   }, {
     title: 'Documents',
     routeName: 'RecordsOverview'
+  }, {
+    title: 'Reports',
+    routeName: 'ReportOrganizations'
+  }
+]
+
+const specialistTabs = [
+  {
+    title: 'Home',
+    routeName: 'Dashboard'
   }, {
     title: 'Reports',
     routeName: 'ReportOrganizations'
@@ -52,6 +62,7 @@ export default {
     const userDropDown = ref(null)
     const userDropDownExpanded = ref(false)
     const isNewNotification = ref(false)
+    const tabs = computed(() => isBusiness ? businessTabs : specialistTabs)
     // let websocket
     const toggleUserDropDown = () => userDropDownExpanded.value = !userDropDownExpanded.value
     onClickOutside(userDropDown, () => userDropDownExpanded.value = false)
@@ -173,6 +184,9 @@ export default {
           background: var(--c-yellow-500)
           background-clip: padding-box
           border-radius: 50%
+        :deep(.icon-bell)
+          width: 1.75em
+          height: 1.75em
   .user-block
     position: relative
     display: flex

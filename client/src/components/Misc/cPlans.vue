@@ -1,10 +1,10 @@
 <template lang="pug">
 .c-plans
   .plan-card.card-style(v-for="(plan, index) in plans" :key="index" :class="[plan.key]")
-    template(v-if="currentPlan")
-      template(v-if="currentPlan == plan.price[0] || currentPlan == plan.price[1]")
+    template(v-if="currentPlanPrice")
+      template(v-if="currentPlanPrice == plan.price[0] || currentPlanPrice == plan.price[1]")
         c-button(title="Current Plan" type="primary")
-      template(v-else-if="currentPlan < plan.price[0] || currentPlan < plan.price[1]")
+      template(v-else-if="currentPlanPrice < plan.price[0] || currentPlanPrice < plan.price[1]")
         c-button(title="Upgrade Plan" type="plan" @click="selectPlan(plan.key, true)")
       template(v-else)
         c-button(title="Downgrade Plan" type="plan" @click="selectPlan(plan.key)")
@@ -55,7 +55,7 @@ export default {
       default: ''
     },
     annually: Boolean,
-    currentPlan: {
+    currentPlanPrice: {
       type: [
         String, Number
       ],
