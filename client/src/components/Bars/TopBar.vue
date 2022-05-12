@@ -7,7 +7,7 @@
     .menu
       a(v-for="(tab, index) in tabs" :key="index" :class="{ active: activedTopbar === tab.title }" @click="goToRoute(tab.routeName)") {{ $locale(tab.title) }}
     .buttons
-      c-button(v-if="isBusiness" title="Find an Expert" type="accent" @click="goToRoute('ExpertList')")
+      c-button(title="Find an Expert" type="accent" @click="goToRoute('ExpertList')" v-if="isBusiness")
       c-button(title="Browse Jobs" type="accent" @click="goToRoute('JobBoard')" v-else)
       c-button.notification-icon(iconL="bell" type="transparent" @click="gotoNotification()" :class="{active: isNewNotification}")
   .user-block(v-if="profile" @click="toggleUserDropDown()" ref="userDropDown" :class="{expanded: userDropDownExpanded}")
