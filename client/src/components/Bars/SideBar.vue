@@ -12,7 +12,7 @@
             .title {{$locale(link.title)}}
 
       .menu-section.bordered
-        router-link.link-item(v-if="isBusiness" :to="{name: 'FormLibrary'}")
+        router-link.link-item(v-if="isShowForm" :to="{name: 'FormLibrary'}")
           icon.paper(name="paper")
           .title {{$locale('Form Library')}}
         router-link.link-item(:to="{name: 'SettingsGeneral'}")
@@ -37,13 +37,19 @@ import { plans } from '~/data/plans.js'
 
 export default {
   setup () {
-    const { sidebarHomeNavigation, sidebarDocumentsNavigation, sidebarReportsNavigation, sidebarReportsSpecialistNavigation, sidebarSpecialistNavigation } = useNavigation()
+    const { sidebarHomeNavigation, sidebarDocumentsNavigation, sidebarReportsNavigation, sidebarReportsSpecialistNavigation, sidebarSpecialistNavigation, sidebarEthicNavigation } = useNavigation()
     const { isBusiness } = useBusiness()
     const { profile } = useProfile()
     const route = useRoute()
     const queryType = computed(() => route.query.type)
     const renderSidebar = computed(() => {
       if ('sidebar' in route.meta) return route.meta.sidebar // check in sidebar key persist in meta object
+      return true
+    })
+    const isShowForm = computed(() => {
+      if (!isBusiness) return false
+      if (profile.value.plan === plans.business[0].key) return false
+      if (profile.value.role === 'basic') return false
       return true
     })
     const sidebarNavigation = computed(() => {
@@ -65,6 +71,7 @@ export default {
             if (profile.value.plan === plans.specialist[1].key && profile.value.role === 'mirroring') return sidebarHomeNavigation
             return sidebarSpecialistNavigation
           }
+          if (profile.value.plan !== plans.business[0].key) return sidebarHomeNavigation.concat(sidebarEthicNavigation)
           return sidebarHomeNavigation
       }
     })
@@ -77,7 +84,8 @@ export default {
       collapseSidebarSections,
       isBusiness,
       queryType,
-      profile
+      profile,
+      isShowForm
     }
   }
 }

@@ -56,7 +56,7 @@ export default {
 <style lang="stylus" scoped>
 .c-checkbox
   user-select: none
-  font-size: 0.9em
+  font-size: 0.875em
   line-height: 1
   display: flex
   align-items: center

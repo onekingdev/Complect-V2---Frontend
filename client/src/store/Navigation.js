@@ -127,6 +127,32 @@ const sidebarReportsSpecialistNavigation = [{
   }]
 }]
 
+const sidebarEthicNavigation = {
+  title: 'Code of ethics',
+  icon: 'newspaper-white',
+  links: [
+    {
+      title: 'Personal Trade Monitoring',
+      view: 'TradeTransaction'
+    }, {
+      title: 'Attestations',
+      view: 'EthicsEntries',
+      active: true,
+      type: 'attestation'
+    }, {
+      title: 'Logs',
+      view: 'EthicsEntries',
+      active: true,
+      type: 'logs'
+    }, {
+      title: 'Pre-Approvals',
+      view: 'EthicsEntries',
+      active: true,
+      type: 'approval'
+    }
+  ]
+}
+
 export default function useNavigation () {
   return {
     topbarNavigation,
@@ -135,6 +161,7 @@ export default function useNavigation () {
     sidebarDocumentsNavigation,
     sidebarReportsNavigation,
     sidebarReportsSpecialistNavigation,
-    sidebarNavigation
+    sidebarNavigation,
+    sidebarEthicNavigation
   }
 }

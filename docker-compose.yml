@@ -1,6 +1,6 @@
 version: '3.9'
 services:
-
+    
     # Client
     complect-client:
         container_name: complect-client
@@ -10,82 +10,17 @@ services:
         image: complect-client:1.0
         ports:
             - ${CLIENT_PORT}:5000
-            - ${PREVIEW_PORT}:5004
         environment:
             HOST: 0.0.0.0
-            VITE_API_URI: ${LOCAL_API_URI}
+            VITE_API_URI: ${CLOUD_API_URI}
             VITE_WS: ${LOCAL_WS_URI}
+            VITE_STAGE: 'dev11'
             VITE_STRIPE: ${STRIPE_PUBLISH_KEY}
-            VITE_STAGE: 'dev'
-            PLAID_ENVIRONMENT: ${PLAID_ENVIRONMENT}
-            PLAID_WEBHOOK: ${PLAID_WEBHOOK}
-            PLAID_PK: ${PLAID_PUBLIC_KEY}
+            VITE_PLAID_ENV: ${PLAID_ENVIRONMENT}
+            VITE_PLAID_WH: ${PLAID_WEBHOOK}
+            VITE_PLAID_PK: ${PLAID_PUBLIC_KEY}
         volumes:
             - ./client:/home/app
             - /home/app/node_modules
         working_dir: /home/app
         command: npm run dev
-        depends_on:
-            - complect-mongo
-
-    # API
-    complect-api:
-        container_name: complect-api
-        build:
-            context: ./api
-            dockerfile: Dockerfile
-        image: complect-api:1.0
-        ports:
-            - ${API_PORT}:6099
-        environment:
-            HOST: 0.0.0.0
-            API_STAGE: dev
-            DB_URI: ${LOCAL_DB_URI}
-            DB_NAME: ${LOCAL_DB_NAME}
-            AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
-            AWS_SECRET_KEY: ${AWS_SECRET_KEY}
-            AWS_BUCKET_NAME: ${AWS_BUCKET_NAME}
-            AWS_BUCKET_REGION: ${AWS_BUCKET_REGION}
-            SCHEDULE_TIME: ${SCHEDULE_TIME}
-        volumes:
-            - ./api:/home/app
-            - ./api/.aws:/root/.aws
-            - /home/app/node_modules
-        working_dir: /home/app
-        command: serverless offline start
-        # command: serverless offline start --allowCache
-        # command: tail -F anything
-        depends_on:
-            - complect-mongo
-
-    # Mongo Database
-    complect-mongo:
-        hostname: ${MONGO_HOST}
-        container_name: complect-mongo
-        image: mongo:4.4.7
-        ports:
-            - ${MONGO_PORT}:27017
-        environment:
-            MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
-            MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
-            MONGO_INITDB_DATABASE: ${MONGO_DBNAME}
-        volumes:
-            - ./mongo/db:/data/db
-
-    # Mongo Admin
-    mongo-admin:
-        container_name: complect-mongo-admin
-        image: mrvautin/adminmongo
-        ports:
-            - ${MONGO_ADMIN_PORT}:3000
-        environment:
-            CONN_NAME: "Mongo"
-            HOST: "0.0.0.0"
-            PORT: "3000"
-            DB_USERNAME: ${MONGO_USER}
-            DB_PASSWORD: ${MONGO_PASSWORD}
-            DB_HOST: ${MONGO_HOST}
-            DB_PORT: ${MONGO_PORT}
-            DB_NAME: ${MONGO_DBNAME}
-        depends_on:
-            - complect-mongo

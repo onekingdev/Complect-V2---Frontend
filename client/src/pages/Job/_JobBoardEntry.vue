@@ -160,12 +160,21 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
+.market-container
+  h3
+    font-size: 1em
+    font-weight: bold
+  :deep(.market-content)
+    border: 0
+  .card-container
+    min-height: 100%
 .filter-content
   &.border-bottom
     border-bottom: 1px solid var(--c-border)
     padding-bottom: 1.25em
   .filter-title-content
     cursor: pointer
+    font-size: 0.75em
     .filter-title
       display: inline-block
     .filter-icon

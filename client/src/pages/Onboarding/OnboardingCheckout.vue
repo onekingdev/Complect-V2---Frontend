@@ -38,7 +38,7 @@
       .content
         .plan
           .plan-name Payment Method
-        c-button(title="Add Bank Account" v-if="isAddButtonVisible" type="primary" @click="toggleBankModal()")
+        c-button(title="Add Bank Account" v-if="isAddButtonVisible" @click="toggleBankModal()")
       stripe-elements.stripe(v-if="stripeLoaded && isAddButtonVisible" ref="elms" v-slot="{ elements, instance }" :stripe-key="publishkey" :instance-option="instanceOptions" :element-options="elementOptions")
         stripe-element(ref="card" :elements="elements" :options="cardOptions")
       c-button.add-button(title="Add" type="primary" @click="addPayment()" v-if="isAddButtonVisible")
@@ -70,13 +70,18 @@
           .title {{users}} Users ({{plan.freeUsers}} Free)
           template(v-if="users > plan.freeUsers")
             template(v-if="form.annually")
-              .price +${{(users - plan.freeUsers) * 120}}
+              .price ${{(users - plan.freeUsers) * 120}}/year
             template(v-else)
-              .price +${{(users - plan.freeUsers) * 15}}
+              .price ${{(users - plan.freeUsers) * 15}}/mo
+          template(v-else)
+            template(v-if="form.annually")
+              .price $0/year
+            template(v-else)
+              .price $0/mo
         .plan_item.save(v-if="isBusiness")
           template(v-if="form.annually && plan.price")
             .title Billed Annually
-            .save_price You saved ${{ (plan.price[1] - plan.price[0]) * 12 }}
+            .save_price You saved ${{ savePrice }}
       .item(v-if="promoInfo.percent_off")
         .title Discount
         .price {{promoInfo.percent_off}}%
@@ -126,7 +131,7 @@ import useAuth from '~/core/auth.js'
 import { loadStripe } from '@stripe/stripe-js'
 import { StripeElements, StripeElement } from 'vue-stripe-js'
 import PlaidLink from 'vue-plaid-link2'
-import { onBeforeMount, onMounted, ref, inject } from 'vue'
+import { onBeforeMount, onMounted, ref, inject, computed } from 'vue'
 import BusinessService from '~/services/business.js'
 import ProfileService from '~/services/profile.js'
 import { getStripePayments, addStripePayment, deleteStripePayment, upgradeSubsciption } from '~/services/payments.js'
@@ -169,6 +174,12 @@ export default {
     const plaidEvent = (eventName, metadata) => console.debug(eventName, metadata)
     const isBankMethodVisible = ref(false)
     const toggleBankModal = () => isBankMethodVisible.value = !isBankMethodVisible.value
+    const savePrice = computed(() => {
+      let price
+      price = (plan.value.price[1] - plan.value.price[0]) * 12
+      if (users.value > plan.value.freeUsers) price += (users.value - plan.value.freeUsers) * 60
+      return price
+    })
     const paymentOptions = ref([
       {
         title: 'Billed Annually',
@@ -190,7 +201,7 @@ export default {
             title: 'Success',
             message: notifyMessages.payment.add.success
           })
-          isAddButtonVisible.value = true
+          isAddButtonVisible.value = false
         } catch (error) {
           notification({
             type: 'error',
@@ -220,12 +231,18 @@ export default {
     }
     const onBoard = async () => {
       try {
+        const newForm = form.value
         if (isBusiness) {
+          newForm.industry_ids = newForm.industry_ids.concat(newForm.subIndustry_id)
+          delete newForm.subIndustry_id
           const businessService = new BusinessService()
-          await businessService.updateDocument(form.value)
+          await businessService.updateDocument(newForm)
         } else {
+          newForm.industry_ids = newForm.industry_ids.concat(newForm.subIndustry_id)
+          delete newForm.subIndustry_id
+          delete newForm.company
           const specialistService = new ProfileService()
-          await specialistService.updateDocument(form.value)
+          await specialistService.updateDocument(newForm)
         }
 
         let planName
@@ -306,7 +323,8 @@ export default {
       plaidExit,
       plaidEvent,
       isBankMethodVisible,
-      toggleBankModal
+      toggleBankModal,
+      savePrice
     }
   }
 }
@@ -419,7 +437,6 @@ export default {
       gap: 0.4em
       padding-bottom: 1.5em
       border-bottom: 1px solid var(--c-border)
-      font-size: 0.875em
       .plan_item
         display: flex
         justify-content: space-between

@@ -105,7 +105,7 @@ export default {
     font-size: 0.9em
 .address
   .item-label
-    font-size: 0.8em;
+    font-size: 0.875em;
     margin-bottom: 0.2em;
     color: #666;
   .required

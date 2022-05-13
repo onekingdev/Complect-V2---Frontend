@@ -1,7 +1,7 @@
 <template lang="pug">
 .bar.topbar
-  .logo
-    icon(name="logo" @click="goToRoute('Dashboard')")
+  .logo(@click="goToRoute('Dashboard')")
+    icon(name="logo")
     icon(name="brandname")
   .navigation(v-if="!simpleTopBar")
     .menu
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { onClickOutside } from '@vueuse/core'
 import useAuth from '~/core/auth.js'
@@ -75,7 +75,7 @@ export default {
       }
       return specialistTabs
     })
-    let websocket
+    // let websocket
     const toggleUserDropDown = () => userDropDownExpanded.value = !userDropDownExpanded.value
     onClickOutside(userDropDown, () => userDropDownExpanded.value = false)
 
@@ -98,27 +98,27 @@ export default {
     }
     const reportLink = !isBusiness ? '/reports/financials' : '/reports/organizations'
 
-    const connect = () => {
-      websocket = new WebSocket(import.meta.env.VITE_WS)
-      websocket.onclose = ({ wasClean, code, reason }) => {
-        console.error(`onclose:   ${JSON.stringify({ wasClean, code, reason })}`)
-      }
-      websocket.onerror = error => {
-        console.error(error)
-      }
-      websocket.onmessage = ({ data }) => {
-        if (JSON.parse(data).type !== 'ping') isNewNotification.value = true
-      }
-      websocket.onopen = () => {
-        websocket.send(JSON.stringify({
-          command: 'subscribe',
-          identifier: '{"channel": "NotificationChannel"}'
-        }))
-      }
-    }
+    // const connect = () => {
+    //   websocket = new WebSocket(import.meta.env.VITE_WS)
+    //   websocket.onclose = ({ wasClean, code, reason }) => {
+    //     console.error(`onclose:   ${JSON.stringify({ wasClean, code, reason })}`)
+    //   }
+    //   websocket.onerror = error => {
+    //     console.error(error)
+    //   }
+    //   websocket.onmessage = ({ data }) => {
+    //     if (JSON.parse(data).type !== 'ping') isNewNotification.value = true
+    //   }
+    //   websocket.onopen = () => {
+    //     websocket.send(JSON.stringify({
+    //       command: 'subscribe',
+    //       identifier: '{"channel": "NotificationChannel"}'
+    //     }))
+    //   }
+    // }
 
-    onMounted(() => connect())
-    onUnmounted(() => websocket.close())
+    // onMounted(() => connect())
+    // onUnmounted(() => websocket.close())
 
     return {
       reportLink,
@@ -243,6 +243,7 @@ export default {
         padding: 0.5em 1em
         box-shadow: none
         transition: background var(--fx-duration-regular, .25s)
+        text-align: left
         &:hover
           background: var(--c-bg-light-hover, #f3f6f9)
         &.router-link-exact-active
