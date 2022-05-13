@@ -38,17 +38,16 @@
       .content
         .plan
           .plan-name Payment Method
-        c-button(title="Add Bank Account" v-if="isAddButtonVisible" @click="toggleBankModal()")
+        c-button(title="Add Bank Account" v-if="isAddButtonVisible" type="primary" @click="toggleBankModal()")
       stripe-elements.stripe(v-if="stripeLoaded && isAddButtonVisible" ref="elms" v-slot="{ elements, instance }" :stripe-key="publishkey" :instance-option="instanceOptions" :element-options="elementOptions")
         stripe-element(ref="card" :elements="elements" :options="cardOptions")
       c-button.add-button(title="Add" type="primary" @click="addPayment()" v-if="isAddButtonVisible")
       div.grid-6(v-if="!isAddButtonVisible")
-        template(v-for="cardresult in cardresults")
-          .col-3 Credit Card (primary)
-          .col-2(v-if="cardresult.card") **** **** **** {{ cardresult.card.last4 }}
-          .col-2(v-else) **** **** **** {{ cardresult.last4 }}
-          .col-1
-            c-button(title="Remove" type="link" @click="removePayment(cardresult.id)")
+        template(v-if="cardresult.card")
+        .col-3 Credit Card (primary)
+        .col-2 **** **** **** {{ cardresult.card.last4 }}
+        .col-1
+          c-button(title="Remove" type="link")
   card-container.summary(title="Purchase Summary")
     template(#sub-header)
       c-field.col-5(label="Promo Code" v-model="promocode")
@@ -70,18 +69,13 @@
           .title {{users}} Users ({{plan.freeUsers}} Free)
           template(v-if="users > plan.freeUsers")
             template(v-if="form.annually")
-              .price ${{(users - plan.freeUsers) * 120}}/year
+              .price +${{(users - plan.freeUsers) * 120}}
             template(v-else)
-              .price ${{(users - plan.freeUsers) * 15}}/mo
-          template(v-else)
-            template(v-if="form.annually")
-              .price $0/year
-            template(v-else)
-              .price $0/mo
+              .price +${{(users - plan.freeUsers) * 15}}
         .plan_item.save(v-if="isBusiness")
           template(v-if="form.annually && plan.price")
             .title Billed Annually
-            .save_price You saved ${{ savePrice }}
+            .save_price You saved ${{ (plan.price[1] - plan.price[0]) * 12 }}
       .item(v-if="promoInfo.percent_off")
         .title Discount
         .price {{promoInfo.percent_off}}%
@@ -107,7 +101,7 @@
                   .price ${{plan.price[1]}}
             template(v-else)
               .price ${{plan.price[0]}}
-      c-button.purchase-button(title="Complete Purchase" type="primary" :disabled="isAddButtonVisible" @click="onBoard()")
+      c-button.purchase-button(title="Complete Purchase" type="primary" :disabled="isPurchaseDisable" @click="onBoard()")
 c-modal(title="Add Bank Account" v-model="isBankMethodVisible")
   template(#content)
     .card-billing
@@ -131,16 +125,16 @@ import useAuth from '~/core/auth.js'
 import { loadStripe } from '@stripe/stripe-js'
 import { StripeElements, StripeElement } from 'vue-stripe-js'
 import PlaidLink from 'vue-plaid-link2'
-import { onBeforeMount, onMounted, ref, inject, computed } from 'vue'
+import { onBeforeMount, onMounted, ref, inject } from 'vue'
+// import UseData from "~/store/Data.js";
 import BusinessService from '~/services/business.js'
 import ProfileService from '~/services/profile.js'
-import { getStripePayments, addStripePayment, deleteStripePayment, upgradeSubsciption } from '~/services/payments.js'
+import { addStripePayment } from '~/services/payments.js'
 
 import cSwitcher from '~/components/Inputs/cSwitcher.vue'
 import cModal from '~/components/Misc/cModal.vue'
 import { manualApi } from '~/core/api.js'
 import { notifyMessages } from '~/data/notifications.js'
-import { plans } from '~/data/plans.js'
 export default {
   components: { StripeElements, StripeElement, cSwitcher, PlaidLink, cModal },
   setup () {
@@ -149,11 +143,13 @@ export default {
     const userType = isBusiness ? 'business' : 'specialist'
     const { form, resetForm } = useForm('onboarding')
     const { restoreSession } = useAuth()
+    // const plans = new UseData( "plans" );
     const notification = inject('notification')
     const plan = ref({})
     const router = useRouter()
     const goBack = () => router.go(-1)
     const isAddButtonVisible = ref(true)
+    const isPurchaseDisable = ref(true)
     const publishkey = ref(import.meta.env.VITE_STRIPE)
     const instanceOptions = ref({ })
     const elementsOptions = ref({ })
@@ -162,7 +158,7 @@ export default {
     const card = ref()
     const elms = ref()
     const users = ref(0)
-    const cardresults = ref([])
+    const cardresult = ref({ })
     const promocode = ref()
     const promoInfo = ref({ })
     const plaidkey = import.meta.env.VITE_PLAID_PK
@@ -174,12 +170,6 @@ export default {
     const plaidEvent = (eventName, metadata) => console.debug(eventName, metadata)
     const isBankMethodVisible = ref(false)
     const toggleBankModal = () => isBankMethodVisible.value = !isBankMethodVisible.value
-    const savePrice = computed(() => {
-      let price
-      price = (plan.value.price[1] - plan.value.price[0]) * 12
-      if (users.value > plan.value.freeUsers) price += (users.value - plan.value.freeUsers) * 60
-      return price
-    })
     const paymentOptions = ref([
       {
         title: 'Billed Annually',
@@ -193,15 +183,16 @@ export default {
       const cardElement = card.value.stripeElement
       elms.value.instance.createToken(cardElement).then(async result => {
         const stripeToken = result.token.id
-        cardresults.value[0] = result.token
+        cardresult.value = result.token
         try {
           await addStripePayment({ stripeToken })
+          isPurchaseDisable.value = false
           notification({
             type: 'success',
             title: 'Success',
             message: notifyMessages.payment.add.success
           })
-          isAddButtonVisible.value = false
+          isAddButtonVisible.value = !isAddButtonVisible.value
         } catch (error) {
           notification({
             type: 'error',
@@ -211,50 +202,17 @@ export default {
         }
       })
     }
-    const removePayment = async id => {
-      try {
-        await deleteStripePayment(id)
-        cardresults.value = cardresults.value.filter(cardresult => cardresult.id !== id)
-        if (!cardresults.value || cardresults.value.length === 0) isAddButtonVisible.value = true
-        notification({
-          type: 'success',
-          title: 'Success',
-          message: notifyMessages.payment.delete.success
-        })
-      } catch (error) {
-        notification({
-          type: 'error',
-          title: 'Error',
-          message: notifyMessages.payment.delete.error
-        })
-      }
-    }
     const onBoard = async () => {
       try {
-        const newForm = form.value
         if (isBusiness) {
-          newForm.industry_ids = newForm.industry_ids.concat(newForm.subIndustry_id)
-          delete newForm.subIndustry_id
           const businessService = new BusinessService()
-          await businessService.updateDocument(newForm)
+          await businessService.updateDocument(form.value)
         } else {
-          newForm.industry_ids = newForm.industry_ids.concat(newForm.subIndustry_id)
-          delete newForm.subIndustry_id
-          delete newForm.company
           const specialistService = new ProfileService()
-          await specialistService.updateDocument(newForm)
+          await specialistService.updateDocument(form.value)
         }
 
-        let planName
-        if (form.value.annually) planName = plan.value.name[0]
-        else planName = plan.value.name[1]
-        const upgradeInfo = {
-          upgrade: {
-            plan: planName,
-            seats_count: users.value
-          }
-        }
-        await upgradeSubsciption(upgradeInfo)
+        /* we need to add subscription code here */
 
         await restoreSession()
         await resetForm()
@@ -285,10 +243,25 @@ export default {
       const stripePromise = loadStripe(publishkey.value)
       stripePromise.then(() => stripeLoaded.value = true)
     })
-    onMounted(async () => {
-      plan.value = plans[userType].find(item => item.key === form.value.plan)
-      cardresults.value = await getStripePayments()
-      if (cardresults.value && cardresults.value.length > 0) isAddButtonVisible.value = false
+    onMounted(() => {
+      // plan.value = plans[userType].find( item => item.key === form.value.plan );
+      // plans.readDocuments();
+      // if ( userType === "business" ) {
+      //   const keywordMethod = form.value.annually ? "yearly" : "monthly";
+      //   const keywordTitle = `${form.value.plan} Plan`;
+      //   const findplan = plans.getDocuments().value.find( indplan => indplan.method === keywordMethod && indplan.title.toLowerCase() === keywordTitle.toLowerCase() );
+      //   plan.value.name = findplan.title;
+      //   plan.value.price = findplan.perPrice;
+      //   plan.value.annually = form.value.annually;
+      //   plan.value.id = findplan.id;
+      // } else {
+      //   const keywordMethod = form.value.annually ? "yearly" : "all";
+      //   const findplan = plans.getDocuments().value.find( indplan => indplan.method === keywordMethod );
+      //   plan.value.name = findplan.title;
+      //   plan.value.price = findplan.perPrice;
+      //   plan.value.annually = form.value.annually;
+      //   plan.value.id = findplan.id;
+      // }
     })
 
     return {
@@ -309,9 +282,9 @@ export default {
       elms,
       stripeLoaded,
       addPayment,
-      removePayment,
       isAddButtonVisible,
-      cardresults,
+      isPurchaseDisable,
+      cardresult,
       promoInfo,
       promocode,
       applyPromo,
@@ -323,8 +296,7 @@ export default {
       plaidExit,
       plaidEvent,
       isBankMethodVisible,
-      toggleBankModal,
-      savePrice
+      toggleBankModal
     }
   }
 }
@@ -437,6 +409,7 @@ export default {
       gap: 0.4em
       padding-bottom: 1.5em
       border-bottom: 1px solid var(--c-border)
+      font-size: 0.875em
       .plan_item
         display: flex
         justify-content: space-between

@@ -53,7 +53,6 @@ export default {
   display: flex
   gap: 1.5em
   margin: 1em 0 0 0
-  max-width: 60em
   label.radio-card
     flex: 1 0 0
     display: flex
@@ -64,7 +63,7 @@ export default {
       display: none
     .option
       display: flex
-      align-items: center
+      align-items: flex-start
       gap: 0.7em
       padding: 1em
       width: 100%

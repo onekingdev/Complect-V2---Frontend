@@ -1,4 +1,7 @@
+api/.aws
+api/.serverless
 client/dist
+mongo/db
 node_modules
 /coverage/
 /Icon?

@@ -1,0 +1,8 @@
+{
+	"collectCoverage": true,
+	"setupFilesAfterEnv": ["jest-extended/all"],
+	"moduleFileExtensions": [
+		"js"
+	],
+	"testRegex": "((\\.|/*.)(test))\\.js?$"
+}

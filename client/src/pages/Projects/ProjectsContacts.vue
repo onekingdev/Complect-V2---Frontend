@@ -90,8 +90,7 @@ export default {
       {
         unsortable: true,
         cell: 'CellDropdown',
-        meta: { actions: [{ title: 'Message', action: handleMessage }] },
-        align: 'right'
+        meta: { actions: [{ title: 'Message', action: handleMessage }] }
       }
     ]
 

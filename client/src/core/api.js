@@ -53,24 +53,28 @@ const deleteDocumentsFromCloudDb = async (collectionName, documentId) => {
 }
 
 const manualApi = async ({ method, url, data }) => {
-  const authToken = localStorage.getItem('auth_token')
-  if (!authToken) window.location.href = '/sign-in'
-  const API_URI = import.meta.env.VITE_API_URI
-  const apiUrl = `${API_URI}/api/${url}`
-  const options = {
-    method,
-    mode: 'cors',
-    cache: 'no-cache',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8',
-      Authorization: `Bearer ${authToken}`
+  try {
+    const authToken = localStorage.getItem('auth_token')
+    if (!authToken) window.location.href = '/sign-in'
+    const API_URI = import.meta.env.VITE_API_URI
+    const apiUrl = `${API_URI}/api/${url}`
+    const options = {
+      method,
+      mode: 'cors',
+      cache: 'no-cache',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        Authorization: `Bearer ${authToken}`
+      }
     }
+    const serverAnswer = await fetch(apiUrl, options)
+    const parsedServerAnswer = await serverAnswer.json()
+    return parsedServerAnswer
+  } catch (error) {
+    console.error(error)
+    return { error: error.message }
   }
-  const serverAnswer = await fetch(apiUrl, options)
-  const parsedServerAnswer = await serverAnswer.json()
-  if (parsedServerAnswer.error) throw new Error(parsedServerAnswer.message)
-  return parsedServerAnswer
 }
 
 export { createDocumentsInCloudDb, readDocumentsFromCloudDb, updateDocumentInCloudDb, deleteDocumentsFromCloudDb, manualApi, generateQuery }
