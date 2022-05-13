@@ -21,12 +21,17 @@ export default {
 <style lang="stylus" scoped>
 .market-container
   width: 100%
+  height: 100%
   display: flex
-  padding: 2em
+  padding: 2em 2em 0
   gap: 2em
   .market-filter
     width: 20%
   .market-content
     width: 80%
     border-top: 1px solid var(--c-border)
+  @media (max-width: 1000px)
+    flex-direction: column
+    .market-filter, .market-content
+      width: 100%
 </style>

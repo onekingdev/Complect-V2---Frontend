@@ -7,12 +7,12 @@
     .menu
       a(v-for="(tab, index) in tabs" :key="index" :class="{ active: activedTopbar === tab.title }" @click="goToRoute(tab.routeName)") {{ $locale(tab.title) }}
     .buttons
-      c-button(title="Find an Expert" type="accent" @click="goToRoute('ExpertList')" v-if="isBusiness")
+      c-button(v-if="isBusiness" title="Find an Expert" type="accent" @click="goToRoute('ExpertList')")
       c-button(title="Browse Jobs" type="accent" @click="goToRoute('JobBoard')" v-else)
       c-button.notification-icon(iconL="bell" type="transparent" @click="gotoNotification()" :class="{active: isNewNotification}")
   .user-block(v-if="profile" @click="toggleUserDropDown()" ref="userDropDown" :class="{expanded: userDropDownExpanded}")
     c-avatar(:avatar="profile.avatar" :firstName="profile.first_name" :lastName="profile.last_name" size="small")
-    .name {{profile.firstName}} {{profile.lastName}}
+    .name {{profile.first_name}} {{profile.last_name}}
     icon(name="chevron-down")
     .dropdown-menu(v-if="userDropDownExpanded")
       router-link(v-if="!simpleTopBar" :to="{name: 'ProfileAbout'}") {{$locale("Profile")}}
@@ -28,13 +28,23 @@ import useProfile from '~/store/Profile.js'
 import useBusiness from '~/store/Business.js'
 import cAvatar from '~/components/Misc/cAvatar.vue'
 
-const tabs = [
+const businessTabs = [
   {
     title: 'Home',
     routeName: 'Dashboard'
   }, {
     title: 'Documents',
     routeName: 'RecordsOverview'
+  }, {
+    title: 'Reports',
+    routeName: 'ReportOrganizations'
+  }
+]
+
+const specialistTabs = [
+  {
+    title: 'Home',
+    routeName: 'Dashboard'
   }, {
     title: 'Reports',
     routeName: 'ReportOrganizations'
@@ -52,6 +62,7 @@ export default {
     const userDropDown = ref(null)
     const userDropDownExpanded = ref(false)
     const isNewNotification = ref(false)
+    const tabs = computed(() => isBusiness ? businessTabs : specialistTabs)
     let websocket
     const toggleUserDropDown = () => userDropDownExpanded.value = !userDropDownExpanded.value
     onClickOutside(userDropDown, () => userDropDownExpanded.value = false)
@@ -173,6 +184,9 @@ export default {
           background: var(--c-yellow-500)
           background-clip: padding-box
           border-radius: 50%
+        :deep(.icon-bell)
+          width: 1.75em
+          height: 1.75em
   .user-block
     position: relative
     display: flex
