@@ -56,7 +56,7 @@ export default {
     required: Boolean,
     searchable: Boolean
   },
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'update:data'],
   setup (props, context) {
     const selectComponent = ref(null)
     const dropdownList = ref(null)
@@ -109,6 +109,7 @@ export default {
     const valuesToObjects = selected => {
       if (props.multiple) {
         const objects = []
+        if (!selected || selected.length === 0) return objects
         selected.forEach(value => {
           const index = props.data.findIndex(item => item.value === value)
           objects.push(props.data[index])
@@ -128,6 +129,10 @@ export default {
     watch(selectedItems, selected => {
       selectedObjects.value = valuesToObjects(selected)
       context.emit('update:modelValue', selected)
+    })
+
+    watch(() => props.data, () => {
+      selectedObjects.value = valuesToObjects(props.modelValue)
     })
 
     watch(() => props.modelValue, newValue => {

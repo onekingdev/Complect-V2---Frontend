@@ -38,7 +38,7 @@ export default {
   setup () {
     const notifiCollection = new UseData('notifications')
     const arrayCheckboxes = ref([
-      { label: 'Address', value: 'address' }, { label: 'Phone Number', value: 'phone' }, { label: 'Contact Email', value: 'email' }, { label: 'Disclouser', value: 'disclouser' }
+      { label: 'Address', value: 'address' }, { label: 'Phone Number', value: 'phone' }, { label: 'Contact Email', value: 'email' }, { label: 'Disclosure', value: 'disclosure' }
     ])
     const documents = ref([
       {

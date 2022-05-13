@@ -84,32 +84,6 @@ const sidebarHomeNavigation = [
         view: 'RisksOverview'
       }
     ]
-  }, {
-    title: 'Code of ethics',
-    icon: 'newspaper-white',
-    links: [
-      {
-        title: 'Personal Trade Monitoring',
-        view: 'EthicsEntries',
-        active: true,
-        type: 'trade'
-      }, {
-        title: 'Attestations',
-        view: 'EthicsEntries',
-        active: true,
-        type: 'attestation'
-      }, {
-        title: 'Logs',
-        view: 'EthicsEntries',
-        active: true,
-        type: 'logs'
-      }, {
-        title: 'Pre-Approvals',
-        view: 'EthicsEntries',
-        active: true,
-        type: 'approval'
-      }
-    ]
   }
 ]
 
@@ -152,29 +126,6 @@ const sidebarReportsSpecialistNavigation = [{
     view: 'ReportFinancials'
   }]
 }]
-
-const _devModeNavigation = {
-  title: 'Components',
-  icon: 'components',
-  links: [
-    {
-      title: 'Inputs',
-      view: 'devInputsButtons'
-    }, {
-      title: 'Data',
-      view: 'devDataModel'
-    }, {
-      title: 'Table',
-      view: 'devTableGeneral'
-    }, {
-      title: 'Additional',
-      view: 'devAdditionalIcons'
-    }
-  ]
-}
-
-// enable Components Navigation section in sidebar menu
-if (import.meta.env.VITE_STAGE === 'dev') sidebarHomeNavigation.push(_devModeNavigation)
 
 export default function useNavigation () {
   return {

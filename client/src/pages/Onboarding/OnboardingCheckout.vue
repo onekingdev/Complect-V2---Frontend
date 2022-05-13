@@ -102,7 +102,7 @@
                   .price ${{plan.price[1]}}
             template(v-else)
               .price ${{plan.price[0]}}
-      c-button.purchase-button(title="Complete Purchase" type="primary" :disabled="!isAddButtonVisible" @click="onBoard()")
+      c-button.purchase-button(title="Complete Purchase" type="primary" :disabled="isAddButtonVisible" @click="onBoard()")
 c-modal(title="Add Bank Account" v-model="isBankMethodVisible")
   template(#content)
     .card-billing

@@ -44,7 +44,7 @@ card-container(title="Create Proposal")
           div.col-1
           .col-1.job-info-value {{ job.industries?.map( ind => industriesMap[ind] ).join(',  ') }}
         .job-info-content.grid-6
-          .col-1.job-info-title Min. Expereince
+          .col-1.job-info-title Min. Experience
           div.col-1
           .col-1.job-info-value {{ minExperience[job.minExperience] }}
         .job-info-content.grid-6
@@ -73,7 +73,7 @@ card-container(title="Create Proposal")
           div.col-2.border-left.job-info-ind
             icon(name="world" size="small")
             .detail
-              span EXPEREINCE
+              span EXPERIENCE
               p {{ minExperience[job.minExperience] }}
       hr
       .skill-content

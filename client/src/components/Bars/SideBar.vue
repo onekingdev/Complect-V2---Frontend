@@ -31,12 +31,15 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { appState, collapseSidebar, collapseSidebarSections } from '~/store/appState.js'
 import useNavigation from '~/store/Navigation'
+import useProfile from '~/store/Profile.js'
 import useBusiness from '~/store/Business.js'
+import { plans } from '~/data/plans.js'
 
 export default {
   setup () {
     const { sidebarHomeNavigation, sidebarDocumentsNavigation, sidebarReportsNavigation, sidebarReportsSpecialistNavigation, sidebarSpecialistNavigation } = useNavigation()
     const { isBusiness } = useBusiness()
+    const { profile } = useProfile()
     const route = useRoute()
     const queryType = computed(() => route.query.type)
     const renderSidebar = computed(() => {
@@ -46,13 +49,22 @@ export default {
     const sidebarNavigation = computed(() => {
       switch (route.meta.tab) {
         case 'Documents':
-          if (!isBusiness) return sidebarSpecialistNavigation
+          if (!isBusiness) {
+            if (profile.value.plan === plans.specialist[1].key && profile.value.role === 'mirroring') return sidebarDocumentsNavigation
+            return sidebarSpecialistNavigation
+          }
           return sidebarDocumentsNavigation
         case 'Reports':
-          if (!isBusiness) return sidebarReportsSpecialistNavigation
+          if (!isBusiness) {
+            if (profile.value.plan === plans.specialist[1].key && profile.value.role === 'mirroring') return sidebarReportsNavigation
+            return sidebarReportsSpecialistNavigation
+          }
           return sidebarReportsNavigation
         default:
-          if (!isBusiness) return sidebarSpecialistNavigation
+          if (!isBusiness) {
+            if (profile.value.plan === plans.specialist[1].key && profile.value.role === 'mirroring') return sidebarHomeNavigation
+            return sidebarSpecialistNavigation
+          }
           return sidebarHomeNavigation
       }
     })
@@ -64,7 +76,8 @@ export default {
       collapseSidebar,
       collapseSidebarSections,
       isBusiness,
-      queryType
+      queryType,
+      profile
     }
   }
 }
