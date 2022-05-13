@@ -2,7 +2,7 @@
 div.setup-div
   div.logo-setting
     h2 Logo
-    p.setting-text Upload the logo that will show up on the cover page of your compliance manual(Logo visible on white recommended)
+    p.setting-text Upload the logo that will show up on the cover page of your compliance manual. The logo should be visible on white (recommended).
     c-upload(v-model:modelValue="policyForm.fileName")
   div.display-setting
     h2 Display Settings
