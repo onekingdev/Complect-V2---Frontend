@@ -3,9 +3,9 @@ card-container(title="Billing")
   template(#content)
     template(v-if="isBusiness")
       div.grid-6.sub-header
-        h4.col-3 Payment Method
+        h3.col-3 Payment Method
         div.col-2
-        c-button.col-1.buttons(title="Add Payment" type="primary" @click="toggleNewMethod()")
+        c-button.col-1.buttons(title="Add Payment" @click="toggleNewMethod()")
       div.payment-content.grid-6(v-for="(payment, index) in payments")
         div.col-1.icon-content
           icon(name="creditcard" size="huge")
@@ -19,27 +19,27 @@ card-container(title="Billing")
         div.col-1(v-else)
         c-button.col-1(title="Delete"  @click="deletePayment(payment.id)")
       div.grid-6.sub-header
-        h4.col-3 Invoices
+        h3.col-3 Invoices
         c-table(v-bind="{columns, documents: invoices}")
     template(v-else)
       div.grid-6.sub-header
-        h4.col-3 Client Billing
+        h3.col-3 Clinet Billing
         div.col-2
-        c-button.col-1.buttons(title="Add Bank Account" type="primary" @click="clientBilling()")
-      template(v-if="linkaccount.account")
-        div.payment-content.grid-6(v-for="(account, index) in linkaccount.account")
-          div.col-1.icon-content
-            icon(name="creditcard" size="huge")
-          div.col-3
-            h4 Bank account
-            h4 ******** {{ account.last4 }}
-          // c-button.col-1(title="Make Primary" v-if="!account.primary" @click="makeAccountPrimary(account.accountId)")
-          c-button.col-1(title="Edit")
-          c-button.col-1(title="Remove")
+        c-button.col-1.buttons(title="Add Bank Account" @click="clientBilling()")
+      //- template(v-if="linkaccount.account")
+      //-   div.payment-content.grid-6(v-for="(account, index) in linkaccount.account")
+      //-     div.col-1.icon-content
+      //-       icon(name="creditcard" size="huge")
+      //-     div.col-3
+      //-       h4 Bank account
+      //-       h4 ******** {{ account.last4 }}
+      //-     // c-button.col-1(title="Make Primary" v-if="!account.primary" @click="makeAccountPrimary(account.accountId)")
+      //-     c-button.col-1(title="Edit")
+      //-     c-button.col-1(title="Remove")
       div.grid-6.sub-header
-        h4.col-3 Payment Method
+        h3.col-3 Payment Method
         div.col-2
-        c-button.col-1.buttons(title="Add Payment" type="primary" @click="toggleNewMethod()")
+        c-button.col-1.buttons(title="Add Payment" @click="toggleNewMethod()")
       div.payment-content.grid-6(v-for="(payment, index) in payments")
         div.col-1.icon-content
           icon(name="creditcard" size="huge")
@@ -51,7 +51,7 @@ card-container(title="Billing")
         div.col-1(v-else)
         c-button.col-1(title="Delete")
       div.grid-6.sub-header
-        h4.col-3 Invoices
+        h3.col-3 Invoices
         c-table(v-bind="{columns, documents: invoices}")
 c-modal(title="Add Billing Method" v-model="isNewMethodVisible")
   template(#content)
@@ -248,7 +248,8 @@ export default {
       {
         unsortable: true,
         cell: 'CellDropdown',
-        meta: { actions: [{ title: 'Download', action: handleDownload }] }
+        meta: { actions: [{ title: 'Download', action: handleDownload }] },
+        align: 'right'
       }
     ]
 
@@ -349,8 +350,9 @@ export default {
 </script>
 <style lang="stylus" scoped>
 .sub-header
-  h4
-    font-weight: 700
+  h3
+    font-weight: bold
+    font-size: 1.25em
   .buttons
     display: flex;
     justify-content: center;

@@ -94,12 +94,6 @@ const RecordsOverview = () => import('~/pages/Records/RecordsOverview.vue')
 const _OrganizationEntry = () => import('~/pages/Organization/_OrganizationEntry.vue')
 const OrganizationOverview = () => import('~/pages/Organization/OrganizationOverview.vue')
 
-// personal trade monitoring
-const _TradeEntry = () => import('~/pages/Trade/_TradeEntry.vue')
-const TradeTransaction = () => import('~/pages/Trade/TradeTransaction.vue')
-const TradeAccount = () => import('~/pages/Trade/TradeAccount.vue')
-const TradeMonitor = () => import('~/pages/Trade/TradeMonitor.vue')
-
 // code of ethics
 const _EthicsEntries = () => import('~/pages/Ethics/_EthicsEntries.vue')
 const EthicsEntries = () => import('~/pages/Ethics/EthicsEntries.vue')
@@ -614,7 +608,7 @@ const routes = [
             ]
           },
           {
-            path: 'billplan',
+            path: 'plans',
             name: 'BillingPlan',
             component: SettingsBillingPlan,
             meta: {
@@ -630,29 +624,6 @@ const routes = [
               title: 'Plan',
               sidebar: false
             }
-          },
-          {
-            path: 'trade',
-            component: _TradeEntry,
-            meta: { title: 'Personal Trade Monitoring' },
-            children: [
-              {
-                path: '',
-                name: 'TradeTransaction',
-                component: TradeTransaction,
-                meta: { title: 'Transactions' }
-              }, {
-                path: 'accounts',
-                name: 'TradeAccount',
-                component: TradeAccount,
-                meta: { title: 'Accounts' }
-              }, {
-                path: 'monitors',
-                name: 'TradeMonitor',
-                component: TradeMonitor,
-                meta: { title: 'Monitor List' }
-              }
-            ]
           },
           {
             path: 'ethicsEntries',

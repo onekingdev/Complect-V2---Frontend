@@ -4,7 +4,6 @@
   .upgrade-content
     .upgrade-title Get hired for your next big job.
     .upgrade-description Sign up for a Complect PRO Specialist account and unlock the compliance job board, client compliance program management, and automated invoicing.
-  .upgrade-tag Upgrade Now will take them to a pricing page/checkout
   .upgrade-action
     c-button(title="Upgrade Now" type="primary" iconR="chevron-right")
 .view
@@ -101,13 +100,6 @@ export default {
       font-size: 1.5em
     .upgrade-description
       font-size: 0.875em
-  .upgrade-tag
-    width: 15.3em
-    font-size: 0.875em
-    border: 2px solid var(--c-gold)
-    border-radius: 4px
-    padding: 1.25em 0.8em
-    line-height: 1em
 .view
   padding: 2em
   display: flex

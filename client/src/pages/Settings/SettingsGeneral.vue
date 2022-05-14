@@ -1,13 +1,14 @@
 <template lang="pug">
 card-container(title="General")
   template(#content)
-    form.form-container.width-50(@submit.prevent)
+    .width-50.grid-6
       h3 Location
-      c-select(label="Time Zone" :data="timezones" :errors="errors.timezone" v-model="profile.timezone" required searchable)
-      c-select(label="Country" :data="countries" v-model="profile.country" searchable)
-      c-field(label="State" v-model.trim="profile.state")
-      c-field(label="City" v-model.trim="profile.city")
-      c-field(label="Phone Number" type="number" v-model="profile.tel")
+      c-address.col-3(label="Business Address" v-model="profile.address" required)
+      c-field.col-3(label="Apt/Unit" v-model="profile.apt_unit" required)
+      c-field.col-3(label="City" v-model.trim="profile.city" required)
+      c-field.col-3(label="State" v-model.trim="profile.state" required)
+      c-select.col-3(label="Time Zone" :data="timezones" v-model="profile.time_zone" searchable required)
+      c-field.col-3(label="Phone Number" type="number" v-model="profile.phone_number" required)
       .actions
         c-button(title="Cancel" type="link" @click="clearData()")
         c-button(title="Save" type="primary" @click="saveInformation()")
@@ -16,6 +17,7 @@ card-container(title="General")
 <script>
 import { ref, inject } from 'vue'
 import cSelect from '~/components/Inputs/cSelect.vue'
+import cAddress from '~/components/Inputs/cAddress.vue'
 import { timezones, countries } from '~/data/static.js'
 
 import useProfile from '~/store/Profile.js'
@@ -26,22 +28,24 @@ import { required } from '@vuelidate/validators'
 import { notifyMessages } from '~/data/notifications.js'
 
 const INIT_FORM = {
-  timezone: '',
-  country: '',
-  state: '',
+  address: '',
+  apt_unit: '',
   city: '',
-  tel: ''
+  state: '',
+  country: '',
+  time_zone: '',
+  phone_number: ''
 }
 
 export default {
-  components: { cSelect },
+  components: { cSelect, cAddress },
   setup () {
     const { profile, updateProfile } = useProfile()
     const { onboarding } = useAuth()
     const notification = inject('notification')
     const errors = ref({})
 
-    const rules = { timezone: { required } }
+    const rules = { time_zone: { required } }
 
     const clearData = () => updateProfile(INIT_FORM)
 
@@ -82,3 +86,11 @@ export default {
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+.card-container
+  min-height: 100%
+  h3
+    font-size: 1.25em
+    font-weight: bold
+</style>

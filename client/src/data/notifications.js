@@ -398,10 +398,6 @@ const notifyMessages = {
     password: {
       success: 'Password has been updated.',
       error: 'Password has not been updated. Please try again'
-    },
-    otp: {
-      success: 'New verification code has been sent.',
-      error: 'New verification code has not been sent. Please try again.'
     }
   },
   experience: {

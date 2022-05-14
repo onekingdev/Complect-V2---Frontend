@@ -23,7 +23,7 @@ export default {
   width: 100%
   height: 100%
   display: flex
-  padding: 2em 2em 0
+  padding: 2em
   gap: 2em
   .market-filter
     width: 20%

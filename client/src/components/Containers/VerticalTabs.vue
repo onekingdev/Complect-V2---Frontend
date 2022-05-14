@@ -1,5 +1,5 @@
 <template lang="pug">
-.verticals-tabs-container
+.vertical-tabs
   .container-tabs(v-if="$slots['tabs']")
     slot(name="tabs")
   .container-content
@@ -11,17 +11,18 @@ export default {}
 </script>
 
 <style lang="stylus" scoped>
-.verticals-tabs-container
+.vertical-tabs
   width: 100%
   height: 100%
   display: grid
   grid-template-columns: auto 1fr
   grid-template-rows: auto
-  gap: 1em
+  gap: 2.5em
   position: relative
   .container-tabs, .container-content
     max-height: 100%
   .container-tabs
+    width: 16.4em
     display: flex
     flex-direction: column
     gap: 0.5em

@@ -1,10 +1,9 @@
 <template lang="pug">
-.page
-  vertical-tabs
-    template(#tabs)
-      router-link(v-for="(tab, index) in tabs" :key="index" :to="{name: tab.routeName}") {{ $locale(tab.title)}}
-    template(#content)
-      router-view
+vertical-tabs.page
+  template(#tabs)
+    router-link(v-for="(tab, index) in tabs" :key="index" :to="{name: tab.routeName}") {{ $locale(tab.title)}}
+  template(#content)
+    router-view
 </template>
 
 <script>
@@ -32,11 +31,7 @@ export default {
         routeName: 'SettingsGeneral'
       },
       {
-        title: 'Users',
-        routeName: 'SettingsUsersDirectory'
-      },
-      {
-        title: 'Roles and Permissions',
+        title: 'Client Permissions',
         routeName: 'SettingsRoles'
       },
       {
@@ -60,7 +55,10 @@ export default {
 
 <style lang="stylus" scoped>
 .page
+  min-width: 1000px
   padding: 2em
+  :deep(.container-tabs a)
+    text-align: left
   :deep(.container-content)
     overflow: revert;
 </style>

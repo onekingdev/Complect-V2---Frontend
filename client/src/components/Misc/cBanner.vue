@@ -1,7 +1,5 @@
 <template lang="pug">
 .c-banner(:class="type")
-  .c-banner-icon(v-if="icon")
-    icon(:name="icon" size="medium")
   .c-banner-content
     .title(v-if="title") {{ title }}
     .message {{ message }}
@@ -15,10 +13,6 @@ export default {
     type: {
       type: String,
       default: 'info'
-    },
-    icon: {
-      type: String,
-      default: ''
     },
     title: {
       type: String,
@@ -69,7 +63,4 @@ export default {
   &.error
     border-color: var(--c-error)
     background: #fddee3
-  &.review
-    border-color: var(--c-yellow-500)
-    background: #fff9EA
 </style>
