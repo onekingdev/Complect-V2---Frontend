@@ -84,32 +84,6 @@ const sidebarHomeNavigation = [
         view: 'RisksOverview'
       }
     ]
-  }, {
-    title: 'Code of ethics',
-    icon: 'newspaper-white',
-    links: [
-      {
-        title: 'Personal Trade Monitoring',
-        view: 'EthicsEntries',
-        active: true,
-        type: 'trade'
-      }, {
-        title: 'Attestations',
-        view: 'EthicsEntries',
-        active: true,
-        type: 'attestation'
-      }, {
-        title: 'Logs',
-        view: 'EthicsEntries',
-        active: true,
-        type: 'logs'
-      }, {
-        title: 'Pre-Approvals',
-        view: 'EthicsEntries',
-        active: true,
-        type: 'approval'
-      }
-    ]
   }
 ]
 
@@ -153,28 +127,31 @@ const sidebarReportsSpecialistNavigation = [{
   }]
 }]
 
-const _devModeNavigation = {
-  title: 'Components',
-  icon: 'components',
+const sidebarEthicNavigation = {
+  title: 'Code of ethics',
+  icon: 'newspaper-white',
   links: [
     {
-      title: 'Inputs',
-      view: 'devInputsButtons'
+      title: 'Personal Trade Monitoring',
+      view: 'TradeTransaction'
     }, {
-      title: 'Data',
-      view: 'devDataModel'
+      title: 'Attestations',
+      view: 'EthicsEntries',
+      active: true,
+      type: 'attestation'
     }, {
-      title: 'Table',
-      view: 'devTableGeneral'
+      title: 'Logs',
+      view: 'EthicsEntries',
+      active: true,
+      type: 'logs'
     }, {
-      title: 'Additional',
-      view: 'devAdditionalIcons'
+      title: 'Pre-Approvals',
+      view: 'EthicsEntries',
+      active: true,
+      type: 'approval'
     }
   ]
 }
-
-// enable Components Navigation section in sidebar menu
-if (import.meta.env.VITE_STAGE === 'dev') sidebarHomeNavigation.push(_devModeNavigation)
 
 export default function useNavigation () {
   return {
@@ -184,6 +161,7 @@ export default function useNavigation () {
     sidebarDocumentsNavigation,
     sidebarReportsNavigation,
     sidebarReportsSpecialistNavigation,
-    sidebarNavigation
+    sidebarNavigation,
+    sidebarEthicNavigation
   }
 }

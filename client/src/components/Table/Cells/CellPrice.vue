@@ -16,5 +16,5 @@ export default {
 
 <style lang="stylus" scoped>
 .cell-price
-  text-align: right
+  text-align: left
 </style>

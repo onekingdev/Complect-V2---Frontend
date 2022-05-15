@@ -1,6 +1,6 @@
 <template lang="pug">
 .tag-input(:class="[{expanded: datalistVisible}, dropdownListDirection]" ref="selectComponent")
-  input(type="text" :placeholder="placeholder" style="" @keydown.enter="addTag(newTag)" @keydown.prevent.tab="addTag(newTag)" v-model="newTag" :style="{'padding-left': `${paddingLeft}px`}" @input="showDropdownList()")
+  input(type="text" :placeholder="value.length? '' : placeholder" style="" @keydown.enter="addTag(newTag)" @keydown.prevent.tab="addTag(newTag)" v-model="newTag" :style="{'padding-left': `${paddingLeft}px`}" @input="showDropdownList()")
   .selected-items(ref="tagUI")
     .item(v-for="item in value" v-if="value.length" )
       .title {{item}}

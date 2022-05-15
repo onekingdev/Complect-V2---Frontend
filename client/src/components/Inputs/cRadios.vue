@@ -39,6 +39,7 @@ export default {
 <style lang="stylus" scoped>
 .c-radios
   user-select: none
+  font-size: 0.875em
   label.c-radio
     flex: 1 0 0
     display: flex

@@ -40,9 +40,11 @@ export default {
         const endsToday = dayjs(event.endsAt).isSame(props.day.dateFull, 'day')
         const isWeekStart = dayjs(props.day.dateFull).day() === WEEK_FIRST_DAY
         const showTitle = startsToday || (dayjs(event.startsAt).isBefore(props.day.dateFull, 'day') && isWeekStart)
+        const spansFromYesterday = !isWeekStart && !startsToday
         const cssClasses = {
           'event-starts-not-today event-cover-grid-line-left': !startsToday,
-          'event-ends-not-today': !endsToday
+          'event-ends-not-today': !endsToday,
+          'event-from-yesterday': spansFromYesterday
         }
         return { ...event, startsToday, cssClasses, showTitle }
       })

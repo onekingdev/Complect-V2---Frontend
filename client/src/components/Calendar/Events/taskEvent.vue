@@ -49,4 +49,6 @@ export default {
   background: #1AB27F
   &.assigned
     background: #BE30AA
+.task-event.event-from-yesterday
+  margin-left: -1px
 </style>

@@ -34,4 +34,6 @@ export default {
 <style lang="stylus" scoped>
 .project-event
   background: #0479FF
+.project-event.event-from-yesterday
+  margin-left: -1px
 </style>
