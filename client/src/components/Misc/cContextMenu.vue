@@ -40,7 +40,7 @@ export default {
     white-space: nowrap
   .list
     position: absolute
-    z-index: 1
+    z-index: 15
     top: 0
     left: 60%
     background: #fff

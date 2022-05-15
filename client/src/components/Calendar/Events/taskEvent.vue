@@ -1,5 +1,5 @@
 <template lang="pug">
-.event.task-event(@click="openTaskModal()" :class="[type, {overdue, completed}, event.cssClasses]")
+.event.task-event(@click="openTaskModal()" :class="[type, {overdue, completed}, event.cssClasses]" :style="event.titleWidthStyle")
   icon(v-if="event.startsToday && overdue" name="warning")
   icon(v-if="event.startsToday" name="calendar-task")
   icon(v-if="event.startsToday && linked" :name="`calendar-${linked}`")
@@ -49,6 +49,4 @@ export default {
   background: #1AB27F
   &.assigned
     background: #BE30AA
-.task-event.event-from-yesterday
-  margin-left: -1px
 </style>

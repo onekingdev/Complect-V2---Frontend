@@ -1,5 +1,5 @@
 <template lang="pug">
-router-link(:to="{name: 'ProjectDetail', params: {id: id}}")
+router-link(:to="{name: 'ProjectDetail', params: {id: id}}" :style="event.titleWidthStyle" :class="{'event-title-long': event.showTitle}")
   .event.project-event(:class="[type, {overdue, completed}, event.cssClasses]")
     icon(v-if="event.startsToday" name="calendar-project")
     .title {{event.showTitle ? title : '&nbsp;'}}
@@ -34,6 +34,4 @@ export default {
 <style lang="stylus" scoped>
 .project-event
   background: #0479FF
-.project-event.event-from-yesterday
-  margin-left: -1px
 </style>
