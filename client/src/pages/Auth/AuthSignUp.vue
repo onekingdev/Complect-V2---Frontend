@@ -97,7 +97,6 @@ export default {
       } catch (error) {
         console.log(error)
         if (error) Object.assign(errors.value, error)
-        if (error.email) Object.assign(errors.value, { email: ['Email already in use'] })
         notification({
           type: 'error',
           title: 'Error',
