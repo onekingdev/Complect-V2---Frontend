@@ -69,7 +69,7 @@ export default function useAuth () {
   }
 
   const reset = async email => {
-    const result = await authServer({ path: 'users/password', data: { user: { email } } })
+    const result = await authServer({ path: 'reset', data: { email } })
     if (!result.ok) throw result.message
   }
 
@@ -113,8 +113,6 @@ export default function useAuth () {
 
   const signOut = async () => {
     localStorage.removeItem('auth_token')
-    sessionStorage.removeItem('onboarding')
-    sessionStorage.removeItem('registration')
     setUserIdState('')
     await router.push({ name: 'AuthSignIn' })
     profile.value = {}

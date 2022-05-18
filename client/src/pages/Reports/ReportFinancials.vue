@@ -129,9 +129,10 @@ export default {
     &:last-child
       border-right: none
     .title
-      font-size: 0.7em
+      font-size: 0.75em
       color: var(--c-grey)
     .amount
+      font-size: 1.25em
       font-weight: bold
 .budget
   margin: 1.5em 0

@@ -4,23 +4,18 @@
     .logo
       icon(name="logo")
       icon(name="brandname")
-    c-button(title="Sign Up" type="primary" @click="goToSignUp()" v-if="isSignIn")
-    c-button(title="Sign In" type="primary" @click="goToSignIn()" v-else)
+    c-button(title="Sign In" type="primary" @click="goToSignIn()")
   .container
     router-view
 </template>
 
 <script>
-import { computed } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 export default {
   setup () {
     const router = useRouter()
-    const route = useRoute()
-    const isSignIn = computed(() => route.name === 'AuthSignIn')
     const goToSignIn = () => router.push({ name: 'AuthSignIn' })
-    const goToSignUp = () => router.push({ name: 'AuthSignUp' })
-    return { goToSignIn, isSignIn, goToSignUp }
+    return { goToSignIn }
   }
 }
 </script>

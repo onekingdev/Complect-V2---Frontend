@@ -14,7 +14,7 @@
     gap: 2em
     align-items: center
     border-bottom: 1px solid var(--c-border)
-    margin-bottom: 2em
+    margin-bottom: 1.25em
     :deep(a)
       color: #343741
       padding-bottom: 0.7em

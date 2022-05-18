@@ -1,6 +1,6 @@
 <template lang="pug">
 .c-avatar(:class="[shape, size]")
-  img.c-avatar-photo(v-show="loaded" :src="avatar" loading="lazy" :alt="`${firstName} ${lastName}`" @load="onImgLoad()")
+  img.c-avatar-photo(v-show="loaded" :src="avatar" loading="lazy" :alt="alt" @load="onImgLoad()")
   .c-avatar-initials(v-show="!loaded") {{initials}}
 </template>
 
@@ -17,11 +17,18 @@ export default {
     },
     firstName: {
       type: String,
-      required: true
+      required: false,
+      default: ''
     },
     lastName: {
       type: String,
-      required: true
+      required: false,
+      default: ''
+    },
+    businessName: {
+      type: String,
+      required: false,
+      default: null
     },
     size: {
       type: String,
@@ -36,11 +43,13 @@ export default {
   },
   setup (props) {
     const loaded = ref(false)
-    const initials = computed(() => props.firstName.charAt(0) + props.lastName.charAt(0))
+    const initials = computed(() => props.businessName ? props.businessName.charAt(0) : props.firstName.charAt(0) + props.lastName.charAt(0))
+    const alt = computed(() => props.businessName ? props.businessName : `${props.firstName} ${props.lastName}`)
     const onImgLoad = () => loaded.value = true
     return {
       initials,
       loaded,
+      alt,
       onImgLoad
     }
   }

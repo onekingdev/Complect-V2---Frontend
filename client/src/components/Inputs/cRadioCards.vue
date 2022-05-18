@@ -51,11 +51,9 @@ export default {
 <style lang="stylus" scoped>
 .c-radio-card
   display: flex
-  gap: 1.5em
-  margin: 1em 0 0 0
-  max-width: 60em
+  gap: 0.625em
   label.radio-card
-    flex: 1 0 0
+    width: 15.625em
     display: flex
     input
       height: 0
@@ -64,7 +62,7 @@ export default {
       display: none
     .option
       display: flex
-      align-items: center
+      align-items: flex-start
       gap: 0.7em
       padding: 1em
       width: 100%

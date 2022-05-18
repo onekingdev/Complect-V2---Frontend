@@ -1,15 +1,17 @@
 <template lang="pug">
-section.grid-6
-  h3 Your Hourly Rate
-  c-field.col-full(label="Hourly Rate" type="number" :errors="errors.rate" v-model="form.rate" required)
-  div.perhour Per hour
-  .divider
-  h3 Experience Level
-  c-radio-cards(id="experience" :data="experienceOptions" v-model="form.experience")
-  .divider
-  h3 Name Settings
-  c-radios(id="regulator" :data="radioOptions" v-model="form.showFullName")
+.profile.grid-6
+  .setting-item
+    h3 Your Hourly Rate
+    c-field(label="Hourly Rate" type="number" placeholder="Hourly Rate" :errors="errors.rate" v-model="form.rate" required)
+    div.hint Per hour
+  .setting-item
+    h3 Experience Level
+    c-radio-cards(id="experience" :data="experienceOptions" v-model="form.experience")
+  .setting-item
+    h3 Name Settings
+    c-radios(id="regulator" :data="radioOptions" v-model="form.showFullName")
   .controls
+    c-button(type="link" title="Cancel")
     c-button(type="primary" title="Save" @click="saveInformation('company')")
 </template>
 
@@ -84,11 +86,18 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.perhour
-  margin-top: -0.7em;
-  font-size: 0.7em;
-.controls
-  grid-column: 1 / -1
-  justify-content: flex-end
-  display: flex
+.profile
+  .setting-item
+    padding-bottom: 1em
+    border-bottom: 1px solid var(--c-border)
+    h3
+      font-size: 1.25em
+      font-weight: bold
+      margin-bottom: 1em
+    .hint
+      font-size: 0.75em
+      color: var(--c-grey)
+  .controls
+    display: flex
+    justify-content: flex-end
 </style>

@@ -15,7 +15,7 @@ market-container
             c-checkbox.filter-value(label="Hourly" v-model="filterValues['jobtype']" value="hourly" multiple)
         .filter-content.border-bottom
           .filter-title-content(@click="toggleShowStatus('level')")
-            .filter-title EXPERIENCE LEVEL
+            .filter-title EXPEREINCE LEVEL
             .filter-icon
               icon(name="chevron-up" size="small" v-if="filterShow['level']")
               icon(name="chevron-down" size="small" v-if="!filterShow['level']")

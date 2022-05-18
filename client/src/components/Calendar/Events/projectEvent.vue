@@ -1,5 +1,5 @@
 <template lang="pug">
-router-link(:to="{name: 'ProjectDetail', params: {id: id}}" :style="event.titleWidthStyle" :class="{'event-title-long': event.showTitle}")
+router-link(:to="{name: 'ProjectDetail', params: {id: id}}")
   .event.project-event(:class="[type, {overdue, completed}, event.cssClasses]")
     icon(v-if="event.startsToday" name="calendar-project")
     .title {{event.showTitle ? title : '&nbsp;'}}

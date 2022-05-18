@@ -2,13 +2,13 @@
 div.setup-div
   div.logo-setting
     h2 Logo
-    p.setting-text Upload the logo that will show up on the cover page of your compliance manual. The logo should be visible on white (recommended).
+    p.setting-text Upload the logo that will show up on the cover page of your compliance manual(Logo visible on white recommended)
     c-upload(v-model:modelValue="policyForm.fileName")
   div.display-setting
     h2 Display Settings
     p.setting-text Select what you want to display on the cover page
     c-checkbox.checkboxes(v-for="(checkbox, index) in arrayCheckboxes" :key="index" :label="checkbox.label" :value="checkbox.value" v-model="policyForm.checkedValues" multiple)
-    c-textarea.text-area(placeholder="Enter Something" v-model="policyForm.disclosureValue")
+    c-textarea.text-area(placeholder="Enter Something" v-model="policyForm.discluserValue")
     c-button.action-buttons(title="Save" type="primary inline-button" @click="saveSettings()")
     c-button.action-buttons(title="Reset" @click="resetSettings()" type="inline-button default")
 </template>
@@ -27,20 +27,20 @@ export default {
     const policySetting = new UseData('policy_settings')
     const notification = inject('notification')
     const arrayCheckboxes = ref([
-      { label: 'Address', value: 'address' }, { label: 'Phone Number', value: 'phone' }, { label: 'Contact Email', value: 'email' }, { label: 'Disclosure', value: 'disclosure' }
+      { label: 'Address', value: 'address' }, { label: 'Phone Number', value: 'phone' }, { label: 'Contact Email', value: 'email' }, { label: 'Disclouser', value: 'disclouser' }
     ])
 
     // const policyForm = computed( () => policySetting.value.filter.( document => document.policyId ==  ) );
     const policyForm = ref({
       fileName: '',
       checkedValues: [],
-      disclosure: ''
+      disclouser: ''
     })
 
     const resetSettings = () => {
       policyForm.value.fileName = ''
       policyForm.value.checkedValues = []
-      policyForm.value.disclosure = ''
+      policyForm.value.disclouser = ''
     }
     const saveSettings = async () => {
       try {

@@ -2,7 +2,7 @@
 input(v-if="!value.length" type="text" :placeholder="placeholder" readonly)
 .selected-items(v-else)
   .item(v-for="item in value")
-    .title(v-if="item") {{item.title}}
+    .title {{item.title}}
     //- icon(name="close" @click="removeSelected(item.value)") // need to fix
 </template>
 

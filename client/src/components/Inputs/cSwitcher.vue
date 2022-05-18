@@ -56,7 +56,7 @@ export default {
     margin-bottom: 0.2em
     color: #666
   .c-switcher-items
-    font-size: 1em
+    font-size: 0.9em
     line-height: 1
     display: flex
     overflow: hidden
@@ -80,7 +80,7 @@ export default {
       justify-content: center
       background: #fff
       color: #1b1c29
-      padding: 0.7em 1.25em
+      padding: 0.5em 0.7em
       svg.icon
         width: 1em
         height: 1em
@@ -93,7 +93,6 @@ export default {
           margin-left: 0.7em
     input:checked + .option
       background: #1F80C1
-      font-weight: 700
       color: #fff
       &.primary
         background: var(--c-text)

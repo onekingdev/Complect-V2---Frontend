@@ -1,0 +1,73 @@
+data:
+  name: ${opt:stage, 'dev'}-api--data
+  handler: src/functions/data.router
+  description: Basic Data API endpoints
+  tags:
+    website: Complect App
+    type: API
+    subtype: Data
+  layers:
+    - {Ref: BaseLibsLambdaLayer}
+    - {Ref: PaymentLibsLambdaLayer}
+  events:
+    - http:
+        path: data/{collection}
+        method: post
+        cors: true
+
+    - http:
+        path: data/{collection}
+        method: get
+        cors: true
+    
+    - http:
+        path: data/{collection}/{_id}
+        method: get
+        cors: true
+
+    - http:
+        path: data/{collection}/{_id}
+        method: put
+        cors: true
+
+    - http:
+        path: data/{collection}
+        method: delete
+        cors: true
+    
+    - http:
+        path: data/{collection}/{_id}
+        method: delete
+        cors: true
+updatePosition:
+  name: ${opt:stage, 'dev'}-api--position
+  handler: src/functions/data.updatePosition
+  description: End Point for Update Policy Position
+  tags:
+    website: Complect App
+    type: API
+    subtype: Data
+  layers:
+    - {Ref: BaseLibsLambdaLayer}
+    - {Ref: PaymentLibsLambdaLayer}
+  events:
+    - http:
+        path: reorder
+        method: post
+        cors: true
+financialReports:
+  name: ${opt:stage, 'dev'}-api--financial
+  handler: src/functions/data.financialReports
+  description: End Point for Financial Reports
+  tags:
+    website: Complect App
+    type: API
+    subtype: Data
+  layers:
+    - {Ref: BaseLibsLambdaLayer}
+    - {Ref: PaymentLibsLambdaLayer}
+  events:
+    - http:
+        path: report/financial
+        method: post
+        cors: true

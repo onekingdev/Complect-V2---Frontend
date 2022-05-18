@@ -1,5 +1,5 @@
 <template lang="pug">
-.event.task-event(@click="openTaskModal()" :class="[type, {overdue, completed}, event.cssClasses]" :style="event.titleWidthStyle")
+.event.task-event(@click="openTaskModal()" :class="[type, {overdue, completed}, event.cssClasses]")
   icon(v-if="event.startsToday && overdue" name="warning")
   icon(v-if="event.startsToday" name="calendar-task")
   icon(v-if="event.startsToday && linked" :name="`calendar-${linked}`")
