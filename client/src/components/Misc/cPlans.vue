@@ -1,13 +1,15 @@
 <template lang="pug">
 .c-plans
   .plan-card.card-style(v-for="(plan, index) in plans" :key="index" :class="[plan.key]")
-
-    template(v-if="currentPlan == plan.price[0] || currentPlan == plan.price[1]")
-      c-button(title="Current Plan" type="primary")
-    template(v-else-if="currentPlan < plan.price[0] || currentPlan < plan.price[1]")
-      c-button(title="Upgrade Plan" type="plan" @click="selectPlan(plan.key, true)")
+    template(v-if="currentPlanPrice")
+      template(v-if="currentPlanPrice == plan.price[0] || currentPlanPrice == plan.price[1]")
+        c-button(title="Current Plan" type="primary")
+      template(v-else-if="currentPlanPrice < plan.price[0] || currentPlanPrice < plan.price[1]")
+        c-button(title="Upgrade Plan" type="plan" @click="selectPlan(plan.key, true)")
+      template(v-else)
+        c-button(title="Downgrade Plan" type="plan" @click="selectPlan(plan.key)")
     template(v-else)
-      c-button(title="Downgrade Plan" type="plan" @click="selectPlan(plan.key)")
+      c-button(title="Select Plan" type="plan" @click="selectPlan(plan.key, true)")
 
     .header
       .title {{plan.title}}
@@ -15,7 +17,7 @@
     .price
       template(v-if="plan.price[0]")
         template(v-if="annually")
-          template(v-if="type == 'specialist'")
+          template(v-if="type === 'specialist'")
             .per-year-big ${{plan.price[0]}}/year
           template(v-else)
             .per-month
@@ -31,7 +33,7 @@
         .per-month FREE
         .users(v-if="plan.users") {{plan.users[0]}}
 
-    .benefits
+    .benefits(:class="{ 'free-year-plan': !plan.price[0] && annually && type !== 'specialist' }")
       .benefit(v-for="(benefit, index) in plan.benefits" :key="index")
         icon(name="success")
         .desctiption(v-html="benefit")
@@ -53,11 +55,11 @@ export default {
       default: ''
     },
     annually: Boolean,
-    currentPlan: {
+    currentPlanPrice: {
       type: [
         String, Number
       ],
-      default: '0'
+      default: ''
     }
   },
   emits: [
@@ -89,6 +91,8 @@ export default {
     min-width: 18em
     max-width: 24em
     padding: 2em 2em 4em
+    .c-button
+      box-shadow: 0 0 0 1px var(--c-border)
     .title
       font-size: 1.3em
       font-weight: bold
@@ -116,6 +120,8 @@ export default {
         color: #797b7e
     .benefits
       border-top: 1px solid var(--c-border)
+      &.free-year-plan
+        margin-top: 1.5em
       .benefit
         display: flex
         gap: 0.7em

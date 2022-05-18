@@ -88,6 +88,7 @@ export default {
   gap: 1.25em
   padding: 1.5em
   border: 1px solid var(--c-border)
+  border-radius: 0.25em
   background: white
   min-width: 44em
   .icon

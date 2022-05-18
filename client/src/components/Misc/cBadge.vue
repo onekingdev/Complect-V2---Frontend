@@ -56,6 +56,12 @@ export default {
   &.reviewed
     background: #E8FBF5
     color: #0EA472
+  &.buy
+    background: #E8FBF5
+    color: #0EA472
+  &.sell
+    background: #FFE5EA
+    color: #CE1938
   &.risk0
     background: #1ab27f
     color: #fff

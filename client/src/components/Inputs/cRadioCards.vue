@@ -62,7 +62,7 @@ export default {
       display: none
     .option
       display: flex
-      align-items: flex-start
+      align-items: center
       gap: 0.7em
       padding: 1em
       width: 100%
