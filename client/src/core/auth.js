@@ -30,8 +30,7 @@ export default function useAuth () {
 
   const registration = async data => {
     const result = await authServer({ path: 'users', data })
-    if (!result.message) throw new Error(result.error || 'Unknown error')
-    if (result.message !== 'Signed up.') throw result.message
+    if (result.errors) throw result.errors
   }
 
   const onboarding = async form => {
@@ -70,7 +69,7 @@ export default function useAuth () {
 
   const reset = async email => {
     const result = await authServer({ path: 'users/password', data: { user: { email } } })
-    if (!result.ok) throw result.message
+    if (result.errors) throw result.errors
   }
 
   const restoreSession = async () => {

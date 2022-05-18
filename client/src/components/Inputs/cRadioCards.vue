@@ -51,9 +51,11 @@ export default {
 <style lang="stylus" scoped>
 .c-radio-card
   display: flex
-  gap: 0.625em
+  gap: 1.5em
+  margin: 1em 0 0 0
+  max-width: 60em
   label.radio-card
-    width: 15.625em
+    flex: 1 0 0
     display: flex
     input
       height: 0

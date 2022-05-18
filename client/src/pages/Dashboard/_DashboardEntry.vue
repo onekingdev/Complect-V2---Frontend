@@ -18,7 +18,7 @@
         collapse-container(title="Tasks")
           template(#content)
             c-table(v-bind="{columns, documents}")
-        collapse-container(title="Jobs")
+        collapse-container(title="Projects")
           template(#content)
             c-table(v-bind="{columns, documents: projectDocuments}")
 </template>
@@ -64,11 +64,11 @@ export default {
 
     const projectDocuments = ref([
       {
-        name: 'Job 1',
+        name: 'Projects 1',
         ends_on: 1647000337214
       },
       {
-        name: 'Job 2',
+        name: 'Projects 2',
         ends_on: 1647000337214
       }
     ])
@@ -88,9 +88,7 @@ export default {
   gap: 1.25em
   padding: 1.5em
   border: 1px solid var(--c-border)
-  border-radius: 0.25em
   background: white
-  min-width: 44em
   .icon
     width: 3em !important
     height: 3em !important

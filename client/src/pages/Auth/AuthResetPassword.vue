@@ -13,16 +13,18 @@ card-container.reset-password
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 import useAuth from '~/core/auth'
 import { required, email } from '@vuelidate/validators'
 import { validates } from '~/core/utils.js'
 import { useRouter } from 'vue-router'
+import { notifyMessages } from '~/data/notifications.js'
 
 export default {
   setup () {
     const router = useRouter()
     const resetEmail = ref('')
+    const notification = inject('notification')
     const { reset } = useAuth()
     const errors = ref({})
     const rules = { resetEmail: { required, email } }
@@ -33,6 +35,11 @@ export default {
 
       try {
         await reset(resetEmail.value)
+        notification({
+          type: 'success',
+          title: 'Success',
+          message: notifyMessages.profile.reset.success
+        })
       } catch (error) {
         Object.assign(errors.value, { resetEmail: ['Invalid email address'] })
         console.error(error)

@@ -13,7 +13,7 @@ export default {}
 <style lang="stylus" scoped>
 .vertical-tabs
   width: 100%
-  min-height: 100%
+  height: 100%
   display: grid
   grid-template-columns: auto 1fr
   grid-template-rows: auto

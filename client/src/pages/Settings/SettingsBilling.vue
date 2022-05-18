@@ -23,7 +23,7 @@ card-container(title="Billing")
         c-table(v-bind="{columns, documents: invoices}")
     template(v-else)
       div.grid-6.sub-header
-        h3.col-3 Client Billing
+        h3.col-3 Clinet Billing
         div.col-2
         c-button.col-1.buttons(title="Add Bank Account" @click="clientBilling()")
       //- template(v-if="linkaccount.account")
@@ -34,15 +34,12 @@ card-container(title="Billing")
       //-       h4 Bank account
       //-       h4 ******** {{ account.last4 }}
       //-     // c-button.col-1(title="Make Primary" v-if="!account.primary" @click="makeAccountPrimary(account.accountId)")
-      //-     .actions.col-2
-      //-       c-button.col-1(title="Edit")
-      //-       c-button.col-1(title="Remove")
-      div.blank-card No payment methods
+      //-     c-button.col-1(title="Edit")
+      //-     c-button.col-1(title="Remove")
       div.grid-6.sub-header
         h3.col-3 Payment Method
         div.col-2
         c-button.col-1.buttons(title="Add Payment" @click="toggleNewMethod()")
-      div.blank-card No payment methods
       div.payment-content.grid-6(v-for="(payment, index) in payments")
         div.col-1.icon-content
           icon(name="creditcard" size="huge")
@@ -357,8 +354,8 @@ export default {
     font-weight: bold
     font-size: 1.25em
   .buttons
-    display: flex
-    justify-content: center
+    display: flex;
+    justify-content: center;
 .payment-content
   border: 1px solid var(--c-border)
   border-radius: 5px
@@ -367,8 +364,6 @@ export default {
     display: flex
     align-items: center
     justify-content: center
-  .actions
-    gap: 0.75em
 .stripe-content
   box-sizing: border-box
   height: 2.5em
@@ -382,7 +377,7 @@ export default {
 .card-billing
   cursor: pointer
   border: 1px solid var(--c-border)
-  border-radius: 5px
+  border-radius: 5px;
   padding: 2em 1.25em
   .billing-icon
     align-items: center
@@ -390,10 +385,4 @@ export default {
     display: flex
   h4
     font-size: 0.875em
-.blank-card
-  padding: 1.25em 1.875em
-  text-align: center
-  font-size: 1.25em
-  border: 1px solid var(--c-border)
-  border-radius: 0.25em
 </style>

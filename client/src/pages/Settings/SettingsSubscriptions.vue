@@ -29,14 +29,14 @@ card-container(title="Subscription")
           p ${{ document.perPrice }}/{{ methodType }}, billed {{ document.method }} to Visa **** **** **** 1111
         div.col-3.plan-period
           p Next payment date {{ formatDate(linkaccount.currentPlan.subscriptionEndAt * 1000) }}
-      .free-plan(v-else)
-        icon(name="user" size="huge")
-        .free-plan-content
-          .free-plan-title Get hired for your next big job.
-          .free-plan-description Sign up for a Complect PRO Specialist account and unlock the compliance job board, client compliance program management, and automated invoicing.
-        .actions
-          c-button(title="More Information" type="default" @click="gotoMoreInfo()")
-          c-button(title="Upgrade Now" iconR="chevron-right" type="primary" @click="gotoPlan()")
+      div.free-plan.grid-6(v-else)
+        .free-icon.col-1
+          icon(name="mail" size="huge")
+        .col-3.free-plan-content
+          h4 Get hired for your next big job.
+          p.col-3 Sign up for All Access Membership are unlock the compliance job board, remote client program management
+        c-button.col-1(title="More Information" type="default" @click="gotoMoreInfo()")
+        c-button.col-1(title="Upgrade Now" iconR="chevron-right" type="primary" @click="gotoPlan()")
 c-modal(title="Cancel Plan" v-model="isCancelVisible")
   template(#content)
     .delete-container
@@ -246,7 +246,7 @@ export default {
       document: planCollection.getDocument(),
       subscription,
       formatDate,
-      linkaccount: {},
+      linkaccount,
       planClass,
       gotoPlan,
       formOptions,
@@ -274,8 +274,6 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-.card-container
-  min-height: 100%
 .subscription-content
   border: 1px solid var(--c-border)
   border-radius: 5px
@@ -295,31 +293,21 @@ export default {
   &.plan-show
     display: none
 .free-plan
-  margin: 0 1em
-  display: flex
-  align-items: center
-  gap: 1.25em
-  padding: 1.5em
   border: 1px solid var(--c-border)
-  border-radius: 0.25em
-  background: white
-  min-width: 44em
-  .icon
-    width: 3em !important
-    height: 3em !important
-    margin: 0.5em
+  border-radius: 5px
+  padding: 1.25em
+  align-item: center
+  .free-icon
+    display: flex
+    align-items: center
+    justify-content: center
   .free-plan-content
-    flex: 1
-    .free-plan-title
-      font-weight: bold
-      font-size: 1.5em
-    .free-plan-description
-      font-size: 0.875em
-  .actions
-    display: flex;
-    gap: 0.75em;
-    align-items: center;
-    margin-left: auto;
+    h4
+      font-size: 18px
+      font-weight: 700
+  .c-button
+    max-height: 3em
+    top: 1em
 .payment-info
   padding: 0.7em 2em
   border: 1px solid var(--c-border)

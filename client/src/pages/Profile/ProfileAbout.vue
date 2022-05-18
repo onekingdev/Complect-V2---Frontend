@@ -10,7 +10,7 @@ section.grid-6
     c-select.col-3(label="Jurisdiction" placeholder="Select Jurisdiction" :errors="errors.jurisdictions" :data="jurisdictions" v-model="form.jurisdictions" required searchable multiple)
     c-select.col-3(label="Industry" placeholder="Select Industry" :errors="errors.industries" :data="industries" v-model="form.industries" required searchable multiple)
     c-select.col-3(label="Sub-Industry" placeholder="Select Sub-Industry" :data="filteredSubIndustries" v-model="form.subIndustries" searchable multiple)
-    c-select.col-3(label="Former Regulator" placeholder="Search or add a tag" :data="skills" searchable multiple)
+    c-select.col-3(label="Former Regulator" placeholder="Search or add a tag" :data="[]" searchable multiple)
   .controls
     c-button(type="link" title="Cancel" @click="restoreInformation('my-profile')")
     c-button(type="primary" title="Save" @click="saveInformation('my-profile')")

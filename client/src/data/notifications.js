@@ -402,6 +402,9 @@ const notifyMessages = {
     otp: {
       success: 'New verification code has been sent.',
       error: 'New verification code has not been sent. Please try again.'
+    },
+    reset: {
+      success: 'Reset Link has been sent.'
     }
   },
   experience: {

@@ -48,7 +48,7 @@ const specialistTabs = [
     routeName: 'Dashboard'
   }, {
     title: 'Reports',
-    routeName: 'ReportFinancials'
+    routeName: 'ReportOrganizations'
   }
 ]
 

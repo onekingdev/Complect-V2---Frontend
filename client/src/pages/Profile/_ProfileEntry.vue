@@ -38,9 +38,6 @@ export default {
 
 <style lang="stylus" scoped>
 .page
-  min-height: 100%
-  .card-container
-    min-height: 100%
   :deep(.horizontal-tabs-container.business)
     .container-tabs
       display: none;

@@ -30,7 +30,7 @@ export default {
   },
   setup () {
     const route = useRoute()
-    const isMobileType = ref(navigator.userAgentData.mobile)
+    const isMobileType = ref(true)
     const isOnboarding = computed(() => route.meta.topbar === 'simple')
     const goDeskTopMode = () => isMobileType.value = !isMobileType.value
     return { goDeskTopMode, isMobileType, isOnboarding }
@@ -91,7 +91,7 @@ export default {
     overflow-x: hidden
     grid-column: span 2
   main.mobile-main
-    min-width: 46.1em
+    min-width: 600px
 .layout.layout-authenticated.hide
   @media (max-width: 500px)
     display: none

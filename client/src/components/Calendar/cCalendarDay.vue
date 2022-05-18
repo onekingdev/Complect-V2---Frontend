@@ -16,6 +16,7 @@ import { computed, defineAsyncComponent } from 'vue'
 import dayjs from 'dayjs'
 import cContextMenu from '~/components/Misc/cContextMenu.vue'
 const WEEK_FIRST_DAY = 1 // Monday (1) or Sunday (0) to correctly split tasks by weeks
+const WEEK_LAST_DAY = 0
 
 export default {
   components: { cContextMenu },
@@ -40,11 +41,17 @@ export default {
         const endsToday = dayjs(event.endsAt).isSame(props.day.dateFull, 'day')
         const isWeekStart = dayjs(props.day.dateFull).day() === WEEK_FIRST_DAY
         const showTitle = startsToday || (dayjs(event.startsAt).isBefore(props.day.dateFull, 'day') && isWeekStart)
+        const daysToEndOfWeek = dayjs(props.day.dateFull).day() === WEEK_LAST_DAY ? 1 : (8 - dayjs(props.day.dateFull).day())
+        const daysToEndOfTask = dayjs(event.endsAt).diff(props.day.dateFull, 'day') + 1
+        const titleLengthDays = daysToEndOfWeek <= daysToEndOfTask ? daysToEndOfWeek : daysToEndOfTask
+        const titleWidthStyle = showTitle ? `width: calc(${titleLengthDays * 100}% + ${titleLengthDays - 1}px)` : ''
+        const isLongTitleEnding = showTitle && titleLengthDays === daysToEndOfTask
         const cssClasses = {
-          'event-starts-not-today event-cover-grid-line-left': !startsToday,
-          'event-ends-not-today': !endsToday
+          'event-starts-not-today': !startsToday,
+          'event-ends-not-today': !endsToday && !isLongTitleEnding,
+          'event-title-long': showTitle
         }
-        return { ...event, startsToday, cssClasses, showTitle }
+        return { ...event, startsToday, cssClasses, showTitle, titleWidthStyle }
       })
       return enrichedEvents.length < 3
         ? { visible: enrichedEvents, hidden: [] }

@@ -130,11 +130,6 @@ const SettingsBilling = () => import('~/pages/Settings/SettingsBilling.vue')
 const SettingsBillingPlan = () => import('~/pages/Settings/SettingsBillingPlan.vue')
 const SettingsClientBilling = () => import('~/pages/Settings/SettingsClientBilling.vue')
 
-// notifications
-const _NotificationEntry = () => import('~/pages/Notification/_NotificationEntry.vue')
-const NotificationCenter = () => import('~/pages/Notification/NotificationCenter.vue')
-const NotificationMessage = () => import('~/pages/Notification/NotificationMessage.vue')
-
 // profiles
 const _ProfileEntry = () => import('~/pages/Profile/_ProfileEntry.vue')
 const ProfileAbout = () => import('~/pages/Profile/ProfileAbout.vue')
@@ -799,28 +794,6 @@ const routes = [
               {
                 path: '',
                 redirect: { name: 'SettingsGeneral' }
-              }
-            ]
-          },
-          {
-            path: 'notifications',
-            component: _NotificationEntry,
-            meta: {
-              title: 'Notifications',
-              sidebar: false
-            },
-            children: [
-              {
-                path: '',
-                meta: { title: 'Notifications' },
-                name: 'NotificationCenter',
-                component: NotificationCenter
-              },
-              {
-                path: 'messages',
-                meta: { title: 'Messages' },
-                name: 'NotificationMessage',
-                component: NotificationMessage
               }
             ]
           },
